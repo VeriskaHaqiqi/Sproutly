@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sproutly — Konsultasi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fraunces:wght@700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🌱</div>
+      <div>
+        <div class="logo-name">Sproutly</div>
+        <div class="logo-sub">by AVI</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="../home/index.html" class="nav-item">
+        <span class="nav-icon">🏠</span><span>Home</span>
+      </a>
+      <a href="#" class="nav-item active">
+        <span class="nav-icon">💬</span><span>Konsultasi</span>
+      </a>
+      <a href="#" class="nav-item">
+        <span class="nav-icon">📰</span><span>Artikel</span>
+      </a>
+      <a href="#" class="nav-item">
+        <span class="nav-icon">🔖</span><span>Bookmark</span>
+      </a>
+      <a href="#" class="nav-item">
+        <span class="nav-icon">👤</span><span>Profil</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="../login/index.html" class="logout-btn">
+        <span>🚪</span> Logout
+      </a>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="topbar">
+      <div>
+        <div class="topbar-title">Konsultasi</div>
+        <div class="topbar-sub">Temukan ahli botani terbaik untuk tanamanmu 🌿</div>
+      </div>
+      <div class="topbar-right">
+        <div class="notif-btn">🔔<span class="notif-dot"></span></div>
+        <div class="user-avatar">🧑‍🌾</div>
+      </div>
+    </div>
+
+    <!-- SEARCH & FILTER -->
+    <div class="search-section">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Cari ahli botani berdasarkan nama atau spesialisasi..."
+          oninput="filterExperts()"
+        />
+      </div>
+      <div class="filter-chips">
+        <button class="chip active" onclick="setFilter('semua', this)">🌿 Semua</button>
+        <button class="chip" onclick="setFilter('penyakit', this)">🦠 Penyakit Tanaman</button>
+        <button class="chip" onclick="setFilter('nutrisi', this)">🧪 Nutrisi</button>
+        <button class="chip" onclick="setFilter('organik', this)">🌱 Pertanian Organik</button>
+        <button class="chip" onclick="setFilter('tanah', this)">🪱 Ilmu Tanah</button>
+        <button class="chip" onclick="setFilter('hias', this)">🌸 Tanaman Hias</button>
+      </div>
+    </div>
+
+    <!-- STATS BAR -->
+    <div class="stats-bar">
+      <div class="stat-item">
+        <span class="stat-value" id="expert-count">6</span>
+        <span class="stat-label">Ahli Tersedia</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-value">⭐ 4.8</span>
+        <span class="stat-label">Rating Rata-rata</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-value">🟢 4</span>
+        <span class="stat-label">Sedang Online</span>
+      </div>
+    </div>
+
+    <!-- EXPERT TABLE -->
+    <section class="section">
+      <div class="section-header">
+        <div class="section-label">👨‍🔬 Daftar Ahli Botani</div>
+        <span class="result-count" id="result-count">Menampilkan 6 ahli</span>
+      </div>
+
+      <div class="expert-grid" id="expert-grid">
+
+        <div class="expert-card" data-specialization="penyakit" onclick="goToProfile('amara')">
+          <div class="expert-status online"></div>
+          <div class="expert-avatar">👨‍🔬</div>
+          <div class="expert-info">
+            <div class="expert-name">Dr. Amara Wijaya</div>
+            <div class="expert-spec">🦠 Penyakit Tanaman</div>
+            <div class="expert-tags">
+              <span class="etag">Tomat</span>
+              <span class="etag">Cabai</span>
+              <span class="etag">Jamur</span>
+            </div>
+          </div>
+          <div class="expert-meta">
+            <div class="expert-rating">⭐ 4.9</div>
+            <div class="expert-price">Rp 75.000</div>
+            <div class="expert-reviews">128 ulasan</div>
+          </div>
+          <button class="consult-btn">Konsultasi</button>
+        </div>
+
+        <div class="expert-card" data-specialization="nutrisi" onclick="goToProfile('sari')">
+          <div class="expert-status online"></div>
+          <div class="expert-avatar">👩‍🔬</div>
+          <div class="expert-info">
+            <div class="expert-name">Dr. Sari Pertiwi</div>
+            <div class="expert-spec">🧪 Nutrisi Tanaman</div>
+            <div class="expert-tags">
+              <span class="etag">Pupuk</span>
+              <span class="etag">Hidroponik</span>
+            </div>
+          </div>
+          <div class="expert-meta">
+            <div class="expert-rating">⭐ 4.8</div>
+            <div class="expert-price">Rp 85.000</div>
+            <div class="expert-reviews">95 ulasan</div>
+          </div>
+          <button class="consult-btn">Konsultasi</button>
+        </div>
+
+        <div class="expert-card" data-specialization="tanah" onclick="goToProfile('budi')">
+          <div class="expert-status online"></div>
+          <div class="expert-avatar">👨‍🌾</div>
+          <div class="expert-info">
+            <div class="expert-name">Dr. Budi Santoso</div>
+            <div class="expert-spec">🪱 Ilmu Tanah</div>
+            <div class="expert-tags">
+              <span class="etag">pH Tanah</span>
+              <span class="etag">Kompos</span>
+            </div>
+          </div>
+          <div class="expert-meta">
+            <div class="expert-rating">⭐ 4.7</div>
+            <div class="expert-price">Rp 70.000</div>
+            <div class="expert-reviews">87 ulasan</div>
+          </div>
+          <button class="consult-btn">Konsultasi</button>
+        </div>
+
+        <div class="expert-card" data-specialization="organik" onclick="goToProfile('rina')">
+          <div class="expert-status offline"></div>
+          <div class="expert-avatar">👩‍🌾</div>
+          <div class="expert-info">
+            <div class="expert-name">Dr. Rina Kusuma</div>
+            <div class="expert-spec">🌱 Pertanian Organik</div>
+            <div class="expert-tags">
+              <span class="etag">Pestisida Alami</span>
+              <span class="etag">Mulsa</span>
+            </div>
+          </div>
+          <div class="expert-meta">
+            <div class="expert-rating">⭐ 4.9</div>
+            <div class="expert-price">Rp 90.000</div>
+            <div class="expert-reviews">212 ulasan</div>
+          </div>
+          <button class="consult-btn">Konsultasi</button>
+        </div>
+
+        <div class="expert-card" data-specialization="hias" onclick="goToProfile('dewi')">
+          <div class="expert-status online"></div>
+          <div class="expert-avatar">👩‍🎨</div>
+          <div class="expert-info">
+            <div class="expert-name">Dr. Dewi Lestari</div>
+            <div class="expert-spec">🌸 Tanaman Hias</div>
+            <div class="expert-tags">
+              <span class="etag">Anggrek</span>
+              <span class="etag">Sukulen</span>
+            </div>
+          </div>
+          <div class="expert-meta">
+            <div class="expert-rating">⭐ 4.6</div>
+            <div class="expert-price">Rp 65.000</div>
+            <div class="expert-reviews">64 ulasan</div>
+          </div>
+          <button class="consult-btn">Konsultasi</button>
+        </div>
+
+        <div class="expert-card" data-specialization="penyakit" onclick="goToProfile('hendra')">
+          <div class="expert-status offline"></div>
+          <div class="expert-avatar">👨‍💼</div>
+          <div class="expert-info">
+            <div class="expert-name">Dr. Hendra Putra</div>
+            <div class="expert-spec">🦠 Penyakit Tanaman</div>
+            <div class="expert-tags">
+              <span class="etag">Virus</span>
+              <span class="etag">Bakteri</span>
+              <span class="etag">Padi</span>
+            </div>
+          </div>
+          <div class="expert-meta">
+            <div class="expert-rating">⭐ 4.8</div>
+            <div class="expert-price">Rp 80.000</div>
+            <div class="expert-reviews">143 ulasan</div>
+          </div>
+          <button class="consult-btn">Konsultasi</button>
+        </div>
+
+      </div>
+
+      <!-- Empty state -->
+      <div class="empty-state" id="empty-state" style="display:none;">
+        <div class="empty-icon">🌵</div>
+        <div class="empty-title">Ahli tidak ditemukan</div>
+        <div class="empty-sub">Coba kata kunci atau filter yang berbeda</div>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    let activeFilter = 'semua';
+
+    function setFilter(filter, el) {
+      activeFilter = filter;
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      filterExperts();
+    }
+
+    function filterExperts() {
+      const query = document.getElementById('search-input').value.toLowerCase();
+      const cards = document.querySelectorAll('.expert-card');
+      let visible = 0;
+
+      cards.forEach(card => {
+        const name = card.querySelector('.expert-name').textContent.toLowerCase();
+        const spec = card.querySelector('.expert-spec').textContent.toLowerCase();
+        const tags = card.querySelector('.expert-tags').textContent.toLowerCase();
+        const specialization = card.dataset.specialization;
+
+        const matchFilter = activeFilter === 'semua' || specialization === activeFilter;
+        const matchQuery  = !query || name.includes(query) || spec.includes(query) || tags.includes(query);
+
+        if (matchFilter && matchQuery) {
+          card.style.display = 'flex';
+          visible++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      document.getElementById('expert-count').textContent = visible;
+      document.getElementById('result-count').textContent = `Menampilkan ${visible} ahli`;
+      document.getElementById('empty-state').style.display = visible === 0 ? 'flex' : 'none';
+    }
+
+    function goToProfile(id) {
+      window.location.href = `../expert-profile/index.html?id=${id}`;
+    }
+  </script>
+</body>
+</html>
