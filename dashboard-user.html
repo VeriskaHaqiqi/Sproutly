@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sproutly — Dashboard</title>
+
+  <!-- Google Font: Outfit -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ============================================================
+       SIDEBAR
+  ============================================================ -->
+  <aside class="sidebar" id="sidebar">
+
+    <!-- Decorative blobs inside sidebar -->
+    <div class="sidebar-blob blob-top"></div>
+    <div class="sidebar-blob blob-bottom"></div>
+
+    <!-- Logo + Hamburger Row -->
+    <div class="sidebar-header">
+      <a href="homeUser.html" class="logo">
+        <div class="logo-icon">🌱</div>
+        <div class="logo-text">
+          <span class="logo-name">Sproutly</span>
+          <span class="logo-sub">by AVI</span>
+        </div>
+      </div>
+
+      <!-- Hamburger Button -->
+      <button class="hamburger" id="hamburgerBtn" aria-label="Toggle Sidebar">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+
+    <!-- Navigation Items -->
+    <nav class="sidebar-nav">
+      <a class="nav-item active" href="#" data-label="Dashboard">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Dashboard</span>
+      </a>
+      <a class="nav-item" href="#" data-label="Consultation">
+        <span class="nav-icon">📋</span>
+        <span class="nav-label">Consultations</span>
+      </a>
+      <a class="nav-item" href="#" data-label="Articles">
+        <span class="nav-icon">📰</span>
+        <span class="nav-label">Articles</span>
+      </a>
+      <a class="nav-item" href="#" data-label="Bookmarked">
+        <span class="nav-icon">🔖</span>
+        <span class="nav-label">Bookmarked Articles</span>
+      </a>
+      <a class="nav-item" href="#" data-label="Reviews">
+        <span class="nav-icon">⭐</span>
+        <span class="nav-label">Reviews</span>
+      </a>
+      <a class="nav-item" href="#" data-label="Settings">
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-label">Settings</span>
+      </a>
+    </nav>
+
+    <!-- Need Help Card -->
+    <div class="help-card" id="helpCard">
+      <div class="help-icon">💡</div>
+      <div class="help-text">
+        <h4>Need Help?</h4>
+        <p>Check our guide for users</p>
+      </div>
+      <button class="help-btn">Learn More</button>
+    </div>
+
+  </aside>
+  <!-- END SIDEBAR -->
+
+
+  <!-- ============================================================
+       MAIN WRAPPER
+  ============================================================ -->
+  <div class="main-wrapper">
+
+    <!-- Background decorative blobs -->
+    <div class="bg-blob bg-blob-1"></div>
+    <div class="bg-blob bg-blob-2"></div>
+    <div class="bg-blob bg-blob-3"></div>
+
+    <!-- ==========================================================
+         TOPBAR
+    ========================================================== -->
+    <header class="topbar">
+
+      <!-- Search Bar -->
+      <div class="search-bar">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" placeholder="Search consultations, articles, experts..." />
+      </div>
+
+      <!-- NOTIFICATION BUTTON -->
+      <button class="notif-btn" aria-label="Notifications">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <span class="notif-dot"></span>
+      </button>
+      <!-- END NOTIFICATION BUTTON -->
+
+      <!-- PROFILE PILL -->
+      <div class="profile-pill">
+        <div class="user-avatar">🧑‍🌾</div>
+        <div class="user-info">
+          <span class="user-name">Sarah Green</span>
+          <span class="user-role">Agriculture Expert</span>
+        </div>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+      <!-- END PROFILE PILL -->
+
+    </header>
+    <!-- END TOPBAR -->
+
+
+    <!-- ==========================================================
+         SCROLLABLE CONTENT
+    ========================================================== -->
+    <main class="content">
+
+      <!-- CONTENT HEADER -->
+      <div class="content-header">
+        <div class="welcome-group">
+          <h1 class="welcome-title">Welcome back, Sarah! 🌱</h1>
+          <p class="welcome-sub">Let's check on your agricultural consultations today</p>
+        </div>
+        <div class="date-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <span>Dec 21, 2026</span>
+        </div>
+      </div>
+      <!-- END CONTENT HEADER -->
+
+
+      <!-- STATS CARDS -->
+      <div class="stats-grid">
+
+        <!-- Card 1: Active Consultations -->
+        <div class="stat-card card-yellow">
+          <div class="stat-icon-wrap">
+            <span>💬</span>
+          </div>
+          <div class="stat-number">3</div>
+          <div class="stat-label">Active Consultations</div>
+          <!-- Decorative bubble bottom-left -->
+          <div class="card-bubble"></div>
+        </div>
+
+        <!-- Card 2: Waiting for Reply -->
+        <div class="stat-card card-lime">
+          <div class="stat-icon-wrap">
+            <span>🕐</span>
+          </div>
+          <div class="stat-number">2</div>
+          <div class="stat-label">Waiting for Reply</div>
+          <!-- Decorative bubble bottom-left -->
+          <div class="card-bubble"></div>
+        </div>
+
+        <!-- Card 3: Completed Consultations -->
+        <div class="stat-card card-teal">
+          <div class="stat-icon-wrap">
+            <span>✅</span>
+          </div>
+          <div class="stat-number">20</div>
+          <div class="stat-label">Completed Consultations</div>
+          <!-- Decorative bubble bottom-left -->
+          <div class="card-bubble"></div>
+        </div>
+
+      </div>
+      <!-- END STATS CARDS -->
+
+
+      <!-- RECENT ACTIVITY -->
+      <section class="activity-section">
+
+        <div class="activity-header">
+          <div class="activity-title">
+            <span class="activity-title-icon">🔄</span>
+            <h2>Recent Activity</h2>
+          </div>
+          <a href="#" class="view-all-link">View All →</a>
+        </div>
+
+        <div class="activity-list">
+
+          <!-- Activity Item: Reply -->
+          <div class="activity-item item-reply">
+            <div class="act-icon-wrap icon-teal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/>
+              </svg>
+            </div>
+            <div class="act-body">
+              <h4>Expert replied to your consultation</h4>
+              <p>Dr. Martinez provided detailed feedback on your tomato disease inquiry</p>
+              <div class="act-meta">
+                <span class="act-time">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                  2 hours ago
+                </span>
+                <span class="badge badge-new">New Reply</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Activity Item: Payment -->
+          <div class="activity-item item-payment">
+            <div class="act-icon-wrap icon-blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                <line x1="1" y1="10" x2="23" y2="10"/>
+              </svg>
+            </div>
+            <div class="act-body">
+              <h4>Payment verified</h4>
+              <p>Your payment for the soil analysis consultation has been processed successfully</p>
+              <div class="act-meta">
+                <span class="act-time">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                  5 hours ago
+                </span>
+                <span class="badge badge-verified">Verified</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Activity Item: Completed -->
+          <div class="activity-item item-complete">
+            <div class="act-icon-wrap icon-green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+            </div>
+            <div class="act-body">
+              <h4>Consultation completed</h4>
+              <p>Your organic farming consultation with Mr. Chen has been marked as complete</p>
+              <div class="act-meta">
+                <span class="act-time">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                  Yesterday
+                </span>
+                <span class="badge badge-completed">Completed</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+      <!-- END RECENT ACTIVITY -->
+
+    </main>
+    <!-- END SCROLLABLE CONTENT -->
+
+  </div>
+  <!-- END MAIN WRAPPER -->
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sproutly — Login untuk konsultasi tanaman dan akses artikel edukasi." />
+  <title>Sproutly — Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="blob blob-4"></div>
+
+  <!-- Dots -->
+  <div class="dot" style="width:8px;height:8px;background:#99ff99;top:15%;left:22%;"></div>
+  <div class="dot" style="width:6px;height:6px;background:#76ead0;bottom:28%;left:11%;"></div>
+  <div class="dot" style="width:10px;height:10px;background:#d0ff99;top:32%;right:21%;"></div>
+  <div class="dot" style="width:7px;height:7px;background:#ffff9f;bottom:22%;right:14%;"></div>
+  <div class="dot" style="width:5px;height:5px;background:#76d7ea;top:56%;left:7%;"></div>
+
+  <header class="sr-only">
+    <h1>Sproutly Login</h1>
+  </header>
+
+  <main>
+    <section class="card" aria-label="Login Card">
+
+      <!-- Logo -->
+      <div class="logo-wrap">
+        <div class="logo-icon" aria-hidden="true">🌱</div>
+        <div>
+          <div class="logo-name">Sproutly</div>
+          <div class="logo-sub">by AVI</div>
+        </div>
+      </div>
+
+      <h2>Welcome back</h2>
+      <p class="subheading">Sign in to continue your plant journey 🌿</p>
+
+      <!-- Role Selector -->
+      <div class="role-wrap" role="tablist" aria-label="Pilih peran login">
+        <button type="button" class="role-btn active" id="btn-user" onclick="setRole('user')">
+          <span class="role-label">🧑 User</span>
+          <span class="role-desc">Plant lover</span>
+        </button>
+        <button type="button" class="role-btn" id="btn-botanist" onclick="setRole('botanist')">
+          <span class="role-label">🔬 Botanist Expert</span>
+          <span class="role-desc">Professional</span>
+        </button>
+      </div>
+
+      <!-- Form -->
+      <form class="form" action="#" method="post">
+
+        <div class="field-wrap">
+          <label for="email">Email Address</label>
+          <div class="input-wrap">
+            <span class="input-icon" aria-hidden="true">✉️</span>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required />
+          </div>
+        </div>
+
+        <div class="field-wrap">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <span class="input-icon" aria-hidden="true">🔒</span>
+            <input type="password" id="password" name="password" placeholder="Enter your password" minlength="8" required />
+            <button type="button" class="eye-btn" onclick="togglePass()" id="eye-icon" aria-label="Toggle password visibility">👁️</button>
+          </div>
+        </div>
+
+        <div class="forgot-wrap">
+          <a href="lupapass.html" class="forgot">Forgot Password?</a>
+        </div>
+
+        <button type="button" class="login-btn" onclick="handleLogin()">
+          <span id="login-label">Login as User</span>
+          <span aria-hidden="true">→</span>
+        </button>
+
+      </form>
+
+      <!-- Divider -->
+      <div class="divider" aria-hidden="true">
+        <div class="div-line"></div>
+        <span class="div-text">or</span>
+        <div class="div-line"></div>
+      </div>
+
+      <button type="button" class="google-btn">🌐 Continue with Google</button>
+
+      <p class="register-text">
+        Don't have an account?
+        <a href="register.html" class="register-link">Register here</a>
+      </p>
+
+    </section>
+  </main>
+
+  <footer class="sr-only">
+    <p>&copy; Sproutly by AVI</p>
+  </footer>
+
+  <script>
+    let currentRole = 'user';
+    let showPass = false;
+
+    function setRole(role) {
+      currentRole = role;
+      document.getElementById('btn-user').classList.toggle('active', role === 'user');
+      document.getElementById('btn-botanist').classList.toggle('active', role === 'botanist');
+      document.getElementById('login-label').textContent =
+        role === 'user' ? 'Login as User' : 'Login as Botanist Expert';
+    }
+
+    function togglePass() {
+      showPass = !showPass;
+      document.getElementById('password').type = showPass ? 'text' : 'password';
+      document.getElementById('eye-icon').textContent = showPass ? '🙈' : '👁️';
+    }
+
+    function handleLogin() {
+      const email = document.getElementById('email').value;
+      const pass  = document.getElementById('password').value;
+      if (!email || !pass) {
+        alert('Please fill in your email and password 🌿');
+        return;
+      }
+      alert('Welcome! Logging in as ' + (currentRole === 'user' ? 'User' : 'Botanist Expert') + ' 🌱');
+    }
+  </script>
+</body>
+</html>

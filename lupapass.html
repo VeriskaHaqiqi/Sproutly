@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sproutly — Forgot Password page." />
+  <title>Sproutly — Forgot Password</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fraunces:wght@700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- (Optional) Semantic header; nav tidak wajib di halaman ini -->
+  <header class="sr-only">
+    <h1>Sproutly</h1>
+  </header>
+
+  <!-- Floating dots (dekorasi) -->
+  <div class="dot" style="width:9px;height:9px;background:#99ff99;top:14%;left:24%;"></div>
+  <div class="dot" style="width:6px;height:6px;background:#76ead0;bottom:26%;left:10%;"></div>
+  <div class="dot" style="width:11px;height:11px;background:#d0ff99;top:30%;right:20%;"></div>
+  <div class="dot" style="width:7px;height:7px;background:#ffff9f;bottom:20%;right:13%;"></div>
+  <div class="dot" style="width:5px;height:5px;background:#76d7ea;top:58%;left:6%;"></div>
+  <div class="dot" style="width:8px;height:8px;background:#99ff99;top:72%;right:28%;"></div>
+
+  <main>
+    <section class="card" aria-label="Forgot password card">
+
+      <div class="logo-wrap">
+        <div class="logo-icon" aria-hidden="true">🌱</div>
+        <div>
+          <div class="logo-name">Sproutly</div>
+          <div class="logo-sub">by AVI</div>
+        </div>
+      </div>
+
+      <div class="page-icon" aria-hidden="true">🔑</div>
+      <h2>Forgot Password?</h2>
+      <p class="description">
+        No worries! Enter your registered email below and we'll send you a reset link right away. 🌿
+      </p>
+
+      <!-- Form semantik (bukan div) -->
+      <form class="form" action="#" method="post" onsubmit="handleSubmit(event)">
+        <div class="field-wrap">
+          <label for="email">Email Address</label>
+          <div class="input-wrap">
+            <span class="input-icon" aria-hidden="true">✉️</span>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required />
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          <span id="btn-label">Send Reset Link</span>
+          <span class="btn-arrow" aria-hidden="true">→</span>
+        </button>
+      </form>
+
+      <div class="success-msg" id="success-msg" role="status" aria-live="polite">
+        <span class="success-icon" aria-hidden="true">✅</span>
+        <div>
+          <div class="success-title">Check your inbox!</div>
+          <div class="success-sub">We've sent a reset link to your email address.</div>
+        </div>
+      </div>
+      
+      
+      <a href="login.html" class="back-link">
+        <span class="back-arrow" aria-hidden="true">←</span> Back to Login
+      </a>
+
+    </section>
+  </main>
+
+  <footer class="sr-only">
+    <p>&copy; Sproutly by AVI</p>
+  </footer>
+
+  <script>
+    let sent = false;
+
+    function handleSubmit(event) {
+      event.preventDefault(); // biar tidak reload
+      const email = document.getElementById('email').value.trim();
+
+      if (!email) { alert('Please enter your email address 🌿'); return; }
+      if (!email.includes('@')) { alert('Please enter a valid email address 🌱'); return; }
+      if (sent) return;
+      sent = true;
+
+      const btn = document.querySelector('.submit-btn');
+      btn.style.opacity = '0.7';
+      btn.style.cursor = 'not-allowed';
+      document.getElementById('btn-label').textContent = 'Sending...';
+
+      setTimeout(() => {
+        document.getElementById('success-msg').classList.add('show');
+        document.getElementById('btn-label').textContent = 'Link Sent!';
+        btn.style.background = 'linear-gradient(135deg, #99ff99, #76ead0)';
+      }, 1200);
+    }
+  </script>
+</body>
+</html>
+
