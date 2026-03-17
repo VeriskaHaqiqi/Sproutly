@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sproutly Dashboard</title>
+
+  <!-- Google Font (Outfit) -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS external -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <a href="homeExpert.html" class="logo">
+      <button class="hamburger" id="hamburgerBtn" title="Toggle sidebar">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="logo-icon">🌱</div>
+      <div class="logo-text">
+        <div class="brand">Sproutly</div>
+        <div class="sub">by AVI</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <button class="nav-item active" data-menu="dashboard">
+        <span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span>
+      </button>
+      <button class="nav-item" data-menu="consultations">
+        <span class="nav-icon">📅</span><span class="nav-label">Consultations</span>
+      </button>
+      <button class="nav-item" data-menu="schedule">
+        <span class="nav-icon">🕐</span><span class="nav-label">Schedule</span>
+      </button>
+      <button class="nav-item" data-menu="articles">
+        <span class="nav-icon">📰</span><span class="nav-label">Articles</span>
+      </button>
+      <button class="nav-item" data-menu="pricing">
+        <span class="nav-icon">💲</span><span class="nav-label">Pricing</span>
+      </button>
+      <button class="nav-item" data-menu="reviews">
+        <span class="nav-icon">⭐</span><span class="nav-label">Reviews</span>
+      </button>
+      <button class="nav-item" data-menu="settings">
+        <span class="nav-icon">⚙️</span><span class="nav-label">Settings</span>
+      </button>
+    </nav>
+
+    <div class="help-card">
+      <div class="help-icon-box">💡</div>
+      <h4>Need Help?</h4>
+      <p>Check our guide for consultants</p>
+      <button class="learn-btn">Learn More</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="blob-extra"></div>
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" placeholder="Search consultations, articles, users...">
+      </div>
+      <button class="notif-btn">🔔</button>
+
+      <div class="profile-pill">
+        <div class="profile-info">
+          <div class="profile-name">Sarah Green</div>
+          <div class="profile-role">Agriculture Expert</div>
+        </div>
+        <div class="profile-avatar">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah&backgroundColor=b6e3f4"
+               alt="Sarah Green"
+               onerror="this.parentElement.innerHTML='🌿'">
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- HEADER -->
+      <div class="hero-header">
+        <div>
+          <h1>Welcome back, Sarah! 🌿</h1>
+          <p>Here's what's happening with your consultations today</p>
+        </div>
+        <div class="date-badge">
+          <span class="cal-icon">📅</span>
+          Dec 21, 2026
+        </div>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-grid">
+        <div class="stat-card yellow">
+          <div class="stat-icon-box">📥</div>
+          <div>
+            <div class="stat-number">3</div>
+            <div class="stat-label">New Requests</div>
+          </div>
+        </div>
+
+        <div class="stat-card green">
+          <div class="stat-icon-box">⭐</div>
+          <div>
+            <div class="stat-number">4.8</div>
+            <div class="stat-label">Average Rating ⭐</div>
+          </div>
+        </div>
+
+        <div class="stat-card teal">
+          <div class="stat-icon-box">📄</div>
+          <div>
+            <div class="stat-number">20</div>
+            <div class="stat-label">Published Articles</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACTIVE CONSULTATIONS -->
+      <div class="panel">
+        <div class="panel-header">
+          <h2>Active Consultations</h2>
+          <span class="view-all">View All</span>
+        </div>
+
+        <div class="consult-row">
+          <div class="avatar avatar-1">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Michael&backgroundColor=f093fb"
+                 alt="Michael Chen"
+                 onerror="this.parentElement.innerHTML='👨'">
+          </div>
+          <div class="consult-info">
+            <div class="consult-name">Michael Chen</div>
+            <div class="consult-topic">Organic farming consultation</div>
+          </div>
+          <span class="consult-time">2 hours ago</span>
+          <button class="view-btn">View Detail</button>
+        </div>
+
+        <div class="consult-row">
+          <div class="avatar avatar-2">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Emma&backgroundColor=4facfe"
+                 alt="Emma Rodriguez"
+                 onerror="this.parentElement.innerHTML='👩'">
+          </div>
+          <div class="consult-info">
+            <div class="consult-name">Emma Rodriguez</div>
+            <div class="consult-topic">Pest control strategies</div>
+          </div>
+          <span class="consult-time">5 hours ago</span>
+          <button class="view-btn">View Detail</button>
+        </div>
+
+        <div class="consult-row">
+          <div class="avatar avatar-3">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=David&backgroundColor=43e97b"
+                 alt="David Thompson"
+                 onerror="this.parentElement.innerHTML='👴'">
+          </div>
+          <div class="consult-info">
+            <div class="consult-name">David Thompson</div>
+            <div class="consult-topic">Crop rotation planning</div>
+          </div>
+          <span class="consult-time">1 day ago</span>
+          <button class="view-btn">View Detail</button>
+        </div>
+      </div>
+
+      <!-- QUICK ACTIONS -->
+      <div class="section-title">Quick Actions</div>
+      <div class="quick-grid">
+
+        <div class="quick-card green-card">
+          <!-- SVG decorations -->
+          <svg class="deco-blob" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path fill="rgba(255,255,255,1)"
+              d="M44.9,-67.7C57.5,-60.6,66.5,-47.3,72.1,-32.8C77.7,-18.3,79.9,-2.6,76.3,11.7C72.8,26,63.5,38.9,52,48.5C40.5,58.1,26.8,64.4,11.5,68.5C-3.8,72.6,-20.7,74.5,-35.2,68.8C-49.7,63.1,-61.8,49.8,-68.8,34.4C-75.9,18.9,-77.9,1.3,-73.8,-14.5C-69.7,-30.3,-59.6,-44.3,-46.9,-51.5C-34.2,-58.7,-19,-59.1,-2.8,-55.5C13.5,-51.9,32.3,-74.8,44.9,-67.7Z"
+              transform="translate(100 100)"/>
+          </svg>
+
+          <svg class="deco-blob2" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path fill="rgba(255,255,255,1)"
+              d="M38,-60.3C49.8,-52.3,59.7,-41.7,65.1,-29C70.5,-16.3,71.4,-1.6,67.2,11.5C63,24.6,53.7,36.2,42.4,44.1C31.2,52,18,56.3,3.5,59.6C-11,62.9,-26.9,65.3,-39.7,59.2C-52.5,53.1,-62.3,38.6,-66.9,22.6C-71.5,6.6,-70.9,-10.9,-63.8,-25.5C-56.8,-40.2,-43.3,-52,-29.1,-59.3C-14.9,-66.7,0,-69.7,13.6,-67.6C27.2,-65.5,26.2,-68.3,38,-60.3Z"
+              transform="translate(100 100)"/>
+          </svg>
+
+          <div>
+            <div class="quick-icon-box">📆</div>
+            <h3>Manage Schedule</h3>
+            <p>Set your availability and manage consultation slots</p>
+          </div>
+          <a class="quick-link">Go to Calendar →</a>
+        </div>
+
+        <div class="quick-card yellow-card">
+          <svg class="deco-blob" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path fill="rgba(255,255,255,1)"
+              d="M54.4,-75.5C68.7,-65.2,77.7,-48.4,81.1,-31C84.4,-13.6,82.1,4.4,75.5,19.8C68.9,35.2,58,47.9,44.7,56.3C31.5,64.7,15.7,68.8,-0.8,69.9C-17.4,71.1,-34.7,69.2,-48.5,60.7C-62.3,52.1,-72.5,37,-75.2,20.8C-78,4.6,-73.2,-12.7,-65,-27.4C-56.9,-42,-45.3,-54,-32.1,-63.8C-18.9,-73.6,-4.5,-81.1,11,-83.1C26.5,-85.1,40.1,-85.8,54.4,-75.5Z"
+              transform="translate(100 100)"/>
+          </svg>
+
+          <svg class="deco-blob2" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path fill="rgba(255,255,255,1)"
+              d="M38,-60.3C49.8,-52.3,59.7,-41.7,65.1,-29C70.5,-16.3,71.4,-1.6,67.2,11.5C63,24.6,53.7,36.2,42.4,44.1C31.2,52,18,56.3,3.5,59.6C-11,62.9,-26.9,65.3,-39.7,59.2C-52.5,53.1,-62.3,38.6,-66.9,22.6C-71.5,6.6,-70.9,-10.9,-63.8,-25.5C-56.8,-40.2,-43.3,-52,-29.1,-59.3C-14.9,-66.7,0,-69.7,13.6,-67.6C27.2,-65.5,26.2,-68.3,38,-60.3Z"
+              transform="translate(100 100)"/>
+          </svg>
+
+          <div>
+            <div class="quick-icon-box">💲</div>
+            <h3>Edit Pricing</h3>
+            <p>Update your consultation rates and packages</p>
+          </div>
+          <a class="quick-link">Update Pricing →</a>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- JS external -->
+  <script src="script.js"></script>
+</body>
+</html>
