@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+/*
 Route::get('/', function () {
     return view('index');
 });
@@ -24,4 +25,9 @@ Route::get('/dashboard-user', function () {
 
 Route::get('/dashboard-ahli', function () {
     return view('dashboard-ahli');
+}); 
+*/
+
+Route::get('/homeUser', function () {
+    return view('homeUser');
 });
