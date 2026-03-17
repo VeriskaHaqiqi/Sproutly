@@ -1,58 +1,70 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const pwInput = document.getElementById("password");
-  const eyeBtn = document.getElementById("eye-btn");
-  const emailInput = document.getElementById("email");
-  const emailErr = document.getElementById("email-err");
-  const passwordErr = document.getElementById("password-err");
-  const loginBtn = document.getElementById("btn-login");
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+const emailError = document.getElementById("emailError");
+const passwordError = document.getElementById("passwordError");
+const loginBtn = document.getElementById("loginBtn");
+const togglePassword = document.getElementById("togglePassword");
+const eyeOpen = document.getElementById("eyeOpen");
+const eyeClosed = document.getElementById("eyeClosed");
 
-  function showError(el, msg) {
-    if (!el) return;
-    el.style.display = "block";
-    el.innerText = msg;
+function validateEmail(value) {
+  if (!value.trim()) return "This field is required.";
+  const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!pattern.test(value)) return "Please enter a valid email address.";
+  return "";
+}
+
+function validatePassword(value) {
+  if (!value.trim()) return "This field is required.";
+  return "";
+}
+
+function showError(input, errorEl, message) {
+  if (message) {
+    input.classList.add("error");
+    errorEl.textContent = message;
+    errorEl.classList.add("show");
+  } else {
+    input.classList.remove("error");
+    errorEl.classList.remove("show");
   }
+}
 
-  function hideError(el) {
-    if (!el) return;
-    el.style.display = "none";
-    el.innerText = "";
+email.addEventListener("blur", () => {
+  showError(email, emailError, validateEmail(email.value));
+});
+
+password.addEventListener("blur", () => {
+  showError(password, passwordError, validatePassword(password.value));
+});
+
+email.addEventListener("input", () => {
+  if (emailError.classList.contains("show")) {
+    showError(email, emailError, validateEmail(email.value));
   }
+});
 
-  hideError(emailErr);
-  hideError(passwordErr);
-
-  if (eyeBtn && pwInput) {
-    eyeBtn.addEventListener("click", () => {
-      pwInput.type = pwInput.type === "password" ? "text" : "password";
-      eyeBtn.textContent = pwInput.type === "password" ? "👁" : "🙈";
-    });
+password.addEventListener("input", () => {
+  if (passwordError.classList.contains("show")) {
+    showError(password, passwordError, validatePassword(password.value));
   }
+});
 
-  if (loginBtn) {
-    loginBtn.addEventListener("click", (e) => {
-      e.preventDefault();
+togglePassword.addEventListener("click", () => {
+  const isPassword = password.type === "password";
+  password.type = isPassword ? "text" : "password";
+  eyeOpen.style.display = isPassword ? "none" : "block";
+  eyeClosed.style.display = isPassword ? "block" : "none";
+});
 
-      let valid = true;
-      const email = emailInput.value.trim();
-      const password = pwInput.value.trim();
+loginBtn.addEventListener("click", () => {
+  const emailMsg = validateEmail(email.value);
+  const passwordMsg = validatePassword(password.value);
 
-      if (email === "") {
-        showError(emailErr, "Email wajib diisi.");
-        valid = false;
-      } else {
-        hideError(emailErr);
-      }
+  showError(email, emailError, emailMsg);
+  showError(password, passwordError, passwordMsg);
 
-      if (password === "") {
-        showError(passwordErr, "Password wajib diisi.");
-        valid = false;
-      } else {
-        hideError(passwordErr);
-      }
-
-      if (valid) {
-        alert("Login berhasil (demo)");
-      }
-    });
+  if (!emailMsg && !passwordMsg) {
+    alert("Logging in...");
   }
 });

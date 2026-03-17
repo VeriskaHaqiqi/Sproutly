@@ -10,6 +10,10 @@ Route::get('/login', function () {
     return view('login');
 });
 
+Route::get('/lupapass', function () {
+    return view('lupapass');
+});
+
 Route::get('/register', function () {
     return view('register');
 });
