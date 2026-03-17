@@ -29,3 +29,7 @@ Route::get('/dashboard-ahli', function () {
 Route::get('/homeUser', function () {
     return view('homeUser');
 });
+
+Route::get('/find-experts', function () {
+    return view('find-experts');
+});
