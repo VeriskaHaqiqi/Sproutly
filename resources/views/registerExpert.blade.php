@@ -198,7 +198,7 @@
           <!-- Login link -->
           <p class="login-link">
             Already have an account?
-            <a href="#">Log in</a>
+            <a href="{{ route('login') }}">Log in</a>
           </p>
 
         </form>

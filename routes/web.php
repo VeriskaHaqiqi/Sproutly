@@ -8,7 +8,7 @@ Route::get('/', function () {
 
 Route::get('/login', function () {
     return view('login');
-});
+})->name('login');
 
 Route::get('/lupapass', function () {
     return view('lupapass');
@@ -41,3 +41,11 @@ Route::get('/homePublic', function () {
 Route::get('/registerExpert', function () {
     return view('registerExpert');
 });
+
+Route::get('/registerUser', function () {
+    return view('registerUser');
+})->name('registerUser');
+
+Route::post('/registerUser', function () {
+    return 'Form berhasil dikirim';
+})->name('registerUser.submit');
