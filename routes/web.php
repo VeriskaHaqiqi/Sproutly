@@ -57,3 +57,7 @@ Route::post('/registerUser', function () {
 Route::get('/accountUser', function () {
     return view('accountUser');
 });
+
+Route::get('/daftarArtikel', function () {
+    return view('daftarArtikel');
+});
