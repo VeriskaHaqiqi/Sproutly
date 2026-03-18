@@ -10,6 +10,10 @@ Route::get('/login', function () {
     return view('login');
 })->name('login');
 
+Route::post('/logout', function () {
+    return redirect('/login');
+})->name('logout');
+
 Route::get('/lupapass', function () {
     return view('lupapass');
 });
@@ -49,3 +53,7 @@ Route::get('/registerUser', function () {
 Route::post('/registerUser', function () {
     return 'Form berhasil dikirim';
 })->name('registerUser.submit');
+
+Route::get('/accountUser', function () {
+    return view('accountUser');
+});
