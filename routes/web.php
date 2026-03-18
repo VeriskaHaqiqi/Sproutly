@@ -33,3 +33,7 @@ Route::get('/homeUser', function () {
 Route::get('/find-experts', function () {
     return view('find-experts');
 });
+
+Route::get('/homePublic', function () {
+    return view('homePublic');
+});
