@@ -71,7 +71,7 @@
 
         <button class="menu-item" data-menu="Setting" type="button">
           <span class="menu-icon">
-            <img src="{{ asset('images/setting.png') }}" alt="Setting">
+            <img src="{{ asset('images/settings.png') }}" alt="Setting">
           </span>
           <span class="menu-label">Setting</span>
         </button>

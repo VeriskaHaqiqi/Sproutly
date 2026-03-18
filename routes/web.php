@@ -65,3 +65,7 @@ Route::get('/daftarArtikel', function () {
 Route::get('/detailArtikelUser', function () {
     return view('detailArtikelUser');
 });
+
+Route::get('/bookmarkArtikelUser', function () {
+    return view('bookmarkArtikelUser');
+});
