@@ -37,3 +37,7 @@ Route::get('/find-experts', function () {
 Route::get('/homePublic', function () {
     return view('homePublic');
 });
+
+Route::get('/registerExpert', function () {
+    return view('registerExpert');
+});
