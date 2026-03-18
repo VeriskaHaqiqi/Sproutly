@@ -69,3 +69,7 @@ Route::get('/detailArtikelUser', function () {
 Route::get('/bookmarkArtikelUser', function () {
     return view('bookmarkArtikelUser');
 });
+
+Route::get('/consultationUser', function () {
+    return view('consultationUser');
+});
