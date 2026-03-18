@@ -61,3 +61,7 @@ Route::get('/accountUser', function () {
 Route::get('/daftarArtikel', function () {
     return view('daftarArtikel');
 });
+
+Route::get('/detailArtikelUser', function () {
+    return view('detailArtikelUser');
+});
