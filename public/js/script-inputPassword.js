@@ -7,7 +7,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const ruleCase = document.getElementById("rule-case");
     const ruleNumber = document.getElementById("rule-number");
 
-    function validatePassword() {
+    const successModal = document.getElementById("successModal");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+
+    function updateRules() {
         const value = newPassword.value;
 
         if (value.length >= 8) {
@@ -29,19 +32,19 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    newPassword.addEventListener("input", validatePassword);
+    newPassword.addEventListener("input", updateRules);
 
-    document.querySelectorAll(".toggle-password").forEach(button => {
+    document.querySelectorAll(".toggle-password").forEach((button) => {
         button.addEventListener("click", function () {
             const targetId = this.getAttribute("data-target");
             const input = document.getElementById(targetId);
 
             if (input.type === "password") {
                 input.type = "text";
-                this.textContent = "🙈";
+                this.innerHTML = "<span>🙈</span>";
             } else {
                 input.type = "password";
-                this.textContent = "👁";
+                this.innerHTML = "<span>👁</span>";
             }
         });
     });
@@ -52,16 +55,16 @@ document.addEventListener("DOMContentLoaded", function () {
         const password = newPassword.value.trim();
         const confirm = confirmPassword.value.trim();
 
-        const isValidLength = password.length >= 8;
-        const hasCase = /[a-z]/.test(password) && /[A-Z]/.test(password);
-        const hasNumber = /\d/.test(password);
+        const validLength = password.length >= 8;
+        const validCase = /[a-z]/.test(password) && /[A-Z]/.test(password);
+        const validNumber = /\d/.test(password);
 
         if (!password || !confirm) {
-            alert("Please fill in all password fields.");
+            alert("Please fill in both password fields.");
             return;
         }
 
-        if (!isValidLength || !hasCase || !hasNumber) {
+        if (!validLength || !validCase || !validNumber) {
             alert("Password does not meet the required criteria.");
             return;
         }
@@ -71,8 +74,20 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        alert("Your password has been successfully updated.");
-        form.reset();
-        validatePassword();
+        successModal.classList.add("show");
     });
+
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener("click", function () {
+            successModal.classList.remove("show");
+        });
+    }
+
+    if (successModal) {
+        successModal.addEventListener("click", function (e) {
+            if (e.target === successModal) {
+                successModal.classList.remove("show");
+            }
+        });
+    }
 });

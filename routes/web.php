@@ -34,7 +34,6 @@ Route::get('/homeUser', function () {
     return view('homeUser');
 });
 
-<<<<<<< Updated upstream
 Route::get('/find-experts', function () {
     return view('find-experts');
 });
@@ -73,8 +72,20 @@ Route::get('/bookmarkArtikelUser', function () {
 
 Route::get('/consultationUser', function () {
     return view('consultationUser');
-=======
+});
+
 Route::get('/inputPassword', function () {
     return view('inputPassword');
->>>>>>> Stashed changes
+})->name('inputPassword');
+
+Route::get('infoahli', function () {
+    return view('infoahli');
+})->name('infoahli');
+
+Route::get('/paymentUser', function () {
+    return view('paymentUser');
+});
+
+Route::get('/articleExpert', function () {
+    return view('articleExpert');
 });
