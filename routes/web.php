@@ -113,3 +113,14 @@ Route::get('/articleExpert', function () {
 Route::get('/myarticleExpert', function (){
     return view('myarticleExpert');
 });
+
+// buka halaman manage schedule
+Route::get('/manageSchedule', function () {
+    return view('manageSchedule');
+})->name('manageSchedule');
+
+// simpan / update schedule
+Route::post('manageSchedule', function () {
+    // nanti isi logic simpan ke database di sini
+    return redirect()->route('manageSchedule');
+})->name('expert.schedule.save');
