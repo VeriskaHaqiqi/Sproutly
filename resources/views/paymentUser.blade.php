@@ -7,6 +7,9 @@
 
     <link rel="stylesheet" href="{{ asset('css/style-paymentUser.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="layout">
@@ -19,10 +22,6 @@
                     </div>
                     <span class="brand-text">Sproutly</span>
                 </a>
-
-                <button class="sidebar-toggle" id="sidebarToggle">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
             </div>
 
             <nav class="menu">
@@ -64,10 +63,14 @@
         </aside>
 
         <!-- MAIN CONTENT -->
-        <main class="main-content">
+        <main class="main-content" id="mainContent">
             <header class="page-header">
                 <div class="page-header-left">
-                    <button class="mobile-toggle" id="mobileToggle">
+                    <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Toggle sidebar">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+
+                    <button class="mobile-toggle" id="mobileToggle" type="button" aria-label="Open sidebar">
                         <i class="fa-solid fa-bars"></i>
                     </button>
 

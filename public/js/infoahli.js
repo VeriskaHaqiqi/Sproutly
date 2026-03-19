@@ -2,19 +2,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const sidebar = document.getElementById("sidebar");
     const sidebarToggle = document.getElementById("sidebarToggle");
     const mobileToggle = document.getElementById("mobileToggle");
-    const copyBtn = document.getElementById("copyBtn");
-    const accountNumber = document.getElementById("accountNumber");
-    const paymentProof = document.getElementById("paymentProof");
-    const fileName = document.getElementById("fileName");
+    const mainContent = document.getElementById("mainContent");
 
     if (sidebarToggle) {
-        sidebarToggle.addEventListener("click", function () {
-            sidebar.classList.toggle("collapsed");
+        sidebarToggle.addEventListener("click", function (e) {
+            e.stopPropagation();
+            sidebar.classList.toggle("closed");
+            mainContent.classList.toggle("full");
         });
     }
 
     if (mobileToggle) {
-        mobileToggle.addEventListener("click", function () {
+        mobileToggle.addEventListener("click", function (e) {
+            e.stopPropagation();
             sidebar.classList.toggle("show");
         });
     }
@@ -30,25 +30,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    if (copyBtn && accountNumber) {
-        copyBtn.addEventListener("click", function () {
-            const text = accountNumber.textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
-                setTimeout(() => {
-                    copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy';
-                }, 1500);
-            });
-        });
-    }
-
-    if (paymentProof && fileName) {
-        paymentProof.addEventListener("change", function () {
-            if (this.files.length > 0) {
-                fileName.textContent = "Selected file: " + this.files[0].name;
-            } else {
-                fileName.textContent = "";
-            }
-        });
-    }
+    window.addEventListener("resize", function () {
+        if (window.innerWidth > 768) {
+            sidebar.classList.remove("show");
+        } else {
+            sidebar.classList.remove("closed");
+            mainContent.classList.remove("full");
+        }
+    });
 });
