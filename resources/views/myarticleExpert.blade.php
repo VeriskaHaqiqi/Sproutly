@@ -10,9 +10,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('css/style-myarticleExpert.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <div class="page-wrap">
+    <div class="layout">
         <!-- SIDEBAR -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-top">
@@ -22,17 +23,7 @@
                     </div>
                     <span class="brand-text">Sproutly</span>
                 </div>
-
-                <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Toggle sidebar">
-                    <svg viewBox="0 0 24 24" fill="none">
-                        <path d="M5 7H19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                        <path d="M5 12H19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                        <path d="M5 17H19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-                    </svg>
-                </button>
             </div>
-
-            <div class="sidebar-divider"></div>
 
             <nav class="sidebar-menu">
                 <a href="#" class="menu-item">
@@ -56,7 +47,7 @@
                     <span class="menu-label">Article</span>
                 </a>
 
-                <a href="#" class="menu-item active sub-item">
+                <a href="#" class="menu-item active">
                     <span class="menu-icon">
                         <img src="{{ asset('images/myarticle.png') }}" alt="My Article">
                     </span>
@@ -90,9 +81,15 @@
         <main class="main-content" id="mainContent">
             <section class="page-section">
                 <div class="page-header">
-                    <div>
-                        <h1>My Articles</h1>
-                        <p>Manage and review your published articles across the platform.</p>
+                    <div class="page-header-left">
+                        <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Toggle sidebar">
+                            <i class="fa-solid fa-bars"></i>
+                        </button>
+
+                        <div>
+                            <h1>My Articles</h1>
+                            <p>Manage and review your published articles across the platform.</p>
+                        </div>
                     </div>
 
                     <button class="top-delete-btn" type="button" aria-label="Delete all">
@@ -106,7 +103,6 @@
                 </div>
 
                 <section class="article-grid">
-                    <!-- CARD 1 -->
                     <article class="article-card">
                         <div class="article-image-wrap">
                             <img src="https://plus.unsplash.com/premium_photo-1663045399046-762c27ffe872?q=80&w=870&auto=format&fit=crop" alt="Hydroponics">
@@ -127,7 +123,7 @@
                             </div>
 
                             <h3>Optimizing Nutrient Flow for Leafy Greens</h3>
-                            <p>Discover the critical balance of nitrogen, phosphorus, and...</p>
+                            <p>Discover the critical balance of nitrogen, phosphorus, and essential nutrients for stronger leafy growth...</p>
 
                             <div class="article-bottom">
                                 <span>1.2k Views</span>
@@ -136,7 +132,6 @@
                         </div>
                     </article>
 
-                    <!-- CARD 2 -->
                     <article class="article-card">
                         <div class="article-image-wrap">
                             <img src="https://images.unsplash.com/photo-1559660499-41de8b38a6b2?w=600&auto=format&fit=crop&q=60" alt="Soil Health">
@@ -157,7 +152,7 @@
                             </div>
 
                             <h3>Restoring the Microbiome of Depleted Fields</h3>
-                            <p>A deep dive into regenerative farming practices that bring life...</p>
+                            <p>A deep dive into regenerative farming practices that bring life back into tired and overused soil...</p>
 
                             <div class="article-bottom">
                                 <span>845 Views</span>
@@ -166,7 +161,6 @@
                         </div>
                     </article>
 
-                    <!-- CARD 3 -->
                     <article class="article-card">
                         <div class="article-image-wrap">
                             <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=800&q=80" alt="Vertical Farming">
@@ -187,7 +181,7 @@
                             </div>
 
                             <h3>LED Spectrum Tuning for Winter Growth</h3>
-                            <p>How adjusting light wavelengths can trick plants into year-round...</p>
+                            <p>How adjusting light wavelengths can support year-round productivity inside controlled farming systems...</p>
 
                             <div class="article-bottom">
                                 <span>2.4k Views</span>
@@ -196,7 +190,6 @@
                         </div>
                     </article>
 
-                    <!-- CARD 4 -->
                     <article class="article-card">
                         <div class="article-image-wrap">
                             <img src="https://images.unsplash.com/photo-1516253593875-bd7ba052fbc5?w=800&q=80" alt="Tech Tools">
@@ -217,7 +210,7 @@
                             </div>
 
                             <h3>AI-Driven Pest Detection Systems</h3>
-                            <p>Implementing computer vision models to identify early signs of..</p>
+                            <p>Implementing computer vision models to identify early pest signals before damage becomes widespread...</p>
 
                             <div class="article-bottom">
                                 <span>512 Views</span>
@@ -229,6 +222,31 @@
             </section>
 
             <!-- FOOTER -->
+            <footer class="site-footer">
+                <div class="footer-grid">
+                    <div class="footer-brand">
+                        <div class="footer-brand-top">
+                            <div class="footer-logo-box">
+                                <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo" class="footer-logo">
+                            </div>
+                            <div>
+                                <h3>Sproutly</h3>
+                                <span>by AVI</span>
+                            </div>
+                        </div>
+
+                        <p>
+                            A modern agriculture consultation platform for a greener and more sustainable future.
+                        </p>
+                    </div>
+
+                    <div class="footer-links">
+                        <h4>About Us</h4>
+                        <a href="#">Our Team</a>
+                        <a href="#">Blog</a>
+                        <a href="#">Privacy Policy</a>
+                    </div>
+
                     <div class="footer-contact">
                         <h4>Contact</h4>
                         <p><i class="fa-solid fa-envelope"></i> sproutly@gmail.com</p>

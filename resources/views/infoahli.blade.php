@@ -19,10 +19,6 @@
                     </div>
                     <span class="brand-text">Sproutly</span>
                 </a>
-
-                <button class="sidebar-toggle" id="sidebarToggle">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
             </div>
 
             <nav class="menu">
@@ -64,12 +60,17 @@
         </aside>
 
         <!-- MAIN CONTENT -->
-        <main class="main-content">
+        <main class="main-content" id="mainContent">
             <header class="topbar">
                 <div class="topbar-left">
-                    <button class="mobile-toggle" id="mobileToggle">
+                    <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Toggle sidebar">
                         <i class="fa-solid fa-bars"></i>
                     </button>
+
+                    <button class="mobile-toggle" id="mobileToggle" type="button" aria-label="Open sidebar">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+
                     <h1>Expert Profile</h1>
                 </div>
 
