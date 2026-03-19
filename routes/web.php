@@ -89,3 +89,7 @@ Route::get('/paymentUser', function () {
 Route::get('/articleExpert', function () {
     return view('articleExpert');
 });
+
+Route::get('/myarticleExpert', function (){
+    return view('myarticleExpert');
+});
