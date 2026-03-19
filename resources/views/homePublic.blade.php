@@ -236,20 +236,20 @@
             <small>by AVI</small>
           </div>
         </div>
-        <p>Platform konsultasi pertanian modern untuk masa depan yang lebih hijau.</p>
+        <p>A modern agriculture consultation platform for a greener and more sustainable future.</p>
       </div>
 
       <div class="footer-col">
-        <h5>Tentang Kami</h5>
+        <h5>About Us</h5>
         <ul>
-          <li><a href="#">Tim Kami</a></li>
+          <li><a href="#">Our Tim</a></li>
           <li><a href="#">Blog</a></li>
-          <li><a href="#">Kebijakan Privasi</a></li>
+          <li><a href="#">Privacy and Policy</a></li>
         </ul>
       </div>
 
       <div class="footer-col footer-contact">
-        <h5>Kontak</h5>
+        <h5>Contact</h5>
         <p>✉️ sproutly@gmail.com</p>
         <p>📞 +62 851 5693 2186</p>
         <div class="social-links">

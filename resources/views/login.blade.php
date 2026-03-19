@@ -178,7 +178,7 @@
 
           <div class="signup">
             Don't have an account?<br>
-            <a href="#">Sign up</a>
+            <a href="{{ route('registerUser') }}">Sign up</a>
           </div>
         </div>
       </div>
