@@ -56,7 +56,15 @@ Route::post('/registerUser', function () {
 
 Route::get('/accountUser', function () {
     return view('accountUser');
-});
+})->name('accountUser');
+
+Route::get('/editProfileUser', function () {
+    return view('editProfileUser');
+})->name('editProfileUser');
+
+Route::put('/profile/update', function () {
+    return redirect()->route('accountUser');
+})->name('profile.update');
 
 Route::get('/daftarArtikel', function () {
     return view('daftarArtikel');

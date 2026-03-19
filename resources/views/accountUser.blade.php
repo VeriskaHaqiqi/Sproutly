@@ -98,7 +98,7 @@
           </div>
         </div>
         <button class="btn-edit-profile">
-          <span class="btn-edit-icon">✏️</span> Edit Profile
+          <a href="{{ route('editProfileUser') }}">Edit Profile</a>
         </button>
       </div>
 
