@@ -58,6 +58,10 @@ Route::get('/accountUser', function () {
     return view('accountUser');
 })->name('accountUser');
 
+Route::get('/accountExpert', function () {
+    return view('accountExpert');
+})->name('accountExpert');
+
 Route::get('/editProfileUser', function () {
     return view('editProfileUser');
 })->name('editProfileUser');
@@ -65,6 +69,14 @@ Route::get('/editProfileUser', function () {
 Route::put('/profile/update', function () {
     return redirect()->route('accountUser');
 })->name('profile.update');
+
+Route::get('/editProfileExpert', function () {
+    return view('editProfileExpert');
+})->name('editProfileExpert');
+
+Route::put('/expert/profile/update', function () {
+    return redirect()->route('accountExpert');
+})->name('expert.profile.update');
 
 Route::get('/daftarArtikel', function () {
     return view('daftarArtikel');
