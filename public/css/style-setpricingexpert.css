@@ -1,0 +1,486 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    font-family: 'Inter', sans-serif;
+    background: #f7fbfa;
+    color: #24344d;
+    overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input {
+    font-family: inherit;
+}
+
+.page-layout {
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 280px;
+    height: 100vh;
+    background: #dbeeea;
+    border-right: 1px solid #cfe0dc;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    transform: translateX(0);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.sidebar.hidden {
+    transform: translateX(-100%);
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(100, 130, 120, 0.35);
+    border-radius: 10px;
+}
+
+.sidebar-inner {
+    min-height: 100%;
+    padding: 28px 16px 40px;
+}
+
+.sidebar-top {
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(36, 52, 77, 0.08);
+    margin-bottom: 28px;
+}
+
+.logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.logo-box {
+    width: 58px;
+    height: 58px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #74dfc9, #5fd7c2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.logo-box img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.logo-text {
+    font-size: 24px;
+    font-weight: 800;
+    color: #17985f;
+    white-space: nowrap;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-bottom: 20px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 18px;
+    border-radius: 22px;
+    color: #455470;
+    font-size: 16px;
+    font-weight: 500;
+    transition: 0.25s ease;
+}
+
+.menu-item img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.menu-item.active {
+    background: #f6f6f6;
+    color: #16995f;
+    font-weight: 700;
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.55);
+}
+
+.sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(25, 34, 52, 0.22);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.25s ease;
+    z-index: 900;
+}
+
+.sidebar-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* MAIN */
+.main-content {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+.main-content.full {
+    margin-left: 0;
+    width: 100%;
+}
+
+.pricing-section {
+    padding: 18px 30px 50px;
+}
+
+.pricing-header {
+    margin-bottom: 28px;
+}
+
+.pricing-title-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.toggle-btn {
+    width: 72px;
+    height: 72px;
+    border-radius: 22px;
+    border: 1px solid #d7dde6;
+    background: #f7f7f8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.toggle-btn span {
+    width: 28px;
+    height: 3px;
+    background: #7d89a1;
+    border-radius: 6px;
+}
+
+.pricing-title-text h1 {
+    font-size: 20px;
+    font-weight: 800;
+    color: #1f2e45;
+    margin-bottom: 8px;
+}
+
+.pricing-title-text p {
+    color: #66768f;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.pricing-cards {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+.pricing-card {
+    background: #f9f9f9;
+    border: 1px solid #e6e9eb;
+    border-radius: 28px;
+    padding: 34px 32px;
+}
+
+.pricing-card h2 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #22314a;
+    margin-bottom: 26px;
+}
+
+.input-label {
+    display: block;
+    color: #3f4e67;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.fee-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #d9dde4;
+    background: #fcfcfc;
+    border-radius: 14px;
+    height: 56px;
+    padding: 0 16px;
+    margin-bottom: 12px;
+}
+
+.currency-label {
+    color: #6f7d90;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.fee-input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #5e6e86;
+    font-size: 16px;
+}
+
+.fee-input::placeholder {
+    color: #a1adbc;
+}
+
+.helper-text {
+    color: #74829a;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+.update-fee-btn {
+    border: none;
+    background: #72cfe1;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px 34px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.update-fee-btn:hover {
+    transform: translateY(-1px);
+}
+
+.success-message {
+    display: none;
+    margin-top: 16px;
+    color: #16995f;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.success-message.show {
+    display: block;
+}
+
+.earnings-card {
+    min-height: 310px;
+}
+
+.earnings-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 24px;
+    min-width: 320px;
+    background: #f5f8ef;
+    border-radius: 18px;
+    color: #24344d;
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 18px;
+}
+
+/* FOOTER */
+.footer {
+    margin-top: auto;
+    background: #fbfcfc;
+    border-top: 1px solid #d7e2df;
+}
+
+.footer-top {
+    display: grid;
+    grid-template-columns: 1.5fr 0.8fr 1fr;
+    gap: 40px;
+    padding: 44px 34px 34px;
+}
+
+.footer-brand-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.footer-logo-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #6edbc5 0%, #5fd2bf 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-logo-circle img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.footer-brand h2,
+.footer-links h3,
+.footer-contact h3 {
+    color: #2b3a1f;
+    font-weight: 800;
+}
+
+.footer-brand h2 {
+    font-size: 28px;
+}
+
+.footer-brand span {
+    color: #77846b;
+    font-size: 16px;
+}
+
+.footer-brand p,
+.footer-links a,
+.footer-contact p {
+    color: #6f7d63;
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+.footer-links,
+.footer-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.social-row {
+    display: flex;
+    gap: 18px;
+    margin-top: 10px;
+}
+
+.social-row a {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #6edbc5 0%, #5fd2bf 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.social-row img {
+    width: 42px;
+    height: 42px;
+    object-fit: cover;
+}
+
+.footer-bottom {
+    border-top: 1px solid #d7e2df;
+    text-align: center;
+    padding: 24px 16px;
+    color: #7c896d;
+    font-size: 18px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+    .pricing-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .earnings-box {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .footer-top {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    .main-content,
+    .main-content.full {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .pricing-section {
+        padding: 16px;
+    }
+
+    .pricing-title-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .toggle-btn {
+        width: 64px;
+        height: 64px;
+    }
+
+    .pricing-card {
+        padding: 24px 20px;
+    }
+
+    .update-fee-btn {
+        width: 100%;
+    }
+
+    .footer-top {
+        padding: 36px 20px 28px;
+    }
+
+    .footer-bottom {
+        font-size: 16px;
+    }
+}

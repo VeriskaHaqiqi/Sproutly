@@ -172,7 +172,7 @@
                         <button type="button" class="select-circle" aria-label="Select Article"></button>
 
                         <div class="article-image-wrap">
-                            <img src="{{ asset('images/reviews.png') }}" alt="Article Thumbnail">
+                            <img src="https://images.unsplash.com/photo-1740927115720-5e528c435e1a?q=80&w=874&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Article Thumbnail">
                         </div>
 
                         <div class="article-body">

@@ -128,3 +128,11 @@ Route::post('manageSchedule', function () {
 Route::get('/tulisartikelExpert', function () {
     return view('tulisartikelExpert');
 });
+
+Route::get('/consulexpert', function () {
+    return view('consulexpert');
+});
+
+Route::get('/setpricingexpert', function () {
+    return view('setpricingexpert');
+});
