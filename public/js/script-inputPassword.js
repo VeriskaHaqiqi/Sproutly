@@ -1,85 +1,118 @@
-const form = document.getElementById("resetPasswordForm");
-const newPassword = document.getElementById("newPassword");
-const confirmPassword = document.getElementById("confirmPassword");
+document.addEventListener("DOMContentLoaded", function () {
+    const passwordForm = document.getElementById("passwordForm");
+    const newPassword = document.getElementById("newPassword");
+    const confirmPassword = document.getElementById("confirmPassword");
 
-const ruleLength = document.getElementById("rule-length");
-const ruleCase = document.getElementById("rule-case");
-const ruleNumber = document.getElementById("rule-number");
-const ruleMatch = document.getElementById("rule-match");
+    const newPasswordError = document.getElementById("newPasswordError");
+    const confirmPasswordError = document.getElementById("confirmPasswordError");
 
-const successModal = document.getElementById("successModal");
-const closeModalBtn = document.getElementById("closeModalBtn");
+    const ruleLength = document.getElementById("ruleLength");
+    const ruleUpperLower = document.getElementById("ruleUpperLower");
+    const ruleNumber = document.getElementById("ruleNumber");
 
-const toggleButtons = document.querySelectorAll(".toggle-password");
+    const successModal = document.getElementById("successModal");
+    const closeModalBtn = document.getElementById("closeModalBtn");
 
-function setRuleState(ruleElement, isValid) {
-    const dot = ruleElement.querySelector(".dot");
+    const toggleButtons = document.querySelectorAll(".toggle-password");
 
-    if (isValid) {
-        ruleElement.classList.add("valid");
-        ruleElement.classList.remove("invalid");
-        dot.textContent = "✔";
-    } else {
-        ruleElement.classList.remove("valid");
-        ruleElement.classList.add("invalid");
-        dot.textContent = "●";
+    function validateRules(password) {
+        const hasMinLength = password.length >= 8;
+        const hasUpperLower = /[a-z]/.test(password) && /[A-Z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+
+        ruleLength.classList.toggle("valid", hasMinLength);
+        ruleUpperLower.classList.toggle("valid", hasUpperLower);
+        ruleNumber.classList.toggle("valid", hasNumber);
+
+        return hasMinLength && hasUpperLower && hasNumber;
     }
-}
 
-function validatePasswordRules() {
-    const password = newPassword.value.trim();
-    const confirm = confirmPassword.value.trim();
+    function clearErrors() {
+        newPasswordError.textContent = "";
+        confirmPasswordError.textContent = "";
+    }
 
-    const hasMinLength = password.length >= 8;
-    const hasUpperLower = /[a-z]/.test(password) && /[A-Z]/.test(password);
-    const hasNumber = /[0-9]/.test(password);
-    const isMatch = password !== "" && confirm !== "" && password === confirm;
+    function validateForm() {
+        const passwordValue = newPassword.value.trim();
+        const confirmValue = confirmPassword.value.trim();
 
-    setRuleState(ruleLength, hasMinLength);
-    setRuleState(ruleCase, hasUpperLower);
-    setRuleState(ruleNumber, hasNumber);
-    setRuleState(ruleMatch, isMatch);
+        clearErrors();
 
-    return hasMinLength && hasUpperLower && hasNumber && isMatch;
-}
+        let isValid = true;
+        const rulesValid = validateRules(passwordValue);
 
-newPassword.addEventListener("input", validatePasswordRules);
-confirmPassword.addEventListener("input", validatePasswordRules);
-
-toggleButtons.forEach((button) => {
-    button.addEventListener("click", function () {
-        const targetId = this.getAttribute("data-target");
-        const targetInput = document.getElementById(targetId);
-
-        if (targetInput.type === "password") {
-            targetInput.type = "text";
-        } else {
-            targetInput.type = "password";
+        if (passwordValue === "") {
+            newPasswordError.textContent = "Please enter your new password.";
+            isValid = false;
+        } else if (!rulesValid) {
+            newPasswordError.textContent = "Password must match all required conditions.";
+            isValid = false;
         }
-    });
-});
 
-form.addEventListener("submit", function (e) {
-    e.preventDefault();
+        if (confirmValue === "") {
+            confirmPasswordError.textContent = "Please confirm your new password.";
+            isValid = false;
+        } else if (passwordValue !== confirmValue) {
+            confirmPasswordError.textContent = "Passwords do not match.";
+            isValid = false;
+        }
 
-    const isValid = validatePasswordRules();
-
-    if (!isValid) {
-        return;
+        return isValid;
     }
 
-    successModal.classList.add("show");
-    document.body.style.overflow = "hidden";
-});
+    if (newPassword) {
+        newPassword.addEventListener("input", function () {
+            validateRules(this.value);
+            if (this.value.trim() !== "") {
+                newPasswordError.textContent = "";
+            }
+        });
+    }
 
-closeModalBtn.addEventListener("click", function () {
-    successModal.classList.remove("show");
-    document.body.style.overflow = "";
-});
+    if (confirmPassword) {
+        confirmPassword.addEventListener("input", function () {
+            if (this.value.trim() !== "") {
+                confirmPasswordError.textContent = "";
+            }
+        });
+    }
 
-successModal.addEventListener("click", function (e) {
-    if (e.target === successModal) {
-        successModal.classList.remove("show");
-        document.body.style.overflow = "";
+    toggleButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const targetId = this.getAttribute("data-target");
+            const targetInput = document.getElementById(targetId);
+
+            if (targetInput.type === "password") {
+                targetInput.type = "text";
+                this.textContent = "🙈";
+            } else {
+                targetInput.type = "password";
+                this.textContent = "👁";
+            }
+        });
+    });
+
+    if (passwordForm) {
+        passwordForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            if (validateForm()) {
+                successModal.classList.add("show");
+            }
+        });
+    }
+
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener("click", function () {
+            successModal.classList.remove("show");
+        });
+    }
+
+    if (successModal) {
+        successModal.addEventListener("click", function (e) {
+            if (e.target === successModal) {
+                successModal.classList.remove("show");
+            }
+        });
     }
 });

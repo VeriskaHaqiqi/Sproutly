@@ -136,3 +136,8 @@ Route::get('/consulexpert', function () {
 Route::get('/setpricingexpert', function () {
     return view('setpricingexpert');
 });
+
+Route::get('/ratinghistoryExpert', function () {
+    return view('ratinghistoryExpert');
+});
+
