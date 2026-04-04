@@ -124,3 +124,7 @@ Route::post('manageSchedule', function () {
     // nanti isi logic simpan ke database di sini
     return redirect()->route('manageSchedule');
 })->name('expert.schedule.save');
+
+Route::get('/tulisartikelExpert', function () {
+    return view('tulisartikelExpert');
+});

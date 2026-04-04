@@ -4,86 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Articles - Sproutly</title>
-
+    <link rel="stylesheet" href="{{ asset('css/style-myarticleExpert.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="{{ asset('css/style-myarticleExpert.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <div class="layout">
+    <div class="page-layout">
         <!-- SIDEBAR -->
         <aside class="sidebar" id="sidebar">
-            <div class="sidebar-top">
-                <div class="brand-wrap">
-                    <div class="brand-logo-box">
-                        <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo">
-                    </div>
-                    <span class="brand-text">Sproutly</span>
+            <div class="sidebar-inner">
+                <div class="sidebar-top">
+                    <a href="#" class="logo-wrap">
+                        <div class="logo-box">
+                            <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo">
+                        </div>
+                        <span class="logo-text">Sproutly</span>
+                    </a>
                 </div>
-            </div>
 
-            <nav class="sidebar-menu">
-                <a href="#" class="menu-item">
-                    <span class="menu-icon">
+                <nav class="sidebar-menu">
+                    <a href="#" class="menu-item">
                         <img src="{{ asset('images/dashboard.png') }}" alt="Dashboard">
-                    </span>
-                    <span class="menu-label">Dashboard</span>
-                </a>
+                        <span>Dashboard</span>
+                    </a>
 
-                <a href="#" class="menu-item">
-                    <span class="menu-icon">
+                    <a href="#" class="menu-item">
                         <img src="{{ asset('images/consultation.png') }}" alt="Consultation">
-                    </span>
-                    <span class="menu-label">Consultation</span>
-                </a>
+                        <span>Consultation</span>
+                    </a>
 
-                <a href="#" class="menu-item">
-                    <span class="menu-icon">
+                    <a href="#" class="menu-item">
                         <img src="{{ asset('images/article.png') }}" alt="Article">
-                    </span>
-                    <span class="menu-label">Article</span>
-                </a>
+                        <span>Article</span>
+                    </a>
 
-                <a href="#" class="menu-item active">
-                    <span class="menu-icon">
+                    <a href="#" class="menu-item active">
                         <img src="{{ asset('images/myarticle.png') }}" alt="My Article">
-                    </span>
-                    <span class="menu-label">My Article</span>
-                </a>
+                        <span>My Article</span>
+                    </a>
 
-                <a href="#" class="menu-item">
-                    <span class="menu-icon">
+                    <a href="#" class="menu-item">
                         <img src="{{ asset('images/pricing.png') }}" alt="Pricing">
-                    </span>
-                    <span class="menu-label">Pricing</span>
-                </a>
+                        <span>Pricing</span>
+                    </a>
 
-                <a href="#" class="menu-item">
-                    <span class="menu-icon">
+                    <a href="#" class="menu-item">
                         <img src="{{ asset('images/clienthistory.png') }}" alt="Client History">
-                    </span>
-                    <span class="menu-label">Client History</span>
-                </a>
+                        <span>Client History</span>
+                    </a>
 
-                <a href="#" class="menu-item">
-                    <span class="menu-icon">
+                    <a href="#" class="menu-item">
                         <img src="{{ asset('images/settings.png') }}" alt="Setting">
-                    </span>
-                    <span class="menu-label">Setting</span>
-                </a>
-            </nav>
+                        <span>Setting</span>
+                    </a>
+                </nav>
+            </div>
         </aside>
 
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
         <!-- MAIN -->
-        <main class="main-content" id="mainContent">
-            <section class="page-section">
-                <div class="page-header">
-                    <div class="page-header-left">
-                        <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Toggle sidebar">
-                            <i class="fa-solid fa-bars"></i>
+        <div class="main-content" id="mainContent">
+            <section class="articles-section">
+                <div class="articles-header">
+                    <div class="articles-header-left">
+                        <button type="button" class="toggle-btn" id="sidebarToggle" aria-label="Toggle Sidebar">
+                            <span></span>
+                            <span></span>
+                            <span></span>
                         </button>
 
                         <div>
@@ -92,167 +81,150 @@
                         </div>
                     </div>
 
-                    <button class="top-delete-btn" type="button" aria-label="Delete all">
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M9 3H15L16 5H20V7H4V5H8L9 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                            <path d="M7 8H17L16 19C15.95 20.1 15.05 21 13.95 21H10.05C8.95 21 8.05 20.1 8 19L7 8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                            <path d="M10 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M14 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
+                    <button type="button" class="delete-mode-btn" id="deleteModeBtn" aria-label="Delete Articles">
+                        🗑
                     </button>
                 </div>
 
-                <section class="article-grid">
-                    <article class="article-card">
+                <div class="selection-bar" id="selectionBar">
+                    <span id="selectionText">Select article(s) you want to delete</span>
+                    <div class="selection-actions">
+                        <button type="button" class="cancel-selection-btn" id="cancelSelectionBtn">Cancel</button>
+                        <button type="button" class="delete-selected-btn" id="deleteSelectedBtn">Delete Selected</button>
+                    </div>
+                </div>
+
+                <div class="articles-grid" id="articlesGrid">
+                    <!-- CARD 1 -->
+                    <article class="article-card" data-id="1">
+                        <button type="button" class="select-circle" aria-label="Select Article"></button>
+
                         <div class="article-image-wrap">
-                            <img src="https://plus.unsplash.com/premium_photo-1663045399046-762c27ffe872?q=80&w=870&auto=format&fit=crop" alt="Hydroponics">
-                            <button class="card-trash-btn" type="button" aria-label="Delete article">
-                                <svg viewBox="0 0 24 24" fill="none">
-                                    <path d="M9 3H15L16 5H20V7H4V5H8L9 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                    <path d="M7 8H17L16 19C15.95 20.1 15.05 21 13.95 21H10.05C8.95 21 8.05 20.1 8 19L7 8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                    <path d="M10 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                    <path d="M14 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                </svg>
-                            </button>
+                            <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6" alt="Article Thumbnail">
                         </div>
 
-                        <div class="article-content">
-                            <div class="article-meta-top">
-                                <span class="tag tag-teal">HYDROPONICS</span>
-                                <span class="article-date">Oct 12, 2023</span>
+                        <div class="article-body">
+                            <div class="article-meta">
+                                <span class="tag tag-green">HYDROPONICS</span>
+                                <span class="date">Oct 12, 2023</span>
                             </div>
 
                             <h3>Optimizing Nutrient Flow for Leafy Greens</h3>
-                            <p>Discover the critical balance of nitrogen, phosphorus, and essential nutrients for stronger leafy growth...</p>
+                            <p>Discover the critical balance of nitrogen, phosphorus, and more for healthier crops.</p>
 
-                            <div class="article-bottom">
+                            <div class="article-footer">
                                 <span>1.2k Views</span>
-                                <a href="#">Edit Article <span>→</span></a>
+                                <a href="#">Edit Article →</a>
                             </div>
                         </div>
                     </article>
 
-                    <article class="article-card">
+                    <!-- CARD 2 -->
+                    <article class="article-card" data-id="2">
+                        <button type="button" class="select-circle" aria-label="Select Article"></button>
+
                         <div class="article-image-wrap">
-                            <img src="https://images.unsplash.com/photo-1559660499-41de8b38a6b2?w=600&auto=format&fit=crop&q=60" alt="Soil Health">
-                            <button class="card-trash-btn" type="button" aria-label="Delete article">
-                                <svg viewBox="0 0 24 24" fill="none">
-                                    <path d="M9 3H15L16 5H20V7H4V5H8L9 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                    <path d="M7 8H17L16 19C15.95 20.1 15.05 21 13.95 21H10.05C8.95 21 8.05 20.1 8 19L7 8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                    <path d="M10 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                    <path d="M14 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                </svg>
-                            </button>
+                            <img src="https://plus.unsplash.com/premium_photo-1664299650802-c61f55b00c96?q=80&w=870&auto=format&fit=crop" alt="Article Thumbnail">
                         </div>
 
-                        <div class="article-content">
-                            <div class="article-meta-top">
-                                <span class="tag tag-green">SOIL HEALTH</span>
-                                <span class="article-date">Sep 28, 2023</span>
+                        <div class="article-body">
+                            <div class="article-meta">
+                                <span class="tag tag-light-green">SOIL HEALTH</span>
+                                <span class="date">Sep 28, 2023</span>
                             </div>
 
                             <h3>Restoring the Microbiome of Depleted Fields</h3>
-                            <p>A deep dive into regenerative farming practices that bring life back into tired and overused soil...</p>
+                            <p>A deep dive into regenerative farming practices that bring life back to the soil.</p>
 
-                            <div class="article-bottom">
+                            <div class="article-footer">
                                 <span>845 Views</span>
-                                <a href="#">Edit Article <span>→</span></a>
+                                <a href="#">Edit Article →</a>
                             </div>
                         </div>
                     </article>
 
-                    <article class="article-card">
+                    <!-- CARD 3 -->
+                    <article class="article-card" data-id="3">
+                        <button type="button" class="select-circle" aria-label="Select Article"></button>
+
                         <div class="article-image-wrap">
-                            <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=800&q=80" alt="Vertical Farming">
-                            <button class="card-trash-btn" type="button" aria-label="Delete article">
-                                <svg viewBox="0 0 24 24" fill="none">
-                                    <path d="M9 3H15L16 5H20V7H4V5H8L9 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                    <path d="M7 8H17L16 19C15.95 20.1 15.05 21 13.95 21H10.05C8.95 21 8.05 20.1 8 19L7 8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                    <path d="M10 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                    <path d="M14 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                </svg>
-                            </button>
+                            <img src="https://images.unsplash.com/photo-1646237642132-1c74e65d0282?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHdpbnRlciUyMHBsYW50fGVufDB8fDB8fHww" alt="Article Thumbnail">
                         </div>
 
-                        <div class="article-content">
-                            <div class="article-meta-top">
+                        <div class="article-body">
+                            <div class="article-meta">
                                 <span class="tag tag-blue">VERTICAL FARMING</span>
-                                <span class="article-date">Sep 15, 2023</span>
+                                <span class="date">Sep 15, 2023</span>
                             </div>
 
                             <h3>LED Spectrum Tuning for Winter Growth</h3>
-                            <p>How adjusting light wavelengths can support year-round productivity inside controlled farming systems...</p>
+                            <p>How adjusting light wavelengths can trick plants into year-round productive cycles.</p>
 
-                            <div class="article-bottom">
+                            <div class="article-footer">
                                 <span>2.4k Views</span>
-                                <a href="#">Edit Article <span>→</span></a>
+                                <a href="#">Edit Article →</a>
                             </div>
                         </div>
                     </article>
 
-                    <article class="article-card">
+                    <!-- CARD 4 -->
+                    <article class="article-card" data-id="4">
+                        <button type="button" class="select-circle" aria-label="Select Article"></button>
+
                         <div class="article-image-wrap">
-                            <img src="https://images.unsplash.com/photo-1516253593875-bd7ba052fbc5?w=800&q=80" alt="Tech Tools">
-                            <button class="card-trash-btn" type="button" aria-label="Delete article">
-                                <svg viewBox="0 0 24 24" fill="none">
-                                    <path d="M9 3H15L16 5H20V7H4V5H8L9 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                    <path d="M7 8H17L16 19C15.95 20.1 15.05 21 13.95 21H10.05C8.95 21 8.05 20.1 8 19L7 8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                    <path d="M10 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                    <path d="M14 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                                </svg>
-                            </button>
+                            <img src="{{ asset('images/reviews.png') }}" alt="Article Thumbnail">
                         </div>
 
-                        <div class="article-content">
-                            <div class="article-meta-top">
+                        <div class="article-body">
+                            <div class="article-meta">
                                 <span class="tag tag-yellow">TECH TOOLS</span>
-                                <span class="article-date">Aug 30, 2023</span>
+                                <span class="date">Aug 30, 2023</span>
                             </div>
 
                             <h3>AI-Driven Pest Detection Systems</h3>
-                            <p>Implementing computer vision models to identify early pest signals before damage becomes widespread...</p>
+                            <p>Implementing computer vision models to identify early signs of infestation in crops.</p>
 
-                            <div class="article-bottom">
+                            <div class="article-footer">
                                 <span>512 Views</span>
-                                <a href="#">Edit Article <span>→</span></a>
+                                <a href="#">Edit Article →</a>
                             </div>
                         </div>
                     </article>
-                </section>
+                </div>
             </section>
 
             <!-- FOOTER -->
-            <footer class="site-footer">
-                <div class="footer-grid">
+            <footer class="footer">
+                <div class="footer-top">
                     <div class="footer-brand">
-                        <div class="footer-brand-top">
-                            <div class="footer-logo-box">
-                                <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo" class="footer-logo">
+                        <div class="footer-brand-row">
+                            <div class="footer-logo-circle">
+                                <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo">
                             </div>
                             <div>
-                                <h3>Sproutly</h3>
+                                <h2>Sproutly</h2>
                                 <span>by AVI</span>
                             </div>
                         </div>
-
                         <p>
-                            A modern agriculture consultation platform for a greener and more sustainable future.
+                            A modern agriculture consultation platform for a greener and
+                            more sustainable future.
                         </p>
                     </div>
 
                     <div class="footer-links">
-                        <h4>About Us</h4>
+                        <h3>About Us</h3>
                         <a href="#">Our Team</a>
                         <a href="#">Blog</a>
                         <a href="#">Privacy Policy</a>
                     </div>
 
                     <div class="footer-contact">
-                        <h4>Contact</h4>
-                        <p><i class="fa-solid fa-envelope"></i> sproutly@gmail.com</p>
-                        <p><i class="fa-solid fa-phone"></i> +62 851 5693 2186</p>
+                        <h3>Contact</h3>
+                        <p>✉ sproutly@gmail.com</p>
+                        <p>📞 +62 851 5693 2186</p>
 
-                        <div class="social-icons">
+                        <div class="social-row">
                             <a href="#"><img src="{{ asset('images/instagram.jpg') }}" alt="Instagram"></a>
                             <a href="#"><img src="{{ asset('images/facebook.png') }}" alt="Facebook"></a>
                             <a href="#"><img src="{{ asset('images/X.jpg') }}" alt="X"></a>
@@ -264,7 +236,30 @@
                     © 2025 Sproutly by AVI. All rights reserved.
                 </div>
             </footer>
-        </main>
+        </div>
+    </div>
+
+    <!-- CONFIRM DELETE MODAL -->
+    <div class="modal-overlay" id="confirmDeleteModal">
+        <div class="modal-box">
+            <div class="modal-icon warning">!</div>
+            <h2>Are you sure you want to delete this article?</h2>
+            <p>This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" id="cancelDeleteBtn">Cancel</button>
+                <button type="button" class="btn-danger" id="confirmDeleteBtn">Yes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DELETED MODAL -->
+    <div class="modal-overlay" id="deletedModal">
+        <div class="modal-box">
+            <div class="modal-icon success">✓</div>
+            <h2>Article deleted</h2>
+            <p>The selected article has been removed.</p>
+            <button type="button" class="btn-success" id="closeDeletedModalBtn">OK</button>
+        </div>
     </div>
 
     <script src="{{ asset('js/myarticleExpert.js') }}"></script>
