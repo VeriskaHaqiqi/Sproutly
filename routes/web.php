@@ -141,3 +141,6 @@ Route::get('/ratinghistoryExpert', function () {
     return view('ratinghistoryExpert');
 });
 
+Route::get('/payment-failed', function () {
+    return view('payment-failed');
+});

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment - Sproutly</title>
+    <title>Payment Failed - Sproutly</title>
     <link rel="stylesheet" href="{{ asset('css/style-paymentUser.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -67,123 +67,48 @@
                             <span></span>
                         </button>
                         <div>
-                            <h1>Payment</h1>
-                            <p>Complete your payment before starting the consultation session.</p>
+                            <h1>Payment Failed</h1>
+                            <p>Your previous payment could not be verified. Please make a new transfer to continue your consultation.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="info-banner">
-                    <span class="info-icon">i</span>
-                    <p>Your consultation will begin after payment is confirmed by our team.</p>
+                <div class="status-banner failed">
+                    <span class="status-icon">!</span>
+                    <div>
+                        <h3>Payment Status: Failed</h3>
+                        <p>Transfer proof was invalid. Please verify your payment details and submit a new transfer proof.</p>
+                    </div>
                 </div>
 
-                <div class="payment-grid">
+                <div class="payment-grid failed-layout">
                     <div class="left-column">
                         <div class="card">
                             <h2>Consultation Summary</h2>
 
                             <div class="expert-summary">
-                                <img src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?q=80&w=300&auto=format&fit=crop" alt="Expert" class="expert-avatar">
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=300&auto=format&fit=crop" alt="Expert" class="expert-avatar">
 
                                 <div class="expert-details">
                                     <div class="expert-head">
                                         <div>
-                                            <h3>Dr. Sarah Mitchell</h3>
-                                            <span>Plant Disease Specialist</span>
+                                            <h3>Dr. Sarah Johnson</h3>
+                                            <span>Nutrition Specialist</span>
                                         </div>
-                                        <strong class="waiting-text">Waiting for Payment</strong>
+                                        <strong class="failed-text">Awaiting Repayment</strong>
                                     </div>
 
                                     <ul class="consultation-meta">
                                         <li>Chat Consultation</li>
-                                        <li>Scheduled for Today, 3:00 PM</li>
-                                        <li>30 minutes session</li>
+                                        <li>Today, 3:00 PM</li>
+                                        <li>$45.00</li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="card">
-                            <h2>Payment Method</h2>
-
-                            <div class="bank-box">
-                                <div class="bank-head">
-                                    <div class="bank-icon">🏦</div>
-                                    <div>
-                                        <span class="small-label">Payment Method</span>
-                                        <h3>Bank Transfer</h3>
-                                    </div>
-                                </div>
-
-                                <div class="bank-detail">
-                                    <span>Bank Name</span>
-                                    <strong>Green Valley Bank</strong>
-                                </div>
-
-                                <div class="bank-detail">
-                                    <span>Account Holder Name</span>
-                                    <strong>Sproutly Platform Inc.</strong>
-                                </div>
-
-                                <div class="bank-detail">
-                                    <span>Account Number</span>
-                                    <div class="copy-row">
-                                        <strong id="accountNumber">1234-5678-9012-3456</strong>
-                                        <button type="button" class="copy-btn" id="copyBtn">Copy</button>
-                                    </div>
-                                </div>
-
-                                <div class="bank-detail">
-                                    <span>Branch</span>
-                                    <strong>Downtown Branch</strong>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <h2>Payment Instructions</h2>
-
-                            <div class="instruction-list">
-                                <div>
-                                    <h4>Transfer the exact consultation fee</h4>
-                                    <p>Make sure to transfer the exact amount shown in the payment summary.</p>
-                                </div>
-                                <div>
-                                    <h4>Use the correct account details</h4>
-                                    <p>Double-check the account number and account holder name before transferring.</p>
-                                </div>
-                                <div>
-                                    <h4>Complete payment before consultation starts</h4>
-                                    <p>Payment must be completed at least 15 minutes before your scheduled session.</p>
-                                </div>
-                                <div>
-                                    <h4>Upload your payment proof</h4>
-                                    <p>After payment, upload your transfer receipt or screenshot for verification.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <h2>Upload Payment Proof</h2>
-
-                            <label class="upload-box" for="paymentProof">
-                                <input type="file" id="paymentProof" accept=".jpg,.jpeg,.png,.pdf" hidden>
-                                <div class="upload-icon">☁</div>
-                                <h4>Drag and drop your file here</h4>
-                                <p>or click to browse</p>
-                                <button type="button" class="browse-btn">Browse Files</button>
-                                <span class="upload-note">Accepted formats: JPG, PNG, PDF (Max 5MB)</span>
-                                <span class="file-name" id="fileName"></span>
-                            </label>
-
-                            <p class="upload-error" id="uploadError"></p>
-                        </div>
-                    </div>
-
-                    <div class="right-column">
-                        <div class="card payment-summary-card">
-                            <h2>Payment Summary</h2>
+                        <div class="card compact-card">
+                            <h2>Payment Amount</h2>
 
                             <div class="summary-line">
                                 <span>Consultation Fee</span>
@@ -192,22 +117,75 @@
 
                             <div class="summary-line">
                                 <span>Admin Fee</span>
-                                <strong>$2.00</strong>
+                                <strong>$2.50</strong>
                             </div>
 
                             <div class="summary-divider"></div>
 
                             <div class="summary-total">
-                                <span>Total Payment</span>
-                                <strong>$47.00</strong>
+                                <span>Total Amount</span>
+                                <strong>$47.50</strong>
                             </div>
+                        </div>
 
-                            <button type="button" class="confirm-btn" id="confirmPaymentBtn">Confirm Payment</button>
-                            <button type="button" class="cancel-btn">Cancel</button>
+                        <div class="card">
+                            <h2>Bank Transfer Information</h2>
 
-                            <div class="secure-note">
-                                <span>🛡</span>
-                                <p>Your payment is secure and protected</p>
+                            <div class="bank-box simple">
+                                <div class="bank-detail">
+                                    <span>Bank Name</span>
+                                    <strong>Chase Bank</strong>
+                                </div>
+
+                                <div class="bank-detail">
+                                    <span>Account Holder</span>
+                                    <strong>Dr. Sarah Johnson</strong>
+                                </div>
+
+                                <div class="bank-detail">
+                                    <span>Account Number</span>
+                                    <div class="copy-row">
+                                        <strong id="accountNumber">1234567890</strong>
+                                        <button type="button" class="copy-btn" id="copyBtn">Copy</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="right-column">
+                        <div class="card">
+                            <h2>Repayment Instructions</h2>
+                            <ol class="repayment-list">
+                                <li>Transfer the exact amount <strong>$47.50</strong> to the bank account listed</li>
+                                <li>Double-check the account number and account holder name</li>
+                                <li>Upload your new transfer receipt below</li>
+                                <li>Your consultation will begin after payment verification</li>
+                            </ol>
+                        </div>
+
+                        <div class="card">
+                            <h2>Upload New Payment Proof</h2>
+
+                            <label class="upload-box compact" for="paymentProof">
+                                <input type="file" id="paymentProof" accept=".jpg,.jpeg,.png,.pdf" hidden>
+                                <div class="upload-icon">☁</div>
+                                <h4>Drop your receipt here or browse</h4>
+                                <p>Supported: JPG, PNG, PDF (Max 10MB)</p>
+                                <span class="file-name" id="fileName"></span>
+                            </label>
+
+                            <p class="upload-error" id="uploadError"></p>
+                        </div>
+
+                        <button type="button" class="confirm-btn full-width-btn" id="confirmPaymentBtn">Submit New Payment</button>
+                        <button type="button" class="cancel-btn full-width-btn">Cancel</button>
+
+                        <div class="help-note">
+                            <span>?</span>
+                            <div>
+                                <h4>Need help with payment?</h4>
+                                <p>Contact support if your transfer was successful but not recognized.</p>
                             </div>
                         </div>
                     </div>
@@ -274,15 +252,15 @@
             <div class="payment-modal-summary">
                 <div class="payment-modal-line">
                     <span>Expert</span>
-                    <strong>Dr. Sarah Mitchell</strong>
+                    <strong>Dr. Sarah Johnson</strong>
                 </div>
                 <div class="payment-modal-line">
                     <span>Consultation Type</span>
-                    <strong>30-min Chat Consultation</strong>
+                    <strong>Chat Consultation</strong>
                 </div>
                 <div class="payment-modal-line">
                     <span>Amount Paid</span>
-                    <strong>$47.00</strong>
+                    <strong>$47.50</strong>
                 </div>
                 <div class="payment-modal-line">
                     <span>Payment Status</span>
