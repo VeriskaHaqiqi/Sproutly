@@ -1,150 +1,186 @@
+{{-- resources/views/expert/homeExpert.blade.php --}}
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sproutly by AVI – Expert Dashboard</title>
-  <link rel="stylesheet" href="expert.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sproutly — Dashboard Expert</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/style-homeExpert.css') }}">
 </head>
 <body>
 
-  <!-- ===================== SIDEBAR ===================== -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-brand">
-      <div class="brand-logo">🌱</div>
-      <div class="brand-text">
-        <span class="brand-name">Sproutly</span>
-        <span class="brand-sub">by AVI</span>
-      </div>
-    </div>
+<!-- ===================== LAYOUT WRAPPER ===================== -->
+<div class="app-wrapper" id="appWrapper">
 
-    <nav class="sidebar-nav">
-      <a href="dashboard-ahli.html" class="nav-item active" data-label="Dashboard">
-        <span class="nav-icon">🏠</span>
-        <span>Dashboard</span>
-      </a>
-      <a href="#" class="nav-item" data-label="Bookmarked Articles">
-        <span class="nav-icon">🔖</span>
-        <span>Consultation</span>
-      </a>
-      <a href="manage-articles.html" class="nav-item" data-label="Articles">
-        <span class="nav-icon">📄</span>
-        <span>Manage Articles</span>
-      </a>
-      <a href="profile-expert.html" class="nav-item" data-label="Consultations">
-        <span class="nav-icon">💬</span>
-        <span>My Profile</span>
-      </a>
-      <a href="#" class="nav-item" data-label="Reviews">
-        <span class="nav-icon">⭐</span>
-        <span>History</span>
-      </a>
-      <a href="#" class="nav-item" data-label="Settings">
-        <span class="nav-icon">⚙️</span>
-        <span>Settings</span>
-      </a>
-    </nav>
-
-    <div class="sidebar-blob blob-top"></div>
-    <div class="sidebar-blob blob-bottom"></div>
-    <div class="sidebar-deco-leaf">🌱</div>
-  </aside>
-
-  <!-- ===================== MAIN ===================== -->
-  <div class="main-wrapper">
-
-    <!-- TOPBAR -->
-    <header class="topbar">
-      <button class="hamburger" id="hamburger" aria-label="Toggle menu">☰</button>
-      <a href="homeExpert.html" class="topbar-brand">
-        <div class="brand-logo small">🌱</div>
-        <div class="brand-text">
-          <span class="brand-name">Sproutly</span>
-          <span class="brand-sub">by AVI</span>
-        </div>
-      </a>
-
-      <a href="profile-expert.html" class="topbar-user">
-        <span class="user-name">Sarah Green</span>
-        <div class="user-avatar">
-          <img src="https://i.pravatar.cc/40?img=47" alt="Sarah Green" />
-        </div>
-      </a>
-    </header>
-
-    <!-- PAGE CONTENT -->
-    <main class="content">
-
-      <!-- WELCOME CARD -->
-      <div class="welcome-card reveal">
-        <h1 class="welcome-title">Hallo, Ms. Sarah!</h1>
-        <p class="welcome-desc">Ready to help Indonesian farmers achieve the best harvest today?</p>
-      </div>
-
-      <!-- ACTION CARDS -->
-      <div class="action-grid">
-
-        <div class="action-card reveal" style="--delay:0.1s">
-          <div class="action-icon-wrap icon-lime">
-            <span>✏️</span>
-          </div>
-          <h3 class="action-title">Write an Article</h3>
-          <p class="action-desc">Share the agricultural knowledge and tips to help many people</p>
-          <button class="btn btn-lime" onclick="window.location.href='#'" >Mulai Menulis</button>
-        </div>
-
-        <div class="action-card reveal" style="--delay:0.18s">
-          <div class="action-icon-wrap icon-teal">
-            <span>📅</span>
-          </div>
-          <h3 class="action-title">Set Schedule</h3>
-          <p class="action-desc">Manage consultation schedules and mentoring sessions with people in need.</p>
-          <button class="btn-cta btn-white" onclick="window.location.href='#'">Atur Jadwal</button>
-        </div>
-
-      </div>
-
-      <!-- FOOTER -->
-      <footer class="footer">
-        <div class="footer-inner">
-          <div class="footer-brand">
-            <div class="footer-brand-head">
-              <div class="brand-logo small">🌱</div>
-              <span class="brand-name">Sproutly by AVI</span>
+    <!-- ===================== SIDEBAR ===================== -->
+    <!-- ===================== SIDEBAR ===================== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-top">
+            <div class="brand-wrap">
+                <div class="brand-logo-box">
+                    <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo">
+                </div>
+                <span class="brand-text">Sproutly</span>
             </div>
-            <p>A leading agricultural consulting platform that connects farmers with experienced agricultural experts.</p>
-          </div>
-
-          <div class="footer-col">
-            <h4>Features</h4>
-            <ul>
-              <li><a href="consultation.html">Konsultasi Online</a></li>
-              <li><a href="article.html">Artikel Pertanian</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-col">
-            <h4>Kontak</h4>
-            <ul>
-              <li>• Email: sproutly@gmail.com</li>
-              <li>• Telepon: +62 851 5693 2186</li>
-              <li>• Alamat: Surabaya Indonesia</li>
-            </ul>
-          </div>
         </div>
 
-        <div class="footer-bottom">
-          <p>© 2026 Sproutly by AVI. Semua hak dilindungi.</p>
-        </div>
-      </footer>
+        <div class="sidebar-divider"></div>
 
-    </main>
-  </div>
+        <nav class="sidebar-menu" id="sidebarMenu">
+            <button class="menu-item active" data-menu="Dashboard" type="button">
+                <span class="menu-icon">
+                    <img src="{{ asset('images/dashboard.png') }}" alt="Dashboard">
+                </span>
+                <span class="menu-label">Dashboard</span>
+            </button>
 
-  <!-- Mobile overlay -->
-  <div class="sidebar-overlay" id="overlay"></div>
+            <button class="menu-item" data-menu="Consultation" type="button">
+                <span class="menu-icon">
+                    <img src="{{ asset('images/consultation.png') }}" alt="Consultation">
+                </span>
+                <span class="menu-label">Consultation</span>
+            </button>
 
-  <script src="expert.js"></script>
+            <button class="menu-item" data-menu="Article" type="button">
+                <span class="menu-icon">
+                    <img src="{{ asset('images/article.png') }}" alt="Article">
+                </span>
+                <span class="menu-label">Article</span>
+            </button>
+
+            <button class="menu-item" data-menu="My Article" type="button">
+                <span class="menu-icon">
+                    <img src="{{ asset('images/myarticle.png') }}" alt="My Article">
+                </span>
+                <span class="menu-label">My Article</span>
+            </button>
+
+            <button class="menu-item" data-menu="Pricing" type="button">
+                <span class="menu-icon">
+                    <img src="{{ asset('images/pricing.png') }}" alt="Pricing">
+                </span>
+                <span class="menu-label">Pricing</span>
+            </button>
+
+            <button class="menu-item" data-menu="Client History" type="button">
+                <span class="menu-icon">
+                    <img src="{{ asset('images/clienthistory.png') }}" alt="Client History">
+                </span>
+                <span class="menu-label">Client History</span>
+            </button>
+
+            <button class="menu-item" data-menu="Setting" type="button">
+                <span class="menu-icon">
+                    <img src="{{ asset('images/settings.png') }}" alt="Setting">
+                </span>
+                <span class="menu-label">Setting</span>
+            </button>
+        </nav>
+    </aside>
+
+    <!-- ===================== MAIN AREA ===================== -->
+    <div class="main-area" id="mainArea">
+
+        <!-- ===== TOPBAR ===== -->
+        <header class="topbar">
+            <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle sidebar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="6" x2="21" y2="6"/>
+                    <line x1="3" y1="12" x2="21" y2="12"/>
+                    <line x1="3" y1="18" x2="21" y2="18"/>
+                </svg>
+            </button>
+            <div class="topbar-brand">
+                <img src="{{ asset('images/logo-hijau.png') }}" alt="Sproutly" class="topbar-logo">
+                <span class="topbar-name">Sproutly</span>
+            </div>
+            <div class="topbar-right">
+                <div class="topbar-avatar">S</div>
+            </div>
+        </header>
+
+        <!-- ===== PAGE CONTENT ===== -->
+        <main class="page-content">
+
+            <!-- Hero Greeting -->
+            <section class="hero-card">
+                <div class="hero-text">
+                    <h1 class="hero-title">Halo, Dr. Sarah!</h1>
+                    <p class="hero-subtitle">Siap membantu petani Indonesia mencapai hasil panen terbaik hari ini?</p>
+                </div>
+            </section>
+
+            <!-- Action Cards -->
+            <section class="action-grid">
+
+                <!-- Tulis Artikel -->
+                <div class="action-card card-article">
+                    <div class="card-icon-wrap icon-article">
+                        <img src="{{ asset('images/tulisartikel.png') }}" alt="Tulis Artikel">
+                    </div>
+                    <h2 class="card-title">Tulis Artikel</h2>
+                    <p class="card-desc">Bagikan pengetahuan dan tips pertanian terbaru untuk membantu petani Indonesia</p>
+                    <a href="/tulisartikelExpert" class="card-btn btn-article">Mulai Menulis</a>
+                </div>
+
+                <!-- Atur Jadwal -->
+                <div class="action-card card-schedule">
+                    <div class="card-icon-wrap icon-schedule">
+                        <img src="{{ asset('images/aturjadwal.png') }}" alt="Atur Jadwal">
+                    </div>
+                    <h2 class="card-title">Atur Jadwal</h2>
+                    <p class="card-desc">Kelola jadwal konsultasi dan sesi bimbingan dengan petani yang membutuhkan</p>
+                    <a href="{{ route('manageSchedule') }}" class="card-btn btn-schedule">Lihat Jadwal</a>
+                </div>
+
+            </section>
+
+        </main>
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <div class="footer-brand-col">
+                    <div class="footer-brand-row">
+                        <div class="footer-logo-box">
+                            <img src="{{ asset('images/logo.png') }}" alt="Sproutly">
+                        </div>
+                        <span class="footer-brand-name">Sproutly by AVI</span>
+                    </div>
+                    <p class="footer-tagline">Platform konsultasi pertanian terdepan yang menghubungkan petani dengan ahli pertanian berpengalaman.</p>
+                </div>
+                <div class="footer-links-col">
+                    <h4 class="footer-col-title">Layanan</h4>
+                    <ul class="footer-list">
+                        <li><a href="#">Konsultasi Online</a></li>
+                        <li><a href="#">Artikel Pertanian</a></li>
+                        <li><a href="#">Forum Diskusi</a></li>
+                        <li><a href="#">Pelatihan</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact-col">
+                    <h4 class="footer-col-title">Kontak</h4>
+                    <ul class="footer-list">
+                        <li>• Email: info@sproutly.id</li>
+                        <li>• Telepon: +62 21 1234 5678</li>
+                        <li>• Alamat: Surabaya Indonesia</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Sproutly by AVI. Semua hak dilindungi.</p>
+            </div>
+        </footer>
+
+    </div><!-- /.main-area -->
+</div><!-- /.app-wrapper -->
+
+<!-- Mobile overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<script src="{{ asset('js/script-homeExpert.js') }}"></script>
 </body>
 </html>

@@ -6,6 +6,10 @@ Route::get('/', function () {
     return view('homePublic');
 });
 
+Route::get('/homeExpert', function () {
+    return view('homeExpert');
+})->name('homeExpert');
+
 Route::get('/login', function () {
     return view('login');
 })->name('login');
