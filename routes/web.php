@@ -140,3 +140,7 @@ Route::get('/setpricingexpert', function () {
 Route::get('/ratinghistoryExpert', function () {
     return view('ratinghistoryExpert');
 });
+
+Route::get('/roomChatUser', function () {
+    return view('roomChatUser');
+});
