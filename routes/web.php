@@ -148,3 +148,7 @@ Route::get('/ratinghistoryExpert', function () {
 Route::get('/roomChatUser', function () {
     return view('roomChatUser');
 });
+
+Route::get('/paymentVerified', function () {
+    return view('paymentVerified');
+});
