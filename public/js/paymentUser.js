@@ -1,67 +1,126 @@
 document.addEventListener("DOMContentLoaded", function () {
     const sidebar = document.getElementById("sidebar");
     const sidebarToggle = document.getElementById("sidebarToggle");
-    const mobileToggle = document.getElementById("mobileToggle");
     const mainContent = document.getElementById("mainContent");
+    const sidebarOverlay = document.getElementById("sidebarOverlay");
+
     const copyBtn = document.getElementById("copyBtn");
     const accountNumber = document.getElementById("accountNumber");
+
     const paymentProof = document.getElementById("paymentProof");
     const fileName = document.getElementById("fileName");
+    const uploadError = document.getElementById("uploadError");
 
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener("click", function (e) {
-            e.stopPropagation();
-            sidebar.classList.toggle("closed");
-            mainContent.classList.toggle("full");
-        });
-    }
+    const confirmPaymentBtn = document.getElementById("confirmPaymentBtn");
 
-    if (mobileToggle) {
-        mobileToggle.addEventListener("click", function (e) {
-            e.stopPropagation();
-            sidebar.classList.toggle("show");
-        });
-    }
+    const paymentSuccessModal = document.getElementById("paymentSuccessModal");
+    const closePaymentModal = document.getElementById("closePaymentModal");
 
-    document.addEventListener("click", function (e) {
-        if (window.innerWidth <= 768) {
-            const clickedInsideSidebar = sidebar.contains(e.target);
-            const clickedMobileButton = mobileToggle && mobileToggle.contains(e.target);
-
-            if (!clickedInsideSidebar && !clickedMobileButton) {
-                sidebar.classList.remove("show");
-            }
+    function closeSidebarDesktop() {
+        if (sidebar && mainContent) {
+            sidebar.classList.add("hidden");
+            mainContent.classList.add("full");
         }
-    });
+    }
 
-    window.addEventListener("resize", function () {
-        if (window.innerWidth > 768) {
-            sidebar.classList.remove("show");
-        } else {
-            sidebar.classList.remove("closed");
+    function openSidebarDesktop() {
+        if (sidebar && mainContent) {
+            sidebar.classList.remove("hidden");
             mainContent.classList.remove("full");
         }
-    });
+    }
+
+    function closeSidebarMobile() {
+        if (sidebar && sidebarOverlay) {
+            sidebar.classList.remove("show");
+            sidebarOverlay.classList.remove("show");
+        }
+    }
+
+    function openSidebarMobile() {
+        if (sidebar && sidebarOverlay) {
+            sidebar.classList.add("show");
+            sidebarOverlay.classList.add("show");
+        }
+    }
+
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener("click", function () {
+            if (window.innerWidth <= 768) {
+                if (sidebar.classList.contains("show")) {
+                    closeSidebarMobile();
+                } else {
+                    openSidebarMobile();
+                }
+            } else {
+                if (sidebar.classList.contains("hidden")) {
+                    openSidebarDesktop();
+                } else {
+                    closeSidebarDesktop();
+                }
+            }
+        });
+    }
+
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener("click", function () {
+            closeSidebarMobile();
+        });
+    }
 
     if (copyBtn && accountNumber) {
-        copyBtn.addEventListener("click", function () {
-            const text = accountNumber.textContent.trim();
-
-            navigator.clipboard.writeText(text).then(() => {
-                copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
+        copyBtn.addEventListener("click", async function () {
+            try {
+                await navigator.clipboard.writeText(accountNumber.textContent.trim());
+                copyBtn.textContent = "Copied";
                 setTimeout(() => {
-                    copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy';
+                    copyBtn.textContent = "Copy";
                 }, 1500);
-            });
+            } catch (error) {
+                alert("Failed to copy account number.");
+            }
         });
     }
 
     if (paymentProof && fileName) {
         paymentProof.addEventListener("change", function () {
+            if (uploadError) {
+                uploadError.textContent = "";
+            }
+
             if (this.files.length > 0) {
-                fileName.textContent = "Selected file: " + this.files[0].name;
+                fileName.textContent = this.files[0].name;
             } else {
                 fileName.textContent = "";
+            }
+        });
+    }
+
+    if (confirmPaymentBtn) {
+        confirmPaymentBtn.addEventListener("click", function () {
+            if (paymentProof && paymentProof.files.length === 0) {
+                if (uploadError) {
+                    uploadError.textContent = "Please upload your payment proof first.";
+                }
+                return;
+            }
+
+            if (paymentSuccessModal) {
+                paymentSuccessModal.classList.add("show");
+            }
+        });
+    }
+
+    if (closePaymentModal && paymentSuccessModal) {
+        closePaymentModal.addEventListener("click", function () {
+            paymentSuccessModal.classList.remove("show");
+        });
+    }
+
+    if (paymentSuccessModal) {
+        paymentSuccessModal.addEventListener("click", function (e) {
+            if (e.target === paymentSuccessModal) {
+                paymentSuccessModal.classList.remove("show");
             }
         });
     }
