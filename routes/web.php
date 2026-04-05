@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('index');
+    return view('homePublic');
 });
 
 Route::get('/login', function () {
@@ -140,4 +140,3 @@ Route::get('/setpricingexpert', function () {
 Route::get('/ratinghistoryExpert', function () {
     return view('ratinghistoryExpert');
 });
-

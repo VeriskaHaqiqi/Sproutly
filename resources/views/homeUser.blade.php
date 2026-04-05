@@ -1,194 +1,246 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sproutly by AVI – Dashboard</title>
-  <link rel="stylesheet" href="{{asset('css/style-homeUser.css') }}">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:ital,wght@1,600&display=swap" rel="stylesheet" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sproutly – Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/style-homeUser.css') }}">
 </head>
 <body>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="sidebar-brand">
-      <div class="brand-logo">🌱</div>
-      <div class="brand-text">
-        <span class="brand-name">Sproutly</span>
-        <span class="brand-sub">by AVI</span>
-      </div>
+<!-- SIDEBAR OVERLAY -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+        {{-- Klik logo/nama Sproutly → ke halaman home --}}
+        <a href="{{ url('/home') }}" class="brand-wrap">
+            <div class="brand-logo-box">
+                <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo">
+            </div>
+            <span class="brand-text">Sproutly</span>
+        </a>
     </div>
 
-    <nav class="sidebar-nav">
-      <a href="dashboard-user.html" class="nav-item active">
-        <span class="nav-icon">🏠</span>
-        <span>Dashboard</span>
-      </a>
-      <a href="consultation-user.html" class="nav-item">
-        <span class="nav-icon">💬</span>
-        <span>Consultations</span>
-      </a>
-      <a href="#" class="nav-item">
-        <span class="nav-icon">📄</span>
-        <span>Articles</span>
-      </a>
-      <a href="#" class="nav-item">
-        <span class="nav-icon">🔖</span>
-        <span>Bookmarked Articles</span>
-      </a>
-      <a href="#" class="nav-item">
-        <span class="nav-icon">⭐</span>
-        <span>Reviews</span>
-      </a>
-      <a href="#" class="nav-item">
-        <span class="nav-icon">⚙️</span>
-        <span>Payment</span>
-      </a>
-      <a href="#" class="nav-item">
-        <span class="nav-icon">⚙️</span>
-        <span>Settings</span>
-      </a>
+    <div class="sidebar-divider"></div>
+
+    <nav class="sidebar-menu" id="sidebarMenu">
+        {{-- Ganti href sesuai nama route Laravel kamu --}}
+        <a href="{{ url('dashboard-user') }}"
+           class="menu-item {{ request()->is('dashboard-user') ? 'active' : '' }}">
+            <span class="menu-icon">
+                <img src="{{ asset('images/dashboard.png') }}" alt="Dashboard">
+            </span>
+            <span class="menu-label">Dashboard</span>
+        </a>
+
+        <a href="{{ url('consultationUser') }}"
+           class="menu-item {{ request()->is('consultationUser*') ? 'active' : '' }}">
+            <span class="menu-icon">
+                <img src="{{ asset('images/consultation.png') }}" alt="Consultation">
+            </span>
+            <span class="menu-label">Consultation</span>
+        </a>
+
+        <a href="{{ url('daftarArtikel') }}"
+           class="menu-item {{ request()->is('daftarArtikel*') ? 'active' : '' }}">
+            <span class="menu-icon">
+                <img src="{{ asset('images/article.png') }}" alt="Article">
+            </span>
+            <span class="menu-label">Article</span>
+        </a>
+
+        <a href="{{ url('bookmarkArtikelUser') }}"
+           class="menu-item {{ request()->is('bookmarkArtikelUser*') ? 'active' : '' }}">
+            <span class="menu-icon">
+                <img src="{{ asset('images/bookmark article.jpg') }}" alt="Bookmarked Article">
+            </span>
+            <span class="menu-label">Bookmarked Article</span>
+        </a>
+
+        <a href="{{ url('/reviews') }}"
+           class="menu-item {{ request()->is('reviews*') ? 'active' : '' }}">
+            <span class="menu-icon">
+                <img src="{{ asset('images/reviews.png') }}" alt="Reviews">
+            </span>
+            <span class="menu-label">Reviews</span>
+        </a>
+
+        <a href="{{ url('paymentUser') }}"
+           class="menu-item {{ request()->is('paymentUser*') ? 'active' : '' }}">
+            <span class="menu-icon">
+                <img src="{{ asset('images/payment.png') }}" alt="Payment">
+            </span>
+            <span class="menu-label">Payment</span>
+        </a>
+
+        <a href="{{ url('accountUser') }}"
+           class="menu-item {{ request()->is('accountUser*') ? 'active' : '' }}">
+            <span class="menu-icon">
+                <img src="{{ asset('images/settings.png') }}" alt="Setting">
+            </span>
+            <span class="menu-label">Setting</span>
+        </a>
     </nav>
+</aside>
 
-    <!-- Sidebar decorative blobs -->
-    <div class="sidebar-blob blob-top"></div>
-    <div class="sidebar-blob blob-bottom"></div>
-    <div class="sidebar-leaf">🌱</div>
-  </aside>
+<!-- MAIN CONTENT -->
+<div class="page-wrapper" id="pageWrapper">
 
-  <!-- MAIN CONTENT -->
-  <div class="main-wrapper">
-
-    <!-- TOP NAVBAR -->
+    <!-- TOPBAR -->
     <header class="topbar">
-    <button class="hamburger" id="hamburger" aria-label="Toggle menu">☰</button>
-      <div class="topbar-brand">
-        <a href="homeUser.html"
-            <div class="brand-logo small">🌱</div>
-            <div class="brand-text">
-                <span class="brand-name">Sproutly</span>
-                <span class="brand-sub">by AVI</span>
-            </div>
-        </a>
-      </div>
-      <div class="topbar-user">
-        <a href="setting.html" class="topbar-user"
-            <span class="user-name">Sarah Green</span>
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle Sidebar">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+
+        <div class="topbar-logo">
+            <a href="{{ url('/home') }}" class="topbar-logo-link">
+                <div class="topbar-logo-icon">
+                    <img src="{{ asset('images/logo.png') }}" alt="Sproutly" />
+                </div>
+                <span class="topbar-logo-name">Sproutly</span>
+            </a>
+        </div>
+
+        <div class="topbar-user">
+            <span class="user-name">Isyana Saraswati</span>
             <div class="user-avatar">
-            <img src="https://i.pravatar.cc/40?img=47" alt="Sarah Green" />
+                <img src="{{ asset('images/fotoprofile.png') }}" alt="Sarah Green" />
             </div>
-        </a>
-      </div>
+        </div>
     </header>
 
-    <!-- PAGE CONTENT -->
-    <main class="content">
+    <!-- MAIN -->
+    <main class="main-content">
 
-      <!-- WELCOME CARD -->
-      <div class="welcome-card">
-        <h1 class="welcome-title">Hallo, Sarah!</h1>
-        <p class="welcome-desc">
-          Welcome back to Sproutly! Today is the perfect day<br />
-          to take care of your plants and consult with experts.
-        </p>
-      </div>
+        <!-- GREETING BANNER -->
+        <section class="greeting-banner">
+            <div class="greeting-text">
+                <h1 class="greeting-title">Hallo, Sarah!</h1>
+                <p class="greeting-desc">Welcome back to Sproutly! Today is a great day to learn about plant care and consult with the experts.</p>
+            </div>
+            <div class="greeting-decoration"></div>
+        </section>
 
-    <!-- QUICK ACTION CARDS -->
-    <div class="action-grid">
-        <a href="consultation-user.html" class="action-card action-teal">
-            <div class="action-left">
-                <div class="action-icon">💬</div>
-                <div>
-                    <h3>New Consultations</h3>
-                    <p>Start a consultation session with an agricultural expert to get the best solution.</p>
+        <!-- ACTION CARDS -->
+        <section class="action-cards">
+            <a href="{{ url('/consultation/new') }}" class="action-card action-card--primary">
+                <div class="action-card-icon">
+                    <img src="{{ asset('images/consultation.png') }}" alt="" width="28"/>
+                </div>
+                <div class="action-card-body">
+                    <h3 class="action-card-title">New Consultation <span class="action-arrow">→</span></h3>
+                    <p class="action-card-desc">Start a consultation session with an agricultural expert to get the best solution.</p>
+                </div>
+            </a>
+            <a href="{{ url('/article') }}" class="action-card action-card--secondary">
+                <div class="action-card-icon">
+                    <img src="{{ asset('images/article.png') }}" alt="" width="28"/>
+                </div>
+                <div class="action-card-body">
+                    <h3 class="action-card-title">Read Article <span class="action-arrow">→</span></h3>
+                    <p class="action-card-desc">Explore the latest articles on modern farming tips and tricks</p>
+                </div>
+            </a>
+        </section>
+
+        <!-- RECOMMENDED ARTICLES -->
+        <section class="articles-section">
+            <div class="articles-header">
+                <h2 class="section-title">Artikel Rekomendasi</h2>
+            </div>
+            <div class="articles-grid">
+                <a href="#" class="article-card">
+                    <div class="article-img-wrap">
+                        <img src="{{ asset('images/cover-artikel1.jpg') }}" alt="Hidroponik" class="article-img"/>
+                    </div>
+                    <div class="article-info">
+                        <p class="article-title">Tips Hidroponik untuk Pemula</p>
+                    </div>
+                </a>
+                <a href="#" class="article-card">
+                    <div class="article-img-wrap">
+                        <img src="{{ asset('images/cover-artikel2.jpg') }}" alt="Pupuk Organik" class="article-img"/>
+                    </div>
+                    <div class="article-info">
+                        <p class="article-title">Pupuk Organik Terbaik untuk Tanaman</p>
+                    </div>
+                </a>
+                <a href="#" class="article-card">
+                    <div class="article-img-wrap">
+                        <img src="{{ asset('images/cover-artikel3.jpg') }}" alt="Hama Tanaman" class="article-img"/>
+                    </div>
+                    <div class="article-info">
+                        <p class="article-title">Cara Mengatasi Hama Tanaman</p>
+                    </div>
+                </a>
+                <a href="#" class="article-card">
+                    <div class="article-img-wrap">
+                        <img src="{{ asset('images/cover-artikel4.jpg') }}" alt="Smart Farming" class="article-img"/>
+                    </div>
+                    <div class="article-info">
+                        <p class="article-title">Teknologi Smart Farming</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="nav-logo">
+                    <div class="logo-icon">
+                        <img src="{{ asset('images/logo-hijau.png') }}" alt="logo" width="30">
+                    </div>
+                    <div>
+                        Sproutly
+                        <small>by AVI</small>
+                    </div>
+                </div>
+                <p>A modern agriculture consultation platform for a greener and more sustainable future.</p>
+            </div>
+
+            <div class="footer-col">
+                <h5>About Us</h5>
+                <ul>
+                    <li><a href="#">Our Tim</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Privacy and Policy</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col footer-contact">
+                <h5>Contact</h5>
+                <p>✉️ sproutly@gmail.com</p>
+                <p>📞 +62 851 5693 2186</p>
+                <div class="social-links">
+                    <a href="#" title="Instagram">
+                        <img src="{{ asset('images/instagram.jpg') }}" width="20">
+                    </a>
+                    <a href="#" title="Facebook">
+                        <img src="{{ asset('images/facebook.png') }}" width="20">
+                    </a>
+                    <a href="#" title="X">
+                        <img src="{{ asset('images/X.jpg') }}" width="20">
+                    </a>
                 </div>
             </div>
-        </a>
-        <a href="article.html" class="action-card action-teal">
-            <div class="action-left">
-                <div class="action-icon">📖</div>
-                <div>
-                    <h3>Read Articles</h3>
-                    <p>Explore the latest articles on modern farming tips and tricks.</p>
-                </div>
-            </div>
-            <button class="action-arrow">→</button>
-        </a>
-    </div>
-
-      <!-- ARTIKEL REKOMENDASI -->
-      <div class="articles-card">
-        <h2 class="articles-title">Read to Enhance Your Knowledge</h2>
-        <div class="articles-grid">
-
-          <a href="#" class="article-item"> 
-            <div class="article-thumb" style="background: linear-gradient(135deg,#86efac,#16a34a)">
-              <span>🌿</span>
-            </div>
-            <p>Tips Hidroponik untuk Pemula</p>
-          </a> 
-
-          <a href="#" class="article-item">
-            <div class="article-thumb" style="background: linear-gradient(135deg,#fde68a,#92400e)">
-              <span>🌱</span>
-            </div>
-            <p>Pupuk Organik Terbaik untuk Tanaman</p>
-          </a>
-
-          <a href="#" class="article-item">
-            <div class="article-thumb" style="background: linear-gradient(135deg,#fed7aa,#f59e0b)">
-              <span>🐛</span>
-            </div>
-            <p>Cara Mengatasi Hama Tanaman</p>
-          </a>
-
-          <a href="#" class="article-item">
-            <div class="article-thumb" style="background: linear-gradient(135deg,#bfdbfe,#3b82f6)">
-              <span>🤖</span>
-            </div>
-            <p>Teknologi Smart Farming</p>
-          </a>
-
-        </div>
-      </div>
-
-      <!-- FOOTER -->
-      <footer class="footer">
-        <div class="footer-inner">
-          <div class="footer-brand">
-            <div class="footer-brand-head">
-              <div class="brand-logo small">🌱</div>
-              <span class="brand-name">Sproutly by AVI</span>
-            </div>
-            <p>A leading agricultural consulting platform that connects farmers with experienced agricultural experts.</p>
-          </div>
-
-          <div class="footer-col">
-            <h4>Features</h4>
-            <ul>
-              <li><a href="consultation.html">Konsultasi Online</a></li>
-              <li><a href="article.html">Artikel Pertanian</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-col">
-            <h4>Kontak</h4>
-            <ul>
-              <li>• Email: sproutly@gmail.com</li>
-              <li>• Telepon: +62 851 5693 2186</li>
-              <li>• Alamat: Surabaya Indonesia</li>
-            </ul>
-          </div>
         </div>
 
         <div class="footer-bottom">
-          <p>© 2026 Sproutly by AVI. Semua hak dilindungi.</p>
+            © 2025 Sproutly by AVI. All rights reserved.
         </div>
-      </footer>
+    </footer>
 
-    </main>
-  </div>
+</div>
 
-  <script src="homeUser.js"></script>
+<script src="{{ asset('js/script-homeUser.js') }}"></script>
 </body>
 </html>
