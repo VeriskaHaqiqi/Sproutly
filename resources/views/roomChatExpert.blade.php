@@ -186,7 +186,7 @@
             <button class="icon-btn" onclick="openMoreOptions()" title="More options">
                 <svg class="icon-sm icon-muted" aria-hidden="true"><use href="#icon-more"/></svg>
             </button>
-            <a href="{{ route('popUpEndChat') }}" class="end-chat-btn">
+            <a href="#" class="end-chat-btn">
                 <svg class="icon-sm icon-end" aria-hidden="true"><use href="#icon-x-circle"/></svg>
                 End Chat
             </a>
