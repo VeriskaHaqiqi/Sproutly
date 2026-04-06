@@ -146,6 +146,10 @@ Route::get('/roomChatUser', function () {
     return view('roomChatUser');
 });
 
+Route::get('/roomChatExpert', function () {
+    return view('roomChatExpert');
+});
+
 Route::get('/ConsultationhistoryUser', function () {
     return view('ConsultationhistoryUser');
 });
@@ -164,4 +168,8 @@ Route::get('/supportExpert', function () {
 
 Route::get('/reviewsUser', function () {
     return view('reviewsUser');
+});
+
+Route::get('/lockRoomUser', function () {
+    return view('lockRoomUser');
 });
