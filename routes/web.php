@@ -152,3 +152,11 @@ Route::get('/roomChatUser', function () {
 Route::get('/paymentVerified', function () {
     return view('paymentVerified');
 });
+
+Route::get('/roomChatExpert', function () {
+    return view('roomChatExpert');
+})->name('roomChatExpert');
+
+Route::get('popUpEndChat', function () {
+    return view('popUpEndChat');
+})->name('popUpEndChat');

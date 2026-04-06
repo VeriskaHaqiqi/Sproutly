@@ -136,7 +136,6 @@
             <div class="date-divider">
                 <span>MONDAY, MAY 22</span>
             </div>
-            {{-- Messages will be added here dynamically --}}
         </div>
 
         {{-- Chat Input --}}
@@ -208,6 +207,12 @@
 {{-- Toast Notification --}}
 <div class="toast" id="toast"></div>
 
+{{-- Inject Laravel routes ke JS --}}
+<script>
+    window.ROUTES = {
+        roomChatExpert: "{{ route('roomChatExpert') }}"
+    };
+</script>
 <script src="{{ asset('js/script-paymentVerified.js') }}"></script>
 </body>
 </html>
