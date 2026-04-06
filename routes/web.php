@@ -32,7 +32,7 @@ Route::get('/dashboard-user', function () {
 
 Route::get('/dashboard-ahli', function () {
     return view('dashboard-ahli');
-}); 
+});
 
 Route::get('/homeUser', function () {
     return view('homeUser');
@@ -102,7 +102,7 @@ Route::get('/inputPassword', function () {
     return view('inputPassword');
 })->name('inputPassword');
 
-Route::get('infoahli', function () {
+Route::get('/infoahli', function () {
     return view('infoahli');
 })->name('infoahli');
 
@@ -114,18 +114,15 @@ Route::get('/articleExpert', function () {
     return view('articleExpert');
 });
 
-Route::get('/myarticleExpert', function (){
+Route::get('/myarticleExpert', function () {
     return view('myarticleExpert');
 });
 
-// buka halaman manage schedule
 Route::get('/manageSchedule', function () {
     return view('manageSchedule');
 })->name('manageSchedule');
 
-// simpan / update schedule
-Route::post('manageSchedule', function () {
-    // nanti isi logic simpan ke database di sini
+Route::post('/manageSchedule', function () {
     return redirect()->route('manageSchedule');
 })->name('expert.schedule.save');
 
@@ -149,18 +146,22 @@ Route::get('/roomChatUser', function () {
     return view('roomChatUser');
 });
 
-Route::get('/paymentVerified', function () {
-    return view('paymentVerified');
+Route::get('/ConsultationhistoryUser', function () {
+    return view('ConsultationhistoryUser');
 });
 
-Route::get('/roomChatExpert', function () {
-    return view('roomChatExpert');
-})->name('roomChatExpert');
+Route::get('/consultexpert', function () {
+    return view('consultexpert');
+});
 
-Route::get('popUpEndChat', function () {
-    return view('popUpEndChat');
-})->name('popUpEndChat');
+Route::get('/supportUser', function () {
+    return view('supportUser');
+});
 
-Route::get('lockRoomUser', function () {
-    return view('lockRoomUser');
-})->name('lockRoomUser');
+Route::get('/supportExpert', function () {
+    return view('supportExpert');
+});
+
+Route::get('/reviewsUser', function () {
+    return view('reviewsUser');
+});
