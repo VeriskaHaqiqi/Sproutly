@@ -210,7 +210,7 @@
 {{-- Inject Laravel routes ke JS --}}
 <script>
     window.ROUTES = {
-        roomChatExpert: "{{ route('roomChatExpert') }}"
+        roomChatExpert: "/roomChatExpert"
     };
 </script>
 <script src="{{ asset('js/script-paymentVerified.js') }}"></script>

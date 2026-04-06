@@ -173,3 +173,15 @@ Route::get('/reviewsUser', function () {
 Route::get('/lockRoomUser', function () {
     return view('lockRoomUser');
 });
+
+Route::get('/roomChatExpert', function () {
+    return view('roomChatExpert');
+});
+
+Route::get('/paymentVerified', function () {
+    return view('paymentVerified');
+});
+
+Route::get('/payment-failed', function () {
+    return view('payment-failed');
+});
