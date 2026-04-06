@@ -160,3 +160,7 @@ Route::get('/roomChatExpert', function () {
 Route::get('popUpEndChat', function () {
     return view('popUpEndChat');
 })->name('popUpEndChat');
+
+Route::get('lockRoomUser', function () {
+    return view('lockRoomUser');
+})->name('lockRoomUser');
