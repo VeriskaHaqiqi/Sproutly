@@ -185,3 +185,11 @@ Route::get('/paymentVerified', function () {
 Route::get('/payment-failed', function () {
     return view('payment-failed');
 });
+
+Route::get('/sidebar-expert', function () {
+    return view('sidebar-expert');
+});
+
+Route::get('/sidebar-user', function () {
+    return view('sidebar-user');
+});
