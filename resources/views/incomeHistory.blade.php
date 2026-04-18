@@ -14,49 +14,58 @@
 <div class="layout">
 
   {{-- ======================== SIDEBAR ======================== --}}
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <a href="#" class="logo-wrap">
-        <div class="logo-box">
-          <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo" class="logo-img">
+  <!-- ===== SIDEBAR HTML ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="#" class="logo-wrap">
+                <div class="logo-box">
+                    <img src="images/logo.png" alt="Sproutly Logo" class="logo-img">
+                </div>
+                <span class="logo-text">Sproutly</span>
+            </a>
         </div>
-        <span class="logo-text">Sproutly</span>
-      </a>
-    </div>
 
-    <div class="sidebar-line"></div>
+        <div class="sidebar-line"></div>
 
-    <nav class="sidebar-menu">
-      <a href="#" class="menu-link">
-        <img src="{{ asset('images/dashboard.png') }}" alt="Dashboard">
-        <span>Dashboard</span>
-      </a>
-      <a href="#" class="menu-link">
-        <img src="{{ asset('images/consultation.png') }}" alt="Consultation">
-        <span>Consultation</span>
-      </a>
-      <a href="#" class="menu-link">
-        <img src="{{ asset('images/article.png') }}" alt="Article">
-        <span>Article</span>
-      </a>
-      <a href="#" class="menu-link child-link">
-        <img src="{{ asset('images/myarticle.png') }}" alt="My Article">
-        <span>My Article</span>
-      </a>
-      <a href="#" class="menu-link child-link">
-        <img src="{{ asset('images/pricing.png') }}" alt="Pricing">
-        <span>Pricing</span>
-      </a>
-      <a href="#" class="menu-link child-link">
-        <img src="{{ asset('images/clienthistory.png') }}" alt="Client History">
-        <span>Client History</span>
-      </a>
-      <a href="#" class="menu-link active child-link">
-        <img src="{{ asset('images/settings.png') }}" alt="Setting">
-        <span>Setting</span>
-      </a>
-    </nav>
-  </aside>
+        <nav class="sidebar-menu">
+            <a href="{{ route('dashboard-ahli') }}" class="menu-link {{ request()->is('dashboard-ahli') ? 'active' : '' }}">
+                <img src="images/dashboard.png" alt="Dashboard"> <span>Dashboard</span>
+            </a>
+
+            <a href="{{ route('consultexpert') }}" class="menu-link {{ request()->is('consultexpert') ? 'active' : '' }}">
+                <img src="images/consultation.png" alt="Consultation"> <span>Consultation</span>
+            </a>
+
+            <a href="{{ route('consultexpert') }}" class="menu-link {{ request()->is('consultexpert') ? 'active' : '' }}">
+                <img src="images/consultation.png" alt="Consultation"> <span>Consultation</span>
+            </a>
+
+            <a href="{{ route('articleExpert') }}" class="menu-link<?= isActiveExpert('article') ?>">
+                <img src="images/article.png" alt="Article">
+                <span>Article</span>
+            </a>
+
+            <a href="{{ route('myarticleExpert') }}" class="menu-link child-link<?= isActiveExpert('my-article') ?>">
+                <img src="images/myarticle.png" alt="My Article">
+                <span>My Article</span>
+            </a>
+
+            <a href="{{ route('setpricingexpert') }}" class="menu-link child-link<?= isActiveExpert('pricing') ?>">
+                <img src="images/pricing.png" alt="Pricing">
+                <span>Pricing</span>
+            </a>
+
+            <a href="{{ route('ConsultationhistoryExpert') }}" class="menu-link child-link<?= isActiveExpert('client-history') ?>">
+                <img src="images/clienthistory.png" alt="Client History">
+                <span>Client History</span>
+            </a>
+
+            <a href="{{ route('accountExpert') }}" class="menu-link child-link<?= isActiveExpert('settings') ?>">
+                <img src="images/settings.png" alt="Setting">
+                <span>Setting</span>
+            </a>
+        </nav>
+    </aside>
 
   {{-- ======================== MAIN CONTENT ======================== --}}
   <div class="main-content" id="mainContent">

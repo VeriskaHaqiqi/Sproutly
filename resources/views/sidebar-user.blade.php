@@ -298,7 +298,7 @@ function isActiveUser(string $page): string {
     <div class="sidebar-line"></div>
 
     <nav class="sidebar-menu">
-        <a href="dashboard.php" class="menu-link<?= isActiveUser('dashboard') ?>">
+        <a href="dashboard-user.blade.php" class="menu-link<?= isActiveUser('dashboard') ?>">
             <i class="fa-solid fa-chart-line"></i>
             <span>Dashboard</span>
         </a>

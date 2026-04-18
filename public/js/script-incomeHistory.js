@@ -112,13 +112,25 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ── BAR CHART ANIMATION ─────────────────────── */
   function animateBars() {
     document.querySelectorAll(".bar-fill").forEach((bar, i) => {
-      const target = bar.style.height;
-      bar.style.height     = "0%";
+      // Baca target height dari atribut style di HTML SEBELUM di-reset
+      const target = bar.getAttribute("style").match(/height\s*:\s*([^;]+)/)?.[1]?.trim() || "0%";
+
+      // Simpan target ke data attribute supaya tidak hilang
+      bar.dataset.targetHeight = target;
+
+      // Reset ke 0 tanpa transisi
       bar.style.transition = "none";
-      setTimeout(() => {
-        bar.style.transition = "height .65s cubic-bezier(.34,1.56,.64,1)";
-        bar.style.height     = target;
-      }, 160 + i * 80);
+      bar.style.height     = "0%";
+
+      // Paksa browser repaint, lalu animasikan ke target
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            bar.style.transition = "height .65s cubic-bezier(.34,1.56,.64,1)";
+            bar.style.height     = target;
+          }, i * 90);
+        });
+      });
     });
   }
 

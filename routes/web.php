@@ -32,7 +32,7 @@ Route::get('/dashboard-user', function () {
 
 Route::get('/dashboard-ahli', function () {
     return view('dashboard-ahli');
-});
+})->name('dashboard-ahli');
 
 Route::get('/homeUser', function () {
     return view('homeUser');
@@ -112,11 +112,11 @@ Route::get('/paymentUser', function () {
 
 Route::get('/articleExpert', function () {
     return view('articleExpert');
-});
+})->name('articleExpert');
 
 Route::get('/myarticleExpert', function () {
     return view('myarticleExpert');
-});
+})->name('myarticleExpert');
 
 Route::get('/manageSchedule', function () {
     return view('manageSchedule');
@@ -136,7 +136,7 @@ Route::get('/consulexpert', function () {
 
 Route::get('/setpricingexpert', function () {
     return view('setpricingexpert');
-});
+})->name('setpricingexpert');
 
 Route::get('/ratinghistoryExpert', function () {
     return view('ratinghistoryExpert');
@@ -156,7 +156,7 @@ Route::get('/ConsultationhistoryUser', function () {
 
 Route::get('/consultexpert', function () {
     return view('consultexpert');
-});
+})->name('consultexpert');
 
 Route::get('/supportUser', function () {
     return view('supportUser');
@@ -197,3 +197,7 @@ Route::get('/sidebar-user', function () {
 Route::get('/incomeHistory', function () {
     return view('incomeHistory');
 });
+
+Route::get('/ConsultationhistoryExpert', function () {
+    return view('ConsultationhistoryExpert');
+})->name('ConsultationhistoryExpert');
