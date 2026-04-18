@@ -194,6 +194,12 @@ Route::get('/sidebar-user', function () {
     return view('sidebar-user');
 });
 
+<<<<<<< HEAD
 Route::get('/incomeHistory', function () {
     return view('incomeHistory');
 });
+=======
+Route::get('/auth/google',          [AuthController::class, 'redirectToGoogle'])->name('auth.google');
+
+Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
+>>>>>>> d3fd171 (login)

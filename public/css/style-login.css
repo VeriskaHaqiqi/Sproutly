@@ -108,27 +108,10 @@ body {
   z-index: 2;
 }
 
-.top-icon-box {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(2px);
-}
-
-.top-icon-box svg {
-  width: 24px;
-  height: 24px;
-}
-
 .top-leaf {
   width: 66px;
   height: 54px;
   opacity: 0.35;
-  margin-left: -6px;
 }
 
 .hero {
@@ -446,6 +429,7 @@ body {
   font-size: 15px;
   font-weight: 500;
   color: #374151;
+  text-decoration: none;
   transition: 0.2s ease;
 }
 
@@ -492,11 +476,9 @@ input.error {
   .left {
     padding: 48px 42px;
   }
-
   .hero h1 {
     font-size: 42px;
   }
-
   .hero p {
     font-size: 16px;
   }
@@ -506,13 +488,11 @@ input.error {
   .left {
     display: none;
   }
-
   .right {
     min-width: 100%;
     width: 100%;
     padding: 28px 18px;
   }
-
   .right-wrap {
     max-width: 460px;
   }
@@ -523,15 +503,12 @@ input.error {
     padding: 28px 20px 24px;
     border-radius: 22px;
   }
-
   .brand h2 {
     font-size: 22px;
   }
-
   .card-title {
     font-size: 22px;
   }
-
   .social-row {
     flex-direction: column;
   }

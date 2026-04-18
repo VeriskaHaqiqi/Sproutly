@@ -1,11 +1,11 @@
-const email = document.getElementById("email");
-const password = document.getElementById("password");
-const emailError = document.getElementById("emailError");
-const passwordError = document.getElementById("passwordError");
-const loginBtn = document.getElementById("loginBtn");
+const email          = document.getElementById("email");
+const password       = document.getElementById("password");
+const emailError     = document.getElementById("emailError");
+const passwordError  = document.getElementById("passwordError");
 const togglePassword = document.getElementById("togglePassword");
-const eyeOpen = document.getElementById("eyeOpen");
-const eyeClosed = document.getElementById("eyeClosed");
+const eyeOpen        = document.getElementById("eyeOpen");
+const eyeClosed      = document.getElementById("eyeClosed");
+const loginForm      = document.getElementById("loginForm");
 
 function validateEmail(value) {
   if (!value.trim()) return "This field is required.";
@@ -53,18 +53,21 @@ password.addEventListener("input", () => {
 togglePassword.addEventListener("click", () => {
   const isPassword = password.type === "password";
   password.type = isPassword ? "text" : "password";
-  eyeOpen.style.display = isPassword ? "none" : "block";
+  eyeOpen.style.display  = isPassword ? "none"  : "block";
   eyeClosed.style.display = isPassword ? "block" : "none";
 });
 
-loginBtn.addEventListener("click", () => {
-  const emailMsg = validateEmail(email.value);
+loginForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const emailMsg    = validateEmail(email.value);
   const passwordMsg = validatePassword(password.value);
 
   showError(email, emailError, emailMsg);
   showError(password, passwordError, passwordMsg);
 
   if (!emailMsg && !passwordMsg) {
-    alert("Logging in...");
+    // Redirect ke homePublic — sesuaikan URL-nya kalau berbeda
+    window.location.href = "/homePublic";
   }
 });

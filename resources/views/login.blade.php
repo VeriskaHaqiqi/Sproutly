@@ -18,21 +18,6 @@
       <div class="circle c5"></div>
 
       <div class="top-icons">
-        <div class="top-icon-box">
-          <svg viewBox="0 0 24 24" fill="none">
-            <path d="M12 21V10" stroke="#176534" stroke-width="2.2" stroke-linecap="round"/>
-            <path d="M12 13.5C12 13.5 7 11.8 6 7C6 7 10.4 5.5 13.2 8.9C14 9.9 13.2 12.4 12 13.5Z" fill="#176534"/>
-            <path d="M12 15C12 15 16.2 13.5 18 10C18 10 19.2 14.2 16.4 16.2C14.7 17.4 12.5 15.7 12 15Z" fill="#176534"/>
-          </svg>
-        </div>
-
-        <div class="top-icon-box">
-          <svg viewBox="0 0 24 24" fill="none">
-            <path d="M4.8 16.8C4.8 16.8 3.7 10.3 8.8 6.5C13.3 3.1 19.4 5.8 18.7 11.7C18.1 16.4 12.8 18.6 8 17.4" fill="#176534"/>
-            <path d="M8.5 15.8L14.8 9.6" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
-          </svg>
-        </div>
-
         <svg class="top-leaf" viewBox="0 0 64 54" fill="none">
           <path d="M8 28C8 28 5 17 13 11C22 4 33 8 31 20C29 30 18 32 12 30" fill="#2ea66f"/>
           <path d="M30 40C30 40 26 20 42 11C52 6 62 12 62 24C62 41 44 49 34 47" fill="#53c6ae"/>
@@ -56,7 +41,6 @@
             </div>
             <span>Expert plant consultation</span>
           </div>
-
           <div class="feature-item">
             <div class="check-circle">
               <svg viewBox="0 0 16 16" fill="none">
@@ -65,7 +49,6 @@
             </div>
             <span>Smart agriculture technology</span>
           </div>
-
           <div class="feature-item">
             <div class="check-circle">
               <svg viewBox="0 0 16 16" fill="none">
@@ -104,55 +87,56 @@
             Log in to continue your plant consultation journey
           </p>
 
-          <div class="field">
-            <label for="email">Email address</label>
-            <div class="input-wrap">
-              <span class="icon-left">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M2.2 4.1H13.8C14.46 4.1 15 4.64 15 5.3V10.7C15 11.36 14.46 11.9 13.8 11.9H2.2C1.54 11.9 1 11.36 1 10.7V5.3C1 4.64 1.54 4.1 2.2 4.1Z" stroke="currentColor" stroke-width="1.4"/>
-                  <path d="M1.8 5L8 9.2L14.2 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-              <input type="email" id="email" placeholder="Enter your email" />
+          <form id="loginForm">
+            <div class="field">
+              <label for="email">Email address</label>
+              <div class="input-wrap">
+                <span class="icon-left">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M2.2 4.1H13.8C14.46 4.1 15 4.64 15 5.3V10.7C15 11.36 14.46 11.9 13.8 11.9H2.2C1.54 11.9 1 11.36 1 10.7V5.3C1 4.64 1.54 4.1 2.2 4.1Z" stroke="currentColor" stroke-width="1.4"/>
+                    <path d="M1.8 5L8 9.2L14.2 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <input type="email" id="email" name="email" placeholder="Enter your email" />
+              </div>
+              <div class="error-text" id="emailError">This field is required.</div>
             </div>
-            <div class="error-text" id="emailError">This field is required.</div>
-          </div>
 
-          <div class="field">
-            <label for="password">Password</label>
-            <div class="input-wrap">
-              <span class="icon-left">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <rect x="3" y="7" width="10" height="7" rx="1.6" stroke="currentColor" stroke-width="1.4"/>
-                  <path d="M5 7V5.2C5 3.43 6.34 2 8 2C9.66 2 11 3.43 11 5.2V7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-                </svg>
-              </span>
-              <input type="password" id="password" placeholder="Enter your password" />
-              <button class="pw-toggle" type="button" id="togglePassword" aria-label="Toggle password">
-                <svg id="eyeOpen" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M1.5 8C2.4 6.3 4.6 4 8 4C11.4 4 13.6 6.3 14.5 8C13.6 9.7 11.4 12 8 12C4.6 12 2.4 9.7 1.5 8Z" stroke="currentColor" stroke-width="1.4"/>
-                  <circle cx="8" cy="8" r="2" fill="currentColor"/>
-                </svg>
-                <svg id="eyeClosed" width="16" height="16" viewBox="0 0 16 16" fill="none" style="display:none;">
-                  <path d="M2 2L14 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-                  <path d="M1.5 8C2.4 6.3 4.6 4 8 4C9.1 4 10.1 4.24 11 4.63" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-                  <path d="M14.5 8C13.6 9.7 11.4 12 8 12C6.9 12 5.89 11.76 5 11.37" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-                </svg>
-              </button>
+            <div class="field">
+              <label for="password">Password</label>
+              <div class="input-wrap">
+                <span class="icon-left">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <rect x="3" y="7" width="10" height="7" rx="1.6" stroke="currentColor" stroke-width="1.4"/>
+                    <path d="M5 7V5.2C5 3.43 6.34 2 8 2C9.66 2 11 3.43 11 5.2V7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  </svg>
+                </span>
+                <input type="password" id="password" name="password" placeholder="Enter your password" />
+                <button class="pw-toggle" type="button" id="togglePassword" aria-label="Toggle password">
+                  <svg id="eyeOpen" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M1.5 8C2.4 6.3 4.6 4 8 4C11.4 4 13.6 6.3 14.5 8C13.6 9.7 11.4 12 8 12C4.6 12 2.4 9.7 1.5 8Z" stroke="currentColor" stroke-width="1.4"/>
+                    <circle cx="8" cy="8" r="2" fill="currentColor"/>
+                  </svg>
+                  <svg id="eyeClosed" width="16" height="16" viewBox="0 0 16 16" fill="none" style="display:none;">
+                    <path d="M2 2L14 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    <path d="M1.5 8C2.4 6.3 4.6 4 8 4C9.1 4 10.1 4.24 11 4.63" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                    <path d="M14.5 8C13.6 9.7 11.4 12 8 12C6.9 12 5.89 11.76 5 11.37" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                  </svg>
+                </button>
+              </div>
+              <div class="error-text" id="passwordError">This field is required.</div>
             </div>
-            <div class="error-text" id="passwordError">This field is required.</div>
-          </div>
 
-          <div class="row-options">
-            <label class="remember">
-              <input type="checkbox" />
-              <span>Remember me</span>
-            </label>
+            <div class="row-options">
+              <label class="remember">
+                <input type="checkbox" name="remember" />
+                <span>Remember me</span>
+              </label>
+              <a href="{{ url('/lupapass') }}" class="forgot">Forgot password?</a>
+            </div>
 
-            <a href="{{ url('/lupapass') }}" class="forgot">Forgot password?</a>
-          </div>
-
-          <button class="login-btn" id="loginBtn">Log In</button>
+            <button class="login-btn" id="loginBtn" type="submit">Log In</button>
+          </form>
 
           <div class="divider">Or continue with</div>
 
