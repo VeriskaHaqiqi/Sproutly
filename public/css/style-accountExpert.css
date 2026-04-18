@@ -21,7 +21,7 @@
   --shadow-md:   0 6px 32px rgba(20,60,50,0.11);
   --radius:      18px;
   --radius-sm:   12px;
-  --sidebar-w:   240px;
+  --sidebar-w:   260px;
   --topnav-h:    60px;
   --transition:  0.26s cubic-bezier(.4,0,.2,1);
 }
@@ -67,8 +67,8 @@ body::before {
   z-index: 200;
   background: rgba(0,0,0,0.30);
   backdrop-filter: blur(2px);
-  transition: opacity var(--transition);
   opacity: 0;
+  transition: opacity var(--transition);
 }
 .sidebar-overlay.active {
   display: block;
@@ -76,91 +76,124 @@ body::before {
 }
 
 /* =====================
-   SIDEBAR
+   SIDEBAR — identik dengan manageSchedule
 ===================== */
 .sidebar {
   position: fixed;
-  top: 0; left: 0;
-  width: var(--sidebar-w);
+  top: 0;
+  left: 0;
+  width: 260px;
   height: 100vh;
-  background: var(--sidebar-bg);
-  z-index: 300;
-  display: flex;
-  flex-direction: column;
-  padding: 28px 18px 28px;
-  transform: translateX(-100%);
-  transition: transform var(--transition);
+  background: linear-gradient(180deg, #d9f1eb 0%, #d7efe9 100%);
+  border-right: 1px solid #c5e2db;
+  padding: 22px 16px;
   overflow-y: auto;
-}
-.sidebar.open {
-  transform: translateX(0);
-  box-shadow: 4px 0 32px rgba(30,80,60,0.14);
+  transition: left 0.35s ease;
+  z-index: 1000;
 }
 
-/* Sidebar Logo */
-.sidebar-logo {
+/* Tertutup: pakai left negatif, sama dengan manageSchedule */
+.sidebar.closed {
+  left: -260px;
+}
+
+.sidebar-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 36px;
-  padding-left: 4px;
-}
-.sidebar-logo-icon {
-  width: 38px; height: 38px;
-  background: linear-gradient(135deg, var(--teal), var(--sky));
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-.sidebar-logo-icon img { width: 26px; height: 26px; object-fit: contain; }
-.sidebar-logo-name {
-  font-weight: 900;
-  font-size: 1.15rem;
-  color: #1a5c40;
+  min-height: 56px;
 }
 
-/* Sidebar Nav */
-.sidebar-nav {
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+}
+
+.logo-box {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #7ae29f, #6bded7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.logo-text {
+  font-size: 20px;
+  font-weight: 800;
+  color: #169857;
+}
+
+.sidebar-line {
+  height: 1px;
+  background: #bedfd7;
+  margin: 18px -16px 22px;
+}
+
+.sidebar-menu {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 6px;
 }
-.sidebar-link {
+
+/* Sidebar nav links — rata kiri */
+.sidebar-menu .menu-link {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 11px 14px;
-  border-radius: 12px;
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: #3a5a50;
-  transition: background .18s, color .18s;
+  gap: 16px;
+  padding: 14px 18px;
+  border-radius: 18px;
+  color: #5e6d84;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.25s ease, color 0.25s ease;
+  justify-content: flex-start;
 }
-.sidebar-link:hover {
-  background: rgba(118,234,208,0.22);
-  color: #1a4a38;
-}
-.sidebar-link--active {
-  background: var(--white);
-  color: #1a4a38;
-  box-shadow: 0 2px 10px rgba(30,80,60,0.09);
-}
-.nav-icon {
-  width: 20px; height: 20px;
+
+.sidebar-menu .menu-link img {
+  width: 22px;
+  height: 22px;
   object-fit: contain;
   flex-shrink: 0;
-  opacity: 0.75;
 }
-.sidebar-link--active .nav-icon { opacity: 1; }
+
+.sidebar-menu .menu-link:hover {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.sidebar-menu .menu-link.active {
+  background: #ffffff;
+  color: #118f54;
+  font-weight: 700;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+}
+
+.child-link {
+  padding-left: 20px !important;
+}
 
 /* =====================
-   LAYOUT
+   LAYOUT — identik dengan manageSchedule
 ===================== */
 .layout {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  margin-left: 0;
+  transition: margin-left 0.35s ease;
+}
+
+.layout.shifted {
+  margin-left: 260px;
 }
 
 /* =====================
@@ -171,40 +204,56 @@ body::before {
   top: 0;
   z-index: 100;
   height: var(--topnav-h);
-  background: rgba(240,250,248,0.82);
+  background: var(--card-bg);
   backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(118,234,208,0.18);
+  border-bottom: 1px solid rgba(118,234,208,0.20);
   display: flex;
   align-items: center;
-  padding: 0 20px;
-  gap: 14px;
+  padding: 0 24px;
+  gap: 10px;
 }
-.logo-btn {
-  background: none;
-  border: none;
-  padding: 0;
-  display: flex;
-  align-items: center;
-}
-.logo-btn-icon {
-  width: 34px; height: 34px;
-  background: linear-gradient(135deg, var(--teal), var(--sky));
-  border-radius: 9px;
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
-  transition: transform var(--transition), box-shadow var(--transition);
-}
-.logo-btn-icon img { width: 22px; height: 22px; object-fit: contain; }
-.logo-btn:hover .logo-btn-icon {
-  transform: scale(1.08);
-  box-shadow: 0 3px 14px rgba(118,234,208,0.50);
-}
+
 .topnav-title {
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-left: auto;
+  margin-right: auto;
+  transform: translateX(-30px);
+}
+
+.topnav-title h1 {
+  font-size: 1rem;
+  font-weight: 700;
   color: var(--text);
 }
-.topnav-spacer { flex: 1; }
+
+/* ---------- BURGER ---------- */
+.burger-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border-radius: 8px;
+  transition: background var(--transition);
+  flex-shrink: 0;
+}
+
+.burger-btn:hover {
+  background: rgba(118,234,208,0.15);
+}
+
+.burger-btn span {
+  display: block;
+  width: 22px;
+  height: 2.5px;
+  background: var(--dark);
+  border-radius: 2px;
+  transition: var(--transition);
+}
 
 /* =====================
    PAGE BODY
@@ -346,7 +395,7 @@ body::before {
 }
 
 /* =====================
-   MENU LIST
+   MENU LIST (dalam card) — BERBEDA dari sidebar .menu-link
 ===================== */
 .menu-list {
   list-style: none;
@@ -356,7 +405,8 @@ body::before {
   border-top: 1px solid var(--border);
 }
 .menu-item:first-child { border-top: none; }
-.menu-link {
+
+.menu-item .menu-link {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -365,9 +415,18 @@ body::before {
   font-weight: 500;
   color: var(--text);
   transition: color var(--transition);
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
 }
-.menu-link:hover { color: #2a8a6a; }
-.menu-link:hover .menu-arrow { transform: translateX(3px); color: var(--teal); }
+.menu-item .menu-link:hover {
+  color: #2a8a6a;
+  background: none;
+}
+.menu-item .menu-link:hover .menu-arrow {
+  transform: translateX(3px);
+  color: var(--teal);
+}
 
 .menu-link-left {
   display: flex;
@@ -375,18 +434,24 @@ body::before {
   gap: 12px;
 }
 .menu-item-icon {
-  font-size: 1.05rem;
   opacity: 0.65;
   width: 22px;
   text-align: center;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.menu-item-icon img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
 }
 .menu-item-icon--teal {
   width: 30px; height: 30px;
   background: rgba(118,234,208,0.18);
   border-radius: 8px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 0.9rem;
   opacity: 1;
 }
 .menu-arrow {
@@ -398,40 +463,15 @@ body::before {
 }
 
 /* Ratings row */
-.ratings-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.ratings-label {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--text);
-}
-.ratings-stars {
-  font-size: 0.78rem;
-  color: #f5a623;
-}
-.ratings-score {
-  color: var(--text-muted);
-  font-size: 0.75rem;
-}
+.ratings-info { display: flex; flex-direction: column; gap: 2px; }
+.ratings-label { font-size: 0.875rem; font-weight: 500; color: var(--text); }
+.ratings-stars { font-size: 0.78rem; color: #f5a623; }
+.ratings-score { color: var(--text-muted); font-size: 0.75rem; }
 
 /* Preferences row */
-.pref-info {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-.pref-label {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--text);
-}
-.pref-value {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-}
+.pref-info { display: flex; flex-direction: column; gap: 1px; }
+.pref-label { font-size: 0.875rem; font-weight: 500; color: var(--text); }
+.pref-value { font-size: 0.78rem; color: var(--text-muted); }
 
 /* =====================
    SUPPORT CARD
@@ -456,16 +496,12 @@ body::before {
   transition: color var(--transition);
   gap: 6px;
 }
-.support-link:nth-child(odd) { padding-right: 20px; }
+.support-link:nth-child(odd)  { padding-right: 20px; }
 .support-link:nth-child(even) { padding-left: 16px; border-left: 1px solid var(--border); }
 .support-link:hover { color: #2a8a6a; }
 .support-link--danger { color: #e05c5c; }
 .support-link--danger:hover { color: #c04040; }
-.ext-icon {
-  font-size: 0.75rem;
-  color: var(--muted);
-  flex-shrink: 0;
-}
+.ext-icon { font-size: 0.75rem; color: var(--muted); flex-shrink: 0; }
 .ext-icon--danger { color: #e05c5c; }
 .about-row {
   display: flex;

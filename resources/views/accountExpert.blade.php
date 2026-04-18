@@ -18,59 +18,77 @@
        SIDEBAR
   ========================= -->
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-      <div class="sidebar-logo-icon">
-        <img src="{{ asset('images/logo.png') }}" alt="Sproutly" />
-      </div>
-      <span class="sidebar-logo-name">Sproutly</span>
-    </div>
+        <div class="sidebar-header">
+            <a href="{{ route('homeExpert') }}" class="logo-wrap">
+                <div class="logo-box">
+                    <img src="images/logo.png" class="logo-img">
+                </div>
+                <span class="logo-text">Sproutly</span>
+            </a>
+        </div>
 
-    <nav class="sidebar-nav">
-      <a href="#" class="sidebar-link">
-        <img src="{{ asset('images/dashboard.png') }}" alt="" class="nav-icon" width="20"/>
-        <span>Dashboard</span>
-      </a>
-      <a href="#" class="sidebar-link">
-        <img src="{{ asset('images/consultation.png') }}" alt="" class="nav-icon" width="20"/>
-        <span>Consultation</span>
-      </a>
-      <a href="#" class="sidebar-link">
-        <img src="{{ asset('images/article.png') }}" alt="" class="nav-icon" width="20"/>
-        <span>Article</span>
-      </a>
-      <a href="#" class="sidebar-link">
-        <img src="{{ asset('images/bookmark article.jpg') }}" alt="" class="nav-icon" />
-        <span>Bookmarked Article</span>
-      </a>
-      <a href="#" class="sidebar-link">
-        <img src="{{ asset('images/reviews.png') }}" alt="" class="nav-icon" width="20"/>
-        <span>Reviews</span>
-      </a>
-      <a href="#" class="sidebar-link">
-        <img src="{{ asset('images/payment.png') }}" alt="" class="nav-icon" width="20"/>
-        <span>Payment</span>
-      </a>
-      <a href="#" class="sidebar-link sidebar-link--active">
-        <img src="{{ asset('images/settings.png') }}" alt="" class="nav-icon" width="20"/>
-        <span>Setting</span>
-      </a>
-    </nav>
-  </aside>
+        <div class="sidebar-line"></div>
+
+        <nav class="sidebar-menu">
+            <a href="{{ route('dashboard-ahli') }}" 
+            class="menu-link {{ request()->routeIs('dashboard-ahli') ? 'active' : '' }}">
+                <img src="images/dashboard.png">
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{{ route('consultexpert') }}" 
+            class="menu-link {{ request()->routeIs('consultexpert') ? 'active' : '' }}">
+                <img src="images/consultation.png">
+                <span>Consultation</span>
+            </a>
+
+            <a href="{{ route('articleExpert') }}" 
+            class="menu-link {{ request()->routeIs('articleExpert') ? 'active' : '' }}">
+                <img src="images/article.png">
+                <span>Article</span>
+            </a>
+
+            <a href="{{ route('myarticleExpert') }}" 
+            class="menu-link child-link {{ request()->routeIs('myarticleExpert') ? 'active' : '' }}">
+                <img src="images/myarticle.png">
+                <span>My Article</span>
+            </a>
+
+            <a href="{{ route('setpricingexpert') }}" 
+            class="menu-link child-link {{ request()->routeIs('setpricingexpert') ? 'active' : '' }}">
+                <img src="images/pricing.png">
+                <span>Pricing</span>
+            </a>
+
+            <a href="{{ route('ConsultationhistoryExpert') }}" 
+            class="menu-link child-link {{ request()->routeIs('ConsultationhistoryExpert') ? 'active' : '' }}">
+                <img src="images/clienthistory.png">
+                <span>Client History</span>
+            </a>
+
+            <a href="{{ route('accountExpert') }}" 
+            class="menu-link active" {{ request()->routeIs('accountExpert') ? 'active' : '' }}">
+                <img src="images/settings.png">
+                <span>Setting</span>
+            </a>
+        </nav>
+    </aside>
 
   <!-- ========================
        MAIN LAYOUT
   ========================= -->
-  <div class="layout" id="layout">
+  <div class="layout" id="mainContent">
 
     <!-- TOP NAV -->
     <header class="topnav">
-      <button class="logo-btn" id="sidebarToggle" aria-label="Toggle sidebar">
-        <div class="logo-btn-icon">
-          <img src="{{ asset('images/logo.png') }}" alt="Sproutly" />
+        <button class="burger-btn" id="sidebarToggle" aria-label="Toggle sidebar">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="topnav-title">
+            <h1>Account</h1>
         </div>
-      </button>
-      <span class="topnav-title">Expert Account</span>
-      <div class="topnav-spacer"></div>
     </header>
 
     <!-- PAGE BODY -->
@@ -81,7 +99,7 @@
       ========================= -->
       <div class="account-card profile-card">
         <div class="avatar-wrap">
-          <img src="{{#}}" alt="Expert Sarah Chen" class="avatar-img" />
+          <img src="images/fotoprofile.png" alt="Expert Sarah Chen" class="avatar-img" />
           <span class="avatar-badge">✏️</span>
         </div>
         <h2 class="expert-name">Expert Sarah Chen</h2>
