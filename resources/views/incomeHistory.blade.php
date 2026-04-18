@@ -36,33 +36,24 @@
                 <img src="images/consultation.png" alt="Consultation"> <span>Consultation</span>
             </a>
 
-            <a href="{{ route('consultexpert') }}" class="menu-link {{ request()->is('consultexpert') ? 'active' : '' }}">
-                <img src="images/consultation.png" alt="Consultation"> <span>Consultation</span>
+            <a href="{{ route('articleExpert') }}" class="menu-link {{ request()->is('articleExpert') ? 'active' : '' }}">
+                <img src="images/article.png" alt="Article"> <span>Article</span>
             </a>
 
-            <a href="{{ route('articleExpert') }}" class="menu-link<?= isActiveExpert('article') ?>">
-                <img src="images/article.png" alt="Article">
-                <span>Article</span>
+            <a href="{{ route('myarticleExpert') }}" class="menu-link {{ request()->is('myarticleExpert') ? 'active' : '' }}">
+                <img src="images/myarticle.png" alt="My Article"> <span>My Article</span>
             </a>
 
-            <a href="{{ route('myarticleExpert') }}" class="menu-link child-link<?= isActiveExpert('my-article') ?>">
-                <img src="images/myarticle.png" alt="My Article">
-                <span>My Article</span>
+            <a href="{{ route('setpricingexpert') }}" class="menu-link {{ request()->is('setpricingexpert') ? 'active' : '' }}">
+                <img src="images/pricing.png" alt="Pricing"> <span>Pricing</span>
             </a>
 
-            <a href="{{ route('setpricingexpert') }}" class="menu-link child-link<?= isActiveExpert('pricing') ?>">
-                <img src="images/pricing.png" alt="Pricing">
-                <span>Pricing</span>
+            <a href="{{ route('ConsultationhistoryExpert') }}" class="menu-link {{ request()->is('ConsultationhistoryExpert') ? 'active' : '' }}">
+                <img src="images/clienthistory.png" alt="Client History"> <span>Client History</span>
             </a>
 
-            <a href="{{ route('ConsultationhistoryExpert') }}" class="menu-link child-link<?= isActiveExpert('client-history') ?>">
-                <img src="images/clienthistory.png" alt="Client History">
-                <span>Client History</span>
-            </a>
-
-            <a href="{{ route('accountExpert') }}" class="menu-link child-link<?= isActiveExpert('settings') ?>">
-                <img src="images/settings.png" alt="Setting">
-                <span>Setting</span>
+            <a href="{{ route('accountExpert') }}" class="menu-link {{ request()->is('accountExpert') ? 'active' : '' }}">
+                <img src="images/settings.png" alt="Setting"> <span>Setting</span>
             </a>
         </nav>
     </aside>

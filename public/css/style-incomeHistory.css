@@ -3,6 +3,8 @@
    Font: Inter  |  Palette: #ffff9f #d0ff99 #99ff99 #76ead0 #76d7ea
    ============================================================ */
 
+
+
 :root {
   --yellow : #ffff9f;
   --lime-1 : #d0ff99;
@@ -26,6 +28,8 @@
   --shadow-md  : 0 10px 28px rgba(30,60,50,.11);
 }
 
+
+
 /* ── RESET ──────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -48,6 +52,8 @@ img { display: block; max-width: 100%; }
 }
 
 /* ── SIDEBAR ─────────────────────────────────────── */
+
+
 .sidebar {
   position: fixed;
   top: 0; left: 0;
@@ -126,7 +132,15 @@ img { display: block; max-width: 100%; }
   font-weight: 700;
   box-shadow: 0 8px 18px rgba(0,0,0,.04);
 }
-.menu-link.active img { filter: none; }
+
+.menu-link.active {
+    background: #ffffff;
+    color: #118f54;
+    font-weight: 700;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+}
+/*  
+.menu-link.active img { filter: none; }*/
 .child-link { padding-left: 20px; }
 
 /* ── MAIN CONTENT ───────────────────────────────── */
