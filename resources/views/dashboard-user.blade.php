@@ -49,7 +49,7 @@
           <i class="fa-solid fa-star"></i>
           <span>Reviews</span>
         </a>
-        <a href="{{ url('/incomeHistory') }}" class="menu-link">
+        <a href="{{ url('/invoice') }}" class="menu-link">
           <i class="fa-solid fa-credit-card"></i>
           <span>Payment</span>
         </a>

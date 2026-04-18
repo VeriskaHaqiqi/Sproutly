@@ -79,7 +79,7 @@ Route::get('/editProfileExpert', function () {
 })->name('editProfileExpert');
 
 Route::put('/expert/profile/update', function () {
-    return redirect()->route('accountExpert');
+    return redirect()->route('accountExpert'); // fix: rouate → route
 })->name('expert.profile.update');
 
 Route::get('/daftarArtikel', function () {
@@ -191,7 +191,7 @@ Route::get('/sidebar-user', function () {
 });
 
 Route::get('/incomeHistory', function () {
-    return view('incomeHistory');
+    return view('incomeHistory'); // rename file blade jadi incomeHistory.blade.php
 });
 
 Route::get('/ConsultationhistoryExpert', function () {
@@ -205,3 +205,5 @@ Route::get('/invoice', function () {
 Route::get('/setPayMethod', function () {
     return view('setPayMethod');
 })->name('setPayMethod');
+
+

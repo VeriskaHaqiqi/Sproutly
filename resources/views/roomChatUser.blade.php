@@ -1,120 +1,203 @@
-{{-- resources/views/consultation/chatroom.blade.php --}}
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consultation Chat</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/style-roomChatUser.css') }}">
-</head>
-<body>
+{{-- ============================================================
+   sidebar-user.blade.php – Sproutly User Sidebar (All-in-one)
+   Cara pakai:
+       @php $activePage = 'dashboard' @endphp
+       @include('sidebar-user')
 
-<div class="app-wrapper">
+   Nilai $activePage:
+       'dashboard' | 'consultation' | 'article' |
+       'bookmarked' | 'reviews' | 'payment' | 'settings'
+   ============================================================ --}}
 
-    {{-- ===== SIDEBAR ===== --}}
-    <aside class="sidebar">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-        <a href="/consultationUser" class="back-btn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-            <span>Back to Menu</span>
-        </a>
+:root {
+  --mint      : #76ead0;
+  --sky       : #76d7ea;
+  --sidebar-w : 260px;
+  --green-mid : #169857;
+  --green-dark: #118f54;
+  --text-mid  : #5e6d84;
+}
 
-        <div class="expert-list">
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  background: linear-gradient(180deg, #d9f1eb 0%, #d7efe9 100%);
+  border-right: 1px solid #c5e2db;
+  padding: 22px 16px;
+  overflow-y: auto;
+  transition: left 0.35s ease;
+  z-index: 1000;
+  scrollbar-width: none;
+  font-family: 'Inter', sans-serif;
+}
+.sidebar::-webkit-scrollbar { display: none; }
+.sidebar.closed { left: calc(-1 * var(--sidebar-w)); }
+.sidebar.show   { left: 0; }
 
-            <div class="expert-item" data-expert="marcus">
-                <div class="avatar-wrap">
-                    <img src="{{ asset('images/fotoprofile.png') }}" class="avatar-initials">
-                    <span class="status-dot online"></span>
-                </div>
-                <div class="expert-info">
-                    <p class="expert-name">Dr. Marcus Chen</p>
-                    <p class="expert-role">Crop Disease Specialist</p>
-                    <p class="expert-status available">Available now</p>
-                </div>
-            </div>
+@media (max-width: 768px) {
+  .sidebar { left: calc(-1 * var(--sidebar-w)); }
+  .sidebar.show { left: 0; }
+}
 
-            <div class="expert-item active" data-expert="sarah">
-                <div class="avatar-wrap">
-                    <img src="{{ asset('images/fotoprofile.png') }}" class="avatar-initials">
-                    <span class="status-dot online"></span>
-                </div>
-                <div class="expert-info">
-                    <p class="expert-name">Dr. Sarah Williams</p>
-                    <p class="expert-role">Soil Health Expert</p>
-                    <p class="expert-status chatting">Currently chatting</p>
-                </div>
-            </div>
+.sidebar-header {
+  display: flex; align-items: center;
+  min-height: 56px; margin-bottom: 4px;
+}
 
-            <div class="expert-item" data-expert="james">
-                <div class="avatar-wrap">
-                    <img src="{{ asset('images/fotoprofile.png') }}" class="avatar-initials">
-                    <span class="status-dot away"></span>
-                </div>
-                <div class="expert-info">
-                    <p class="expert-name">Dr. James Rodriguez</p>
-                    <p class="expert-role">Pest Management</p>
-                    <p class="expert-status away-status">Away · 2 hours</p>
-                </div>
-            </div>
+.logo-wrap {
+  display: flex; align-items: center;
+  gap: 14px; text-decoration: none;
+}
 
-            <div class="expert-item" data-expert="emma">
-                <div class="avatar-wrap">
-                    <img src="{{ asset('images/fotoprofile.png') }}" class="avatar-initials">
-                    <span class="status-dot offline"></span>
-                </div>
-                <div class="expert-info">
-                    <p class="expert-name">Dr. Emma Thompson</p>
-                    <p class="expert-role">Organic Farming</p>
-                    <p class="expert-status offline-status">Offline</p>
-                </div>
-            </div>
+.logo-box {
+  width: 42px; height: 42px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--mint), var(--sky));
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
 
-        </div>
+.logo-img {
+  width: 24px; height: 24px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
 
-        <div class="sidebar-footer">
-            <a href="/consultationUser" class="find-expert-btn">
-                    Find Expert
-            </a>
-        </div>
+.logo-text {
+  font-size: 20px; font-weight: 800;
+  color: var(--green-mid);
+  letter-spacing: -0.02em;
+}
 
-    </aside>
+.sidebar-line {
+  height: 1px; background: #bedfd7;
+  margin: 14px -16px 18px;
+}
 
-    {{-- ===== MAIN CHAT AREA ===== --}}
-    <main class="chat-main">
+.sidebar-menu { display: flex; flex-direction: column; gap: 6px; }
 
-        <div class="chat-header">
-            <div class="header-expert">
-                <div class="header-avatar-initials" id="headerAvatar">SW</div>
-                <div class="header-info">
-                    <h2 class="header-name" id="headerName">Dr. Sarah Williams</h2>
-                    <p class="header-status">
-                        <span class="dot-status" id="headerDot"></span>
-                        <span id="headerStatusText">Online · Soil Health Expert</span>
-                    </p>
-                </div>
-            </div>
-        </div>
+.menu-link {
+  display: flex; align-items: center; gap: 14px;
+  padding: 13px 18px; border-radius: 18px;
+  color: var(--text-mid); font-size: 15px; font-weight: 500;
+  text-decoration: none;
+  transition: background 0.22s ease, color 0.22s ease;
+}
 
-        <div class="messages-area" id="messagesArea"></div>
+.menu-link i {
+  font-size: 17px; width: 20px; text-align: center;
+  flex-shrink: 0; color: #7a9189;
+  transition: color 0.22s ease;
+}
 
-        <div class="input-bar">
-            <button class="btn-attach" id="btnAttach" title="Attach file">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
-            </button>
-            <input type="text" id="messageInput" class="message-input" placeholder="Type your message..." autocomplete="off">
-            <button class="btn-emoji" id="btnEmoji" title="Emoji">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-            </button>
-            <button class="btn-send" id="btnSend" title="Send">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M2 21L23 12 2 3v7l15 2-15 2v7z"/></svg>
-            </button>
-        </div>
+.menu-link:hover { background: rgba(255,255,255,0.55); }
+.menu-link:hover i { color: var(--green-dark); }
 
-    </main>
-</div>
+.menu-link.active {
+  background: #ffffff; color: var(--green-dark);
+  font-weight: 700; box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+}
+.menu-link.active i { color: var(--green-dark); }
 
-<input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx" style="display:none">
-<script src="{{ asset('js/script-roomChatUser.js') }}"></script>
-</body>
-</html>
+.main-content {
+  margin-left: 0; min-height: 100vh;
+  display: flex; flex-direction: column;
+  transition: margin-left 0.35s ease;
+}
+.main-content.full    { margin-left: 0; }
+.main-content.shifted { margin-left: var(--sidebar-w); }
+
+@media (max-width: 768px) {
+  .main-content,
+  .main-content.shifted { margin-left: 0; }
+}
+</style>
+
+<aside class="sidebar closed" id="sidebar">
+  <div class="sidebar-header">
+    <a href="{{ url('/homeUser') }}" class="logo-wrap">
+      <div class="logo-box">
+        <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo" class="logo-img">
+      </div>
+      <span class="logo-text">Sproutly</span>
+    </a>
+  </div>
+
+  <div class="sidebar-line"></div>
+
+  <nav class="sidebar-menu">
+    <a href="{{ url('/dashboard-user') }}" class="menu-link {{ ($activePage ?? '') === 'dashboard' ? 'active' : '' }}">
+      <i class="fa-solid fa-chart-line"></i><span>Dashboard</span>
+    </a>
+    <a href="{{ url('/consultationUser') }}" class="menu-link {{ ($activePage ?? '') === 'consultation' ? 'active' : '' }}">
+      <i class="fa-solid fa-comments"></i><span>Consultation</span>
+    </a>
+    <a href="{{ url('/daftarArtikel') }}" class="menu-link {{ ($activePage ?? '') === 'article' ? 'active' : '' }}">
+      <i class="fa-solid fa-newspaper"></i><span>Article</span>
+    </a>
+    <a href="{{ url('/bookmarkArtikelUser') }}" class="menu-link {{ ($activePage ?? '') === 'bookmarked' ? 'active' : '' }}">
+      <i class="fa-solid fa-bookmark"></i><span>Bookmarked Article</span>
+    </a>
+    <a href="{{ url('/reviewsUser') }}" class="menu-link {{ ($activePage ?? '') === 'reviews' ? 'active' : '' }}">
+      <i class="fa-solid fa-star"></i><span>Reviews</span>
+    </a>
+    <a href="{{ url('/invoice') }}" class="menu-link {{ ($activePage ?? '') === 'payment' ? 'active' : '' }}">
+      <i class="fa-solid fa-credit-card"></i><span>Payment</span>
+    </a>
+    <a href="{{ url('/supportUser') }}" class="menu-link {{ ($activePage ?? '') === 'settings' ? 'active' : '' }}">
+      <i class="fa-solid fa-gear"></i><span>Setting</span>
+    </a>
+  </nav>
+</aside>
+
+<script>
+(function () {
+  const sidebar       = document.getElementById("sidebar");
+  const mainContent   = document.getElementById("mainContent");
+  const sidebarToggle = document.getElementById("sidebarToggle") || document.getElementById("menuToggle");
+
+  if (!sidebar || !mainContent || !sidebarToggle) return;
+
+  function openSidebar() {
+    if (window.innerWidth <= 768) {
+      sidebar.classList.add("show"); sidebar.classList.remove("closed");
+    } else {
+      sidebar.classList.remove("closed");
+      mainContent.classList.add("shifted"); mainContent.classList.remove("full");
+    }
+  }
+
+  function closeSidebar() {
+    sidebar.classList.add("closed"); sidebar.classList.remove("show");
+    mainContent.classList.remove("shifted"); mainContent.classList.add("full");
+  }
+
+  function isSidebarOpen() {
+    return window.innerWidth <= 768
+      ? sidebar.classList.contains("show")
+      : !sidebar.classList.contains("closed");
+  }
+
+  sidebarToggle.addEventListener("click", () => isSidebarOpen() ? closeSidebar() : openSidebar());
+
+  document.querySelectorAll(".menu-link").forEach((link) => {
+    link.addEventListener("click", () => closeSidebar());
+  });
+
+  document.addEventListener("click", (e) => {
+    if (window.innerWidth <= 768 && isSidebarOpen() &&
+        !sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+      closeSidebar();
+    }
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 768) sidebar.classList.remove("show");
+    else { mainContent.classList.remove("shifted"); mainContent.classList.add("full"); }
+  });
+})();
+</script>
