@@ -69,7 +69,7 @@ input  { font-family: var(--font); border: none; outline: none; background: tran
    SIDEBAR
    ============================================================ */
 .sidebar {
-    width: 300px;
+    width: 280px;
     min-width: 300px;
     background: var(--bg-sidebar);
     border-right: 1.5px solid var(--border);
