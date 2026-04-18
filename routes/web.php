@@ -201,3 +201,7 @@ Route::get('/ConsultationhistoryExpert', function () {
 Route::get('/invoice', function () {
     return view('invoice');
 });
+
+Route::get('/setPayMethod', function () {
+    return view('setPayMethod');
+})->name('setPayMethod');

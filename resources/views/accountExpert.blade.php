@@ -172,7 +172,7 @@
         <h3 class="card-section-title">Payment</h3>
         <ul class="menu-list">
           <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a href="{{ route('setPayMethod') }}" class="menu-link">
               <span class="menu-link-left">
                 <span class="menu-item-icon">
                     <img src="{{ asset('images/ikon payment method.png') }}" alt="">
@@ -180,6 +180,7 @@
                 Payment Methods
               </span>
               <span class="menu-arrow">›</span>
+            </a>
             </a>
           </li>
         </ul>

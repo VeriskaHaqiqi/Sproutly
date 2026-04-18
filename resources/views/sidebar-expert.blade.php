@@ -292,37 +292,37 @@ function isActiveExpert(string $page): string {
     <div class="sidebar-line"></div>
 
     <nav class="sidebar-menu">
-        <a href="dashboard.php" class="menu-link<?= isActiveExpert('dashboard') ?>">
+        <a href="{{ route('dashboard-ahli') }}" class="menu-link<?= isActiveExpert('dashboard') ?>">
             <img src="images/dashboard.png" alt="Dashboard">
             <span>Dashboard</span>
         </a>
 
-        <a href="consultation.php" class="menu-link<?= isActiveExpert('consultation') ?>">
+        <a href="{{ route('consultexpert') }}" class="menu-link<?= isActiveExpert('consultation') ?>">
             <img src="images/consultation.png" alt="Consultation">
             <span>Consultation</span>
         </a>
 
-        <a href="article.php" class="menu-link<?= isActiveExpert('article') ?>">
+        <a href="{{ route('articleExpert') }}" class="menu-link<?= isActiveExpert('article') ?>">
             <img src="images/article.png" alt="Article">
             <span>Article</span>
         </a>
 
-        <a href="my-article.php" class="menu-link child-link<?= isActiveExpert('my-article') ?>">
+        <a href="{{ route('myarticleExpert') }}" class="menu-link child-link<?= isActiveExpert('my-article') ?>">
             <img src="images/myarticle.png" alt="My Article">
             <span>My Article</span>
         </a>
 
-        <a href="pricing.php" class="menu-link child-link<?= isActiveExpert('pricing') ?>">
+        <a href="{{ route('setpricingexpert') }}" class="menu-link child-link<?= isActiveExpert('pricing') ?>">
             <img src="images/pricing.png" alt="Pricing">
             <span>Pricing</span>
         </a>
 
-        <a href="client-history.php" class="menu-link child-link<?= isActiveExpert('client-history') ?>">
+        <a href="{{ route('ConsultationhistoryExpert') }}" class="menu-link child-link<?= isActiveExpert('client-history') ?>">
             <img src="images/clienthistory.png" alt="Client History">
             <span>Client History</span>
         </a>
 
-        <a href="settings.php" class="menu-link child-link<?= isActiveExpert('settings') ?>">
+        <a href="{{ route('accountExpert') }}" class="menu-link child-link<?= isActiveExpert('settings') ?>">
             <img src="images/settings.png" alt="Setting">
             <span>Setting</span>
         </a>
