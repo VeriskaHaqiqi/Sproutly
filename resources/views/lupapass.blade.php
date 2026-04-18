@@ -23,21 +23,6 @@
       <div class="circle c6"></div>
 
       <div class="top-icons">
-        <div class="top-icon-box">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M12 21V10" stroke="#176534" stroke-width="2.2" stroke-linecap="round"/>
-            <path d="M12 13.5C12 13.5 7 11.8 6 7C6 7 10.4 5.5 13.2 8.9C14 9.9 13.2 12.4 12 13.5Z" fill="#176534"/>
-            <path d="M12 15C12 15 16.2 13.5 18 10C18 10 19.2 14.2 16.4 16.2C14.7 17.4 12.5 15.7 12 15Z" fill="#176534"/>
-          </svg>
-        </div>
-
-        <div class="top-icon-box">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M4.8 16.8C4.8 16.8 3.7 10.3 8.8 6.5C13.3 3.1 19.4 5.8 18.7 11.7C18.1 16.4 12.8 18.6 8 17.4" fill="#176534"/>
-            <path d="M8.5 15.8L14.8 9.6" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
-          </svg>
-        </div>
-
         <svg class="top-leaf" viewBox="0 0 64 54" fill="none" aria-hidden="true">
           <path d="M8 28C8 28 5 17 13 11C22 4 33 8 31 20C29 30 18 32 12 30" fill="#2ea66f"/>
           <path d="M30 40C30 40 26 20 42 11C52 6 62 12 62 24C62 41 44 49 34 47" fill="#53c6ae"/>
