@@ -197,3 +197,7 @@ Route::get('/incomeHistory', function () {
 Route::get('/ConsultationhistoryExpert', function () {
     return view('ConsultationhistoryExpert');
 })->name('ConsultationhistoryExpert');
+
+Route::get('/invoice', function () {
+    return view('invoice');
+});
