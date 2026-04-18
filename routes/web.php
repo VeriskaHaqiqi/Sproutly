@@ -79,7 +79,7 @@ Route::get('/editProfileExpert', function () {
 })->name('editProfileExpert');
 
 Route::put('/expert/profile/update', function () {
-    return redirect()->route('accountExpert');
+    return redirect()->rouate('accountExpert');
 })->name('expert.profile.update');
 
 Route::get('/daftarArtikel', function () {
@@ -194,6 +194,7 @@ Route::get('/incomeHistory', function () {
     return view('incomeHistory');
 });
 
+<<<<<<< HEAD
 Route::get('/ConsultationhistoryExpert', function () {
     return view('ConsultationhistoryExpert');
 })->name('ConsultationhistoryExpert');
@@ -201,3 +202,8 @@ Route::get('/ConsultationhistoryExpert', function () {
 Route::get('/invoice', function () {
     return view('invoice');
 });
+=======
+Route::get('/invoice', function () {
+    return view('invoice');
+});
+>>>>>>> 79dafed (dashboard user dan find experts)
