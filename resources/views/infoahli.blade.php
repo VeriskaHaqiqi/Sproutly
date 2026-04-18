@@ -10,6 +10,8 @@
 </head>
 <body>
     <div class="layout">
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
         <!-- SIDEBAR -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-top">
@@ -75,7 +77,7 @@
                 </div>
 
                 <div class="topbar-right">
-                    <button class="notif-btn">
+                    <button class="notif-btn" type="button">
                         <i class="fa-regular fa-bell"></i>
                         <span class="notif-dot"></span>
                     </button>
@@ -167,7 +169,7 @@
                     <div class="footer-brand">
                         <div class="footer-brand-top">
                             <div class="footer-logo-box">
-                                <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo" class="footer-logo">
+                                <img src="{{ asset('images/logo-hijau.png') }}" alt="Sproutly Logo" class="footer-logo">
                             </div>
                             <div>
                                 <h3>Sproutly</h3>

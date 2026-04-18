@@ -24,7 +24,7 @@
     --gradient-hero: linear-gradient(135deg, #d0ff99 0%, #99ff99 35%, #76ead0 70%, #76d7ea 100%);
     --gradient-btn: linear-gradient(135deg, #76ead0, #76d7ea);
     --gradient-active: linear-gradient(135deg, #76ead0, #76d7ea);
-    --sidebar-width: 240px;
+    --sidebar-width: 280px;
     --navbar-height: 68px;
     --font: 'Inter', sans-serif;
 }
