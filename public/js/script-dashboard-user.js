@@ -1,66 +1,69 @@
-const menuToggle = document.getElementById("menuToggle");
-const sidebar = document.getElementById("sidebar");
-const sidebarMenu = document.getElementById("sidebarMenu");
-const viewAllBtn = document.getElementById("viewAllBtn");
-const hiddenWeekItems = document.querySelectorAll(".hidden-week");
+const menuToggle  = document.getElementById("menuToggle");
+const sidebar     = document.getElementById("sidebar");
+const mainContent = document.getElementById("mainContent");
+const viewAllBtn  = document.getElementById("viewAllBtn");
+const hiddenItems = document.querySelectorAll(".hidden-week");
 
-let sidebarOpen = false;
-let expandedActivities = false;
+let expanded = false;
 
-function updateSidebarState() {
-  if (sidebarOpen) {
-    sidebar.classList.add("open");
+function openSidebar() {
+  if (window.innerWidth <= 768) {
+    sidebar.classList.add("show");
+    sidebar.classList.remove("closed");
   } else {
-    sidebar.classList.remove("open");
+    sidebar.classList.remove("closed");
+    mainContent.classList.add("shifted");
+    mainContent.classList.remove("full");
   }
 }
 
+function closeSidebar() {
+  sidebar.classList.add("closed");
+  sidebar.classList.remove("show");
+  mainContent.classList.remove("shifted");
+  mainContent.classList.add("full");
+}
+
+function isSidebarOpen() {
+  if (window.innerWidth <= 768) return sidebar.classList.contains("show");
+  return !sidebar.classList.contains("closed");
+}
+
+// Toggle hamburger
 menuToggle.addEventListener("click", () => {
-  sidebarOpen = !sidebarOpen;
-  updateSidebarState();
+  isSidebarOpen() ? closeSidebar() : openSidebar();
 });
 
-document.addEventListener("click", (event) => {
-  const clickedInsideSidebar = sidebar.contains(event.target);
-  const clickedToggle = menuToggle.contains(event.target);
+// Klik menu link → tutup sidebar otomatis
+document.querySelectorAll(".menu-link").forEach((link) => {
+  link.addEventListener("click", () => closeSidebar());
+});
 
-  if (window.innerWidth <= 780 && sidebarOpen && !clickedInsideSidebar && !clickedToggle) {
-    sidebarOpen = false;
-    updateSidebarState();
+// Klik di luar sidebar → tutup (mobile)
+document.addEventListener("click", (e) => {
+  if (
+    window.innerWidth <= 768 &&
+    isSidebarOpen() &&
+    !sidebar.contains(e.target) &&
+    !menuToggle.contains(e.target)
+  ) {
+    closeSidebar();
   }
 });
 
-sidebarMenu.addEventListener("click", (event) => {
-  const clickedItem = event.target.closest(".menu-item");
-  if (!clickedItem) return;
-
-  document.querySelectorAll(".menu-item").forEach((item) => {
-    item.classList.remove("active");
-  });
-
-  clickedItem.classList.add("active");
-});
-
-viewAllBtn.addEventListener("click", () => {
-  expandedActivities = !expandedActivities;
-
-  hiddenWeekItems.forEach((item) => {
-    if (expandedActivities) {
-      item.classList.add("show");
-    } else {
-      item.classList.remove("show");
-    }
-  });
-
-  viewAllBtn.textContent = expandedActivities ? "Show Less" : "View All";
-});
-
+// Reset saat resize
 window.addEventListener("resize", () => {
-  if (window.innerWidth > 780) {
-    // biarkan state sidebar tetap
-  } else if (!sidebarOpen) {
-    sidebar.classList.remove("open");
+  if (window.innerWidth > 768) {
+    sidebar.classList.remove("show");
+  } else {
+    mainContent.classList.remove("shifted");
+    mainContent.classList.add("full");
   }
 });
 
-updateSidebarState();
+// View All / Show Less
+viewAllBtn.addEventListener("click", () => {
+  expanded = !expanded;
+  hiddenItems.forEach((item) => item.classList.toggle("show", expanded));
+  viewAllBtn.textContent = expanded ? "Show Less" : "View All";
+});

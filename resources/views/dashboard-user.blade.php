@@ -8,125 +8,71 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <link rel="stylesheet" href="{{ asset('css/style-dashboard-user.css') }}">
 </head>
 <body>
   <div class="dashboard-page">
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-top">
-        <div class="brand-wrap">
-          <div class="brand-logo-box">
-            <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar closed" id="sidebar">
+      <div class="sidebar-header">
+        <a href="{{ url('/homeUser') }}" class="logo-wrap">
+          <div class="logo-box">
+            <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo" class="logo-img">
           </div>
-          <span class="brand-text">Sproutly</span>
-        </div>
+          <span class="logo-text">Sproutly</span>
+        </a>
       </div>
 
-      <div class="sidebar-divider"></div>
+      <div class="sidebar-line"></div>
 
-      <nav class="sidebar-menu" id="sidebarMenu">
-        <button class="menu-item active" data-menu="Dashboard" type="button">
-          <span class="menu-icon">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M4 17L9 12L13 15L20 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M20 8V13" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-            </svg>
-          </span>
-          <span class="menu-label">Dashboard</span>
-        </button>
-
-        <button class="menu-item" data-menu="Consultation" type="button">
-          <span class="menu-icon">
-            <svg viewBox="0 0 24 24" fill="none">
-              <rect x="5" y="6" width="14" height="13" rx="2.5" stroke="currentColor" stroke-width="2"/>
-              <path d="M8 3V8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M16 3V8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M5 10H19" stroke="currentColor" stroke-width="2"/>
-            </svg>
-          </span>
-          <span class="menu-label">Consultation</span>
-        </button>
-
-        <button class="menu-item" data-menu="Article" type="button">
-          <span class="menu-icon">
-            <svg viewBox="0 0 24 24" fill="none">
-              <rect x="4" y="5" width="16" height="14" rx="2.3" stroke="currentColor" stroke-width="2"/>
-              <path d="M9 5V19" stroke="currentColor" stroke-width="2"/>
-              <path d="M11.5 9H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M11.5 12H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M11.5 15H17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </span>
-          <span class="menu-label">Article</span>
-        </button>
-
-        <button class="menu-item" data-menu="Bookmarked Article" type="button">
-          <span class="menu-icon">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M8 4H16C17.1 4 18 4.9 18 6V20L12 16L6 20V6C6 4.9 6.9 4 8 4Z" fill="currentColor"/>
-            </svg>
-          </span>
-          <span class="menu-label">Bookmarked Article</span>
-        </button>
-
-        <button class="menu-item" data-menu="Reviews" type="button">
-          <span class="menu-icon">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M12 3L14.78 8.63L21 9.54L16.5 13.92L17.56 20.1L12 17.18L6.44 20.1L7.5 13.92L3 9.54L9.22 8.63L12 3Z" fill="currentColor"/>
-            </svg>
-          </span>
-          <span class="menu-label">Reviews</span>
-        </button>
-
-        <button class="menu-item" data-menu="Payment" type="button">
-          <span class="menu-icon">
-            <svg viewBox="0 0 24 24" fill="none">
-              <rect x="3" y="6" width="18" height="12" rx="2.5" stroke="currentColor" stroke-width="2"/>
-              <path d="M3 10H21" stroke="currentColor" stroke-width="2"/>
-              <path d="M7 14H11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </span>
-          <span class="menu-label">Payment</span>
-        </button>
-
-        <button class="menu-item" data-menu="Setting" type="button">
-          <span class="menu-icon">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M12 8.7A3.3 3.3 0 1 0 12 15.3A3.3 3.3 0 1 0 12 8.7Z" stroke="currentColor" stroke-width="2"/>
-              <path d="M19.4 15A1 1 0 0 0 19.6 16.1L19.7 16.2A1.2 1.2 0 1 1 18 17.9L17.9 17.8A1 1 0 0 0 16.8 17.6A1 1 0 0 0 16.2 18.5V18.8A1.2 1.2 0 1 1 13.8 18.8V18.7A1 1 0 0 0 13.1 17.7A1 1 0 0 0 12 17.9L11.9 18A1.2 1.2 0 1 1 10.2 16.3L10.3 16.2A1 1 0 0 0 10.5 15.1A1 1 0 0 0 9.6 14.5H9.2A1.2 1.2 0 1 1 9.2 12.1H9.3A1 1 0 0 0 10.3 11.4A1 1 0 0 0 10.1 10.3L10 10.2A1.2 1.2 0 1 1 11.7 8.5L11.8 8.6A1 1 0 0 0 12.9 8.8A1 1 0 0 0 13.5 7.9V7.6A1.2 1.2 0 1 1 15.9 7.6V7.7A1 1 0 0 0 16.6 8.7A1 1 0 0 0 17.7 8.5L17.8 8.4A1.2 1.2 0 1 1 19.5 10.1L19.4 10.2A1 1 0 0 0 19.2 11.3A1 1 0 0 0 20.1 11.9H20.4A1.2 1.2 0 1 1 20.4 14.3H20.3A1 1 0 0 0 19.4 15Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          <span class="menu-label">Setting</span>
-        </button>
+      <nav class="sidebar-menu">
+        <a href="{{ url('/dashboard-user') }}" class="menu-link active">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="{{ url('/consultationUser') }}" class="menu-link">
+          <i class="fa-solid fa-comments"></i>
+          <span>Consultation</span>
+        </a>
+        <a href="{{ url('/daftarArtikel') }}" class="menu-link">
+          <i class="fa-solid fa-newspaper"></i>
+          <span>Article</span>
+        </a>
+        <a href="{{ url('/bookmarkArtikelUser') }}" class="menu-link">
+          <i class="fa-solid fa-bookmark"></i>
+          <span>Bookmarked Article</span>
+        </a>
+        <a href="{{ url('/reviewsUser') }}" class="menu-link">
+          <i class="fa-solid fa-star"></i>
+          <span>Reviews</span>
+        </a>
+        <a href="{{ url('/incomeHistory') }}" class="menu-link">
+          <i class="fa-solid fa-credit-card"></i>
+          <span>Payment</span>
+        </a>
+        <a href="{{ url('/supportUser') }}" class="menu-link">
+          <i class="fa-solid fa-gear"></i>
+          <span>Setting</span>
+        </a>
       </nav>
     </aside>
 
-    <!-- Main -->
-    <main class="main-content" id="mainContent">
-      <div class="main-bg bg-circle bg-1"></div>
-      <div class="main-bg bg-circle bg-2"></div>
-      <div class="main-bg bg-circle bg-3"></div>
-      <div class="main-bg bg-circle bg-4"></div>
+    <!-- ===== MAIN ===== -->
+    <main class="main-content full" id="mainContent">
 
       <!-- Topbar -->
       <header class="topbar">
         <div class="topbar-left">
           <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle sidebar">
             <svg viewBox="0 0 24 24" fill="none">
-              <path d="M4 7H20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
-              <path d="M4 12H20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
-              <path d="M4 17H20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+              <path d="M4 7H20" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+              <path d="M4 12H20" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+              <path d="M4 17H20" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
             </svg>
           </button>
-
-          <div class="brand-mobile">
-            <div class="brand-mobile-logo">
-              <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo">
-            </div>
-            <span>Sproutly</span>
-          </div>
 
           <div class="search-box">
             <span class="search-icon">
@@ -148,24 +94,28 @@
             </svg>
           </button>
 
-          <div class="profile-chip">
+          <a href="{{ url('/accountUser') }}" class="profile-chip">
             <span class="profile-name">Sarah Green</span>
-            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop" alt="Profile">
-          </div>
+            <img src="{{ asset('images/fotoprofile.png') }}" alt="Profile">
+          </a>
         </div>
       </header>
 
       <!-- Content -->
       <section class="content-wrap">
+
+        <!-- Hero -->
         <div class="hero-row">
           <div class="hero-text">
-            <h1>Welcome back, Sarah! <span class="leaf-inline">
-              <svg viewBox="0 0 34 30" fill="none">
-                <path d="M7 19C7 19 5 10 11 6C17 2 25 6 24 14C23 21 15 22 10 20" fill="#6dbb1f"/>
-                <path d="M18 27C18 27 17 12 28 7C32 5 34 8 34 13C34 23 24 28 19 28" fill="#88cf39"/>
-                <path d="M18 29V15" stroke="#4f9b10" stroke-width="2.2" stroke-linecap="round"/>
-              </svg>
-            </span></h1>
+            <h1>Welcome back, Sarah!
+              <span class="leaf-inline">
+                <svg viewBox="0 0 34 30" fill="none">
+                  <path d="M7 19C7 19 5 10 11 6C17 2 25 6 24 14C23 21 15 22 10 20" fill="#6dbb1f"/>
+                  <path d="M18 27C18 27 17 12 28 7C32 5 34 8 34 13C34 23 24 28 19 28" fill="#88cf39"/>
+                  <path d="M18 29V15" stroke="#4f9b10" stroke-width="2.2" stroke-linecap="round"/>
+                </svg>
+              </span>
+            </h1>
             <p>Let's check on your agricultural consultations today</p>
           </div>
 
@@ -182,6 +132,7 @@
           </div>
         </div>
 
+        <!-- Stats -->
         <section class="stats-grid">
           <div class="stat-card card-article">
             <div class="stat-box">
@@ -195,7 +146,6 @@
                 <rect x="20" y="26" width="4" height="36" rx="2" fill="#ffd7a8"/>
               </svg>
             </div>
-
             <div class="stat-info">
               <h2>30</h2>
               <p>Articles Viewed</p>
@@ -204,14 +154,12 @@
 
           <div class="stat-card card-completed">
             <div class="stat-card-circle"></div>
-
             <div class="stat-box">
               <svg viewBox="0 0 84 84" fill="none">
                 <circle cx="42" cy="42" r="29" fill="#2e61e8"/>
                 <path d="M29 43L39 53L56 34" stroke="#bde7c7" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
-
             <div class="stat-info">
               <h2>20</h2>
               <p>Completed Consultations</p>
@@ -219,6 +167,7 @@
           </div>
         </section>
 
+        <!-- Recent Activity -->
         <section class="activity-section">
           <div class="section-head">
             <div class="section-title">
@@ -230,7 +179,6 @@
               </span>
               <h3>Recent Activity</h3>
             </div>
-
             <button class="view-all-btn" id="viewAllBtn" type="button">View All</button>
           </div>
 
@@ -305,7 +253,6 @@
               </div>
             </article>
 
-            <!-- hidden by default, shown on View All -->
             <article class="activity-card activity-green hidden-week">
               <div class="activity-icon-box">
                 <svg viewBox="0 0 28 28" fill="none">
@@ -375,32 +322,50 @@
                 </div>
               </div>
             </article>
-
-            <article class="activity-card activity-green hidden-week">
-              <div class="activity-icon-box">
-                <svg viewBox="0 0 28 28" fill="none">
-                  <circle cx="14" cy="14" r="10" fill="#ffffff"/>
-                  <path d="M14 9V14L17 16" stroke="#6be39f" stroke-width="2.2" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <div class="activity-content">
-                <h4>Follow-up reminder</h4>
-                <p>A follow-up reminder was added for your next consultation session this week</p>
-                <div class="activity-meta">
-                  <span class="time-chip">
-                    <svg viewBox="0 0 18 18" fill="none">
-                      <circle cx="9" cy="9" r="7" fill="#626b7a"/>
-                      <path d="M9 5.5V9L11.5 10.5" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round"/>
-                    </svg>
-                    1 week ago
-                  </span>
-                  <span class="status-chip">Reminder</span>
-                </div>
-              </div>
-            </article>
           </div>
         </section>
+
       </section>
+
+      <!-- ===== FOOTER ===== -->
+      <footer class="site-footer">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <div class="footer-brand-top">
+              <div class="footer-logo-box">
+                <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo" class="footer-logo">
+              </div>
+              <div>
+                <h3>Sproutly</h3>
+                <span>by AVI</span>
+              </div>
+            </div>
+            <p>A modern agriculture consultation platform for a greener and more sustainable future.</p>
+          </div>
+
+          <div class="footer-links">
+            <h4>About Us</h4>
+            <a href="#">Our Team</a>
+            <a href="#">Blog</a>
+            <a href="#">Privacy Policy</a>
+          </div>
+
+          <div class="footer-contact">
+            <h4>Contact</h4>
+            <p><i class="fa-solid fa-envelope"></i> sproutly@gmail.com</p>
+            <p><i class="fa-solid fa-phone"></i> +62 851 5693 2186</p>
+            <div class="social-icons">
+              <a href="#"><img src="{{ asset('images/instagram.jpg') }}" alt="Instagram"></a>
+              <a href="#"><img src="{{ asset('images/facebook.png') }}" alt="Facebook"></a>
+              <a href="#"><img src="{{ asset('images/X.jpg') }}" alt="X"></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          &copy; 2025 Sproutly by AVI. All rights reserved.
+        </div>
+      </footer>
+
     </main>
   </div>
 

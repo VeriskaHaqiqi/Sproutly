@@ -44,7 +44,7 @@ Route::get('/find-experts', function () {
 
 Route::get('/homePublic', function () {
     return view('homePublic');
-});
+})->name('homePublic');
 
 Route::get('/registerExpert', function () {
     return view('registerExpert');
@@ -172,10 +172,6 @@ Route::get('/reviewsUser', function () {
 
 Route::get('/lockRoomUser', function () {
     return view('lockRoomUser');
-});
-
-Route::get('/roomChatExpert', function () {
-    return view('roomChatExpert');
 });
 
 Route::get('/paymentVerified', function () {
