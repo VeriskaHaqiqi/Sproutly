@@ -1,123 +1,81 @@
-const menuToggle = document.getElementById("menuToggle");
-const sidebar = document.getElementById("sidebar");
-const sidebarMenu = document.getElementById("sidebarMenu");
-const topicWrap = document.getElementById("topicWrap");
+const topicWrap    = document.getElementById("topicWrap");
 const articleCards = document.querySelectorAll(".article-card");
 const articleSearch = document.getElementById("articleSearch");
-const searchButton = document.getElementById("searchButton");
-const emptyState = document.getElementById("emptyState");
-const bookmarkButtons = document.querySelectorAll(".bookmark-btn");
+const searchButton  = document.getElementById("searchButton");
+const emptyState    = document.getElementById("emptyState");
+const bookmarkBtns  = document.querySelectorAll(".bookmark-btn");
 
-let sidebarOpen = false;
 let activeTopic = "all";
 
-function updateSidebarState() {
-  if (sidebarOpen) {
-    sidebar.classList.add("open");
-  } else {
-    sidebar.classList.remove("open");
-  }
-}
-
-if (menuToggle) {
-  menuToggle.addEventListener("click", () => {
-    sidebarOpen = !sidebarOpen;
-    updateSidebarState();
-  });
-}
-
-document.addEventListener("click", (event) => {
-  if (!sidebar || !menuToggle) return;
-
-  const clickedInsideSidebar = sidebar.contains(event.target);
-  const clickedToggle = menuToggle.contains(event.target);
-
-  if (window.innerWidth <= 780 && sidebarOpen && !clickedInsideSidebar && !clickedToggle) {
-    sidebarOpen = false;
-    updateSidebarState();
-  }
-});
-
-if (sidebarMenu) {
-  sidebarMenu.addEventListener("click", (event) => {
-    const clickedItem = event.target.closest(".menu-item");
-    if (!clickedItem) return;
-
-    document.querySelectorAll(".menu-item").forEach((item) => {
-      item.classList.remove("active");
-    });
-
-    clickedItem.classList.add("active");
-  });
-}
-
-if (topicWrap) {
-  topicWrap.addEventListener("click", (event) => {
-    const clickedTopic = event.target.closest(".topic-chip");
-    if (!clickedTopic) return;
-
-    document.querySelectorAll(".topic-chip").forEach((chip) => {
-      chip.classList.remove("active");
-    });
-
-    clickedTopic.classList.add("active");
-    activeTopic = clickedTopic.dataset.topic;
-    filterArticles();
-  });
-}
-
+// ── Filter ────────────────────────────────────────
 function filterArticles() {
-  if (!articleSearch) return;
-
-  const keyword = articleSearch.value.trim().toLowerCase();
-  let visibleCount = 0;
+  const keyword = (articleSearch?.value || "").trim().toLowerCase();
+  let visible = 0;
 
   articleCards.forEach((card) => {
-    const title = card.dataset.title.toLowerCase();
-    const topic = card.dataset.topic.toLowerCase();
-    const keywords = card.dataset.keywords.toLowerCase();
-    const author = card.dataset.author.toLowerCase();
+    const matchesTopic  = activeTopic === "all" || card.dataset.topic === activeTopic;
+    const matchesSearch = !keyword ||
+      card.dataset.title.toLowerCase().includes(keyword) ||
+      card.dataset.topic.toLowerCase().includes(keyword) ||
+      card.dataset.keywords.toLowerCase().includes(keyword) ||
+      card.dataset.author.toLowerCase().includes(keyword);
 
-    const matchesTopic = activeTopic === "all" || topic === activeTopic;
-    const matchesSearch =
-      keyword === "" ||
-      title.includes(keyword) ||
-      topic.includes(keyword) ||
-      keywords.includes(keyword) ||
-      author.includes(keyword);
-
-    const shouldShow = matchesTopic && matchesSearch;
-    card.style.display = shouldShow ? "block" : "none";
-
-    if (shouldShow) visibleCount++;
+    const show = matchesTopic && matchesSearch;
+    card.style.display = show ? "block" : "none";
+    if (show) visible++;
   });
 
-  if (visibleCount === 0) {
-    emptyState.classList.remove("hidden");
-  } else {
-    emptyState.classList.add("hidden");
-  }
+  emptyState.classList.toggle("hidden", visible > 0);
 }
 
-if (articleSearch) {
-  articleSearch.addEventListener("input", filterArticles);
-}
+topicWrap?.addEventListener("click", (e) => {
+  const chip = e.target.closest(".topic-chip");
+  if (!chip) return;
+  document.querySelectorAll(".topic-chip").forEach(c => c.classList.remove("active"));
+  chip.classList.add("active");
+  activeTopic = chip.dataset.topic;
+  filterArticles();
+});
 
-if (searchButton) {
-  searchButton.addEventListener("click", filterArticles);
-}
+articleSearch?.addEventListener("input", filterArticles);
+searchButton?.addEventListener("click", filterArticles);
 
-bookmarkButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    button.classList.toggle("bookmarked");
+// ── Bookmark ──────────────────────────────────────
+bookmarkBtns.forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    e.preventDefault(); // jangan ikut link artikel
+    e.stopPropagation();
+    btn.classList.toggle("bookmarked");
   });
 });
 
-window.addEventListener("resize", () => {
-  if (window.innerWidth <= 780 && !sidebarOpen) {
-    sidebar.classList.remove("open");
-  }
-});
-
-updateSidebarState();
+// ── Init ──────────────────────────────────────────
 filterArticles();
+
+// ── Sidebar toggle ────────────────────────────────
+(function () {
+  const sidebar     = document.getElementById("sidebar");
+  const mainContent = document.getElementById("mainContent");
+  const toggle      = document.getElementById("menuToggle");
+  if (!sidebar || !mainContent || !toggle) return;
+
+  function open() {
+    if (window.innerWidth <= 768) { sidebar.classList.add("show"); sidebar.classList.remove("closed"); }
+    else { sidebar.classList.remove("closed"); mainContent.classList.add("shifted"); mainContent.classList.remove("full"); }
+  }
+  function close() {
+    sidebar.classList.add("closed"); sidebar.classList.remove("show");
+    mainContent.classList.remove("shifted"); mainContent.classList.add("full");
+  }
+  function isOpen() { return window.innerWidth <= 768 ? sidebar.classList.contains("show") : !sidebar.classList.contains("closed"); }
+
+  toggle.addEventListener("click", () => isOpen() ? close() : open());
+  document.querySelectorAll(".menu-link").forEach(l => l.addEventListener("click", close));
+  document.addEventListener("click", (e) => {
+    if (window.innerWidth <= 768 && isOpen() && !sidebar.contains(e.target) && !toggle.contains(e.target)) close();
+  });
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 768) sidebar.classList.remove("show");
+    else { mainContent.classList.remove("shifted"); mainContent.classList.add("full"); }
+  });
+})();
