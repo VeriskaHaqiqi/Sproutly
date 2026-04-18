@@ -116,7 +116,7 @@
             </a>
           </li>
           <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a href="{{ route('manageSchedule') }}" class="menu-link">
               <span class="menu-link-left">
                 <span class="menu-item-icon">
                     <img src="{{ asset('images/ikon manage schedule.png') }}" alt="">

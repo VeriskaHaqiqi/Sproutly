@@ -152,7 +152,7 @@
       <i class="fa-solid fa-gear"></i><span>Setting</span>
     </a>
   </nav>
->>>>>>> 2c59e1c3f7aef5f06c128e5e3a7d5f2858d2da99
+
 </aside>
 
 <script>

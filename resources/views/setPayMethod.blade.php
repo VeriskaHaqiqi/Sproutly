@@ -14,16 +14,15 @@
 
 <!-- ===== MAIN CONTENT ===== -->
 <div class="main-content full" id="mainContent">
-
-    <!-- SIDE BAR -->     
-<!-- ===== SIDEBAR ===== -->
+   
+    <!-- ===== SIDEBAR ===== -->
     <style>
     /* (SEMUA CSS SIDEBAR KAMU — TIDAK DIUBAH) */
     </style>
 
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <a href="#" class="logo-wrap">
+            <a href="{{ route('homeExpert') }}" class="logo-wrap">
                 <div class="logo-box">
                     <img src="images/logo.png" class="logo-img">
                 </div>

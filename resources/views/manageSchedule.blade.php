@@ -17,61 +17,83 @@
   <!-- ========================
        SIDEBAR
   ========================= -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-      <div class="sidebar-logo-icon">
-        <img src="{{ asset('images/logo.png') }}" alt="Sproutly" />
-      </div>
-      <span class="sidebar-logo-name">Sproutly</span>
-    </div>
+  <!-- ===== SIDEBAR ===== -->
+    <style>
+    /* (SEMUA CSS SIDEBAR KAMU — TIDAK DIUBAH) */
+    </style>
 
-    <nav class="sidebar-nav">
-      <a href="#" class="sidebar-link">
-        <img src="{{ asset('images/dashboard.png') }}" alt="" class="nav-icon" width="20"/>
-        <span>Dashboard</span>
-      </a>
-      <a href="#" class="sidebar-link">
-        <img src="{{ asset('images/consultation.png') }}" alt="" class="nav-icon" width="20"/>
-        <span>Consultation</span>
-      </a>
-      <a href="#" class="sidebar-link">
-        <img src="{{ asset('images/article.png') }}" alt="" class="nav-icon" width="20"/>
-        <span>Article</span>
-      </a>
-      <a href="#" class="sidebar-link">
-        <img src="{{ asset('images/bookmark article.jpg') }}" alt="" class="nav-icon" />
-        <span>My Article</span>
-      </a>
-      <a href="#" class="sidebar-link">
-        <img src="{{ asset('images/reviews.png') }}" alt="" class="nav-icon" width="20"/>
-        <span>Pricing</span>
-      </a>
-      <a href="#" class="sidebar-link">
-        <img src="{{ asset('images/payment.png') }}" alt="" class="nav-icon" width="20"/>
-        <span>Client History</span>
-      </a>
-      <a href="#" class="sidebar-link sidebar-link--active">
-        <img src="{{ asset('images/settings.png') }}" alt="" class="nav-icon" width="20"/>
-        <span>Setting</span>
-      </a>
-    </nav>
-  </aside>
+    <aside class="sidebar closed" id="sidebar">
+        <div class="sidebar-header">
+            <a href="{{ route('homeExpert') }}" class="logo-wrap">
+                <div class="logo-box">
+                    <img src="images/logo.png" class="logo-img">
+                </div>
+                <span class="logo-text">Sproutly</span>
+            </a>
+        </div>
+
+        <div class="sidebar-line"></div>
+
+        <nav class="sidebar-menu">
+            <a href="{{ route('dashboard-ahli') }}" 
+            class="menu-link {{ request()->routeIs('dashboard-ahli') ? 'active' : '' }}">
+                <img src="images/dashboard.png">
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{{ route('consultexpert') }}" 
+            class="menu-link {{ request()->routeIs('consultexpert') ? 'active' : '' }}">
+                <img src="images/consultation.png">
+                <span>Consultation</span>
+            </a>
+
+            <a href="{{ route('articleExpert') }}" 
+            class="menu-link {{ request()->routeIs('articleExpert') ? 'active' : '' }}">
+                <img src="images/article.png">
+                <span>Article</span>
+            </a>
+
+            <a href="{{ route('myarticleExpert') }}" 
+            class="menu-link child-link {{ request()->routeIs('myarticleExpert') ? 'active' : '' }}">
+                <img src="images/myarticle.png">
+                <span>My Article</span>
+            </a>
+
+            <a href="{{ route('setpricingexpert') }}" 
+            class="menu-link child-link {{ request()->routeIs('setpricingexpert') ? 'active' : '' }}">
+                <img src="images/pricing.png">
+                <span>Pricing</span>
+            </a>
+
+            <a href="{{ route('ConsultationhistoryExpert') }}" 
+            class="menu-link child-link {{ request()->routeIs('ConsultationhistoryExpert') ? 'active' : '' }}">
+                <img src="images/clienthistory.png">
+                <span>Client History</span>
+            </a>
+
+            <a href="{{ route('accountExpert') }}" 
+            class="menu-link active" {{ request()->routeIs('accountExpert') ? 'active' : '' }}">
+                <img src="images/settings.png">
+                <span>Setting</span>
+            </a>
+        </nav>
+    </aside>
 
   <!-- ========================
        MAIN LAYOUT
   ========================= -->
-  <div class="layout" id="layout">
+  <div class="layout" id="mainContent">
 
     <!-- TOP NAV -->
     <header class="topnav">
-      <button class="logo-btn" id="sidebarToggle" aria-label="Toggle sidebar">
-        <div class="logo-btn-icon">
-          <img src="{{ asset('images/logo.png') }}" alt="Sproutly" />
+        <button class="burger-btn" id="sidebarToggle" aria-label="Toggle sidebar">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="topnav-title">
+            <h1>Manage Schedule</h1>
         </div>
-      </button>
-      <span class="topnav-brand">Sproutly</span>
-      <span class="topnav-title">Manage Schedule</span>
-      <div class="topnav-spacer"></div>
     </header>
 
     <!-- PAGE BODY -->
@@ -316,12 +338,46 @@
         </div>
 
       </form>
-
-      <!-- Footer -->
-      <p class="page-footer">© 2024 Sproutly Agricultural Solutions. All rights reserved.</p>
-
     </main>
   </div><!-- /.layout -->
+  <!-- Footer -->
+      <footer class="site-footer">
+          <div class="footer-grid">
+              <div class="footer-brand">
+                  <div class="footer-brand-top">
+                      <div class="footer-logo-box">
+                          <img src="images/logo.png" alt="Sproutly Logo" class="footer-logo">
+                      </div>
+                      <div>
+                          <h3>Sproutly</h3>
+                          <span>by AVI</span>
+                      </div>
+                  </div>
+                  <p>A modern agriculture consultation platform for a greener and more sustainable future.</p>
+              </div>
+
+              <div class="footer-links">
+                  <h4>About Us</h4>
+                  <a href="#">Our Team</a>
+                  <a href="#">Blog</a>
+                  <a href="#">Privacy Policy</a>
+              </div>
+
+              <div class="footer-contact">
+                  <h4>Contact</h4>
+                  <p><i class="fa-solid fa-envelope"></i> sproutly@gmail.com</p>
+                  <p><i class="fa-solid fa-phone"></i> +62 851 5693 2186</p>
+                  <div class="social-icons">
+                      <a href="#"><img src="images/instagram.jpg" alt="Instagram"></a>
+                      <a href="#"><img src="images/facebook.png" alt="Facebook"></a>
+                      <a href="#"><img src="images/X.jpg" alt="X"></a>
+                  </div>
+              </div>
+          </div>
+          <div class="footer-bottom">
+              &copy; 2025 Sproutly by AVI. All rights reserved.
+          </div>
+      </footer>
 
   <script src="{{ asset('js/script-manageSchedule.js') }}"></script>
 </body>
