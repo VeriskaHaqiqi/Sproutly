@@ -81,7 +81,7 @@
       ========================= -->
       <div class="account-card profile-card">
         <div class="avatar-wrap">
-          <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Expert Sarah Chen" class="avatar-img" />
+          <img src="{{#}}" alt="Expert Sarah Chen" class="avatar-img" />
           <span class="avatar-badge">✏️</span>
         </div>
         <h2 class="expert-name">Expert Sarah Chen</h2>
