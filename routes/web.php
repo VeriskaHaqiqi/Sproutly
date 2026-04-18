@@ -193,3 +193,7 @@ Route::get('/sidebar-expert', function () {
 Route::get('/sidebar-user', function () {
     return view('sidebar-user');
 });
+
+Route::get('/incomeHistory', function () {
+    return view('incomeHistory');
+});
