@@ -100,8 +100,8 @@
     <section class="article-section">
       <div class="article-grid" id="articleGrid">
 
-        <article class="article-card" data-title="Modern Irrigation Techniques for Water Conservation" data-topic="irrigation" data-keywords="irrigation water drip smart farming conservation" data-author="John Parker">
-          <a href="{{ url('/detailArtikelUser') }}" class="article-link">
+        <article class="article-card" data-title="Modern Irrigation Techniques for Water Conservation" data-key="irrigation" data-topic="irrigation" data-keywords="irrigation water drip smart farming conservation" data-author="John Parker">
+          <a href="{{ url('/detailArtikelUser') }}?article=irrigation" class="article-link">
             <div class="article-image-wrap">
               <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&q=80" alt="Irrigation">
               <span class="article-topic-label">Irrigation</span>
@@ -122,8 +122,8 @@
           </button>
         </article>
 
-        <article class="article-card" data-title="Building Healthy Soil Through Composting" data-topic="soil health" data-keywords="soil compost composting nutrients organic soil health" data-author="Sarah Mitchell">
-          <a href="{{ url('/detailArtikelUser') }}" class="article-link">
+        <article class="article-card" data-title="Building Healthy Soil Through Composting" data-key="soil" data-topic="soil health" data-keywords="soil compost composting nutrients organic soil health" data-author="Sarah Mitchell">
+          <a href="{{ url('/detailArtikelUser') }}?article=soil" class="article-link">
             <div class="article-image-wrap">
               <img src="https://images.unsplash.com/photo-1461354464878-ad92f492a5a0?w=800&q=80" alt="Soil">
               <span class="article-topic-label">Soil Health</span>
@@ -144,8 +144,8 @@
           </button>
         </article>
 
-        <article class="article-card" data-title="Organic Pest Management Strategies" data-topic="pest control" data-keywords="pest control organic insects crop protection natural methods" data-author="Michael Chen">
-          <a href="{{ url('/detailArtikelUser') }}" class="article-link">
+        <article class="article-card" data-title="Organic Pest Management Strategies" data-key="pest" data-topic="pest control" data-keywords="pest control organic insects crop protection natural methods" data-author="Michael Chen">
+          <a href="{{ url('/detailArtikelUser') }}?article=pest" class="article-link">
             <div class="article-image-wrap">
               <img src="https://images.unsplash.com/photo-1471193945509-9ad0617afabf?w=800&q=80" alt="Pest">
               <span class="article-topic-label">Pest Control</span>
@@ -166,8 +166,8 @@
           </button>
         </article>
 
-        <article class="article-card" data-title="Using Drones for Precision Agriculture" data-topic="technology" data-keywords="drone drones technology precision agriculture monitoring field" data-author="David Rodriguez">
-          <a href="{{ url('/detailArtikelUser') }}" class="article-link">
+        <article class="article-card" data-title="Using Drones for Precision Agriculture" data-key="drone" data-topic="technology" data-keywords="drone drones technology precision agriculture monitoring field" data-author="David Rodriguez">
+          <a href="{{ url('/detailArtikelUser') }}?article=drone" class="article-link">
             <div class="article-image-wrap">
               <img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=800&q=80" alt="Drone">
               <span class="article-topic-label">Technology</span>
@@ -188,8 +188,8 @@
           </button>
         </article>
 
-        <article class="article-card" data-title="Crop Rotation for Long-Term Sustainability" data-topic="sustainability" data-keywords="crop rotation sustainable farming long term soil fertility" data-author="Emma Thompson">
-          <a href="{{ url('/detailArtikelUser') }}" class="article-link">
+        <article class="article-card" data-title="Crop Rotation for Long-Term Sustainability" data-key="rotation" data-topic="sustainability" data-keywords="crop rotation sustainable farming long term soil fertility" data-author="Emma Thompson">
+          <a href="{{ url('/detailArtikelUser') }}?article=rotation" class="article-link">
             <div class="article-image-wrap">
               <img src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&q=80" alt="Crop Rotation">
               <span class="article-topic-label">Sustainability</span>
@@ -210,8 +210,8 @@
           </button>
         </article>
 
-        <article class="article-card" data-title="Climate-Smart Farming Practices" data-topic="crop management" data-keywords="climate farming weather adaptation crop management resilience" data-author="James Wilson">
-          <a href="{{ url('/detailArtikelUser') }}" class="article-link">
+        <article class="article-card" data-title="Climate-Smart Farming Practices" data-key="climate" data-topic="crop management" data-keywords="climate farming weather adaptation crop management resilience" data-author="James Wilson">
+          <a href="{{ url('/detailArtikelUser') }}?article=climate" class="article-link">
             <div class="article-image-wrap">
               <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=800&q=80" alt="Climate Smart">
               <span class="article-topic-label">Crop Management</span>
@@ -232,8 +232,8 @@
           </button>
         </article>
 
-        <article class="article-card" data-title="Introduction to Hydroponic Farming" data-topic="technology" data-keywords="hydroponic farming technology indoor water efficient" data-author="Lisa Anderson">
-          <a href="{{ url('/detailArtikelUser') }}" class="article-link">
+        <article class="article-card" data-title="Introduction to Hydroponic Farming" data-key="hydroponic" data-topic="technology" data-keywords="hydroponic farming technology indoor water efficient" data-author="Lisa Anderson">
+          <a href="{{ url('/detailArtikelUser') }}?article=hydroponic" class="article-link">
             <div class="article-image-wrap">
               <img src="https://images.unsplash.com/photo-1516253593875-bd7ba052fbc5?w=800&q=80" alt="Hydroponic">
               <span class="article-topic-label">Technology</span>
@@ -254,8 +254,8 @@
           </button>
         </article>
 
-        <article class="article-card" data-title="Understanding Soil Nutrients and Fertilization" data-topic="soil health" data-keywords="soil nutrients fertilization nitrogen phosphorus potassium" data-author="Robert Martinez">
-          <a href="{{ url('/detailArtikelUser') }}" class="article-link">
+        <article class="article-card" data-title="Understanding Soil Nutrients and Fertilization" data-key="nutrients" data-topic="soil health" data-keywords="soil nutrients fertilization nitrogen phosphorus potassium" data-author="Robert Martinez">
+          <a href="{{ url('/detailArtikelUser') }}?article=nutrients" class="article-link">
             <div class="article-image-wrap">
               <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80" alt="Soil Nutrients">
               <span class="article-topic-label">Soil Health</span>
@@ -276,8 +276,8 @@
           </button>
         </article>
 
-        <article class="article-card" data-title="Rainwater Harvesting for Farm Use" data-topic="irrigation" data-keywords="rainwater harvesting water storage irrigation farm use" data-author="Olivia Green">
-          <a href="{{ url('/detailArtikelUser') }}" class="article-link">
+        <article class="article-card" data-title="Rainwater Harvesting for Farm Use" data-key="rainwater" data-topic="irrigation" data-keywords="rainwater harvesting water storage irrigation farm use" data-author="Olivia Green">
+          <a href="{{ url('/detailArtikelUser') }}?article=rainwater" class="article-link">
             <div class="article-image-wrap">
               <img src="https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=800&q=80" alt="Rainwater">
               <span class="article-topic-label">Irrigation</span>
