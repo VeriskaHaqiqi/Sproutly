@@ -179,7 +179,7 @@
 
   function isSidebarOpen() {
     return window.innerWidth <= 768
-      ? sidebar.classList.contains("show")
+      ? sidebar.classList.contains("show") 
       : !sidebar.classList.contains("closed");
   }
 
@@ -188,7 +188,7 @@
   document.querySelectorAll(".menu-link").forEach((link) => {
     link.addEventListener("click", () => closeSidebar());
   });
-
+ 
   document.addEventListener("click", (e) => {
     if (window.innerWidth <= 768 && isSidebarOpen() &&
         !sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
