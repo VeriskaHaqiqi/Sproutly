@@ -7,75 +7,60 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Font Awesome — untuk icon sidebar -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="{{ asset('css/style-editProfileUser.css') }}">
 </head>
 <body>
 
-  <!-- ========================
-       SIDEBAR OVERLAY
-  ========================= -->
   <!-- Sidebar Overlay -->
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <!-- ========================
-       SIDEBAR
-  ========================= -->
-  <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <a href="{{ route('homeExpert') }}" class="logo-wrap">
-                <div class="logo-box">
-                    <img src="images/logo.png" class="logo-img">
-                </div>
-                <span class="logo-text">Sproutly</span>
-            </a>
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar closed" id="sidebar">
+    <div class="sidebar-header">
+      <a href="{{ url('/homeUser') }}" class="logo-wrap">
+        <div class="logo-box">
+          <!-- Pastikan file logo-hijau.png ada di folder public/images -->
+          <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo" class="logo-img">
         </div>
+        <span class="logo-text">Sproutly</span>
+      </a>
+    </div>
 
-        <div class="sidebar-line"></div>
+    <div class="sidebar-line"></div>
 
-        <nav class="sidebar-menu">
-            <a href="{{ route('dashboard-ahli') }}" 
-            class="menu-link {{ request()->routeIs('dashboard-ahli') ? 'active' : '' }}">
-                <img src="images/dashboard.png">
-                <span>Dashboard</span>
-            </a>
-
-            <a href="{{ route('consultexpert') }}" 
-            class="menu-link {{ request()->routeIs('consultexpert') ? 'active' : '' }}">
-                <img src="images/consultation.png">
-                <span>Consultation</span>
-            </a>
-
-            <a href="{{ route('articleExpert') }}" 
-            class="menu-link {{ request()->routeIs('articleExpert') ? 'active' : '' }}">
-                <img src="images/article.png">
-                <span>Article</span>
-            </a>
-
-            <a href="{{ route('myarticleExpert') }}" 
-            class="menu-link child-link {{ request()->routeIs('myarticleExpert') ? 'active' : '' }}">
-                <img src="images/myarticle.png">
-                <span>My Article</span>
-            </a>
-
-            <a href="{{ route('setpricingexpert') }}" 
-            class="menu-link child-link {{ request()->routeIs('setpricingexpert') ? 'active' : '' }}">
-                <img src="images/pricing.png">
-                <span>Pricing</span>
-            </a>
-
-            <a href="{{ route('ConsultationhistoryExpert') }}" 
-            class="menu-link child-link {{ request()->routeIs('ConsultationhistoryExpert') ? 'active' : '' }}">
-                <img src="images/clienthistory.png">
-                <span>Client History</span>
-            </a>
-
-            <a href="{{ route('accountExpert') }}" 
-            class="menu-link active" {{ request()->routeIs('accountExpert') ? 'active' : '' }}">
-                <img src="images/settings.png">
-                <span>Setting</span>
-            </a>
-        </nav>
-    </aside>
+    <nav class="sidebar-menu">
+      <a href="{{ url('/dashboard-user') }}" class="menu-link">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="{{ url('/consultationUser') }}" class="menu-link">
+        <i class="fa-solid fa-comments"></i>
+        <span>Consultation</span>
+      </a>
+      <a href="{{ url('/daftarArtikel') }}" class="menu-link">
+        <i class="fa-solid fa-newspaper"></i>
+        <span>Article</span>
+      </a>
+      <a href="{{ url('/bookmarkArtikelUser') }}" class="menu-link">
+        <i class="fa-solid fa-bookmark"></i>
+        <span>Bookmarked Article</span>
+      </a>
+      <a href="{{ url('/reviewsUser') }}" class="menu-link">
+        <i class="fa-solid fa-star"></i>
+        <span>Reviews</span>
+      </a>
+      <a href="{{ url('/invoice') }}" class="menu-link">
+        <i class="fa-solid fa-credit-card"></i>
+        <span>Payment</span>
+      </a>
+      <a href="{{ url('/supportUser') }}" class="menu-link active">
+        <i class="fa-solid fa-gear"></i>
+        <span>Setting</span>
+      </a>
+    </nav>
+  </aside>
 
   <!-- ========================
        MAIN LAYOUT
@@ -84,14 +69,14 @@
 
     <!-- TOP NAV -->
     <header class="topnav">
-        <button class="burger-btn" id="sidebarToggle" aria-label="Toggle sidebar">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <div class="topnav-title">
-            <h1>Edit Profile</h1>
-        </div>
+      <button class="burger-btn" id="sidebarToggle" aria-label="Toggle sidebar">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="topnav-title">
+        <h1>Edit Profile</h1>
+      </div>
     </header>
 
     <!-- PAGE BODY -->
@@ -99,9 +84,7 @@
 
       <div class="form-card">
 
-        <!-- ========================
-             AVATAR SECTION
-        ========================= -->
+        <!-- AVATAR SECTION -->
         <div class="avatar-section">
           <div class="avatar-wrap" id="avatarWrap">
             <img
@@ -128,9 +111,7 @@
           </div>
         </div>
 
-        <!-- ========================
-             FORM
-        ========================= -->
+        <!-- FORM -->
         <form class="edit-form" method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
           @csrf
           @method('PUT')
@@ -219,7 +200,7 @@
                   name="gender"
                   class="form-input form-select @error('gender') is-error @enderror"
                 >
-                  <option value=""   disabled>Select gender</option>
+                  <option value="" disabled>Select gender</option>
                   <option value="male"   {{ old('gender', auth()->user()->gender ?? '') == 'male'   ? 'selected' : '' }}>Male</option>
                   <option value="female" {{ old('gender', auth()->user()->gender ?? 'female') == 'female' ? 'selected' : '' }}>Female</option>
                   <option value="other"  {{ old('gender', auth()->user()->gender ?? '') == 'other'  ? 'selected' : '' }}>Prefer not to say</option>
@@ -237,9 +218,7 @@
 
           </div><!-- /.form-grid -->
 
-          <!-- ========================
-               ACTION BUTTONS
-          ========================= -->
+          <!-- ACTION BUTTONS -->
           <div class="form-actions">
             <a href="{{ route('accountUser') ?? '#' }}" class="btn-cancel">Cancel</a>
             <button type="submit" class="btn-save">Save Changes</button>
@@ -250,6 +229,45 @@
 
     </main>
   </div><!-- /.layout -->
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-top">
+          <div class="footer-logo-box">
+            <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo" class="footer-logo">
+          </div>
+          <div>
+            <h3>Sproutly</h3>
+            <span>by AVI</span>
+          </div>
+        </div>
+        <p>A modern agriculture consultation platform for a greener and more sustainable future.</p>
+      </div>
+
+      <div class="footer-links">
+        <h4>About Us</h4>
+        <a href="#">Our Team</a>
+        <a href="#">Blog</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p><i class="fa-solid fa-envelope"></i> sproutly@gmail.com</p>
+        <p><i class="fa-solid fa-phone"></i> +62 851 5693 2186</p>
+        <div class="social-icons">
+          <a href="#"><img src="{{ asset('images/instagram.jpg') }}" alt="Instagram"></a>
+          <a href="#"><img src="{{ asset('images/facebook.png') }}" alt="Facebook"></a>
+          <a href="#"><img src="{{ asset('images/X.jpg') }}" alt="X"></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 Sproutly by AVI. All rights reserved.
+    </div>
+  </footer>
 
   <script src="{{ asset('js/script-editProfileUser.js') }}"></script>
 </body>
