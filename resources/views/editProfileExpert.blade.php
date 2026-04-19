@@ -250,6 +250,44 @@
 
     </main>
   </div><!-- /.layout -->
+  <!-- Footer -->
+      <footer class="site-footer">
+          <div class="footer-grid">
+              <div class="footer-brand">
+                  <div class="footer-brand-top">
+                      <div class="footer-logo-box">
+                          <img src="images/logo.png" alt="Sproutly Logo" class="footer-logo">
+                      </div>
+                      <div>
+                          <h3>Sproutly</h3>
+                          <span>by AVI</span>
+                      </div>
+                  </div>
+                  <p>A modern agriculture consultation platform for a greener and more sustainable future.</p>
+              </div>
+
+              <div class="footer-links">
+                  <h4>About Us</h4>
+                  <a href="#">Our Team</a>
+                  <a href="#">Blog</a>
+                  <a href="#">Privacy Policy</a>
+              </div>
+
+              <div class="footer-contact">
+                  <h4>Contact</h4>
+                  <p><i class="fa-solid fa-envelope"></i> sproutly@gmail.com</p>
+                  <p><i class="fa-solid fa-phone"></i> +62 851 5693 2186</p>
+                  <div class="social-icons">
+                      <a href="#"><img src="images/instagram.jpg" alt="Instagram"></a>
+                      <a href="#"><img src="images/facebook.png" alt="Facebook"></a>
+                      <a href="#"><img src="images/X.jpg" alt="X"></a>
+                  </div>
+              </div>
+          </div>
+          <div class="footer-bottom">
+              &copy; 2025 Sproutly by AVI. All rights reserved.
+          </div>
+      </footer>
 
   <script src="{{ asset('js/script-editProfileExpert.js') }}"></script>
 </body>
