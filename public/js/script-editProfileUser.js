@@ -1,41 +1,109 @@
 /* =====================
    SIDEBAR TOGGLE
 ===================== */
-const sidebar        = document.getElementById('sidebar');
-const sidebarOverlay = document.getElementById('sidebarOverlay');
-const sidebarToggle  = document.getElementById('sidebarToggle');
+(function () {
+  const sidebar       = document.getElementById("sidebar");
+  const mainContent   = document.getElementById("mainContent");
+  const overlay       = document.getElementById("sidebarOverlay");
+  const sidebarToggle = document.getElementById("sidebarToggle");
 
-function openSidebar() {
-  sidebar.classList.add('open');
-  sidebarOverlay.classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
+  if (!sidebar || !sidebarToggle) return;
 
-function closeSidebar() {
-  sidebar.classList.remove('open');
-  sidebarOverlay.classList.remove('active');
-  document.body.style.overflow = '';
-}
+  const MOBILE_BP = 768;
 
-if (sidebarToggle) {
-  sidebarToggle.addEventListener('click', () => {
-    sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+  function isMobile() {
+    return window.innerWidth <= MOBILE_BP;
+  }
+
+  function openSidebar() {
+    sidebar.classList.remove("closed");
+    sidebarToggle.classList.add("is-open");
+
+    if (isMobile()) {
+      // Mobile: pakai overlay, tidak push layout
+      if (overlay) {
+        overlay.style.display = "block";
+        requestAnimationFrame(() => overlay.classList.add("active"));
+      }
+    } else {
+      // Desktop: push layout ke kanan
+      if (mainContent) mainContent.classList.add("pushed");
+    }
+
+    document.body.classList.add("sidebar-open");
+  }
+
+  function closeSidebar() {
+    sidebar.classList.add("closed");
+    sidebarToggle.classList.remove("is-open");
+
+    // Tutup overlay (mobile)
+    if (overlay) {
+      overlay.classList.remove("active");
+      setTimeout(() => { overlay.style.display = "none"; }, 260);
+    }
+
+    // Kembalikan layout (desktop)
+    if (mainContent) mainContent.classList.remove("pushed");
+
+    document.body.classList.remove("sidebar-open");
+  }
+
+  function isSidebarOpen() {
+    return !sidebar.classList.contains("closed");
+  }
+
+  // ── Init: sidebar tertutup saat halaman dibuka ──
+  sidebar.classList.add("closed");
+  if (overlay) overlay.style.display = "none";
+
+  // ── Burger toggle ──
+  sidebarToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    isSidebarOpen() ? closeSidebar() : openSidebar();
   });
-}
 
-if (sidebarOverlay) {
-  sidebarOverlay.addEventListener('click', closeSidebar);
-}
+  // ── Klik overlay (mobile) → tutup ──
+  if (overlay) {
+    overlay.addEventListener("click", () => closeSidebar());
+  }
 
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeSidebar();
-});
-
-document.querySelectorAll('.sidebar-link').forEach(link => {
-  link.addEventListener('click', () => {
-    if (window.innerWidth < 1024) closeSidebar();
+  // ── Klik di luar sidebar (desktop) → tutup ──
+  document.addEventListener("click", (e) => {
+    if (
+      !isMobile() &&
+      isSidebarOpen() &&
+      !sidebar.contains(e.target) &&
+      !sidebarToggle.contains(e.target)
+    ) {
+      closeSidebar();
+    }
   });
-});
+
+  // ── Klik link di sidebar → tutup (UX) ──
+  document.querySelectorAll(".sidebar-menu .menu-link").forEach((link) => {
+    link.addEventListener("click", () => closeSidebar());
+  });
+
+  // ── Resize: sesuaikan behaviour ──
+  window.addEventListener("resize", () => {
+    if (isSidebarOpen()) {
+      if (isMobile()) {
+        if (mainContent) mainContent.classList.remove("pushed");
+        if (overlay) {
+          overlay.style.display = "block";
+          requestAnimationFrame(() => overlay.classList.add("active"));
+        }
+      } else {
+        if (overlay) {
+          overlay.classList.remove("active");
+          setTimeout(() => { overlay.style.display = "none"; }, 260);
+        }
+        if (mainContent) mainContent.classList.add("pushed");
+      }
+    }
+  });
+})();
 
 /* =====================
    AVATAR PHOTO PREVIEW
