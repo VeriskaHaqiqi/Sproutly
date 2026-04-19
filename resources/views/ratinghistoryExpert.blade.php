@@ -49,12 +49,12 @@
                         <span>Pricing</span>
                     </a>
 
-                    <a href="consultexpert" class="menu-item active">
+                    <a href="/ConsultationhistoryUser" class="menu-item active">
                         <img src="{{ asset('images/clienthistory.png') }}" alt="Client History">
                         <span>Client History</span>
                     </a>
 
-                    <a href="editProfileExpert" class="menu-item">
+                    <a href="/accountExpert" class="menu-item">
                         <img src="{{ asset('images/settings.png') }}" alt="Setting">
                         <span>Setting</span>
                     </a>

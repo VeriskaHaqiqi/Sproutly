@@ -24,37 +24,37 @@
                 </div>
 
                 <nav class="sidebar-menu">
-                    <a href="#" class="menu-item">
+                    <a href="/dashboard-ahli" class="menu-item">
                         <img src="{{ asset('images/dashboard.png') }}" alt="Dashboard">
                         <span>Dashboard</span>
                     </a>
 
-                    <a href="#" class="menu-item active">
+                    <a href="/consulexpert" class="menu-item active">
                         <img src="{{ asset('images/consultation.png') }}" alt="Consultation">
                         <span>Consultation</span>
                     </a>
 
-                    <a href="#" class="menu-item">
+                    <a href="/articleExpert" class="menu-item">
                         <img src="{{ asset('images/article.png') }}" alt="Article">
                         <span>Article</span>
                     </a>
 
-                    <a href="#" class="menu-item">
+                    <a href="myarticleExpert" class="menu-item">
                         <img src="{{ asset('images/myarticle.png') }}" alt="My Article">
                         <span>My Article</span>
                     </a>
 
-                    <a href="#" class="menu-item">
+                    <a href="/setpricingexpert" class="menu-item">
                         <img src="{{ asset('images/pricing.png') }}" alt="Pricing">
                         <span>Pricing</span>
                     </a>
 
-                    <a href="#" class="menu-item">
+                    <a href="/ConsultationhistoryUser" class="menu-item">
                         <img src="{{ asset('images/clienthistory.png') }}" alt="Client History">
                         <span>Client History</span>
                     </a>
 
-                    <a href="#" class="menu-item">
+                    <a href="/accountExpert" class="menu-item">
                         <img src="{{ asset('images/settings.png') }}" alt="Setting">
                         <span>Setting</span>
                     </a>
