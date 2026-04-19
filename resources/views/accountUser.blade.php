@@ -6,7 +6,9 @@
   <title>Sproutly - Account</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Font Awesome — untuk icon sidebar -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="{{ asset('css/style-accountUser.css') }}">
 </head>
 <body>
@@ -14,46 +16,50 @@
   <!-- ========================
        SIDEBAR OVERLAY
   ========================= -->
+  <!-- Sidebar Overlay -->
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <!-- ========================
-       SIDEBAR
-  ========================= -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-      <div class="sidebar-logo-icon">
-        <img src="{{ asset('images/logo.png') }}" alt="Sproutly" />
-      </div>
-      <span class="sidebar-logo-name">Sproutly</span>
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar closed" id="sidebar">
+    <div class="sidebar-header">
+      <a href="{{ url('/homeUser') }}" class="logo-wrap">
+        <div class="logo-box">
+          <!-- Pastikan file logo-hijau.png ada di folder public/images -->
+          <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo" class="logo-img">
+        </div>
+        <span class="logo-text">Sproutly</span>
+      </a>
     </div>
 
-    <nav class="sidebar-nav">
-      <a href="#" class="sidebar-link">
-        <img src="{{ asset('images/dashboard.png') }}" alt="" class="nav-icon" width="20"/>
+    <div class="sidebar-line"></div>
+
+    <nav class="sidebar-menu">
+      <a href="{{ url('/dashboard-user') }}" class="menu-link">
+        <i class="fa-solid fa-chart-line"></i>
         <span>Dashboard</span>
       </a>
-      <a href="#" class="sidebar-link">
-        <img src="{{ asset('images/consultation.png') }}" alt="" class="nav-icon" width="20"/>
+      <a href="{{ url('/consultationUser') }}" class="menu-link">
+        <i class="fa-solid fa-comments"></i>
         <span>Consultation</span>
       </a>
-      <a href="#" class="sidebar-link">
-        <img src="{{ asset('images/article.png') }}" alt="" class="nav-icon" width="20"/>
+      <a href="{{ url('/daftarArtikel') }}" class="menu-link">
+        <i class="fa-solid fa-newspaper"></i>
         <span>Article</span>
       </a>
-      <a href="#" class="sidebar-link">
-        <img src="{{ asset('images/bookmark article.jpg') }}" alt="" class="nav-icon" />
+      <a href="{{ url('/bookmarkArtikelUser') }}" class="menu-link">
+        <i class="fa-solid fa-bookmark"></i>
         <span>Bookmarked Article</span>
       </a>
-      <a href="#" class="sidebar-link">
-        <img src="{{ asset('images/reviews.png') }}" alt="" class="nav-icon" width="20"/>
+      <a href="{{ url('/reviewsUser') }}" class="menu-link">
+        <i class="fa-solid fa-star"></i>
         <span>Reviews</span>
       </a>
-      <a href="#" class="sidebar-link">
-        <img src="{{ asset('images/payment.png') }}" alt="" class="nav-icon" width="20"/>
+      <a href="{{ url('/invoice') }}" class="menu-link">
+        <i class="fa-solid fa-credit-card"></i>
         <span>Payment</span>
       </a>
-      <a href="#" class="sidebar-link sidebar-link--active">
-        <img src="{{ asset('images/settings.png') }}" alt="" class="nav-icon" width="20"/>
+      <a href="{{ url('/accountUser') }}" class="menu-link active">
+        <i class="fa-solid fa-gear"></i>
         <span>Setting</span>
       </a>
     </nav>
@@ -62,17 +68,18 @@
   <!-- ========================
        MAIN LAYOUT
   ========================= -->
-  <div class="layout" id="layout">
+  <div class="layout" id="mainContent">
 
     <!-- TOP NAV -->
     <header class="topnav">
-      <button class="logo-btn" id="sidebarToggle" aria-label="Toggle sidebar">
-        <div class="logo-btn-icon">
-          <img src="{{ asset('images/logo.png') }}" alt="Sproutly" />
-        </div>
+      <button class="burger-btn" id="sidebarToggle" aria-label="Toggle sidebar">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
-      <span class="topnav-title">Account</span>
-      <div class="topnav-spacer"></div>
+      <div class="topnav-title">
+        <h1>Account</h1>
+      </div>
     </header>
 
     <!-- PAGE BODY -->
@@ -224,12 +231,46 @@
             </button>
         </form>
       </div>
-
-      <!-- FOOTER -->
-      <p class="page-footer">© 2024 Sproutly Platform. All rights reserved.</p>
-
     </main>
   </div>
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-top">
+          <div class="footer-logo-box">
+            <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo" class="footer-logo">
+          </div>
+          <div>
+            <h3>Sproutly</h3>
+            <span>by AVI</span>
+          </div>
+        </div>
+        <p>A modern agriculture consultation platform for a greener and more sustainable future.</p>
+      </div>
+
+      <div class="footer-links">
+        <h4>About Us</h4>
+        <a href="#">Our Team</a>
+        <a href="#">Blog</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p><i class="fa-solid fa-envelope"></i> sproutly@gmail.com</p>
+        <p><i class="fa-solid fa-phone"></i> +62 851 5693 2186</p>
+        <div class="social-icons">
+          <a href="#"><img src="{{ asset('images/instagram.jpg') }}" alt="Instagram"></a>
+          <a href="#"><img src="{{ asset('images/facebook.png') }}" alt="Facebook"></a>
+          <a href="#"><img src="{{ asset('images/X.jpg') }}" alt="X"></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 Sproutly by AVI. All rights reserved.
+    </div>
+  </footer>
 
   <script src="{{ asset('js/script-accountUser.js') }}"></script>
 </body>
