@@ -1,14 +1,14 @@
 /* public/css/style-lockRoomUser.css */
 
 :root {
-    --bg-page: #f7fbfc;
+    --bg-page: #ffffff;
     --bg-white: #ffffff;
-    --solid-lock: #76d7ea;
-    --solid-lock-soft: #dff6fb;
+    --accent: #76d7ea;
+    --accent-hover: #76EAD0;
     --text-dark: #1f2937;
     --text-muted: #6b7280;
-    --border: #d9e5e8;
-    --input-bg: #f1f5f7;
+    --border: #e5eaec;
+    --input-bg: #f4f6f7;
     --font: 'Inter', sans-serif;
 }
 
@@ -28,10 +28,6 @@ body {
     color: var(--text-dark);
 }
 
-body {
-    min-height: 100vh;
-}
-
 img {
     display: block;
     max-width: 100%;
@@ -45,20 +41,21 @@ a {
 button,
 input {
     font-family: inherit;
+    cursor: default;
 }
 
-/* MAIN */
+/* ─── MAIN ──────────────────────────────────── */
 .main-content {
     width: 100%;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: var(--bg-page);
+    background: #ffffff;
 }
 
-/* TOPBAR */
+/* ─── TOPBAR ────────────────────────────────── */
 .topbar {
-    height: 68px;
+    height: 64px;
     background: #fff;
     border-bottom: 1px solid var(--border);
     display: flex;
@@ -69,40 +66,32 @@ input {
 }
 
 .topbar-title {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
-    letter-spacing: 2px;
-    color: #52636a;
-}
-
-.topbar-actions {
-    display: flex;
-    align-items: center;
+    letter-spacing: 2.5px;
+    color: #8fa3ab;
 }
 
 .close-btn {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     background: #f1f5f9;
-    color: #1f2937;
+    border: none;
+    color: #94a3b8;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
-    transition: background 0.2s ease;
+    opacity: 0.6;
 }
 
-.close-btn:hover {
-    background: #e2e8f0;
-}
-
-/* DOCTOR BAR */
+/* ─── DOCTOR BAR ────────────────────────────── */
 .doctor-bar {
     background: #fff;
     border-bottom: 1px solid var(--border);
-    padding: 16px 24px;
+    padding: 14px 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -113,23 +102,23 @@ input {
 .doctor-info {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
     min-width: 0;
 }
 
 .doctor-avatar,
 .doctor-avatar-fallback {
-    width: 52px;
-    height: 52px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
-    background: var(--solid-lock);
+    background: var(--accent);
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     font-weight: 700;
-    font-size: 18px;
-    color: var(--text-dark);
+    font-size: 16px;
+    color: #0f4a57;
     flex-shrink: 0;
 }
 
@@ -137,10 +126,6 @@ input {
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
-
-.doctor-details {
-    min-width: 0;
 }
 
 .doctor-name-row {
@@ -151,7 +136,7 @@ input {
 }
 
 .doctor-name {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
     color: var(--text-dark);
 }
@@ -159,18 +144,19 @@ input {
 .doctor-badge {
     font-size: 10px;
     font-weight: 700;
-    padding: 5px 10px;
+    padding: 4px 10px;
     border-radius: 999px;
     background: #e8f8fc;
-    color: #1f8aa0;
+    color: #1a8aa0;
+    letter-spacing: 0.3px;
 }
 
 .doctor-meta {
-    margin-top: 4px;
+    margin-top: 3px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 13px;
+    gap: 6px;
+    font-size: 12.5px;
     color: var(--text-muted);
 }
 
@@ -180,40 +166,37 @@ input {
 }
 
 .doctor-sep {
-    color: #b8c4c8;
+    color: #c9d4d8;
 }
 
 .view-profile-btn {
     border: 1px solid var(--border);
     background: #fff;
-    color: #475569;
-    padding: 10px 18px;
+    color: #94a3b8;
+    padding: 9px 18px;
     border-radius: 999px;
     font-size: 13px;
     font-weight: 600;
     white-space: nowrap;
+    opacity: 0.6;
 }
 
-/* CHAT AREA */
+/* ─── CHAT AREA ─────────────────────────────── */
 .chat-area {
-    position: relative;
+    position: static;
     flex: 1;
     overflow: hidden;
-    background: var(--solid-lock);
+    background: #fff;
 }
 
+/* Background chat – visible but uninteractive */
 .chat-messages {
     height: 100%;
     overflow-y: auto;
     padding: 28px 32px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-}
-
-.chat-messages.blurred {
-    filter: none;
-    opacity: 0;
+    gap: 18px;
     pointer-events: none;
     user-select: none;
 }
@@ -221,8 +204,8 @@ input {
 .message {
     display: flex;
     align-items: flex-end;
-    gap: 10px;
-    max-width: 70%;
+    gap: 9px;
+    max-width: 68%;
 }
 
 .message.received {
@@ -236,11 +219,11 @@ input {
 
 .msg-avatar,
 .user-avatar-sm {
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     overflow: hidden;
-    background: #dbe7eb;
+    background: #d6edf2;
     flex-shrink: 0;
 }
 
@@ -252,68 +235,68 @@ input {
 }
 
 .msg-bubble {
-    padding: 12px 16px;
+    padding: 11px 15px;
     border-radius: 18px;
     font-size: 13.5px;
     line-height: 1.6;
 }
 
 .message.received .msg-bubble {
-    background: #fff;
+    background: #f3f6f8;
     color: var(--text-dark);
 }
 
 .message.sent .msg-bubble {
-    background: #dff6fb;
+    background: #e0f7fb;
     color: var(--text-dark);
 }
 
-/* LOCK OVERLAY */
+/* ─── LOCK OVERLAY ──────────────────────────── */
 .lock-overlay {
-    position: absolute;
+    position: fixed;
     inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--solid-lock);
-    z-index: 5;
+
+    /* Blurred dark semi-transparent backdrop — covers entire viewport */
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+
+    z-index: 100;
     padding: 24px;
 }
 
+/* ─── PAYMENT CARD ──────────────────────────── */
 .payment-card {
-    width: 340px;
+    position: relative;
+    z-index: 10;                   /* above overlay blur */
+    width: 360px;
     max-width: 100%;
     background: #fff;
-    border-radius: 24px;
-    padding: 28px 24px 22px;
+    border-radius: 28px;
+    padding: 32px 28px 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 14px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25), 0 4px 16px rgba(0, 0, 0, 0.12);
+
+    /* Guarantee the card itself is NOT blurred */
+    filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
 
-.lock-icon-wrap {
-    width: 58px;
-    height: 58px;
-    border-radius: 18px;
-    background: #eaf8fc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.lock-icon {
+.lock-icon-wrap img {
     width: 24px;
     height: 24px;
     object-fit: contain;
 }
 
-.lock-emoji {
-    font-size: 24px;
-}
-
 .payment-title {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 800;
     line-height: 1.15;
     text-align: center;
@@ -321,10 +304,11 @@ input {
 }
 
 .payment-desc {
-    font-size: 14px;
-    line-height: 1.6;
+    font-size: 13.5px;
+    line-height: 1.65;
     text-align: center;
     color: var(--text-muted);
+    max-width: 280px;
 }
 
 .price-box {
@@ -332,7 +316,7 @@ input {
     border: 1px solid var(--border);
     border-radius: 16px;
     background: #f9fcfd;
-    padding: 14px 16px;
+    padding: 14px 18px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -342,46 +326,42 @@ input {
 .price-info {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 3px;
 }
 
 .price-amount {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 800;
     line-height: 1;
     color: #0f172a;
 }
 
 .price-label {
-    font-size: 11px;
+    font-size: 10.5px;
     color: var(--text-muted);
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.4px;
+    letter-spacing: 0.5px;
 }
 
 .price-shield {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
     border-radius: 10px;
     background: #eaf8fc;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 16px;
     flex-shrink: 0;
 }
 
-.price-shield img {
-    width: 16px;
-    height: 16px;
-    object-fit: contain;
-}
-
+/* ─── PAY BUTTON ────────────────────────────── */
 .pay-btn {
     width: 100%;
     min-height: 50px;
     border-radius: 999px;
-    background: #76d7ea;
+    background: var(--accent);
     color: #0f172a;
     display: flex;
     align-items: center;
@@ -389,13 +369,19 @@ input {
     gap: 8px;
     font-size: 14px;
     font-weight: 700;
-    transition: background 0.2s ease;
+    transition: background 0.18s ease, transform 0.1s ease;
     text-align: center;
-    padding: 0 18px;
+    padding: 0 20px;
+    cursor: pointer;
 }
 
 .pay-btn:hover {
-    background: #67cde2;
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+.pay-btn:active {
+    transform: translateY(0);
 }
 
 .btn-arrow {
@@ -403,19 +389,43 @@ input {
     line-height: 1;
 }
 
+/* ─── CANCEL BUTTON ─────────────────────────── */
+.cancel-btn {
+    width: 100%;
+    min-height: 44px;
+    border-radius: 999px;
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+    cursor: pointer;
+}
+
+.cancel-btn:hover {
+    background: #f3f6f8;
+    border-color: #c5d0d4;
+    color: var(--text-dark);
+}
+
+/* ─── PAYMENT FOOTER ────────────────────────── */
 .payment-footer {
-    margin-top: 2px;
+    margin-top: -2px;
     text-align: center;
 }
 
 .payment-footer-text {
     font-size: 11px;
     line-height: 1.5;
-    color: var(--text-muted);
+    color: #a8b6bc;
     font-weight: 500;
 }
 
-/* INPUT BAR */
+/* ─── INPUT BAR (display only) ──────────────── */
 .chat-input-bar {
     display: flex;
     align-items: center;
@@ -437,6 +447,8 @@ input {
     align-items: center;
     justify-content: center;
     font-size: 16px;
+    opacity: 0.45;
+    cursor: not-allowed;
 }
 
 .input-attach,
@@ -446,7 +458,7 @@ input {
 }
 
 .input-send {
-    background: #76d7ea;
+    background: var(--accent);
     color: #0f172a;
 }
 
@@ -458,11 +470,12 @@ input {
     background: var(--input-bg);
     border-radius: 999px;
     padding: 0 16px;
-    font-size: 14px;
-    color: #94a3b8;
+    font-size: 13.5px;
+    color: #b0bec5;
+    cursor: not-allowed;
 }
 
-/* RESPONSIVE */
+/* ─── RESPONSIVE ────────────────────────────── */
 @media (max-width: 768px) {
     .topbar,
     .doctor-bar,
@@ -476,20 +489,20 @@ input {
     }
 
     .message {
-        max-width: 88%;
+        max-width: 86%;
     }
 
     .payment-card {
-        width: 300px;
-        padding: 24px 20px 20px;
+        width: 310px;
+        padding: 26px 20px 20px;
     }
 
     .payment-title {
-        font-size: 24px;
+        font-size: 22px;
     }
 
     .price-amount {
-        font-size: 24px;
+        font-size: 22px;
     }
 
     .view-profile-btn {
