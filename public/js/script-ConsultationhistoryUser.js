@@ -1,422 +1,109 @@
-/* =============================================
-   script-ConsultationhistoryUser.js
-   Sproutly - Consultation History User
-   ============================================= */
+const menuToggle  = document.getElementById("menuToggle");
+const sidebar     = document.getElementById("sidebar");
+const mainContent = document.getElementById("mainContent");
 
-document.addEventListener('DOMContentLoaded', function () {
+function openSidebar() {
+  if (window.innerWidth <= 768) {
+    sidebar.classList.add("show");
+    sidebar.classList.remove("closed");
+  } else {
+    sidebar.classList.remove("closed");
+    mainContent.classList.add("shifted");
+    mainContent.classList.remove("full");
+  }
+}
+function closeSidebar() {
+  sidebar.classList.add("closed");
+  sidebar.classList.remove("show");
+  mainContent.classList.remove("shifted");
+  mainContent.classList.add("full");
+}
+function isSidebarOpen() {
+  if (window.innerWidth <= 768) return sidebar.classList.contains("show");
+  return !sidebar.classList.contains("closed");
+}
 
-    /* ============ CONSULTATION DATA ============ */
-    const consultations = [
-        {
-            id: '#CS001',
-            expert: 'Sarah Johnson',
-            avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=SarahJohnson&backgroundColor=b6e3f4',
-            topic: 'Crop Disease Analysis',
-            date: 'Mar 15, 2026',
-            dateVal: '2026-03-15',
-            status: 'Completed',
-            payment: 'Paid',
-            paymentMethod: 'Credit Card',
-            total: '$120.00',
-            note: 'Identified early signs of fungal infection in tomato plants. Recommended organic fungicide treatment and improved drainage.'
-        },
-        {
-            id: '#CS002',
-            expert: 'Michael Chen',
-            avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=MichaelChen&backgroundColor=c0aede',
-            topic: 'Soil Nutrition Assessment',
-            date: 'Mar 12, 2026',
-            dateVal: '2026-03-12',
-            status: 'Ongoing',
-            payment: 'Paid',
-            paymentMethod: 'Bank Transfer',
-            total: '$95.00',
-            note: 'Soil samples show nitrogen deficiency. Follow-up session scheduled to review fertilizer plan progress.'
-        },
-        {
-            id: '#CS003',
-            expert: 'Emily Rodriguez',
-            avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=EmilyRodriguez&backgroundColor=ffd5dc',
-            topic: 'Pest Control Strategy',
-            date: 'Mar 10, 2026',
-            dateVal: '2026-03-10',
-            status: 'Cancelled',
-            payment: 'Refunded',
-            paymentMethod: 'E-Wallet',
-            total: '$80.00',
-            note: 'Consultation cancelled due to scheduling conflict. Full refund processed within 3 business days.'
-        },
-        {
-            id: '#CS004',
-            expert: 'James Wilson',
-            avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=JamesWilson&backgroundColor=d1f4d1',
-            topic: 'Irrigation Planning',
-            date: 'Mar 8, 2026',
-            dateVal: '2026-03-08',
-            status: 'Completed',
-            payment: 'Paid',
-            paymentMethod: 'Credit Card',
-            total: '$150.00',
-            note: 'Designed a drip irrigation system for 2-hectare vegetable farm. Estimated 30% water savings after implementation.'
-        },
-        {
-            id: '#CS005',
-            expert: 'Lisa Thompson',
-            avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=LisaThompson&backgroundColor=ffecd2',
-            topic: 'Organic Farming Transition',
-            date: 'Mar 5, 2026',
-            dateVal: '2026-03-05',
-            status: 'Ongoing',
-            payment: 'Paid',
-            paymentMethod: 'Bank Transfer',
-            total: '$200.00',
-            note: 'Month 2 of 6-month organic transition program. Soil biome improving steadily. Next review in 3 weeks.'
-        },
-        {
-            id: '#CS006',
-            expert: 'David Park',
-            avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=DavidPark&backgroundColor=c7f2f2',
-            topic: 'Greenhouse Optimization',
-            date: 'Feb 28, 2026',
-            dateVal: '2026-02-28',
-            status: 'Completed',
-            payment: 'Paid',
-            paymentMethod: 'Credit Card',
-            total: '$175.00',
-            note: 'Optimized greenhouse temperature and humidity controls for year-round tomato production. Yield projected to increase by 25%.'
-        },
-        {
-            id: '#CS007',
-            expert: 'Maria Santos',
-            avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=MariaSantos&backgroundColor=f9d9f9',
-            topic: 'Seed Selection Guide',
-            date: 'Feb 24, 2026',
-            dateVal: '2026-02-24',
-            status: 'Completed',
-            payment: 'Paid',
-            paymentMethod: 'E-Wallet',
-            total: '$70.00',
-            note: 'Recommended high-yield, disease-resistant seed varieties suited to local soil and climate conditions.'
-        },
-        {
-            id: '#CS008',
-            expert: 'Robert Kim',
-            avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=RobertKim&backgroundColor=d4f1c7',
-            topic: 'Harvest Planning',
-            date: 'Feb 20, 2026',
-            dateVal: '2026-02-20',
-            status: 'Cancelled',
-            payment: 'Refunded',
-            paymentMethod: 'Credit Card',
-            total: '$90.00',
-            note: 'Cancelled due to weather events. Refunded in full. Rescheduling recommended for next dry season.'
-        },
-        {
-            id: '#CS009',
-            expert: 'Anna Novak',
-            avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=AnnaNovak&backgroundColor=ffe0b2',
-            topic: 'Composting Techniques',
-            date: 'Feb 15, 2026',
-            dateVal: '2026-02-15',
-            status: 'Completed',
-            payment: 'Paid',
-            paymentMethod: 'Bank Transfer',
-            total: '$60.00',
-            note: 'Introduced vermicomposting and bokashi systems to reduce waste and enrich soil organically.'
-        },
-        {
-            id: '#CS010',
-            expert: 'Carlos Mendez',
-            avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=CarlosMendez&backgroundColor=cfd8dc',
-            topic: 'Water Management',
-            date: 'Feb 10, 2026',
-            dateVal: '2026-02-10',
-            status: 'Completed',
-            payment: 'Paid',
-            paymentMethod: 'Credit Card',
-            total: '$130.00',
-            note: 'Developed rainwater harvesting plan for small farm. Expected to reduce municipal water usage by 40%.'
-        },
-        {
-            id: '#CS011',
-            expert: 'Sophie Laurent',
-            avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=SophieLaurent&backgroundColor=ffe0cc',
-            topic: 'Plant Nutrition Basics',
-            date: 'Feb 5, 2026',
-            dateVal: '2026-02-05',
-            status: 'Ongoing',
-            payment: 'Paid',
-            paymentMethod: 'E-Wallet',
-            total: '$85.00',
-            note: 'Three-session program on macro and micronutrient management. Session 1 of 3 completed.'
-        },
-        {
-            id: '#CS012',
-            expert: 'Tom Walker',
-            avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=TomWalker&backgroundColor=e0f0e0',
-            topic: 'Cover Cropping Strategy',
-            date: 'Jan 28, 2026',
-            dateVal: '2026-01-28',
-            status: 'Completed',
-            payment: 'Paid',
-            paymentMethod: 'Bank Transfer',
-            total: '$110.00',
-            note: 'Designed seasonal cover crop rotation to improve soil health and reduce erosion on sloping farmland.'
-        }
-    ];
-
-    const ROWS_PER_PAGE = 5;
-    let currentPage = 1;
-    let filteredData = [...consultations];
-
-    /* ============ SIDEBAR TOGGLE ============ */
-    const hamburger = document.getElementById('hamburgerBtn');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-
-    function openSidebar() {
-        sidebar.classList.add('open');
-        overlay.classList.add('active');
-        hamburger.classList.add('open');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeSidebar() {
-        sidebar.classList.remove('open');
-        overlay.classList.remove('active');
-        hamburger.classList.remove('open');
-        document.body.style.overflow = '';
-    }
-
-    if (hamburger) {
-        hamburger.addEventListener('click', function () {
-            if (sidebar.classList.contains('open')) {
-                closeSidebar();
-            } else {
-                openSidebar();
-            }
-        });
-    }
-
-    if (overlay) {
-        overlay.addEventListener('click', closeSidebar);
-    }
-
-    /* ============ FILTER LOGIC ============ */
-    const searchInput = document.getElementById('searchInput');
-    const statusFilter = document.getElementById('statusFilter');
-    const paymentFilter = document.getElementById('paymentFilter');
-    const dateFilter = document.getElementById('dateFilter');
-
-    function applyFilters() {
-        const searchVal = searchInput ? searchInput.value.toLowerCase().trim() : '';
-        const statusVal = statusFilter ? statusFilter.value : '';
-        const paymentVal = paymentFilter ? paymentFilter.value : '';
-        const dateVal = dateFilter ? dateFilter.value : '';
-
-        filteredData = consultations.filter(function (row) {
-            const matchSearch = !searchVal || row.expert.toLowerCase().includes(searchVal) || row.topic.toLowerCase().includes(searchVal) || row.id.toLowerCase().includes(searchVal);
-            const matchStatus = !statusVal || row.status === statusVal;
-            const matchPayment = !paymentVal || row.payment === paymentVal;
-            const matchDate = !dateVal || row.dateVal === dateVal;
-            return matchSearch && matchStatus && matchPayment && matchDate;
-        });
-
-        currentPage = 1;
-        renderTable();
-        renderPagination();
-    }
-
-    if (searchInput) searchInput.addEventListener('input', applyFilters);
-    if (statusFilter) statusFilter.addEventListener('change', applyFilters);
-    if (paymentFilter) paymentFilter.addEventListener('change', applyFilters);
-    if (dateFilter) dateFilter.addEventListener('change', applyFilters);
-
-    /* ============ TABLE RENDERING ============ */
-    function getStatusBadge(status) {
-        const map = {
-            'Completed': 'badge-completed',
-            'Ongoing': 'badge-ongoing',
-            'Cancelled': 'badge-cancelled'
-        };
-        return '<span class="badge ' + (map[status] || '') + '">' + status + '</span>';
-    }
-
-    function getPaymentBadge(payment) {
-        const map = {
-            'Paid': 'badge-paid',
-            'Refunded': 'badge-refunded'
-        };
-        return '<span class="badge ' + (map[payment] || '') + '">' + payment + '</span>';
-    }
-
-    function renderTable() {
-        const tbody = document.getElementById('tableBody');
-        if (!tbody) return;
-
-        const start = (currentPage - 1) * ROWS_PER_PAGE;
-        const end = start + ROWS_PER_PAGE;
-        const pageData = filteredData.slice(start, end);
-
-        if (pageData.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 36px; color: var(--text-muted); font-size: 0.9rem;">No consultations found.</td></tr>';
-            return;
-        }
-
-        tbody.innerHTML = pageData.map(function (row) {
-            return '<tr>' +
-                '<td><span class="id-cell">' + row.id + '</span></td>' +
-                '<td>' +
-                    '<div class="expert-cell">' +
-                        '<img src="' + row.avatar + '" alt="' + row.expert + '" class="expert-avatar" onerror="this.src=\'https://api.dicebear.com/7.x/initials/svg?seed=' + encodeURIComponent(row.expert) + '\'">' +
-                        '<span class="expert-name">' + row.expert + '</span>' +
-                    '</div>' +
-                '</td>' +
-                '<td>' + row.topic + '</td>' +
-                '<td><span class="date-cell">' + row.date + '</span></td>' +
-                '<td>' + getStatusBadge(row.status) + '</td>' +
-                '<td>' + getPaymentBadge(row.payment) + '</td>' +
-                '<td>' +
-                    '<button class="btn-view-details" onclick="openModal(\'' + row.id + '\')">' +
-                        'View Details' +
-                    '</button>' +
-                '</td>' +
-            '</tr>';
-        }).join('');
-    }
-
-    /* ============ PAGINATION ============ */
-    function renderPagination() {
-        const pagination = document.getElementById('pagination');
-        if (!pagination) return;
-
-        const totalPages = Math.ceil(filteredData.length / ROWS_PER_PAGE);
-
-        if (totalPages <= 1) {
-            pagination.innerHTML = '';
-            return;
-        }
-
-        let html = '';
-
-        // Prev
-        html += '<button class="page-btn" ' + (currentPage === 1 ? 'disabled' : '') + ' onclick="goPage(' + (currentPage - 1) + ')">' +
-            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>' +
-            '</button>';
-
-        // Pages
-        for (let i = 1; i <= totalPages; i++) {
-            html += '<button class="page-btn' + (i === currentPage ? ' active' : '') + '" onclick="goPage(' + i + ')">' + i + '</button>';
-        }
-
-        // Next
-        html += '<button class="page-btn" ' + (currentPage === totalPages ? 'disabled' : '') + ' onclick="goPage(' + (currentPage + 1) + ')">' +
-            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>' +
-            '</button>';
-
-        pagination.innerHTML = html;
-    }
-
-    window.goPage = function (page) {
-        const totalPages = Math.ceil(filteredData.length / ROWS_PER_PAGE);
-        if (page < 1 || page > totalPages) return;
-        currentPage = page;
-        renderTable();
-        renderPagination();
-    };
-
-    /* ============ MODAL ============ */
-    const modalOverlay = document.getElementById('modalOverlay');
-    const modalClose = document.getElementById('modalClose');
-
-    window.openModal = function (id) {
-        const row = consultations.find(function (c) { return c.id === id; });
-        if (!row || !modalOverlay) return;
-
-        const modalBody = document.getElementById('modalBody');
-        if (!modalBody) return;
-
-        modalBody.innerHTML =
-            '<div class="modal-expert-row">' +
-                '<img src="' + row.avatar + '" alt="' + row.expert + '" class="modal-expert-avatar" onerror="this.src=\'https://api.dicebear.com/7.x/initials/svg?seed=' + encodeURIComponent(row.expert) + '\'">' +
-                '<div>' +
-                    '<div class="modal-expert-name">' + row.expert + '</div>' +
-                    '<div class="modal-expert-topic">' + row.topic + '</div>' +
-                '</div>' +
-            '</div>' +
-            '<div class="modal-fields">' +
-                '<div class="modal-field">' +
-                    '<span class="modal-field-label">Consultation ID</span>' +
-                    '<span class="modal-field-value">' + row.id + '</span>' +
-                '</div>' +
-                '<div class="modal-field">' +
-                    '<span class="modal-field-label">Date</span>' +
-                    '<span class="modal-field-value">' + row.date + '</span>' +
-                '</div>' +
-                '<div class="modal-field">' +
-                    '<span class="modal-field-label">Status</span>' +
-                    '<span class="modal-field-value">' + getStatusBadge(row.status) + '</span>' +
-                '</div>' +
-                '<div class="modal-field">' +
-                    '<span class="modal-field-label">Payment Status</span>' +
-                    '<span class="modal-field-value">' + getPaymentBadge(row.payment) + '</span>' +
-                '</div>' +
-                '<div class="modal-field">' +
-                    '<span class="modal-field-label">Payment Method</span>' +
-                    '<span class="modal-field-value">' + row.paymentMethod + '</span>' +
-                '</div>' +
-                '<div class="modal-field">' +
-                    '<span class="modal-field-label">Total Payment</span>' +
-                    '<span class="modal-field-value" style="font-weight:700;">' + row.total + '</span>' +
-                '</div>' +
-            '</div>' +
-            '<div class="modal-note">' +
-                '<p>' + row.note + '</p>' +
-            '</div>';
-
-        modalOverlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    };
-
-    function closeModal() {
-        if (modalOverlay) modalOverlay.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-
-    if (modalClose) modalClose.addEventListener('click', closeModal);
-
-    if (modalOverlay) {
-        modalOverlay.addEventListener('click', function (e) {
-            if (e.target === modalOverlay) closeModal();
-        });
-    }
-
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') {
-            closeModal();
-            closeSidebar();
-        }
-    });
-
-    function getStatusBadge(status) {
-        const map = {
-            'Completed': 'badge-completed',
-            'Ongoing': 'badge-ongoing',
-            'Cancelled': 'badge-cancelled'
-        };
-        return '<span class="badge ' + (map[status] || '') + '">' + status + '</span>';
-    }
-
-    function getPaymentBadge(payment) {
-        const map = {
-            'Paid': 'badge-paid',
-            'Refunded': 'badge-refunded'
-        };
-        return '<span class="badge ' + (map[payment] || '') + '">' + payment + '</span>';
-    }
-
-    /* ============ INIT ============ */
-    renderTable();
-    renderPagination();
-
+menuToggle.addEventListener("click", () => {
+  isSidebarOpen() ? closeSidebar() : openSidebar();
 });
+document.addEventListener("click", (e) => {
+  if (window.innerWidth <= 768 && isSidebarOpen() && !sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+    closeSidebar();
+  }
+});
+window.addEventListener("resize", () => {
+  if (window.innerWidth > 768) sidebar.classList.remove("show");
+  else { mainContent.classList.remove("shifted"); mainContent.classList.add("full"); }
+});
+
+const conversations = [
+  { id: 1, status: "active",    name: "Reza Firmansyah", tag: "Crop Science",       tagClass: "tag-soil-science",    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80", preview: "Reza: Morning, for watering you should do it before 9 AM...", time: "10:24", online: true,  unread: true,  url: "/roomChatUser" },
+  { id: 2, status: "active",    name: "Siti Rahayu",     tag: "Soil Management",    tagClass: "tag-soil-science",    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80", preview: "Siti: Soil samples show low nitrogen. I recommend organic fertilizer...", time: "09:15", online: true,  unread: false, url: "/roomChatUser" },
+  { id: 3, status: "active",    name: "Bagas Priyatno",  tag: "Pest Control",       tagClass: "tag-pest-control",    avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&q=80", preview: "Bagas: The pest you mentioned is likely Spodoptera frugiperda...", time: "Yesterday", online: false, unread: true,  url: "/roomChatUser" },
+  { id: 4, status: "completed", name: "Dewi Kusuma",     tag: "Organic Farming",    tagClass: "tag-organic-farming", avatar: "https://images.unsplash.com/photo-1504593811423-6dd665756598?w=200&q=80", preview: "Dewi: Great, your organic compost plan looks solid. Keep it up!", time: "Mar 10", online: false, unread: false, url: "/endedRoomUser" },
+  { id: 5, status: "completed", name: "Hendra Wibowo",   tag: "Irrigation Systems", tagClass: "tag-irrigation",      avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&q=80", preview: "Hendra: The drip irrigation plan has been sent to your email.", time: "Mar 5",  online: false, unread: false, url: "/endedRoomUser" },
+];
+
+let activeStatus  = "active";
+let searchKeyword = "";
+
+function renderConversations() {
+  const list  = document.getElementById("conversationList");
+  const empty = document.getElementById("emptyState");
+
+  const filtered = conversations.filter(c =>
+    c.status === activeStatus &&
+    (!searchKeyword ||
+      c.name.toLowerCase().includes(searchKeyword) ||
+      c.tag.toLowerCase().includes(searchKeyword) ||
+      c.preview.toLowerCase().includes(searchKeyword))
+  );
+
+  list.innerHTML = "";
+  if (filtered.length === 0) { empty.classList.remove("hidden"); return; }
+  empty.classList.add("hidden");
+
+  filtered.forEach(c => {
+    const div = document.createElement("div");
+    div.className = "conversation-item";
+
+    const onlineDot = c.online ? '<span class="online-dot"></span>' : "";
+    const badge = c.status === "completed"
+      ? `<span class="completed-badge"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8L6.5 11.5L13 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Ended</span>`
+      : "";
+    const check = c.unread ? "" : `<svg class="read-check" viewBox="0 0 24 24" fill="none"><path d="M2 12L7 17L14 9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 17L16 9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+    div.innerHTML = `
+      <div class="conversation-left">
+        <div class="conversation-avatar"><img src="${c.avatar}" alt="${c.name}"></div>
+        <div class="conversation-main">
+          <div class="conversation-name">${c.name}</div>
+          <div class="conversation-meta-row">
+            <span class="conversation-tag ${c.tagClass}">${c.tag}</span>
+            ${onlineDot}${badge}
+          </div>
+          <div class="conversation-preview">${c.preview}</div>
+        </div>
+      </div>
+      <div class="conversation-right">${check}<span>${c.time}</span></div>`;
+
+    div.addEventListener("click", function () { window.location.href = c.url; });
+    list.appendChild(div);
+  });
+}
+
+document.getElementById("statusTabs").addEventListener("click", (e) => {
+  const tab = e.target.closest(".status-tab");
+  if (!tab) return;
+  document.querySelectorAll(".status-tab").forEach(t => t.classList.remove("active"));
+  tab.classList.add("active");
+  activeStatus = tab.dataset.status;
+  renderConversations();
+});
+
+document.getElementById("conversationSearch").addEventListener("input", (e) => {
+  searchKeyword = e.target.value.trim().toLowerCase();
+  renderConversations();
+});
+
+renderConversations();

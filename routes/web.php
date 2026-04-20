@@ -206,4 +206,4 @@ Route::get('/setPayMethod', function () {
     return view('setPayMethod');
 })->name('setPayMethod');
 
-
+Route::get('/endedRoomUser',    function () { return view('endedRoomUser'); });
