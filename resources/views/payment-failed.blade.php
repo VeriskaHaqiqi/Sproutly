@@ -23,31 +23,31 @@
                 </div>
 
                 <nav class="sidebar-menu">
-                    <a href="#" class="menu-item">
+                    <a href="/dashboardUser" class="menu-item">
                         <img src="{{ asset('images/dashboard.png') }}" alt="Dashboard">
                         <span>Dashboard</span>
                     </a>
-                    <a href="#" class="menu-item">
+                    <a href="/consultationUser" class="menu-item">
                         <img src="{{ asset('images/consultation.png') }}" alt="Consultation">
                         <span>Consultation</span>
                     </a>
-                    <a href="#" class="menu-item">
+                    <a href="/daftarArtikel" class="menu-item">
                         <img src="{{ asset('images/article.png') }}" alt="Article">
                         <span>Article</span>
                     </a>
-                    <a href="#" class="menu-item">
+                    <a href="/bookmarkArtikelUser" class="menu-item">
                         <img src="{{ asset('images/bookmark article.jpg') }}" alt="Bookmarked Article">
                         <span>Bookmarked Article</span>
                     </a>
-                    <a href="#" class="menu-item">
+                    <a href="/reviewsUser" class="menu-item">
                         <img src="{{ asset('images/reviews.png') }}" alt="Reviews">
                         <span>Reviews</span>
                     </a>
-                    <a href="#" class="menu-item active">
+                    <a href="/paymentUser" class="menu-item active">
                         <img src="{{ asset('images/payment.png') }}" alt="Payment">
                         <span>Payment</span>
                     </a>
-                    <a href="#" class="menu-item">
+                    <a href="/accountUser" class="menu-item">
                         <img src="{{ asset('images/settings.png') }}" alt="Setting">
                         <span>Setting</span>
                     </a>
