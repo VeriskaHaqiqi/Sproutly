@@ -30,7 +30,7 @@
       <a href="{{ url('/articleExpert') }}"           class="menu-link"><i class="fa-solid fa-newspaper"></i><span>Article</span></a>
       <a href="{{ url('/myarticleExpert') }}"         class="menu-link child-link"><i class="fa-solid fa-file-lines"></i><span>My Article</span></a>
       <a href="{{ url('/setpricingexpert') }}"        class="menu-link child-link"><i class="fa-solid fa-dollar-sign"></i><span>Pricing</span></a>
-      <a href="{{ url('/ConsultationhistoryUser') }}" class="menu-link child-link"><i class="fa-solid fa-clock-rotate-left"></i><span>Client History</span></a>
+      <a href="{{ url('/ConsultationhistoryExpert') }}" class="menu-link child-link"><i class="fa-solid fa-clock-rotate-left"></i><span>Client History</span></a>
       <a href="{{ url('/accountExpert') }}"           class="menu-link child-link"><i class="fa-solid fa-gear"></i><span>Setting</span></a>
     </nav>
   </aside>

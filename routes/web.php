@@ -154,6 +154,10 @@ Route::get('/ConsultationhistoryUser', function () {
     return view('ConsultationhistoryUser');
 });
 
+Route::get('/ConsultationhistoryExpert', function () {
+    return view('ConsultationhistoryExpert');
+});
+
 Route::get('/consultexpert', function () {
     return view('consultexpert');
 })->name('consultexpert');
