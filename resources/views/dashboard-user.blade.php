@@ -53,7 +53,7 @@
           <i class="fa-solid fa-credit-card"></i>
           <span>Payment</span>
         </a>
-        <a href="{{ url('/supportUser') }}" class="menu-link">
+        <a href="{{ url('/accountUser') }}" class="menu-link">
           <i class="fa-solid fa-gear"></i>
           <span>Setting</span>
         </a>
