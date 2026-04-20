@@ -23,11 +23,11 @@ input {
 }
 
 :root {
-    --sidebar-width: 270px;
-    --sidebar-bg: #d7efea;
-    --sidebar-border: #bddfd7;
-    --menu-text: #52627c;
-    --menu-active: #15984a;
+    --sidebar-width: 260px;
+    --sidebar-bg: linear-gradient(180deg, #d9f1eb 0%, #d7efe9 100%);
+    --sidebar-border: #bedfd7;
+    --menu-text: #4b5d73;
+    --menu-active: #118f54;
 }
 
 .page-layout {
@@ -45,101 +45,118 @@ input {
     left: 0;
     z-index: 1000;
     transform: translateX(0);
-    transition: transform 0.3s ease;
+    transition: transform 0.35s ease;
     overflow-y: auto;
     overflow-x: hidden;
+    scrollbar-width: none;
+}
+
+.sidebar::-webkit-scrollbar {
+    display: none;
 }
 
 .sidebar.hidden {
     transform: translateX(-100%);
 }
 
-.sidebar::-webkit-scrollbar {
-    width: 8px;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-    background: rgba(100, 130, 120, 0.35);
-    border-radius: 10px;
-}
-
 .sidebar-inner {
     min-height: 100%;
-    padding: 22px 18px 40px;
+    padding: 22px 16px 28px;
 }
 
 .sidebar-top {
-    padding: 16px 10px 24px;
-    border-bottom: 1px solid var(--sidebar-border);
-    margin-bottom: 20px;
+    display: block;
+    padding: 0;
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.sidebar-top::after {
+    content: "";
+    display: block;
+    height: 1px;
+    background: var(--sidebar-border);
+    margin-top: 14px;
+    margin-bottom: 18px;
+    width: calc(100% + 32px);
+    margin-left: -16px;
 }
 
 .logo-wrap {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
+    min-height: 56px;
 }
 
 .logo-box {
-    width: 56px;
-    height: 56px;
-    border-radius: 18px;
-    background: linear-gradient(135deg, #74dfc9, #5fd7c2);
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #76ead0, #76d7ea);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    box-shadow: 0 2px 8px rgba(118, 225, 207, 0.25);
+    box-shadow: none;
 }
 
 .logo-box img {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     object-fit: contain;
+    filter: brightness(0) invert(1);
 }
 
 .logo-text {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 800;
-    color: var(--menu-active);
+    color: #169857;
     white-space: nowrap;
+    letter-spacing: -0.02em;
 }
 
 .sidebar-menu {
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    padding: 6px 4px 20px;
+    gap: 6px;
+    padding: 0 0 20px;
 }
 
 .menu-item {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 16px 16px;
-    border-radius: 22px;
+    gap: 14px;
+    padding: 13px 18px;
+    border-radius: 18px;
     color: var(--menu-text);
-    font-size: 16px;
-    font-weight: 500;
-    transition: 0.25s ease;
+    font-size: 15px;
+    font-weight: 600;
+    transition: background 0.22s ease, color 0.22s ease, box-shadow 0.22s ease;
 }
 
 .menu-item img {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     object-fit: cover;
     flex-shrink: 0;
+    opacity: 0.9;
 }
 
 .menu-item.active {
     background: #ffffff;
     color: var(--menu-active);
     font-weight: 700;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+}
+
+.menu-item.active img {
+    opacity: 1;
 }
 
 .menu-item:hover {
     background: rgba(255, 255, 255, 0.55);
+    color: var(--menu-active);
 }
 
 .sidebar-overlay {
@@ -164,7 +181,7 @@ input {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    transition: margin-left 0.3s ease, width 0.3s ease;
+    transition: margin-left 0.35s ease, width 0.35s ease;
 }
 
 .main-content.full {
@@ -186,7 +203,6 @@ input {
     gap: 16px;
 }
 
-/* TOGGLE YANG DIBENERIN */
 .toggle-btn {
     width: 54px;
     height: 54px;
@@ -223,7 +239,6 @@ input {
     line-height: 1.5;
 }
 
-/* sisanya biarkan */
 .info-banner,
 .status-banner {
     display: flex;
