@@ -1,277 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sproutly - Invoices</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ asset('css/style-invoice.css') }}">
 </head>
-
 <body>
+<div class="dashboard-page">
 
-  <div>
-
-    <!-- Navigation -->
-    <header>
-      <div>
-        <div>
-          <div>
-            <span>eco</span>
-          </div>
-          <h2>Sproutly</h2>
+  <!-- SIDEBAR -->
+  <aside class="sidebar closed" id="sidebar">
+    <div class="sidebar-header">
+      <a href="{{ url('/homeUser') }}" class="logo-wrap">
+        <div class="logo-box">
+          <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo" class="logo-img">
         </div>
+        <span class="logo-text">Sproutly</span>
+      </a>
+    </div>
+    <div class="sidebar-line"></div>
+    <nav class="sidebar-menu">
+      <a href="{{ url('/dashboard-user') }}"      class="menu-link"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span></a>
+      <a href="{{ url('/consultationUser') }}"    class="menu-link"><i class="fa-solid fa-comments"></i><span>Consultation</span></a>
+      <a href="{{ url('/daftarArtikel') }}"       class="menu-link"><i class="fa-solid fa-newspaper"></i><span>Article</span></a>
+      <a href="{{ url('/bookmarkArtikelUser') }}" class="menu-link"><i class="fa-solid fa-bookmark"></i><span>Bookmarked Article</span></a>
+      <a href="{{ url('/reviewsUser') }}"         class="menu-link"><i class="fa-solid fa-star"></i><span>Reviews</span></a>
+      <a href="{{ url('/invoice') }}"             class="menu-link active"><i class="fa-solid fa-credit-card"></i><span>Payment</span></a>
+      <a href="{{ url('/supportUser') }}"         class="menu-link"><i class="fa-solid fa-gear"></i><span>Setting</span></a>
+    </nav>
+  </aside>
 
-        <nav>
-          <a href="#">Dashboard</a>
-          <a href="#">Invoices</a>
-          <a href="#">Experts</a>
-          <a href="#">Reports</a>
-        </nav>
-      </div>
+  <!-- MAIN -->
+  <main class="main-content full" id="mainContent">
 
-      <div>
-        <div>
-          <label for="invoice-search">Search invoices</label>
-          <input id="invoice-search" type="text" placeholder="Search invoices..." />
-        </div>
-
-        <button type="button" aria-label="Notifications">
-          <span>notifications</span>
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle sidebar">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M4 7H20" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M4 12H20" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M4 17H20" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+          </svg>
         </button>
-
-        <div>
-          <img
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTUAXtO0aCDgx3f3jcYrP1EhD9YjAM-_WG7p-_HNvTut7tQagjIkmMJCIpAVJhdq1yp60jZYUSoDPmi0lKc05mC5JtLLO-JvbPpw95OzaPTa4hQtsX4356rl3t0EZm7-osQLpsWPyj_CTlTjiddTPOoNcF4CFt89h215y41krUsZhTU2ByON8bOP9WCECBd7Ep3RlmJqRsYXiqpH1w-fqO9SjNjSyX7z9r6h2afT3v7tFCTNkS5TVJ7ohgejcBsKAXChVSx5q5N7A"
-            alt="Profile"
-          />
+        <div class="topbar-search">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="2"/><path d="M16 16L20 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <input type="text" placeholder="Search consultations, articles, experts..."/>
         </div>
+      </div>
+      <div class="topbar-right">
+        <button class="notif-btn" type="button">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M8 18H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 20C10.5 21 11.1 21.5 12 21.5C12.9 21.5 13.5 21 14 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M18 17H6C6.9 16.2 7.5 15 7.5 13.8V10.8C7.5 8.2 9.4 6 12 6C14.6 6 16.5 8.2 16.5 10.8V13.8C16.5 15 17.1 16.2 18 17Z" fill="currentColor"/>
+          </svg>
+        </button>
+        <a href="{{ url('/accountUser') }}" class="profile-chip">
+          <div class="profile-info">
+            <span class="profile-name">Sarah Green</span>
+            <span class="profile-role">Agriculture Expert</span>
+          </div>
+          <img src="{{ asset('images/fotoprofile.png') }}" alt="Profile">
+        </a>
       </div>
     </header>
 
-    <main>
+    <!-- CONTENT -->
+    <section class="content-wrap">
 
-      <!-- Page Header -->
-      <section>
+      <!-- Page header -->
+      <div class="page-header">
         <div>
           <h1>Invoices</h1>
-          <p>Streamline your agricultural consultation payments and billing history.</p>
+          <p>Manage and track all consultation invoices</p>
         </div>
-
-        <div>
-          <button type="button">Filter</button>
-          <button type="button">New Invoice</button>
+        <div class="page-header-actions">
+          <button class="filter-btn" id="filterToggle" type="button">
+            <i class="fa-solid fa-filter"></i> Filter
+          </button>
+          <button class="new-invoice-btn" type="button">
+            New Invoice
+          </button>
         </div>
-      </section>
+      </div>
 
-      <!-- Stats Bar -->
-      <section>
-        <article>
-          <p>Total Outstanding</p>
-          <p>$4,280.50</p>
-        </article>
+      <!-- Filter panel (hidden by default) -->
+      <div class="filter-panel hidden" id="filterPanel">
+        <div class="filter-row">
+          <select id="filterStatus">
+            <option value="">All Status</option>
+            <option value="Paid">Paid</option>
+            <option value="Pending">Pending</option>
+            <option value="Refund">Refund</option>
+          </select>
+          <input type="text" id="filterSearch" placeholder="Search by expert or consultation..."/>
+          <button class="filter-reset-btn" id="filterReset" type="button">Reset</button>
+        </div>
+      </div>
 
-        <article>
-          <p>Paid this month</p>
-          <p>$12,450.00</p>
-        </article>
-
-        <article>
-          <p>Pending Review</p>
-          <p>7 Invoices</p>
-        </article>
-      </section>
-
-      <!-- Main Table Container -->
-      <section>
-
-        <header>
-          <h3>All Invoices <span>24</span></h3>
-          <div>
-            <span>Sort by: Date</span>
-            <span>expand_more</span>
+      <!-- Stats cards -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-body">
+            <p class="stat-label">Total Outstanding</p>
+            <h2 class="stat-value">$24,580</h2>
+            <span class="stat-sub positive">+12% from last month</span>
           </div>
-        </header>
+          <div class="stat-icon-box red">
+            <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
+              <path d="M12 9V13M12 17H12.01M10.29 3.86L1.82 18A2 2 0 003.54 21H20.46A2 2 0 0022.18 18L13.71 3.86A2 2 0 0010.29 3.86Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
 
-        <table>
-          <caption>Invoice List</caption>
+        <div class="stat-card">
+          <div class="stat-body">
+            <p class="stat-label">Paid This Month</p>
+            <h2 class="stat-value">$45,230</h2>
+            <span class="stat-sub positive">+8% from last month</span>
+          </div>
+          <div class="stat-icon-box green">
+            <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
+              <path d="M22 11.08V12A10 10 0 1112 2a10 10 0 0110 9.92" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
 
+        <div class="stat-card">
+          <div class="stat-body">
+            <p class="stat-label">Pending Review</p>
+            <h2 class="stat-value">18</h2>
+            <span class="stat-sub urgent">3 urgent</span>
+          </div>
+          <div class="stat-icon-box yellow">
+            <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+              <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-card">
+        <table class="invoice-table">
           <thead>
             <tr>
-              <th scope="col">Invoice ID</th>
-              <th scope="col">Expert</th>
-              <th scope="col">Consultation</th>
-              <th scope="col">Amount</th>
-              <th scope="col">Due Date</th>
-              <th scope="col">Status</th>
-              <th scope="col">Action</th>
+              <th>Invoice ID</th>
+              <th>Expert</th>
+              <th>Consultation</th>
+              <th>Amount</th>
+              <th>Due Date</th>
+              <th>Status</th>
+              <th>Action</th>
             </tr>
           </thead>
-
-          <tbody>
-            <tr>
-              <td>#INV-1001</td>
-              <td>
-                <div>
-                  <img
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0RWvHlFrlwCjjF1R0WLI8JpidRxxSDBuOnWv7Vc6gW1KKkO_s8ZsZUEA24Ail5shIXF-p2XwccYFMTDdwZqcjEOqUw2U4aQc9eI_X0S-EhRZ1M1hrMskW2JyVDEQPfNepftr553RVRGumbZiakng6q41qNsoHGRZwLzgv67gNMDk-7j0P7EIUg8yvFxzKCw6il5cb_kLD1AgwBNPwPr9MYp0v8JyYVlBJLzbhsziJ8oypTqZ48Sso8KUrhiujmDezeXF9JoKr2X0"
-                    alt="Dr. Aris Thorne"
-                  />
-                  <div>
-                    <p>Dr. Aris Thorne</p>
-                    <p>Soil Scientist</p>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <p>Nitrogen Analysis</p>
-                <p>Video Call</p>
-              </td>
-              <td>$120.00</td>
-              <td>
-                <p>Oct 30, 2023</p>
-                <p>in 5 days</p>
-              </td>
-              <td>Paid</td>
-              <td>
-                <button type="button" aria-label="Download invoice #INV-1001">
-                  <span>download</span>
-                </button>
-              </td>
-            </tr>
-
-            <tr>
-              <td>#INV-1002</td>
-              <td>
-                <div>
-                  <img
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKUeJ7XrH3zJTBznX3VJa9BEZzELlK5utV70mrZhiofmPKmht0umR9An_Z9QiE7k1kxEkBsLRqETr3h7LB9zDYgPWWyigMAJfbojOIGenSWPvedhSULp_LcZlqgevb_FxCkV6oPc_D8A66cydCK5Ptu7RsJxAMOalwotHGzh4eimncKoywLaGN3XOZ0qjg7eFHkOcezMWW54ww_HsDnvbCjk3i8IZSExrvsV2XDjRcTCKfQbzZtHh_Rqs1wt_NaYcHoT-UgjotNb0"
-                    alt="Elena Vance"
-                  />
-                  <div>
-                    <p>Elena Vance</p>
-                    <p>Crop Rotation Expert</p>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <p>Plant Rotation Plan</p>
-                <p>Document Consultation</p>
-              </td>
-              <td>$250.00</td>
-              <td>
-                <p>Nov 02, 2023</p>
-                <p>in 8 days</p>
-              </td>
-              <td>Unpaid</td>
-              <td>
-                <button type="button" aria-label="Download invoice #INV-1002">
-                  <span>download</span>
-                </button>
-              </td>
-            </tr>
-
-            <tr>
-              <td>#INV-0998</td>
-              <td>
-                <div>
-                  <img
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGy55E8DtpOXE6QOea5AERanLu0zw1RbTH6CVtUQfkzsH7LJno7HhFX2A6GV9GOohNdgqIWYDYiqwscXxPFNlu_BaYW-tjfozb2sKbiemm42xRMpGSf6qlW91b1eET1FZTk8APKO5ghsvEJioa8yVXTN_EYz5P5hNrkQAidNIeosuc4sY-BzSqaKhyVmEKe0lY9PJLTv90OJ1o-n40n6fEOzyzc0u9sSDSbi4TYMsbW9wGIWfvsyvo3nFzIxnta8UOECfcJfMVmm4"
-                    alt="Marcus Gray"
-                  />
-                  <div>
-                    <p>Marcus Gray</p>
-                    <p>Pest Control Specialist</p>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <p>Pest Strategy</p>
-                <p>Phone Consultation</p>
-              </td>
-              <td>$85.00</td>
-              <td>
-                <p>Oct 15, 2023</p>
-                <p>Overdue</p>
-              </td>
-              <td>Overdue</td>
-              <td>
-                <button type="button" aria-label="Download invoice #INV-0998">
-                  <span>download</span>
-                </button>
-              </td>
-            </tr>
-
-            <tr>
-              <td>#INV-1003</td>
-              <td>
-                <div>
-                  <img
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuALiZrwL4fAal0RWV3csuxDvXFvYBRNUQvtqONoWqlBxg0AaDd77CZLA7LZiyXclX2qPYVJmGVIHNhWN5kwzhEfTCF87NQzwUMZFUCbXXiCnk3ugIDSfJhiLYWbPQk0eF25jZg91BzcUHKK4J7L_BEheEhzPdh1HLGlbmApkkIxVxitEfwZy71mUbEUVgsi2lp7abuSdRDlniq8IZegFK0Qhm6bRit1xeJM9S2aEyjxOuQ0POxzeY8L88sImDwFG3Smxk_eKEsaWqo"
-                    alt="Sarah Jenks"
-                  />
-                  <div>
-                    <p>Sarah Jenks</p>
-                    <p>Irrigation Analyst</p>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <p>Irrigation Audit</p>
-                <p>On-site Consultation</p>
-              </td>
-              <td>$400.00</td>
-              <td>
-                <p>Nov 10, 2023</p>
-                <p>in 16 days</p>
-              </td>
-              <td>Paid</td>
-              <td>
-                <button type="button" aria-label="Download invoice #INV-1003">
-                  <span>download</span>
-                </button>
-              </td>
-            </tr>
-          </tbody>
+          <tbody id="invoiceTableBody"></tbody>
         </table>
 
-        <!-- Pagination / Footer -->
-        <footer>
-          <p>Showing 1-4 of 24 invoices</p>
+        <!-- Pagination -->
+        <div class="table-footer">
+          <span class="showing-text" id="showingText">Showing 1 to 5 of 47 results</span>
+          <div class="pagination" id="pagination"></div>
+        </div>
+      </div>
 
-          <nav aria-label="Invoice pages">
-            <button type="button" aria-label="Previous page">
-              <span>chevron_left</span>
-            </button>
+    </section>
 
-            <a href="#" aria-current="page">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-
-            <button type="button" aria-label="Next page">
-              <span>chevron_right</span>
-            </button>
-          </nav>
-        </footer>
-
-      </section>
-
-      <!-- Floating Action Button (structure only, no styling) -->
-      <button type="button" aria-label="Create new invoice">
-        <span>add</span>
-      </button>
-
-    </main>
-
-    <!-- Footer -->
-    <footer>
-      <p>© 2023 Sproutly. All rights reserved.</p>
-      <nav>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Help Center</a>
-      </nav>
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-brand-top">
+            <div class="footer-logo-box"><img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo" class="footer-logo"></div>
+            <div><h3>Sproutly</h3><span>by AVI</span></div>
+          </div>
+          <p>A modern agriculture consultation platform for a greener and more sustainable future.</p>
+        </div>
+        <div class="footer-links">
+          <h4>About Us</h4>
+          <a href="#">Our Team</a><a href="#">Blog</a><a href="#">Privacy Policy</a>
+        </div>
+        <div class="footer-contact">
+          <h4>Contact</h4>
+          <p><i class="fa-solid fa-envelope"></i> sproutly@gmail.com</p>
+          <p><i class="fa-solid fa-phone"></i> +62 851 5693 2186</p>
+          <div class="social-icons">
+            <a href="#"><img src="{{ asset('images/instagram.jpg') }}" alt="Instagram"></a>
+            <a href="#"><img src="{{ asset('images/facebook.png') }}" alt="Facebook"></a>
+            <a href="#"><img src="{{ asset('images/X.jpg') }}" alt="X"></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">&copy; 2025 Sproutly by AVI. All rights reserved.</div>
     </footer>
 
-  </div>
-
+  </main>
+</div>
+<script src="{{ asset('js/script-invoice.js') }}"></script>
 </body>
 </html>
