@@ -1,185 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expert Dashboard - Sproutly</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/style-dashboard-ahli.css') }}">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sproutly - Expert Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ asset('css/style-dashboard-ahli.css') }}">
 </head>
-<body class="expert-dashboard">
+<body>
+<div class="layout">
 
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-    <div class="dashboard-layout">
-        <aside class="sidebar-expert" id="sidebarExpert">
-            <div class="sidebar-header">
-                <div class="logo-wrapper">
-                    <div class="logo-box">
-                        <img src="{{ asset('images/logo.png') }}" alt="Sproutly">
-                    </div>
-                    <span class="brand-text">Sproutly</span>
-                </div>
-            </div>
-
-            <nav class="sidebar-menu">
-                <a href="{{ url('/expert/dashboard') }}" class="menu-item active">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                    <span>Dashboard</span>
-                </a>
-                <a href="{{ url('/expert/consultation') }}" class="menu-item">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                    <span>Consultation</span>
-                </a>
-                <a href="{{ url('/expert/article') }}" class="menu-item">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                    <span>Article</span>
-                </a>
-                <a href="{{ url('/expert/my-article') }}" class="menu-item">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-                    <span>My Article</span>
-                </a>
-                <a href="{{ url('/expert/pricing') }}" class="menu-item">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-                    <span>Pricing</span>
-                </a>
-                <a href="{{ url('/expert/client-history') }}" class="menu-item">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                    <span>Client History</span>
-                </a>
-                <a href="{{ url('/expert/setting') }}" class="menu-item">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                    <span>Setting</span>
-                </a>
-            </nav>
-        </aside>
-
-        <div class="main-content" id="mainContent">
-            <header class="topbar">
-                <div class="topbar-left">
-                    <button class="hamburger-btn" id="hamburgerBtn">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-                    </button>
-                    <div class="search-box">
-                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        <input type="text" placeholder="Search consultations, articles, users...">
-                    </div>
-                </div>
-                <div class="topbar-right">
-                    <button class="notif-btn">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-                        <span class="badge-notif"></span>
-                    </button>
-                    <div class="expert-profile">
-                        <div class="profile-info">
-                            <span class="expert-name">Sarah Green</span>
-                            <span class="expert-label">Agriculture Expert</span>
-                        </div>
-                        <div class="avatar-box">
-                            <img src="{{ asset('images/expert-avatar.jpg') }}" alt="Profile">
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <section class="hero-section">
-                <div class="hero-left">
-                    <h1 class="welcome-text">Welcome back, Sarah! 🌿</h1>
-                    <p class="sub-welcome">Here's what's happening with your consultations today</p>
-                </div>
-                <div class="hero-right">
-                    <div class="date-chip">Dec 21, 2026</div>
-                </div>
-            </section>
-
-            <section class="stats-grid">
-                <div class="stat-card orange-bg">
-                    <div class="stat-icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
-                    <div class="stat-data">
-                        <h2>20</h2>
-                        <p>Consultations this month</p>
-                    </div>
-                </div>
-                <div class="stat-card green-bg">
-                    <div class="stat-icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
-                    <div class="stat-data">
-                        <h2>4.8</h2>
-                        <p>Average Rating ⭐</p>
-                    </div>
-                </div>
-                <div class="stat-card blue-bg">
-                    <div class="stat-icon-wrapper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></div>
-                    <div class="stat-data">
-                        <h2>20</h2>
-                        <p>Published Articles</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="consultations-section">
-                <div class="section-heading">
-                    <h3>Active Consultations</h3>
-                    <a href="{{ url('/expert/consultation') }}" class="view-all-link">View All</a>
-                </div>
-                <div class="consultation-container">
-                    <div class="consult-row">
-                        <div class="user-info">
-                            <img src="{{ asset('images/user1.jpg') }}" alt="Client">
-                            <div>
-                                <h4>Michael Chen</h4>
-                                <p>Organic farming consultation</p>
-                            </div>
-                        </div>
-                        <span class="timestamp">2 hours ago</span>
-                        <a href="{{ url('/expert/consultation/detail/1') }}" class="btn-detail">View Detail</a>
-                    </div>
-                    <div class="consult-row">
-                        <div class="user-info">
-                            <img src="{{ asset('images/user2.jpg') }}" alt="Client">
-                            <div>
-                                <h4>Emma Rodriguez</h4>
-                                <p>Pest control strategies</p>
-                            </div>
-                        </div>
-                        <span class="timestamp">5 hours ago</span>
-                        <a href="{{ url('/expert/consultation/detail/2') }}" class="btn-detail">View Detail</a>
-                    </div>
-                    <div class="consult-row">
-                        <div class="user-info">
-                            <img src="{{ asset('images/user3.jpg') }}" alt="Client">
-                            <div>
-                                <h4>David Thompson</h4>
-                                <p>Crop rotation planning</p>
-                            </div>
-                        </div>
-                        <span class="timestamp">1 day ago</span>
-                        <a href="{{ url('/expert/consultation/detail/3') }}" class="btn-detail">View Detail</a>
-                    </div>
-                </div>
-            </section>
-
-            <section class="quick-actions">
-                <h3>Quick Actions</h3>
-                <div class="action-grid">
-                    <div class="action-card soft-green-bg">
-                        <div class="action-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
-                        <h4>Manage Schedule</h4>
-                        <p>Set your availability and manage consultation slots</p>
-                        <a href="{{ url('/expert/schedule') }}" class="action-link">Go to Calendar <span>→</span></a>
-                    </div>
-                    <div class="action-card soft-lime-bg">
-                        <div class="action-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
-                        <h4>Edit Pricing</h4>
-                        <p>Update your consultation rates and packages</p>
-                        <a href="{{ url('/expert/pricing') }}" class="action-link">Update Pricing <span>→</span></a>
-                    </div>
-                </div>
-            </section>
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar closed" id="sidebar">
+    <div class="sidebar-header">
+      <a href="{{ url('/homeExpert') }}" class="logo-wrap">
+        <div class="logo-box">
+          <img src="{{ asset('images/logo.png') }}" alt="Sproutly" class="logo-img">
         </div>
+        <span class="logo-text">Sproutly</span>
+      </a>
     </div>
+    <div class="sidebar-line"></div>
+    <nav class="sidebar-menu">
+      <a href="{{ url('/dashboard-ahli') }}"         class="menu-link active"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span></a>
+      <a href="{{ url('/consulexpert') }}"            class="menu-link"><i class="fa-solid fa-comments"></i><span>Consultation</span></a>
+      <a href="{{ url('/articleExpert') }}"           class="menu-link"><i class="fa-solid fa-newspaper"></i><span>Article</span></a>
+      <a href="{{ url('/myarticleExpert') }}"         class="menu-link child-link"><i class="fa-solid fa-file-lines"></i><span>My Article</span></a>
+      <a href="{{ url('/setpricingexpert') }}"        class="menu-link child-link"><i class="fa-solid fa-dollar-sign"></i><span>Pricing</span></a>
+      <a href="{{ url('/ConsultationhistoryUser') }}" class="menu-link child-link"><i class="fa-solid fa-clock-rotate-left"></i><span>Client History</span></a>
+      <a href="{{ url('/accountExpert') }}"           class="menu-link child-link"><i class="fa-solid fa-gear"></i><span>Setting</span></a>
+    </nav>
+  </aside>
 
-    <script src="{{ asset('js/script-dashboard-ahli.js') }}"></script>
+  <!-- ===== MAIN ===== -->
+  <main class="main-content full" id="mainContent">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="sidebar-toggle" id="sidebarToggle" type="button">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="Search consultations, articles, users...">
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="notif-btn" type="button">
+          <i class="fa-solid fa-bell"></i>
+          <span class="notif-dot"></span>
+        </button>
+        <a href="{{ url('/accountExpert') }}" class="profile-chip">
+          <div class="profile-info">
+            <span class="profile-name">Sarah Green</span>
+            <span class="profile-role">Agriculture Expert</span>
+          </div>
+          <img src="{{ asset('images/fotoprofile.png') }}" alt="Profile">
+        </a>
+      </div>
+    </header>
+
+    <!-- ===== PAGE CONTENT ===== -->
+    <div class="page-content">
+
+      <!-- Welcome row -->
+      <div class="welcome-row">
+        <div class="welcome-text">
+          <h1>Welcome back, Sarah!
+            <span class="leaf-icon">
+              <svg viewBox="0 0 34 30" fill="none">
+                <path d="M7 19C7 19 5 10 11 6C17 2 25 6 24 14C23 21 15 22 10 20" fill="#6dbb1f"/>
+                <path d="M18 27C18 27 17 12 28 7C32 5 34 8 34 13C34 23 24 28 19 28" fill="#88cf39"/>
+                <path d="M18 29V15" stroke="#4f9b10" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+            </span>
+          </h1>
+          <p>Here's what's happening with your consultations today</p>
+        </div>
+        <div class="date-chip">
+          <i class="fa-solid fa-calendar-days"></i>
+          <span id="todayDate">Dec 21, 2026</span>
+        </div>
+      </div>
+
+      <!-- Stats cards -->
+      <div class="stats-grid">
+        <div class="stat-card card-yellow">
+          <div class="stat-icon-wrap">
+            <div class="stat-icon-box">
+              <i class="fa-solid fa-comments"></i>
+            </div>
+          </div>
+          <div class="stat-number">20</div>
+          <div class="stat-label">Consultations this month</div>
+          <div class="stat-deco"></div>
+        </div>
+
+        <div class="stat-card card-green">
+          <div class="stat-icon-wrap">
+            <div class="stat-icon-box">
+              <i class="fa-solid fa-star"></i>
+            </div>
+          </div>
+          <div class="stat-number">4.8</div>
+          <div class="stat-label">Average Rating ⭐</div>
+          <div class="stat-deco"></div>
+        </div>
+
+        <div class="stat-card card-teal">
+          <div class="stat-icon-wrap">
+            <div class="stat-icon-box">
+              <i class="fa-solid fa-newspaper"></i>
+            </div>
+          </div>
+          <div class="stat-number">20</div>
+          <div class="stat-label">Published Articles</div>
+          <div class="stat-deco"></div>
+        </div>
+      </div>
+
+      <!-- Active Consultations -->
+      <div class="section-card">
+        <div class="section-head">
+          <h2>Active Consultations</h2>
+          <a href="{{ url('/consulexpert') }}" class="view-all-btn">View All</a>
+        </div>
+        <div class="consult-list">
+
+          <div class="consult-item">
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael Chen" class="consult-avatar">
+            <div class="consult-info">
+              <span class="consult-name">Michael Chen</span>
+              <span class="consult-topic">Organic farming consultation</span>
+            </div>
+            <span class="consult-time">2 hours ago</span>
+            <a href="{{ url('/roomChatExpert') }}" class="view-detail-btn">View Detail</a>
+          </div>
+
+          <div class="consult-item">
+            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Emma Rodriguez" class="consult-avatar">
+            <div class="consult-info">
+              <span class="consult-name">Emma Rodriguez</span>
+              <span class="consult-topic">Pest control strategies</span>
+            </div>
+            <span class="consult-time">5 hours ago</span>
+            <a href="{{ url('/roomChatExpert') }}" class="view-detail-btn">View Detail</a>
+          </div>
+
+          <div class="consult-item">
+            <img src="https://randomuser.me/api/portraits/men/55.jpg" alt="David Thompson" class="consult-avatar">
+            <div class="consult-info">
+              <span class="consult-name">David Thompson</span>
+              <span class="consult-topic">Crop rotation planning</span>
+            </div>
+            <span class="consult-time">1 day ago</span>
+            <a href="{{ url('/roomChatExpert') }}" class="view-detail-btn">View Detail</a>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions-section">
+        <h2 class="qa-title">Quick Actions</h2>
+        <div class="quick-actions-grid">
+
+          <a href="{{ url('/manageSchedule') }}" class="qa-card qa-yellow">
+            <div class="qa-icon-box">
+              <i class="fa-solid fa-calendar-days"></i>
+            </div>
+            <h3>Manage Schedule</h3>
+            <p>Set your availability and manage consultation slots</p>
+            <span class="qa-link">Go to Calendar <i class="fa-solid fa-arrow-right"></i></span>
+          </a>
+
+          <a href="{{ url('/setpricingexpert') }}" class="qa-card qa-lime">
+            <div class="qa-icon-box">
+              <i class="fa-solid fa-dollar-sign"></i>
+            </div>
+            <h3>Edit Pricing</h3>
+            <p>Update your consultation rates and packages</p>
+            <span class="qa-link">Update Pricing <i class="fa-solid fa-arrow-right"></i></span>
+          </a>
+
+        </div>
+      </div>
+
+    </div><!-- /page-content -->
+
+    <!-- ===== FOOTER (exact dari articleExpert) ===== -->
+    <footer class="site-footer">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-brand-top">
+            <div class="footer-logo-box">
+              <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo" class="footer-logo">
+            </div>
+            <div>
+              <h3>Sproutly</h3>
+              <span>by AVI</span>
+            </div>
+          </div>
+          <p>A modern agriculture consultation platform for a greener and more sustainable future.</p>
+        </div>
+        <div class="footer-links">
+          <h4>About Us</h4>
+          <a href="#">Our Team</a>
+          <a href="#">Blog</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+        <div class="footer-contact">
+          <h4>Contact</h4>
+          <p><i class="fa-solid fa-envelope"></i> sproutly@gmail.com</p>
+          <p><i class="fa-solid fa-phone"></i> +62 851 5693 2186</p>
+          <div class="social-icons">
+            <a href="#"><img src="{{ asset('images/instagram.jpg') }}" alt="Instagram"></a>
+            <a href="#"><img src="{{ asset('images/facebook.png') }}" alt="Facebook"></a>
+            <a href="#"><img src="{{ asset('images/X.jpg') }}" alt="X"></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">&copy; 2025 Sproutly by AVI. All rights reserved.</div>
+    </footer>
+
+  </main>
+</div>
+<script src="{{ asset('js/script-dashboard-ahli.js') }}"></script>
 </body>
 </html>

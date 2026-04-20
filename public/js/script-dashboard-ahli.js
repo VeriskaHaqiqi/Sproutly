@@ -1,71 +1,67 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const sidebar = document.getElementById('sidebarExpert');
-    const overlay = document.getElementById('sidebarOverlay');
-    const mainContent = document.getElementById('mainContent');
+// ── Sidebar toggle (sama pola dengan articleExpert.js) ────────
+const sidebar      = document.getElementById("sidebar");
+const mainContent  = document.getElementById("mainContent");
+const sidebarToggle = document.getElementById("sidebarToggle");
 
-    /**
-     * TOGGLE SIDEBAR LOGIC
-     */
-    const toggleSidebar = () => {
-        const isOpen = sidebar.classList.toggle('open');
-        overlay.classList.toggle('active');
+function openSidebar() {
+  if (window.innerWidth <= 768) {
+    sidebar.classList.add("show"); sidebar.classList.remove("closed");
+  } else {
+    sidebar.classList.remove("closed");
+    mainContent.classList.add("shifted"); mainContent.classList.remove("full");
+  }
+}
 
-        // Jika sidebar terbuka, cegah scroll pada background (mobile)
-        if (window.innerWidth <= 1024) {
-            document.body.style.overflow = isOpen ? 'hidden' : 'auto';
-        }
-    };
+function closeSidebar() {
+  if (window.innerWidth <= 768) {
+    sidebar.classList.remove("show"); sidebar.classList.add("closed");
+  } else {
+    sidebar.classList.add("closed");
+    mainContent.classList.remove("shifted"); mainContent.classList.add("full");
+  }
+}
 
-    // 1. Klik Hamburger (Buka/Tutup)
-    hamburgerBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // Mencegah bubbling
-        toggleSidebar();
-    });
+function isSidebarOpen() {
+  return window.innerWidth <= 768
+    ? sidebar.classList.contains("show")
+    : !sidebar.classList.contains("closed");
+}
 
-    // 2. Klik Overlay (Tutup Sidebar saat klik area luar)
-    overlay.addEventListener('click', () => {
-        if (sidebar.classList.contains('open')) {
-            toggleSidebar();
-        }
-    });
+sidebarToggle.addEventListener("click", () => {
+  isSidebarOpen() ? closeSidebar() : openSidebar();
+});
 
-    // 3. Tambahan: Tutup dengan tombol ESC
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && sidebar.classList.contains('open')) {
-            toggleSidebar();
-        }
-    });
+// Close on outside click (mobile)
+document.addEventListener("click", (e) => {
+  if (
+    window.innerWidth <= 768 && isSidebarOpen() &&
+    !sidebar.contains(e.target) && !sidebarToggle.contains(e.target)
+  ) closeSidebar();
+});
 
-    /**
-     * WINDOW RESIZE HANDLER
-     * Memastikan state bersih saat ganti ukuran layar
-     */
-    window.addEventListener('resize', () => {
-        if (window.innerWidth > 1024) {
-            sidebar.classList.remove('open');
-            overlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-    });
+window.addEventListener("resize", () => {
+  if (window.innerWidth > 768) {
+    sidebar.classList.remove("show");
+  } else {
+    mainContent.classList.remove("shifted"); mainContent.classList.add("full");
+  }
+});
 
-    /**
-     * CLICKABLE COMPONENTS LOGIC
-     * Memastikan semua tombol memiliki feedback visual sederhana saat diklik
-     */
-    const viewAllLink = document.querySelector('.view-all-link');
-    if (viewAllLink) {
-        viewAllLink.addEventListener('click', () => {
-            console.log('Redirecting to full consultation list...');
-        });
-    }
+// ── Set today's date ──────────────────────────────────────────
+(function () {
+  const el = document.getElementById("todayDate");
+  if (!el) return;
+  const now = new Date();
+  el.textContent = now.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+})();
 
-    const detailButtons = document.querySelectorAll('.btn-detail');
-    detailButtons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            // Kita bisa menambahkan loader di sini jika perlu
-            const url = btn.getAttribute('href');
-            console.log(`Navigating to detail: ${url}`);
-        });
-    });
+// ── Init layout — default closed ─────────────────────────────
+// Sidebar starts closed; menu-link clicks close it then navigate
+document.querySelectorAll(".menu-link").forEach((link) => {
+  link.addEventListener("click", () => {
+    sidebar.classList.add("closed");
+    sidebar.classList.remove("show");
+    mainContent.classList.remove("shifted");
+    mainContent.classList.add("full");
+  });
 });
