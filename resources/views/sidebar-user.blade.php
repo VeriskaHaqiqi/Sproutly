@@ -83,7 +83,7 @@ function isActiveUser(string $page): string {
     font-size: 20px;
     font-weight: 800;
     color: #169857;
-}
+} 
 
 .sidebar-line {
     height: 1px;

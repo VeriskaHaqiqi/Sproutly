@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ asset('css/style-infoahli.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body>
+<body> 
     <div class="layout">
         <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
@@ -44,17 +44,17 @@
                     <span>Bookmarked Article</span>
                 </a>
 
-                <a href="#" class="menu-item">
+                <a href="/reviewsUser" class="menu-item">
                     <i class="fa-solid fa-star"></i>
                     <span>Reviews</span>
                 </a>
 
-                <a href="/payment" class="menu-item">
+                <a href="/paymentUser" class="menu-item">
                     <i class="fa-solid fa-credit-card"></i>
                     <span>Payment</span>
                 </a>
 
-                <a href="#" class="menu-item">
+                <a href="/accountUser" class="menu-item">
                     <i class="fa-solid fa-gear"></i>
                     <span>Setting</span>
                 </a>
@@ -169,7 +169,7 @@
                     <div class="footer-brand">
                         <div class="footer-brand-top">
                             <div class="footer-logo-box">
-                                <img src="{{ asset('images/logo-hijau.png') }}" alt="Sproutly Logo" class="footer-logo">
+                                <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo" class="footer-logo">
                             </div>
                             <div>
                                 <h3>Sproutly</h3>
