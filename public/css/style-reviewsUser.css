@@ -166,3 +166,45 @@ html, body { width: 100%; height: 100%; font-family: 'Inter', sans-serif; backgr
   .profile-name { display: none; }
   .page-title h1 { font-size: 28px; }
 }
+
+/* ── TABS ── */
+.tabs-row { display: flex; gap: 10px; margin-bottom: 22px; }
+.tab-btn { height: 44px; padding: 0 20px; border: 1.5px solid rgba(196,228,214,0.8); border-radius: 12px; background: rgba(255,255,255,0.8); color: #607084; font-size: 14px; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+.tab-btn i { font-size: 13px; }
+.tab-btn:hover { background: #fff; }
+.tab-btn.active { background: linear-gradient(135deg, #76ead0, #76d7ea); color: #1a2636; border-color: transparent; box-shadow: 0 4px 14px rgba(118,234,208,0.4); }
+.tab-badge { min-width: 22px; height: 22px; border-radius: 999px; background: rgba(0,0,0,0.1); color: inherit; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; padding: 0 6px; }
+.tab-btn.active .tab-badge { background: rgba(255,255,255,0.35); }
+.tab-badge.completed { background: rgba(34,192,100,0.15); color: #18854a; }
+
+/* ── PENDING CARD ── */
+.pending-card { background: rgba(255,255,255,0.92); border: 1px solid rgba(196,228,214,0.35); border-radius: 22px; padding: 22px 26px; display: flex; align-items: center; gap: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: 0.2s; margin-bottom: 16px; }
+.pending-card:hover { box-shadow: 0 14px 36px rgba(0,0,0,0.08); transform: translateY(-1px); }
+.pending-avatar { width: 52px; height: 52px; border-radius: 14px; object-fit: cover; border: 2px solid rgba(196,228,214,0.6); flex-shrink: 0; }
+.pending-info { flex: 1; min-width: 0; }
+.pending-name { font-size: 15px; font-weight: 700; color: #1a2636; margin-bottom: 3px; }
+.pending-specialty { display: inline-block; padding: 3px 10px; background: rgba(118,234,208,0.18); color: #18854a; font-size: 11px; font-weight: 700; border-radius: 20px; border: 1px solid rgba(118,234,208,0.35); margin-bottom: 4px; }
+.pending-topic { font-size: 13px; color: #7a8e9a; }
+.pending-date { font-size: 12px; color: #9aacb4; white-space: nowrap; flex-shrink: 0; }
+.rate-btn { flex-shrink: 0; height: 40px; padding: 0 20px; border: none; border-radius: 12px; background: linear-gradient(135deg, #76ead0, #76d7ea); color: #1a2636; font-size: 13.5px; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; transition: 0.2s; box-shadow: 0 4px 12px rgba(118,234,208,0.35); }
+.rate-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(118,234,208,0.5); }
+
+/* ── RATE MODAL ── */
+.rate-modal-card { max-width: 340px; padding: 0; }
+.rate-modal-body { padding: 28px 26px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; }
+.rate-consult-date { font-size: 12px; color: #9aacb4; }
+.rate-title { font-size: 18px; font-weight: 800; color: #1a2636; }
+.rate-subtitle { font-size: 14px; color: #607084; }
+
+.star-picker { display: flex; gap: 6px; margin: 4px 0; }
+.star-pick { background: none; border: none; font-size: 36px; cursor: pointer; color: #dfe6e9; transition: color 0.15s, transform 0.12s; line-height: 1; }
+.star-pick.active, .star-pick:hover { color: #fdcb6e; transform: scale(1.15); }
+
+#rateComment { width: 100%; border: 1px solid rgba(196,228,214,0.8); border-radius: 12px; padding: 12px 14px; font-family: 'Inter', sans-serif; font-size: 13.5px; color: #2d3a48; background: #f8fcfa; outline: none; resize: none; transition: border-color 0.2s; }
+#rateComment:focus { border-color: #76ead0; box-shadow: 0 0 0 3px rgba(118,234,208,0.18); }
+#rateComment::placeholder { color: #9eaab4; }
+
+.rate-now-btn { width: 100%; height: 46px; border: none; border-radius: 13px; background: linear-gradient(135deg, #76ead0, #76d7ea); color: #1a2636; font-size: 15px; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 14px rgba(118,234,208,0.4); }
+.rate-now-btn:hover { transform: translateY(-1px); }
+.rate-later-btn { background: none; border: none; font-size: 13.5px; color: #9aacb4; cursor: pointer; font-family: 'Inter', sans-serif; margin-top: -4px; }
+.rate-later-btn:hover { color: #607084; }

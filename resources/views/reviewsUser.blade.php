@@ -13,7 +13,7 @@
 <body>
 <div class="dashboard-page">
 
-  <!-- SIDEBAR (exact dashboard-user) -->
+  <!-- SIDEBAR -->
   <aside class="sidebar closed" id="sidebar">
     <div class="sidebar-header">
       <a href="{{ url('/homeUser') }}" class="logo-wrap">
@@ -38,7 +38,7 @@
   <!-- MAIN -->
   <main class="main-content full" id="mainContent">
 
-    <!-- TOPBAR (exact dashboard-user) -->
+    <!-- TOPBAR -->
     <header class="topbar">
       <div class="topbar-left">
         <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle sidebar">
@@ -67,18 +67,27 @@
     <!-- CONTENT -->
     <section class="content-wrap">
 
-      <!-- Page title -->
       <div class="page-title">
         <h1>My Reviews</h1>
         <p>View and manage the feedback you've given to experts.</p>
       </div>
 
-      <!-- Filter bar -->
+      <!-- TABS -->
+      <div class="tabs-row">
+        <button class="tab-btn active" id="tabPending" type="button">
+          <i class="fa-regular fa-clock"></i> Pending Review
+          <span class="tab-badge" id="pendingCount">4</span>
+        </button>
+        <button class="tab-btn" id="tabCompleted" type="button">
+          <i class="fa-solid fa-star"></i> Completed
+          <span class="tab-badge completed" id="completedCount">6</span>
+        </button>
+      </div>
+
+      <!-- FILTER BAR -->
       <div class="filter-bar">
         <div class="search-group">
-          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input type="text" id="searchInput" placeholder="Search expert name or consultation...">
         </div>
         <div class="dropdown-group">
@@ -107,32 +116,34 @@
         </div>
       </div>
 
-      <!-- Reviews list -->
-      <div id="reviewsContainer" class="reviews-list"></div>
+      <!-- PENDING TAB CONTENT -->
+      <div id="panelPending">
+        <div id="pendingContainer" class="reviews-list"></div>
+      </div>
 
-      <div class="load-more-wrapper">
-        <button id="loadMoreBtn" class="btn-load-more">Load More Reviews</button>
+      <!-- COMPLETED TAB CONTENT -->
+      <div id="panelCompleted" style="display:none">
+        <div id="reviewsContainer" class="reviews-list"></div>
+        <div class="load-more-wrapper">
+          <button id="loadMoreBtn" class="btn-load-more">Load More Reviews</button>
+        </div>
       </div>
 
     </section>
 
-    <!-- FOOTER (exact dashboard-user) -->
+    <!-- FOOTER -->
     <footer class="site-footer">
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="footer-brand-top">
-            <div class="footer-logo-box">
-              <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo" class="footer-logo">
-            </div>
+            <div class="footer-logo-box"><img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo" class="footer-logo"></div>
             <div><h3>Sproutly</h3><span>by AVI</span></div>
           </div>
           <p>A modern agriculture consultation platform for a greener and more sustainable future.</p>
         </div>
         <div class="footer-links">
           <h4>About Us</h4>
-          <a href="#">Our Team</a>
-          <a href="#">Blog</a>
-          <a href="#">Privacy Policy</a>
+          <a href="#">Our Team</a><a href="#">Blog</a><a href="#">Privacy Policy</a>
         </div>
         <div class="footer-contact">
           <h4>Contact</h4>
@@ -151,23 +162,36 @@
   </main>
 </div>
 
-<!-- Delete Confirmation Modal -->
+<!-- Delete Modal -->
 <div class="modal-overlay hidden" id="deleteModal">
   <div class="modal-card">
-    <div class="modal-icon">
-      <svg viewBox="0 0 24 24" fill="none" width="28" height="28">
-        <path d="M3 6H21" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        <path d="M8 6V4H16V6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M19 6L18.2 19.1C18.1 20.2 17.1 21 16 21H8C6.9 21 5.9 20.2 5.8 19.1L5 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        <path d="M10 11V17" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        <path d="M14 11V17" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-      </svg>
-    </div>
+    <div class="modal-icon"><svg viewBox="0 0 24 24" fill="none" width="28" height="28"><path d="M3 6H21" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M8 6V4H16V6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 6L18.2 19.1C18.1 20.2 17.1 21 16 21H8C6.9 21 5.9 20.2 5.8 19.1L5 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M10 11V17" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M14 11V17" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></div>
     <h3>Delete Review</h3>
     <p>Are you sure you want to delete your review for <strong id="deleteExpertName"></strong>? This action cannot be undone.</p>
     <div class="modal-actions">
       <button class="modal-cancel-btn" id="deleteCancelBtn" type="button">Cancel</button>
       <button class="modal-confirm-btn" id="deleteConfirmBtn" type="button">Yes, Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Rate Modal -->
+<div class="modal-overlay hidden" id="rateModal">
+  <div class="modal-card rate-modal-card">
+    <div class="rate-modal-body">
+      <p class="rate-consult-date" id="rateConsultDate"></p>
+      <h3 class="rate-title">Your opinion matters to us!</h3>
+      <p class="rate-subtitle">How was the quality of the consultation?</p>
+      <div class="star-picker" id="starPicker">
+        <button class="star-pick" data-val="1" type="button">&#9733;</button>
+        <button class="star-pick" data-val="2" type="button">&#9733;</button>
+        <button class="star-pick" data-val="3" type="button">&#9733;</button>
+        <button class="star-pick" data-val="4" type="button">&#9733;</button>
+        <button class="star-pick" data-val="5" type="button">&#9733;</button>
+      </div>
+      <textarea id="rateComment" placeholder="Leave a message (optional)" rows="3"></textarea>
+      <button class="rate-now-btn" id="rateNowBtn" type="button">Rate Now</button>
+      <button class="rate-later-btn" id="rateLaterBtn" type="button">Maybe later</button>
     </div>
   </div>
 </div>
