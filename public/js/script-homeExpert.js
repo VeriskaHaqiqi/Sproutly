@@ -1,72 +1,74 @@
-// public/js/homeExpert.js
+// public/js/script-homeExpert.js
 
 document.addEventListener("DOMContentLoaded", () => {
 
     // =====================
     // SIDEBAR
     // =====================
-    const menuToggle  = document.getElementById("menuToggle");
-    const sidebar     = document.getElementById("sidebar");
-    const sidebarMenu = document.getElementById("sidebarMenu");
-    const overlay     = document.getElementById("sidebarOverlay");
+    (function () {
+        const sidebar        = document.getElementById("sidebar");
+        const mainArea       = document.getElementById("mainArea");
+        const sidebarToggle  = document.getElementById("sidebarToggle");
+        const sidebarOverlay = document.getElementById("sidebarOverlay");
 
-    let sidebarOpen = false;
+        if (!sidebar || !mainArea || !sidebarToggle) return;
 
-    function updateSidebarState() {
-        if (!sidebar) return;
-        if (sidebarOpen) {
-            sidebar.classList.add("open");
-            if (overlay) overlay.classList.add("visible");
-        } else {
-            sidebar.classList.remove("open");
-            if (overlay) overlay.classList.remove("visible");
+        const MOBILE_BP = 768;
+
+        function isMobile() {
+            return window.innerWidth <= MOBILE_BP;
         }
-    }
 
-    if (menuToggle) {
-        menuToggle.addEventListener("click", () => {
-            sidebarOpen = !sidebarOpen;
-            updateSidebarState();
-        });
-    }
-
-    if (overlay) {
-        overlay.addEventListener("click", () => {
-            sidebarOpen = false;
-            updateSidebarState();
-        });
-    }
-
-    document.addEventListener("click", (event) => {
-        if (!sidebar || !menuToggle) return;
-        const clickedInsideSidebar = sidebar.contains(event.target);
-        const clickedToggle = menuToggle.contains(event.target);
-        if (window.innerWidth <= 780 && sidebarOpen && !clickedInsideSidebar && !clickedToggle) {
-            sidebarOpen = false;
-            updateSidebarState();
+        function isSidebarOpen() {
+            return !sidebar.classList.contains("closed");
         }
-    });
 
-    if (sidebarMenu) {
-        sidebarMenu.addEventListener("click", (event) => {
-            const clickedItem = event.target.closest(".menu-item");
-            if (!clickedItem) return;
-            document.querySelectorAll(".menu-item").forEach((item) => {
-                item.classList.remove("active");
+        function openSidebar() {
+            sidebar.classList.remove("closed");
+            document.body.classList.add("sidebar-open");
+
+            if (isMobile()) {
+                // Mobile: overlay appears, main area stays
+                if (sidebarOverlay) sidebarOverlay.classList.add("active");
+            }
+            // Desktop: body.sidebar-open shifts .main-area via CSS margin-left
+        }
+
+        function closeSidebar() {
+            sidebar.classList.add("closed");
+            document.body.classList.remove("sidebar-open");
+            if (sidebarOverlay) sidebarOverlay.classList.remove("active");
+        }
+
+        // Toggle on burger click
+        sidebarToggle.addEventListener("click", () => {
+            isSidebarOpen() ? closeSidebar() : openSidebar();
+        });
+
+        // Close when clicking overlay (mobile)
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener("click", closeSidebar);
+        }
+
+        // Close when nav link clicked (mobile)
+        document.querySelectorAll(".sidebar-menu .menu-link").forEach((link) => {
+            link.addEventListener("click", () => {
+                if (isMobile()) closeSidebar();
             });
-            clickedItem.classList.add("active");
         });
-    }
 
-    window.addEventListener("resize", () => {
-        if (!sidebar) return;
-        if (window.innerWidth <= 780 && !sidebarOpen) {
-            sidebar.classList.remove("open");
-            if (overlay) overlay.classList.remove("visible");
-        }
-    });
+        // On resize: if going desktop, remove overlay; if going mobile, remove margin shift
+        window.addEventListener("resize", () => {
+            if (!isMobile()) {
+                if (sidebarOverlay) sidebarOverlay.classList.remove("active");
+            }
+        });
 
-    updateSidebarState();
+        // Start with sidebar closed
+        sidebar.classList.add("closed");
+        document.body.classList.remove("sidebar-open");
+    })();
+
 
     // =====================
     // ENTRANCE ANIMATIONS
@@ -75,8 +77,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const actionCards = document.querySelectorAll(".action-card");
 
     if (heroCard) {
-        heroCard.style.opacity   = "0";
-        heroCard.style.transform = "translateY(18px)";
+        heroCard.style.opacity    = "0";
+        heroCard.style.transform  = "translateY(18px)";
         heroCard.style.transition = "opacity 0.5s ease, transform 0.5s ease";
         requestAnimationFrame(() => {
             setTimeout(() => {
@@ -87,8 +89,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     actionCards.forEach((card, i) => {
-        card.style.opacity   = "0";
-        card.style.transform = "translateY(22px)";
+        card.style.opacity    = "0";
+        card.style.transform  = "translateY(22px)";
         card.style.transition = `opacity 0.5s ease ${0.18 + i * 0.1}s, transform 0.5s ease ${0.18 + i * 0.1}s`;
         requestAnimationFrame(() => {
             setTimeout(() => {
@@ -97,6 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 100 + i * 80);
         });
     });
+
 
     // =====================
     // BUTTON RIPPLE EFFECT
@@ -121,8 +124,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 animation: rippleAnim 0.5s ease-out forwards;
                 pointer-events: none;
             `;
-            if (getComputedStyle(this).position === "static") this.style.position = "relative";
-            this.style.overflow = "hidden";
             this.appendChild(ripple);
             setTimeout(() => ripple.remove(), 520);
         });
