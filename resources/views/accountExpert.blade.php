@@ -231,30 +231,22 @@
            SUPPORT & INFO
       ========================= -->
       <div class="account-card support-card">
-        <h3 class="card-section-title">Support &amp; Info</h3>
-
-        <div class="support-grid">
-          <a href="#" class="support-link">
-            Help Center
-            <span class="ext-icon">↗</span>
-          </a>
-          <a href="#" class="support-link">
-            Terms of Service
-            <span class="ext-icon">↗</span>
-          </a>
-          <a href="#" class="support-link">
-            Privacy Policy
-            <span class="ext-icon">↗</span>
-          </a>
-          <a href="#" class="support-link support-link--danger">
-            Report a Problem
-            <span class="ext-icon ext-icon--danger">⚠</span>
-          </a>
-        </div>
-
-        <div class="about-row">
-          About Sproutly v2.4.0
-        </div>
+        <h3 class="card-section-title">Support & Info</h3>
+        <ul class="menu-list">
+          <li class="menu-item">
+            <a href="/supportExpert" class="menu-link">
+              <span class="menu-link-left">
+                <span class="menu-item-icon">
+                    <img src="{{ asset('images/settings.png') }}" alt="">
+                </span>
+                <span class="pref-info">
+                  <span class="pref-label">Support & Info</span>
+                </span>
+              </span>
+              <span class="menu-arrow">›</span>
+            </a>
+          </li>
+        </ul>
       </div>
 
       <!-- ========================

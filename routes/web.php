@@ -168,7 +168,7 @@ Route::get('/supportUser', function () {
 
 Route::get('/supportExpert', function () {
     return view('supportExpert');
-});
+})->name('supportExpert');
 
 Route::get('/reviewsUser', function () {
     return view('reviewsUser');

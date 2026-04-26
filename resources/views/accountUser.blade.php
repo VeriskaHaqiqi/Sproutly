@@ -149,46 +149,10 @@
         </div>
         <ul class="menu-list">
           <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a href="/supportUser" class="menu-link">
               <span class="menu-link-left">
                 <span class="menu-item-icon">❓</span>
-                Help Center
-              </span>
-              <span class="menu-arrow">›</span>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="#" class="menu-link">
-              <span class="menu-link-left">
-                <span class="menu-item-icon">🛡</span>
-                Privacy Policy
-              </span>
-              <span class="menu-arrow">›</span>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="#" class="menu-link">
-              <span class="menu-link-left">
-                <span class="menu-item-icon">📄</span>
-                Terms of Service
-              </span>
-              <span class="menu-arrow">›</span>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="#" class="menu-link">
-              <span class="menu-link-left">
-                <span class="menu-item-icon">⚠️</span>
-                Report a Problem
-              </span>
-              <span class="menu-arrow">›</span>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="#" class="menu-link">
-              <span class="menu-link-left">
-                <span class="menu-item-icon">🌿</span>
-                About Sproutly
+                Support & Info
               </span>
               <span class="menu-arrow">›</span>
             </a>
@@ -196,7 +160,7 @@
         </ul>
       </div>
 
-      <!-- ========================
+      <!-- ======================== 
            REPUTATION
       ========================= -->
       <div class="account-card">
