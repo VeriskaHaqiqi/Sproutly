@@ -8,45 +8,73 @@ document.addEventListener('DOMContentLoaded', function () {
     /* ========================
        SIDEBAR TOGGLE
     ======================== */
+    const menuToggle     = document.getElementById('hamburgerBtn');
     const sidebar        = document.getElementById('sidebar');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
-    const hamburgerBtn   = document.getElementById('hamburgerBtn');
+    const pageWrapper = document.querySelector('.page-wrapper');
 
     function openSidebar() {
-        sidebar.classList.add('open');
-        sidebarOverlay.classList.add('active');
-        hamburgerBtn.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        sidebar.classList.remove('closed');
+        if (menuToggle) menuToggle.classList.add('active');
+        if (pageWrapper && window.innerWidth > 900) {
+            pageWrapper.classList.add('sidebar-open');
+        }
+        if (window.innerWidth <= 900) {
+            // Mobile: gunakan overlay, bukan push
+            if (sidebarOverlay) sidebarOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
     }
 
     function closeSidebar() {
-        sidebar.classList.remove('open');
-        sidebarOverlay.classList.remove('active');
-        hamburgerBtn.classList.remove('active');
+        sidebar.classList.add('closed');
+        if (menuToggle) menuToggle.classList.remove('active');
+        if (pageWrapper) pageWrapper.classList.remove('sidebar-open');
+        if (sidebarOverlay) sidebarOverlay.classList.remove('active');
         document.body.style.overflow = '';
     }
 
-    function toggleSidebar() {
-        sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+    function isSidebarOpen() {
+        return !sidebar.classList.contains('closed');
     }
 
-    if (hamburgerBtn) hamburgerBtn.addEventListener('click', toggleSidebar);
-    if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
+    // Hamburger button
+    if (menuToggle) {
+        menuToggle.addEventListener('click', function () {
+            isSidebarOpen() ? closeSidebar() : openSidebar();
+        });
+    }
+
+    // Klik overlay → tutup sidebar
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeSidebar);
+    }
+
+    // Tombol Escape → tutup sidebar
     document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') closeSidebar();
+        if (e.key === 'Escape' && isSidebarOpen()) closeSidebar();
     });
 
-    /* ========================
-       SIDEBAR ACTIVE STATE
-    ======================== */
-    const menuItems = document.querySelectorAll('.menu-item');
-    menuItems.forEach(function (item) {
-        item.addEventListener('click', function () {
-            menuItems.forEach(function (i) { i.classList.remove('active'); });
-            item.classList.add('active');
-            if (window.innerWidth < 900) setTimeout(closeSidebar, 200);
+    // Klik menu link → tutup sidebar otomatis (mobile)
+    document.querySelectorAll('.menu-link').forEach(function (link) {
+        link.addEventListener('click', function () {
+            if (window.innerWidth <= 900) closeSidebar();
         });
     });
+
+    // Reset overflow saat resize ke desktop
+    window.addEventListener('resize', function () {
+    if (window.innerWidth > 900) {
+        document.body.style.overflow = '';
+        if (sidebarOverlay) sidebarOverlay.classList.remove('active');
+        // Re-apply push jika sidebar sedang terbuka
+        if (pageWrapper && !sidebar.classList.contains('closed')) {
+            pageWrapper.classList.add('sidebar-open');
+        }
+    } else {
+        if (pageWrapper) pageWrapper.classList.remove('sidebar-open');
+    }
+});
 
     /* ========================
        DATE BADGE

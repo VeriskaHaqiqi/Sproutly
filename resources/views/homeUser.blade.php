@@ -6,6 +6,7 @@
     <title>Sproutly – Home</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/style-homeUser.css') }}">
 </head>
 <body>
@@ -14,76 +15,49 @@
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 <!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar">
-    <div class="sidebar-top">
-        <a href="{{ url('/home') }}" class="brand-wrap">
-            <div class="brand-logo-box">
-                <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo">
-            </div>
-            <span class="brand-text">Sproutly</span>
+    <aside class="sidebar closed" id="sidebar">
+      <div class="sidebar-header">
+        <a href="{{ url('/homeUser') }}" class="logo-wrap">
+          <div class="logo-box">
+            <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo" class="logo-img">
+          </div>
+          <span class="logo-text">Sproutly</span>
         </a>
-    </div>
+      </div>
 
-    <div class="sidebar-divider"></div>
+      <div class="sidebar-line"></div>
 
-    <nav class="sidebar-menu" id="sidebarMenu">
-        <a href="{{ url('dashboard-user') }}"
-           class="menu-item {{ request()->is('dashboard-user') ? 'active' : '' }}">
-            <span class="menu-icon">
-                <img src="{{ asset('images/dashboard.png') }}" alt="Dashboard">
-            </span>
-            <span class="menu-label">Dashboard</span>
+      <nav class="sidebar-menu">
+        <a href="{{ url('/dashboard-user') }}" class="menu-link">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>Dashboard</span>
         </a>
-
-        <a href="{{ url('consultationUser') }}"
-           class="menu-item {{ request()->is('consultationUser*') ? 'active' : '' }}">
-            <span class="menu-icon">
-                <img src="{{ asset('images/consultation.png') }}" alt="Consultation">
-            </span>
-            <span class="menu-label">Consultation</span>
+        <a href="{{ url('/consultationUser') }}" class="menu-link">
+          <i class="fa-solid fa-comments"></i>
+          <span>Consultation</span>
         </a>
-
-        <a href="{{ url('daftarArtikel') }}"
-           class="menu-item {{ request()->is('daftarArtikel*') ? 'active' : '' }}">
-            <span class="menu-icon">
-                <img src="{{ asset('images/article.png') }}" alt="Article">
-            </span>
-            <span class="menu-label">Article</span>
+        <a href="{{ url('/daftarArtikel') }}" class="menu-link">
+          <i class="fa-solid fa-newspaper"></i>
+          <span>Article</span>
         </a>
-
-        <a href="{{ url('bookmarkArtikelUser') }}"
-           class="menu-item {{ request()->is('bookmarkArtikelUser*') ? 'active' : '' }}">
-            <span class="menu-icon">
-                <img src="{{ asset('images/bookmark article.jpg') }}" alt="Bookmarked Article">
-            </span>
-            <span class="menu-label">Bookmarked Article</span>
+        <a href="{{ url('/bookmarkArtikelUser') }}" class="menu-link">
+          <i class="fa-solid fa-bookmark"></i>
+          <span>Bookmarked Article</span>
         </a>
-
-        <a href="{{ url('/reviews') }}"
-           class="menu-item {{ request()->is('reviews*') ? 'active' : '' }}">
-            <span class="menu-icon">
-                <img src="{{ asset('images/reviews.png') }}" alt="Reviews">
-            </span>
-            <span class="menu-label">Reviews</span>
+        <a href="{{ url('/reviewsUser') }}" class="menu-link">
+          <i class="fa-solid fa-star"></i>
+          <span>Reviews</span>
         </a>
-
-        <a href="{{ url('paymentUser') }}"
-           class="menu-item {{ request()->is('paymentUser*') ? 'active' : '' }}">
-            <span class="menu-icon">
-                <img src="{{ asset('images/payment.png') }}" alt="Payment">
-            </span>
-            <span class="menu-label">Payment</span>
+        <a href="{{ url('/invoice') }}" class="menu-link">
+          <i class="fa-solid fa-credit-card"></i>
+          <span>Payment</span>
         </a>
-
-        <a href="{{ url('accountUser') }}"
-           class="menu-item {{ request()->is('accountUser*') ? 'active' : '' }}">
-            <span class="menu-icon">
-                <img src="{{ asset('images/settings.png') }}" alt="Setting">
-            </span>
-            <span class="menu-label">Setting</span>
+        <a href="{{ url('/accountUser') }}" class="menu-link">
+          <i class="fa-solid fa-gear"></i>
+          <span>Setting</span>
         </a>
-    </nav>
-</aside>
+      </nav>
+    </aside>
 
 <!-- MAIN CONTENT -->
 <div class="page-wrapper" id="pageWrapper">
@@ -96,20 +70,13 @@
             <span class="hamburger-line"></span>
         </button>
 
-        <div class="topbar-logo">
-            <a href="{{ url('/home') }}" class="topbar-logo-link">
-                <div class="topbar-logo-icon">
-                    <img src="{{ asset('images/logo.png') }}" alt="Sproutly" />
-                </div>
-                <span class="topbar-logo-name">Sproutly</span>
-            </a>
-        </div>
-
         <div class="topbar-user">
             <div class="user-avatar">
                 <img src="{{ asset('images/fotoprofile.png') }}" alt="Isyana Saraswati" />
             </div>
-            <span class="user-name">Isyana Saraswati</span>
+            <a href="/accountUser" class="user-name" > 
+                <span class="user-name">Isyana Saraswati</span>
+            </a>
         </div>
     </header>
 
@@ -133,7 +100,7 @@
 
         <!-- ACTION CARDS -->
         <section class="action-cards">
-            <a href="{{ url('/consultation/new') }}" class="action-card action-card--primary">
+            <a href="{{ url('/consultationUser') }}" class="action-card action-card--primary">
                 <div class="action-card-icon">
                     <img src="{{ asset('images/consultation.png') }}" alt="" width="26"/>
                 </div>
@@ -142,7 +109,7 @@
                     <p class="action-card-desc">Start a consultation session with an agricultural expert to get the best solution.</p>
                 </div>
             </a>
-            <a href="{{ url('/article') }}" class="action-card action-card--secondary">
+            <a href="{{ url('/daftarArtikel') }}" class="action-card action-card--secondary">
                 <div class="action-card-icon">
                     <img src="{{ asset('images/article.png') }}" alt="" width="26"/>
                 </div>
@@ -160,7 +127,7 @@
                 <a href="{{ url('daftarArtikel') }}" class="articles-view-all">Lihat Semua →</a>
             </div>
             <div class="articles-grid">
-                <a href="#" class="article-card">
+                <a href="/detailArtikelUser" class="article-card">
                     <div class="article-img-wrap">
                         <img src="{{ asset('images/cover-artikel1.jpg') }}" alt="Hidroponik" class="article-img"/>
                     </div>
@@ -168,7 +135,7 @@
                         <p class="article-title">Tips Hidroponik untuk Pemula</p>
                     </div>
                 </a>
-                <a href="#" class="article-card">
+                <a href="/detailArtikelUser" class="article-card">
                     <div class="article-img-wrap">
                         <img src="{{ asset('images/cover-artikel2.jpg') }}" alt="Pupuk Organik" class="article-img"/>
                     </div>
@@ -176,7 +143,7 @@
                         <p class="article-title">Pupuk Organik Terbaik untuk Tanaman</p>
                     </div>
                 </a>
-                <a href="#" class="article-card">
+                <a href="/detailArtikelUser" class="article-card">
                     <div class="article-img-wrap">
                         <img src="{{ asset('images/cover-artikel3.jpg') }}" alt="Hama Tanaman" class="article-img"/>
                     </div>
@@ -184,7 +151,7 @@
                         <p class="article-title">Cara Mengatasi Hama Tanaman</p>
                     </div>
                 </a>
-                <a href="#" class="article-card">
+                <a href="/detailArtikelUser" class="article-card">
                     <div class="article-img-wrap">
                         <img src="{{ asset('images/cover-artikel4.jpg') }}" alt="Smart Farming" class="article-img"/>
                     </div>
@@ -197,52 +164,43 @@
 
     </main>
 
-    <footer>
+    <footer class="site-footer">
         <div class="footer-grid">
-            <div class="footer-brand">
-                <div class="nav-logo">
-                    <div class="logo-icon">
-                        <img src="{{ asset('images/logo-hijau.png') }}" alt="logo" width="20">
-                    </div>
-                    <div>
-                        Sproutly
-                        <small>by AVI</small>
-                    </div>
-                </div>
-                <p>A modern agriculture consultation platform for a greener and more sustainable future.</p>
+          <div class="footer-brand">
+            <div class="footer-brand-top">
+              <div class="footer-logo-box">
+                <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo" class="footer-logo">
+              </div>
+              <div>
+                <h3>Sproutly</h3>
+                <span>by AVI</span>
+              </div>
             </div>
+            <p>A modern agriculture consultation platform for a greener and more sustainable future.</p>
+          </div>
 
-            <div class="footer-col">
-                <h5>About Us</h5>
-                <ul>
-                    <li><a href="#">Our Tim</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Privacy and Policy</a></li>
-                </ul>
-            </div>
+          <div class="footer-links">
+            <h4>About Us</h4>
+            <a href="#">Our Team</a>
+            <a href="#">Blog</a>
+            <a href="#">Privacy Policy</a>
+          </div>
 
-            <div class="footer-col footer-contact">
-                <h5>Contact</h5>
-                <p>✉️ sproutly@gmail.com</p>
-                <p>📞 +62 851 5693 2186</p>
-                <div class="social-links">
-                    <a href="#" title="Instagram">
-                        <img src="{{ asset('images/instagram.jpg') }}" width="16">
-                    </a>
-                    <a href="#" title="Facebook">
-                        <img src="{{ asset('images/facebook.png') }}" width="16">
-                    </a>
-                    <a href="#" title="X">
-                        <img src="{{ asset('images/X.jpg') }}" width="16">
-                    </a>
-                </div>
+          <div class="footer-contact">
+            <h4>Contact</h4>
+            <p><i class="fa-solid fa-envelope"></i> sproutly@gmail.com</p>
+            <p><i class="fa-solid fa-phone"></i> +62 851 5693 2186</p>
+            <div class="social-icons">
+              <a href="#"><img src="{{ asset('images/instagram.jpg') }}" alt="Instagram"></a>
+              <a href="#"><img src="{{ asset('images/facebook.png') }}" alt="Facebook"></a>
+              <a href="#"><img src="{{ asset('images/X.jpg') }}" alt="X"></a>
             </div>
+          </div>
         </div>
-
         <div class="footer-bottom">
-            © 2025 Sproutly by AVI. All rights reserved.
+          &copy; 2025 Sproutly by AVI. All rights reserved.
         </div>
-    </footer>
+      </footer>
 
 </div>
 
