@@ -42,22 +42,36 @@
         <line x1="9"  y1="9"  x2="9.01"  y2="9"/>
         <line x1="15" y1="9"  x2="15.01" y2="9"/>
     </symbol>
-    <symbol id="icon-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="22" y1="2" x2="11" y2="13"/>
-        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-    </symbol>
-    <symbol id="icon-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M11 20A7 7 0 0 1 4 13c0-4 3-9 8-11 5 2 8 7 8 11a7 7 0 0 1-7 7z"/>
-        <path d="M11 20c0-4 2-8 4-10"/>
+    <symbol id="icon-send" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
     </symbol>
 </svg>
+
+{{-- END CHAT MODAL --}}
+<div class="modal-overlay" id="endChatModal">
+    <div class="modal-box">
+        <div class="modal-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#e11d48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="15" y1="9" x2="9" y2="15"/>
+                <line x1="9" y1="9" x2="15" y2="15"/>
+            </svg>
+        </div>
+        <h3 class="modal-title">End Consultation?</h3>
+        <p class="modal-desc">This will end the session. Both you and the client will no longer be able to send messages, but the chat history will remain visible.</p>
+        <div class="modal-actions">
+            <button class="modal-btn modal-btn--cancel" onclick="closeEndChatModal()">Cancel</button>
+            <button class="modal-btn modal-btn--confirm" onclick="confirmEndChat()">End Chat</button>
+        </div>
+    </div>
+</div>
 
 {{-- SIDEBAR --}}
 <div class="sidebar">
     <div class="sidebar-header">
-        <a href="/consulexpert" class="back-btn">
+        <a href="/consultexpert" class="back-btn">
             <svg class="icon-sm" aria-hidden="true"><use href="#icon-arrow-left"/></svg>
-            <span>Back to Menu</span>
+            <span>Back to Consultation</span>
         </a>
     </div>
 
@@ -164,6 +178,7 @@
 {{-- MAIN CHAT --}}
 <div class="chat-main">
 
+    {{-- CHAT HEADER --}}
     <div class="chat-header">
         <div class="header-user">
             <div class="avatar-wrapper">
@@ -186,23 +201,85 @@
             <button class="icon-btn" onclick="openMoreOptions()" title="More options">
                 <svg class="icon-sm icon-muted" aria-hidden="true"><use href="#icon-more"/></svg>
             </button>
-            <a href="#" class="end-chat-btn">
+            <button class="end-chat-btn" id="endChatBtn" onclick="openEndChatModal()">
                 <svg class="icon-sm icon-end" aria-hidden="true"><use href="#icon-x-circle"/></svg>
                 End Chat
-            </a>
+            </button>
         </div>
     </div>
 
+    {{-- ENDED BANNER (hidden by default) --}}
+    <div class="ended-banner" id="endedBanner" style="display:none">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="15" y1="9" x2="9" y2="15"/>
+            <line x1="9" y1="9" x2="15" y2="15"/>
+        </svg>
+        Consultation session has ended. No new messages can be sent.
+    </div>
+
+    {{-- MESSAGES --}}
     <div class="messages-container" id="messagesContainer">
-        <div class="date-divider"><span>MONDAY, MAY 22</span></div>
+        <div class="date-divider" id="dateDivider">
+            <span id="dateDividerText">MONDAY, MAY 22</span>
+        </div>
         <div id="messagesList"></div>
     </div>
 
-    <div class="input-area">
-        <button class="input-icon-btn" onclick="openAttachment()" title="Attach file">
-            <svg class="icon-md icon-muted" aria-hidden="true"><use href="#icon-plus-circle"/></svg>
-        </button>
-        <button class="input-icon-btn" onclick="openEmoji()" title="Emoji">
+    {{-- MEDIA PREVIEW BAR (shown when file selected) --}}
+    <div class="media-preview-bar" id="mediaPreviewBar" style="display:none">
+        <div class="media-preview-inner">
+            <div class="media-thumb-wrap" id="mediaThumbWrap">
+                {{-- thumbnail injected by JS --}}
+            </div>
+            <div class="media-preview-info">
+                <span class="media-filename" id="mediaFilename">photo.jpg</span>
+                <span class="media-filesize" id="mediaFilesize">—</span>
+            </div>
+            <button class="media-remove-btn" onclick="removeMedia()" title="Remove">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    {{-- Hidden file inputs --}}
+    <input type="file" id="fileInputPhoto" accept="image/*" style="display:none" onchange="handleFileSelect(this)">
+    <input type="file" id="fileInputVideo" accept="video/*" style="display:none" onchange="handleFileSelect(this)">
+
+    {{-- INPUT AREA --}}
+    <div class="input-area" id="inputArea">
+
+        {{-- Attachment popup trigger --}}
+        <div class="attach-wrap" id="attachWrap">
+            <button class="input-icon-btn" onclick="toggleAttachMenu()" title="Attach file" id="attachBtn">
+                <svg class="icon-md icon-muted" aria-hidden="true"><use href="#icon-plus-circle"/></svg>
+            </button>
+
+            {{-- Attach dropdown menu --}}
+            <div class="attach-menu" id="attachMenu">
+                <button class="attach-option" onclick="pickPhoto()">
+                    <span class="attach-option-icon photo-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+                            <polyline points="21 15 16 10 5 21"/>
+                        </svg>
+                    </span>
+                    <span>Photo</span>
+                </button>
+                <button class="attach-option" onclick="pickVideo()">
+                    <span class="attach-option-icon video-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/>
+                        </svg>
+                    </span>
+                    <span>Video</span>
+                </button>
+            </div>
+        </div>
+
+        <button class="input-icon-btn" onclick="openEmoji()" title="Emoji" id="emojiBtn">
             <svg class="icon-md icon-muted" aria-hidden="true"><use href="#icon-smile"/></svg>
         </button>
         <input type="text" class="message-input" id="messageInput" placeholder="Type your advice...">
