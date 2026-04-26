@@ -38,7 +38,7 @@
                     <a href="/bookmarkedArticleUser" class="menu-item">
                         <img src="{{ asset('images/bookmark article.jpg') }}" alt="Bookmarked Article">
                         <span>Bookmarked Article</span>
-                    </a>
+                    </a> 
                     <a href="/reviewsUser" class="menu-item">
                         <img src="{{ asset('images/reviews.png') }}" alt="Reviews">
                         <span>Reviews</span>

@@ -39,7 +39,7 @@
                         <span>Article</span>
                     </a>
 
-                    <a href="myarticleExpert" class="menu-item">
+                    <a href="/myarticleExpert" class="menu-item">
                         <img src="{{ asset('images/myarticle.png') }}" alt="My Article">
                         <span>My Article</span>
                     </a>
@@ -90,7 +90,7 @@
                 </div>
 
                 <div class="requests-list" id="requestsList">
-                    <article class="request-card">
+                    <article class="request-card" data-url="/roomChatExpert">
                         <div class="request-left">
                             <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=300&auto=format&fit=crop" alt="Michael Thompson" class="avatar">
 
@@ -108,14 +108,9 @@
                                 </p>
                             </div>
                         </div>
-
-                        <div class="request-actions">
-                            <button type="button" class="accept-btn">Accept</button>
-                            <button type="button" class="decline-btn">Decline</button>
-                        </div>
                     </article>
 
-                    <article class="request-card">
+                    <article class="request-card" data-url="/roomChatExpert">
                         <div class="request-left">
                             <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=300&auto=format&fit=crop" alt="Sarah Martinez" class="avatar">
 
@@ -133,14 +128,9 @@
                                 </p>
                             </div>
                         </div>
-
-                        <div class="request-actions">
-                            <button type="button" class="accept-btn">Accept</button>
-                            <button type="button" class="decline-btn">Decline</button>
-                        </div>
                     </article>
 
-                    <article class="request-card">
+                    <article class="request-card" data-url="/roomChatExpert">
                         <div class="request-left">
                             <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=300&auto=format&fit=crop" alt="Robert Chen" class="avatar">
 
@@ -158,14 +148,9 @@
                                 </p>
                             </div>
                         </div>
-
-                        <div class="request-actions">
-                            <button type="button" class="accept-btn">Accept</button>
-                            <button type="button" class="decline-btn">Decline</button>
-                        </div>
                     </article>
 
-                    <article class="request-card">
+                    <article class="request-card" data-url="/roomChatExpert">
                         <div class="request-left">
                             <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=300&auto=format&fit=crop" alt="Emily Johnson" class="avatar">
 
@@ -183,14 +168,9 @@
                                 </p>
                             </div>
                         </div>
-
-                        <div class="request-actions">
-                            <button type="button" class="accept-btn">Accept</button>
-                            <button type="button" class="decline-btn">Decline</button>
-                        </div>
                     </article>
 
-                    <article class="request-card">
+                    <article class="request-card" data-url="/roomChatExpert">
                         <div class="request-left">
                             <img src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?q=80&w=300&auto=format&fit=crop" alt="David Kumar" class="avatar">
 
@@ -208,14 +188,9 @@
                                 </p>
                             </div>
                         </div>
-
-                        <div class="request-actions">
-                            <button type="button" class="accept-btn">Accept</button>
-                            <button type="button" class="decline-btn">Decline</button>
-                        </div>
                     </article>
 
-                    <article class="request-card">
+                    <article class="request-card" data-url="/roomChatExpert">
                         <div class="request-left">
                             <img src="https://images.unsplash.com/photo-1504593811423-6dd665756598?q=80&w=300&auto=format&fit=crop" alt="Lisa Anderson" class="avatar">
 
@@ -232,11 +207,6 @@
                                     or wait until next season? Trees are 5 years old.
                                 </p>
                             </div>
-                        </div>
-
-                        <div class="request-actions">
-                            <button type="button" class="accept-btn">Accept</button>
-                            <button type="button" class="decline-btn">Decline</button>
                         </div>
                     </article>
                 </div>

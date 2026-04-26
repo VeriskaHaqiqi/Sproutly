@@ -67,18 +67,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    document.addEventListener("click", function (e) {
-        if (e.target.classList.contains("accept-btn")) {
-            e.target.textContent = "Accepted";
-            e.target.disabled = true;
-            e.target.style.opacity = "0.7";
-        }
-
-        if (e.target.classList.contains("decline-btn")) {
-            const card = e.target.closest(".request-card");
-            if (card) {
-                card.style.display = "none";
-            }
-        }
+    requestCards.forEach((card) => {
+        card.addEventListener("click", function () {
+            window.location.href = this.dataset.url || "/roomChatExpert";
+        });
     });
 });

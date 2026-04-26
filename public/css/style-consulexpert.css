@@ -66,9 +66,6 @@ input {
 }
 
 .sidebar-top {
-    padding-bottom: 0;
-    margin-bottom: 0;
-    border-bottom: none;
     position: relative;
 }
 
@@ -109,8 +106,6 @@ input {
     font-size: 20px;
     font-weight: 800;
     color: var(--green-mid);
-    letter-spacing: -0.02em;
-    white-space: nowrap;
 }
 
 .sidebar-menu {
@@ -129,14 +124,13 @@ input {
     color: var(--text-mid);
     font-size: 15px;
     font-weight: 500;
-    transition: background 0.22s ease, color 0.22s ease, box-shadow 0.22s ease;
+    transition: 0.22s ease;
 }
 
 .menu-item img {
     width: 20px;
     height: 20px;
     object-fit: contain;
-    flex-shrink: 0;
     opacity: 0.8;
 }
 
@@ -150,10 +144,6 @@ input {
     color: var(--green-dark);
     font-weight: 700;
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
-}
-
-.menu-item.active img {
-    opacity: 1;
 }
 
 .sidebar-overlay {
@@ -253,7 +243,6 @@ input {
 .search-icon {
     color: #9aa7b8;
     font-size: 18px;
-    flex-shrink: 0;
 }
 
 .search-box input {
@@ -281,9 +270,16 @@ input {
     border-radius: 16px;
     padding: 16px 14px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     gap: 18px;
+    cursor: pointer;
+    transition: 0.22s ease;
+}
+
+.request-card:hover {
+    background: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(31, 46, 69, 0.08);
 }
 
 .request-left {
@@ -342,39 +338,6 @@ input {
     font-size: 11px;
     line-height: 1.6;
     color: #7f8da3;
-}
-
-.request-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
-}
-
-.accept-btn,
-.decline-btn {
-    border: none;
-    border-radius: 10px;
-    padding: 10px 16px;
-    font-size: 12px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.2s ease;
-}
-
-.accept-btn {
-    background: #8df17f;
-    color: #23412a;
-}
-
-.decline-btn {
-    background: #ececec;
-    color: #4b5563;
-}
-
-.accept-btn:hover,
-.decline-btn:hover {
-    transform: translateY(-1px);
 }
 
 /* FOOTER */
@@ -477,14 +440,6 @@ input {
 }
 
 @media (max-width: 1024px) {
-    .request-card {
-        align-items: flex-start;
-    }
-
-    .request-actions {
-        flex-direction: column;
-    }
-
     .footer-top {
         grid-template-columns: 1fr;
     }
@@ -520,14 +475,7 @@ input {
     }
 
     .request-card {
-        flex-direction: column;
         align-items: stretch;
-    }
-
-    .request-actions {
-        width: 100%;
-        flex-direction: row;
-        justify-content: flex-end;
     }
 
     .footer-top {
