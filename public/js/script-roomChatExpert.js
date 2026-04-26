@@ -736,7 +736,7 @@ function openLightbox(src, type) {
     closeBtn.addEventListener('click', closeFn);
     overlay.addEventListener('click', (e) => { if (e.target === overlay) closeFn(); });
 
-    overlay.appendChild(media);
+    overlay.appendChild(media); 
     overlay.appendChild(closeBtn);
     document.body.appendChild(overlay);
 }

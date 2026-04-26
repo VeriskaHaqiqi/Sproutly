@@ -181,21 +181,19 @@
     {{-- CHAT HEADER --}}
     <div class="chat-header">
         <div class="header-user">
-            <div class="avatar-wrapper">
-                <div class="avatar-shell avatar-shell--lg" data-initials="SJ" data-color="0" id="headerAvatarShell">
-                    <img src="{{ asset('image/avatar-sarah.png') }}" alt="User" class="avatar-img" id="headerAvatarImg" onerror="this.style.display='none'">
+            <a href="{{ url('/userInfo') }}" class="header-user">
+                <div class="avatar-wrapper">
+                    <div class="avatar-shell avatar-shell--lg" data-initials="SJ" data-color="0" id="headerAvatarShell">
+                        <img src="{{ asset('image/avatar-sarah.png') }}" alt="User" class="avatar-img" id="headerAvatarImg" onerror="this.style.display='none'">
+                    </div>
+                    <span class="status-dot online" id="headerStatusDot"></span>
                 </div>
-                <span class="status-dot online" id="headerStatusDot"></span>
-            </div>
-            <div class="header-info">
-                <div class="header-name-row">
-                    <span class="header-name" id="headerName">Sarah Johnson</span>
-                    <span class="expert-tag" id="headerTag">TOMATO EXPERT</span>
+                <div class="header-info">
+                    <div class="header-name-row">
+                        <span class="header-name" id="headerName">Sarah Johnson</span>
+                    </div>
                 </div>
-                <span class="header-sub" id="headerSub">
-                    <span class="dot-green">●</span> Online • Tomato Plant Issue
-                </span>
-            </div>
+            </a>
         </div>
         <div class="header-actions">
             <button class="icon-btn" onclick="openMoreOptions()" title="More options">

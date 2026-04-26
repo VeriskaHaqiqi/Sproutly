@@ -211,3 +211,7 @@ Route::get('/setPayMethod', function () {
 })->name('setPayMethod');
 
 Route::get('/endedRoomUser',    function () { return view('endedRoomUser'); });
+
+Route::get('/userInfo', function () {
+    return view('userInfo');
+})->name('userInfo');
