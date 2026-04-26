@@ -16,7 +16,6 @@
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-top">
-        {{-- Klik logo/nama Sproutly → ke halaman home --}}
         <a href="{{ url('/home') }}" class="brand-wrap">
             <div class="brand-logo-box">
                 <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo">
@@ -28,7 +27,6 @@
     <div class="sidebar-divider"></div>
 
     <nav class="sidebar-menu" id="sidebarMenu">
-        {{-- Ganti href sesuai nama route Laravel kamu --}}
         <a href="{{ url('dashboard-user') }}"
            class="menu-item {{ request()->is('dashboard-user') ? 'active' : '' }}">
             <span class="menu-icon">
@@ -108,10 +106,10 @@
         </div>
 
         <div class="topbar-user">
-            <span class="user-name">Isyana Saraswati</span>
             <div class="user-avatar">
-                <img src="{{ asset('images/fotoprofile.png') }}" alt="Sarah Green" />
+                <img src="{{ asset('images/fotoprofile.png') }}" alt="Isyana Saraswati" />
             </div>
+            <span class="user-name">Isyana Saraswati</span>
         </div>
     </header>
 
@@ -121,8 +119,14 @@
         <!-- GREETING BANNER -->
         <section class="greeting-banner">
             <div class="greeting-text">
-                <h1 class="greeting-title">Hallo, Sarah!</h1>
+                <h1 class="greeting-title">
+                    Hallo, Sarah! <span class="greeting-emoji">👋</span>
+                </h1>
                 <p class="greeting-desc">Welcome back to Sproutly! Today is a great day to learn about plant care and consult with the experts.</p>
+            </div>
+            <div class="greeting-date-badge">
+                <span class="greeting-date-dot"></span>
+                <span id="greetingDate">Today</span>
             </div>
             <div class="greeting-decoration"></div>
         </section>
@@ -131,7 +135,7 @@
         <section class="action-cards">
             <a href="{{ url('/consultation/new') }}" class="action-card action-card--primary">
                 <div class="action-card-icon">
-                    <img src="{{ asset('images/consultation.png') }}" alt="" width="28"/>
+                    <img src="{{ asset('images/consultation.png') }}" alt="" width="26"/>
                 </div>
                 <div class="action-card-body">
                     <h3 class="action-card-title">New Consultation <span class="action-arrow">→</span></h3>
@@ -140,11 +144,11 @@
             </a>
             <a href="{{ url('/article') }}" class="action-card action-card--secondary">
                 <div class="action-card-icon">
-                    <img src="{{ asset('images/article.png') }}" alt="" width="28"/>
+                    <img src="{{ asset('images/article.png') }}" alt="" width="26"/>
                 </div>
                 <div class="action-card-body">
                     <h3 class="action-card-title">Read Article <span class="action-arrow">→</span></h3>
-                    <p class="action-card-desc">Explore the latest articles on modern farming tips and tricks</p>
+                    <p class="action-card-desc">Explore the latest articles on modern farming tips and tricks.</p>
                 </div>
             </a>
         </section>
@@ -153,6 +157,7 @@
         <section class="articles-section">
             <div class="articles-header">
                 <h2 class="section-title">Artikel Rekomendasi</h2>
+                <a href="{{ url('daftarArtikel') }}" class="articles-view-all">Lihat Semua →</a>
             </div>
             <div class="articles-grid">
                 <a href="#" class="article-card">
@@ -197,7 +202,7 @@
             <div class="footer-brand">
                 <div class="nav-logo">
                     <div class="logo-icon">
-                        <img src="{{ asset('images/logo-hijau.png') }}" alt="logo" width="30">
+                        <img src="{{ asset('images/logo-hijau.png') }}" alt="logo" width="20">
                     </div>
                     <div>
                         Sproutly
@@ -222,13 +227,13 @@
                 <p>📞 +62 851 5693 2186</p>
                 <div class="social-links">
                     <a href="#" title="Instagram">
-                        <img src="{{ asset('images/instagram.jpg') }}" width="20">
+                        <img src="{{ asset('images/instagram.jpg') }}" width="16">
                     </a>
                     <a href="#" title="Facebook">
-                        <img src="{{ asset('images/facebook.png') }}" width="20">
+                        <img src="{{ asset('images/facebook.png') }}" width="16">
                     </a>
                     <a href="#" title="X">
-                        <img src="{{ asset('images/X.jpg') }}" width="20">
+                        <img src="{{ asset('images/X.jpg') }}" width="16">
                     </a>
                 </div>
             </div>
