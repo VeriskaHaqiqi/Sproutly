@@ -215,3 +215,7 @@ Route::get('/endedRoomUser',    function () { return view('endedRoomUser'); });
 Route::get('/userInfo', function () {
     return view('userInfo');
 })->name('userInfo');
+
+Route::get('/register', function () {
+    return view('register');
+})->name('register');
