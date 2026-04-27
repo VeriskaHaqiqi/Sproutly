@@ -19,11 +19,6 @@
             <div class="bg-circle circle-4"></div>
             <div class="bg-circle circle-5"></div>
 
-            <div class="leaf-icons">
-                <div class="leaf-box">🌱</div>
-                <div class="leaf-box">🍃</div>
-                <div class="leaf-box">🪴</div>
-            </div>
 
             <div class="visual-content">
                 <h1>
