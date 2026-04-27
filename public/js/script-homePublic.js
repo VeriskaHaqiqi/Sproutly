@@ -1,6 +1,10 @@
-/* =====================
+/* =============================================
+   script-homePublic.js — Sproutly Public Home
+============================================= */
+
+/* ========================
    SCROLL REVEAL
-===================== */
+======================== */
 const revealEls = document.querySelectorAll('.reveal');
 
 const observer = new IntersectionObserver((entries) => {
@@ -10,13 +14,13 @@ const observer = new IntersectionObserver((entries) => {
       observer.unobserve(entry.target);
     }
   });
-}, { threshold: 0.12 });
+}, { threshold: 0.10 });
 
 revealEls.forEach(el => observer.observe(el));
 
-/* =====================
+/* ========================
    NAVBAR SCROLL EFFECT
-===================== */
+======================== */
 const navbar = document.querySelector('nav');
 
 window.addEventListener('scroll', () => {

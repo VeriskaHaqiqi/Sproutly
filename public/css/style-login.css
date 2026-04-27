@@ -122,15 +122,17 @@ body {
 
 .hero h1 {
   font-size: 50px;
+  font-family: 'Inter', sans-serif;
   line-height: 1.18;
   font-weight: 800;
-  color: #ffffff;
+  color: #ffff;
   letter-spacing: -0.02em;
   margin-bottom: 22px;
 }
 
 .hero h1 span {
   display: block;
+  font-family: 'Inter', sans-serif;
   color: #135b2c;
 }
 
