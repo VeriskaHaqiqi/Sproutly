@@ -74,7 +74,7 @@
 
         <a href="/login" class="feature-card reveal" style="transition-delay:.08s">
           <div class="feature-icon fi-green">
-            <img src="{{ asset('images/check.png') }}" alt="Photo Diagnosis" />
+            <img src="{{ asset('images/logo-hijau.png') }}" alt="Photo Diagnosis" />
           </div>
           <h3>Plant Diagnosis via Photo</h3>
           <p>Upload a photo of your plant and receive an accurate diagnosis from our experts with tailored treatment recommendations.</p>
@@ -111,7 +111,7 @@
 
         <a href="/login" class="expert-card reveal">
           <div class="expert-avatar">
-            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Dr. Sarah Wijaya" />
+            <img src="{{ asset('images/fotoprofile.png') }}" alt="Dr. Sarah Wijaya">
           </div>
           <div class="expert-name">Dr. Sarah Wijaya</div>
           <div class="expert-spec">Pest &amp; Disease Specialist</div>
@@ -121,7 +121,7 @@
 
         <a href="/login" class="expert-card reveal" style="transition-delay:.1s">
           <div class="expert-avatar">
-            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Budi Santoso" />
+            <img src="{{ asset('images/fotoprofile.png') }}" alt="Dr. Sarah Wijaya">
           </div>
           <div class="expert-name">Budi Santoso, S.P.</div>
           <div class="expert-spec">Ornamental Plant Expert</div>
@@ -131,9 +131,9 @@
 
         <a href="/login" class="expert-card reveal" style="transition-delay:.2s">
           <div class="expert-avatar">
-            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Ir. Maya Kusuma" />
+            <img src="{{ asset('images/fotoprofile.png') }}" alt="Dr. Sarah Wijaya">
           </div>
-          <div class="expert-name">Ir. Maya Kusuma</div>
+          <div class="expert-name">Dr. Maya Kusuma</div>
           <div class="expert-spec">Horticulture Specialist</div>
           <div class="stars">★★★★★ <span>(5.0)</span></div>
           <span class="btn-profile">View Profile</span>
