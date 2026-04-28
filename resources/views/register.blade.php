@@ -29,7 +29,7 @@
       <div class="deco deco--mid"></div>
 
       <!-- Decorative sprout -->
-      <div class="deco-sprout" id="decoEmoji">🌱</div>
+      <div class="deco-sprout" id="decoEmoji"></div>
 
       <!-- Left content: User -->
       <div class="left-content" id="leftUser">
@@ -83,10 +83,10 @@
           <div class="role-toggle" id="roleToggle">
             <div class="toggle-slider" id="toggleSlider"></div>
             <button type="button" class="toggle-btn toggle-btn--active" id="btnUser" data-role="user">
-              🌿 User
+              User
             </button>
             <button type="button" class="toggle-btn" id="btnExpert" data-role="expert">
-              🔬 Expert
+              Expert
             </button>
           </div>
         </div>

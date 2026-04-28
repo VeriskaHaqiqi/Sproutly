@@ -124,7 +124,7 @@ input, textarea, button, select {
 
 .left-sub {
   font-size: 0.92rem;
-  color: rgba(255,255,255,0.82);
+  color: var(--heading-dark);
   line-height: 1.72;
   margin-bottom: 36px;
   max-width: 340px;
@@ -143,7 +143,7 @@ input, textarea, button, select {
   gap: 12px;
   font-size: 0.9rem;
   font-weight: 600;
-  color: rgba(255,255,255,0.88);
+  color: var(--heading-dark);
 }
 
 .check-icon {
