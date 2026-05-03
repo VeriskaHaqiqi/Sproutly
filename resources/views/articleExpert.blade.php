@@ -49,7 +49,7 @@
                     <span>Pricing</span>
                 </a>
 
-                <a href="{{ url('/ConsultationhistoryUser') }}" class="menu-link child-link">
+                <a href="{{ url('/ConsultationhistoryExpert') }}" class="menu-link child-link">
                     <img src="{{ asset('images/clienthistory.png') }}" alt="Client History">
                     <span>Client History</span>
                 </a>

@@ -49,7 +49,7 @@
                         <span>Pricing</span>
                     </a>
 
-                    <a href="/ConsultationhistoryUser" class="menu-item active">
+                    <a href="/ConsultationhistoryExpert" class="menu-item active">
                         <img src="{{ asset('images/clienthistory.png') }}" alt="Client History">
                         <span>Client History</span>
                     </a>
