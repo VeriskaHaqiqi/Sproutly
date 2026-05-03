@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\AuthController; 
 Route::get('/', function () {
     return view('homePublic');
 });
@@ -13,6 +13,8 @@ Route::get('/homeExpert', function () {
 Route::get('/login', function () {
     return view('login');
 })->name('login');
+
+Route::post('/login-test', [AuthController::class, 'login']); 
 
 Route::post('/logout', function () {
     return redirect('/login');
@@ -219,3 +221,5 @@ Route::get('/userInfo', function () {
 Route::get('/register', function () {
     return view('register');
 })->name('register');
+
+

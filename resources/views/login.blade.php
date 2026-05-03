@@ -87,7 +87,8 @@
             Log in to continue your plant consultation journey
           </p>
 
-          <form id="loginForm">
+          <form id="loginForm" method="POST" action="{{ url('/login-test') }}">
+            @csrf
             <div class="field">
               <label for="email">Email address</label>
               <div class="input-wrap">

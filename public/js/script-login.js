@@ -58,16 +58,13 @@ togglePassword.addEventListener("click", () => {
 });
 
 loginForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-
   const emailMsg    = validateEmail(email.value);
   const passwordMsg = validatePassword(password.value);
 
   showError(email, emailError, emailMsg);
   showError(password, passwordError, passwordMsg);
 
-  if (!emailMsg && !passwordMsg) {
-    // Redirect ke homePublic — sesuaikan URL-nya kalau berbeda
-    window.location.href = "/homePublic";
+  if (emailMsg || passwordMsg) {
+    e.preventDefault();
   }
 });
