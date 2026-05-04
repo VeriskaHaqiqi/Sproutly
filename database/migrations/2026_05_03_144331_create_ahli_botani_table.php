@@ -12,23 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ahli_botani', function (Blueprint $table) {
-                $table->id('id_ahli');
+            $table->id();
 
-                // relasi ke users (biar nyambung login nanti)
-                $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
 
-                $table->string('nama_ahli', 50);
-                $table->string('no_telp_ahli', 16)->nullable();
-                $table->string('tempat_lahir_ahli', 30)->nullable();
-                $table->date('tanggal_lahir_ahli')->nullable();
-                $table->string('email_ahli', 50)->unique();
-                $table->string('password_ahli');
+            $table->string('nama_ahli', 50);
+            $table->string('no_telp_ahli', 16)->nullable();
+            $table->string('tempat_lahir_ahli', 30)->nullable();
+            $table->date('tanggal_lahir_ahli')->nullable();
 
-                $table->smallInteger('jenis_kelamin_ahli')->nullable();
-                $table->string('domisili', 30)->nullable();
-                $table->string('nama_almamater', 50)->nullable();
+            $table->enum('jenis_kelamin_ahli', ['L', 'P'])->nullable();
+            $table->string('domisili', 30)->nullable();
+            $table->string('nama_almamater', 50)->nullable();
 
-                $table->timestamps();
+            $table->timestamps();
         });
     }
 
