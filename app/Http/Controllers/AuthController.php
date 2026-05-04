@@ -3,17 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request; 
-
+use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
-    public function login()
+        public function login(Request $request)
     {
-        $role = 'expert'; // coba ganti jadi 'user'
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-        if ($role == 'expert') {
-            return redirect('/homeExpert');
-        } else {
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            if (Auth::user()->role === 'ahli') {
+                return redirect('/homeExpert');
+            }
+
             return redirect('/homeUser');
         }
+
+        return back()->with('error', 'Email atau password salah');
     }
 }

@@ -19,12 +19,16 @@ return new class extends Migration
             $table->string('no_telp_user', 16)->nullable();
             $table->string('tempat_lahir_user', 30)->nullable();
             $table->date('tanggal_lahir_user')->nullable();
-            $table->smallInteger('jenis_kelamin_user')->nullable();
+            $table->enum('jenis_kelamin_user', ['L', 'P'])->nullable();
             $table->string('role')->default('user');
             $table->rememberToken();
             $table->timestamps();
 
         });
+    }
+    public function down(): void
+    {
+        Schema::dropIfExists('users');
     }
 
 };
