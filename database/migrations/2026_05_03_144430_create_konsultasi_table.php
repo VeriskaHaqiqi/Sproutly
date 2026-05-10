@@ -12,37 +12,42 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('konsultasi', function (Blueprint $table) {
-            $table->id('id_konsultasi');
 
-            // relasi ke user
-            $table->foreignId('id_user')
+            $table->id();
+
+            // user
+            $table->foreignId('user_id')
                 ->constrained('users')
                 ->cascadeOnDelete();
 
-            // relasi ke ahli
-            $table->foreignId('id_ahli')
-                ->constrained('ahli_botani', 'id_ahli')
+            // ahli botani
+            $table->foreignId('ahli_botani_id')
+                ->constrained('ahli_botani')
                 ->cascadeOnDelete();
 
-            // relasi ke pembayaran
-            $table->foreignId('id_pembayaran')
+            // pembayaran
+            $table->foreignId('pembayaran_id')
                 ->nullable()
-                ->constrained('pembayaran', 'id_pembayaran')
+                ->constrained('pembayaran')
                 ->nullOnDelete();
 
-            // relasi ke tarif
-            $table->foreignId('id_tarif')
+            // tarif
+            $table->foreignId('tarif_ahli_id')
                 ->nullable()
-                ->constrained('tarif_ahli', 'id_tarif')
+                ->constrained('tarif_ahli')
                 ->nullOnDelete();
 
             $table->timestamp('tanggal_mulai')->nullable();
             $table->timestamp('tanggal_selesai')->nullable();
-            $table->string('status_konsultasi', 20)->default('pending');
+
+            $table->string('status_konsultasi', 20)
+                ->default('pending');
+
             $table->string('topik', 100)->nullable();
 
             $table->timestamps();
         });
+        
     }
 
     /**

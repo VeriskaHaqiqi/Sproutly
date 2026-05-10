@@ -12,25 +12,26 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rating', function (Blueprint $table) {
-            $table->id('id_rating');
+            $table->id();
 
-        // relasi ke user
-            $table->foreignId('id_user')
-              ->constrained('users')
-              ->cascadeOnDelete();
+            // user
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->cascadeOnDelete();
 
-            // relasi ke ahli
-            $table->foreignId('id_ahli')
-              ->constrained('ahli_botani', 'id_ahli')
-              ->cascadeOnDelete();
+            // ahli botani
+            $table->foreignId('ahli_botani_id')
+                ->constrained('ahli_botani')
+                ->cascadeOnDelete();
 
-            // relasi ke konsultasi
-            $table->foreignId('id_konsultasi')
-                  ->constrained('konsultasi', 'id_konsultasi')
-                  ->cascadeOnDelete();
+            // konsultasi
+            $table->foreignId('konsultasi_id')
+                ->constrained('konsultasi')
+                ->cascadeOnDelete();
 
-            $table->integer('nilai'); // misalnya 1–5
+            $table->integer('nilai');
             $table->longText('ulasan')->nullable();
+
             $table->timestamp('tanggal')->useCurrent();
 
             $table->timestamps();

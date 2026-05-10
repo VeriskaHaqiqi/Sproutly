@@ -12,17 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jadwal_ahli', function (Blueprint $table) {
-            $table->id('id_jadwal');
 
-        // relasi ke ahli
-            $table->foreignId('id_ahli')
-              ->constrained('ahli_botani', 'id_ahli')
-              ->cascadeOnDelete();
+            $table->id();
+
+            $table->foreignId('ahli_botani_id')
+                ->constrained('ahli_botani')
+                ->cascadeOnDelete();
 
             $table->string('hari', 10);
             $table->time('jam_mulai');
             $table->time('jam_selesai');
-            $table->string('status_ketersediaan', 15)->default('tersedia');
+            $table->string('status_ketersediaan', 15)
+                ->default('tersedia');
 
             $table->timestamps();
         });

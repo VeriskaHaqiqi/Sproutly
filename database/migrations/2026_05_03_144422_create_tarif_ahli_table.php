@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tarif_ahli', function (Blueprint $table) {
-            $table->id('id_tarif');
+            $table->id();
 
             // relasi ke ahli
-            $table->foreignId('id_ahli')
-                ->constrained('ahli_botani', 'id_ahli')
+            $table->foreignId('ahli_botani_id')
+                ->constrained('ahli_botani')
                 ->cascadeOnDelete();
 
             $table->decimal('tarif', 12, 2); // harga

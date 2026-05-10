@@ -11,19 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('artikel', function (Blueprint $table) {
-            $table->id('id_artikel');
+       Schema::create('artikel', function (Blueprint $table) {
+         $table->id();
 
-        // relasi ke ahli_botani
-            $table->foreignId('id_ahli')
-              ->constrained('ahli_botani', 'id_ahli')
-              ->cascadeOnDelete();
+         $table->foreignId('ahli_botani_id')
+            ->constrained('ahli_botani')
+            ->cascadeOnDelete();
 
-            $table->string('judul', 50);
-            $table->longText('konten');
-            $table->timestamp('tanggal_unggah')->useCurrent();
+         $table->string('judul', 50);
+         $table->longText('konten');
+         $table->timestamp('tanggal_unggah')->useCurrent();
 
-            $table->timestamps();
+         $table->timestamps();
         });
     }
 

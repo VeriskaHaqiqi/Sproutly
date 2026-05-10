@@ -12,16 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pesan', function (Blueprint $table) {
-            $table->id('id_pesan');
+            $table->id();
 
-        // relasi ke konsultasi (chat per sesi)
-            $table->foreignId('id_konsultasi')
-                ->constrained('konsultasi', 'id_konsultasi')
+            $table->foreignId('konsultasi_id')
+                ->constrained('konsultasi')
                 ->cascadeOnDelete();
 
-            $table->enum('pengirim', ['user', 'expert']);
+            $table->enum('pengirim', ['user', 'ahli']);
             $table->longText('isi_pesan')->nullable();
-            $table->string('gambar')->nullable(); // simpan path gambar
+            $table->string('gambar')->nullable();
             $table->timestamp('waktu_kirim')->useCurrent();
 
             $table->timestamps();
