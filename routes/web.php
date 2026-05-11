@@ -16,17 +16,18 @@ Route::get('/login', function () {
 
 Route::post('/login-test', [AuthController::class, 'login']); 
 
-Route::post('/logout', function () {
-    return redirect('/login');
-})->name('logout');
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->name('logout');
 
 Route::get('/lupapass', function () {
     return view('lupapass');
 });
 
-Route::get('/register', function () {
-    return view('register');
-});
+Route::post('/register-user', [AuthController::class, 'registerUser'])
+    ->name('registerUser.submit');
+
+Route::post('/register-expert', [AuthController::class, 'registerExpert'])
+    ->name('registerExpert.submit');
 
 Route::get('/dashboard-user', function () {
     return view('dashboard-user');

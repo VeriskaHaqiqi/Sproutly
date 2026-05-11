@@ -116,5 +116,12 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
+  const activeRole = document.body.dataset.activeRole;
+
+  if (activeRole === 'expert') {
+  switchToExpert();
+    } else {
+  switchToUser();
+    } 
 
 });

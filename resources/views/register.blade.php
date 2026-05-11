@@ -13,7 +13,7 @@
   <!-- Stylesheet -->
   <link rel="stylesheet" href="{{ asset('css/style-register.css') }}">
 </head>
-<body>
+<body data-active-role="{{ old('form_type', 'user') }}">
 
   <div class="page-wrapper">
 
@@ -98,6 +98,7 @@
         <!-- ====== USER FORM ====== -->
         <form class="register-form" id="formUser" method="POST" action="{{ route('registerUser.submit') }}">
           @csrf
+          <input type="hidden" name="form_type" value="user">
 
           <div class="form-group">
             <input type="text" name="full_name" class="form-input @error('full_name') is-error @enderror"
@@ -186,10 +187,13 @@
         </form>
 
         <!-- ====== EXPERT FORM ====== -->
-        <form class="register-form register-form--hidden" id="formExpert" method="POST"
-          action="#" enctype="multipart/form-data">
-          @csrf
-
+        <form class="register-form register-form--hidden"
+          id="formExpert"
+          method="POST"
+          action="{{ route('registerExpert.submit') }}"
+          enctype="multipart/form-data">
+        @csrf 
+        <input type="hidden" name="form_type" value="expert">
           <div class="form-group">
             <input type="text" name="full_name" class="form-input"
               placeholder="Enter your full name" required />
@@ -202,6 +206,31 @@
 
           <div class="form-group">
             <input type="date" name="birthdate" class="form-input form-input--date" required />
+          </div>
+          <div class="form-group">
+            <input type="email" name="email" class="form-input"
+              placeholder="Enter your email" required />
+          </div>
+
+          <div class="form-group select-wrapper">
+            <select name="gender" class="form-input form-select @error('gender') is-error @enderror" required>
+              <option value="" disabled {{ old('gender') ? '' : 'selected' }}>Select your gender</option>
+              <option value="male"   {{ old('gender') == 'male'   ? 'selected' : '' }}>Male</option>
+              <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
+              <option value="other"  {{ old('gender') == 'other'  ? 'selected' : '' }}>Prefer not to say</option>
+            </select>
+            <span class="select-arrow">&#8744;</span>
+            @error('gender')<span class="field-error">{{ $message }}</span>@enderror
+          </div>
+
+          <div class="form-group">
+            <input type="password" name="password" class="form-input"
+              placeholder="Enter your password" required />
+          </div>
+
+          <div class="form-group">
+            <input type="password" name="password_confirmation" class="form-input"
+              placeholder="Confirm your password" required />
           </div>
 
           <div class="form-group">
