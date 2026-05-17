@@ -2,6 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController; 
+use Illuminate\Support\Facades\Password;
+
+Route::get('/reset-password/{token}', function ($token) {
+    return view('inputPassword', ['token' => $token]);
+})->name('password.reset');
+
 Route::get('/', function () {
     return view('homePublic');
 });
@@ -49,7 +55,6 @@ Route::get('/find-experts', function () {
 Route::get('/homePublic', function () {
     return view('homePublic');
 })->name('homePublic');
-
 
 
 Route::get('/accountUser', function () {

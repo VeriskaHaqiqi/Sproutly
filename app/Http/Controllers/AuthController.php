@@ -106,7 +106,6 @@ class AuthController extends Controller
     public function apiRegister(Request $request)
 {
     $request->validate([
-        'full_name' => 'required|string|max:50',
         'phone' => 'required|string|max:16',
         'birthdate' => 'required|date',
         'email' => 'required|email|unique:users,email',
