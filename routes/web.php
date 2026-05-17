@@ -14,7 +14,8 @@ Route::get('/login', function () {
     return view('login');
 })->name('login');
 
-Route::post('/login-test', [AuthController::class, 'login']); 
+Route::post('/login-test', [AuthController::class, 'login'])
+    ->name('login.submit');
 
 Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
@@ -49,17 +50,7 @@ Route::get('/homePublic', function () {
     return view('homePublic');
 })->name('homePublic');
 
-Route::get('/registerExpert', function () {
-    return view('registerExpert');
-});
 
-Route::get('/registerUser', function () {
-    return view('registerUser');
-})->name('registerUser');
-
-Route::post('/registerUser', function () {
-    return 'Form berhasil dikirim';
-})->name('registerUser.submit');
 
 Route::get('/accountUser', function () {
     return view('accountUser');
