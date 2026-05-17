@@ -103,6 +103,68 @@ class AuthController extends Controller
         return redirect('/login');
     }
 
+    public function apiRegister(Request $request)
+{
+    $request->validate([
+        'full_name' => 'required|string|max:50',
+        'phone' => 'required|string|max:16',
+        'birthdate' => 'required|date',
+        'email' => 'required|email|unique:users,email',
+        'gender' => 'required',
+        'password' => 'required|min:6',
+        'role' => 'required|in:user,ahli',
+    ]);
+
+    $user = User::create([
+        'nama_user' => $request->full_name,
+        'no_telp_user' => $request->phone,
+        'tanggal_lahir_user' => $request->birthdate,
+        'email' => $request->email,
+        'jenis_kelamin_user' => $this->convertGender($request->gender),
+        'password' => Hash::make($request->password),
+        'role' => $request->role,
+    ]);
+
+    if ($request->role === 'ahli') {
+        AhliBotani::create([
+            'user_id' => $user->id,
+            'nama_ahli' => $request->full_name,
+            'no_telp_ahli' => $request->phone,
+            'tanggal_lahir_ahli' => $request->birthdate,
+            'jenis_kelamin_ahli' => $this->convertGenderExpert($request->gender),
+            'domisili' => $request->location ?? '-',
+            'nama_almamater' => $request->institution ?? '-',
+        ]);
+    }
+
+    return response()->json([
+        'message' => 'Register berhasil',
+        'user' => $user
+    ], 201);
+}
+
+    public function apiLogin(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
+
+    $user = User::where('email', $request->email)->first();
+
+    if (!$user || !Hash::check($request->password, $user->password)) {
+        return response()->json([
+            'message' => 'Email atau password salah'
+        ], 401);
+    }
+
+    return response()->json([
+        'message' => 'Login berhasil',
+        'user' => $user,
+        'redirect' => $user->role === 'ahli' ? '/homeExpert' : '/homeUser'
+    ], 200);
+} 
+
     private function convertGender($gender)
     {
         if ($gender === 'male') {
