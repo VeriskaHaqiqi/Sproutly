@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController; 
-use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Password;    
 
 Route::get('/reset-password/{token}', function ($token) {
     return view('inputPassword', ['token' => $token]);
