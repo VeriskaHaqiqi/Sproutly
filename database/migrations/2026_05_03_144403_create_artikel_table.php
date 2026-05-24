@@ -11,18 +11,32 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('artikel', function (Blueprint $table) {
-         $table->id();
+        Schema::create('artikel', function (Blueprint $table) {
 
-         $table->foreignId('ahli_botani_id')
-            ->constrained('ahli_botani')
-            ->cascadeOnDelete();
+            $table->id();
 
-         $table->string('judul', 50);
-         $table->longText('konten');
-         $table->timestamp('tanggal_unggah')->useCurrent();
+            // relasi ke ahli botani
+            $table->foreignId('ahli_botani_id')
+                ->constrained('ahli_botani')
+                ->cascadeOnDelete();
 
-         $table->timestamps();
+            // judul artikel
+            $table->string('judul', 100);
+
+            // isi artikel
+            $table->longText('konten');
+
+            // thumbnail artikel
+            $table->string('thumbnail')->nullable();
+
+            // kategori artikel
+            $table->string('kategori', 50)->nullable();
+
+            // tanggal upload
+            $table->timestamp('tanggal_unggah')
+                ->useCurrent();
+
+            $table->timestamps();
         });
     }
 
