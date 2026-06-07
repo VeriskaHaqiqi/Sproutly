@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
+
 class AhliBotani extends Model
 {
-   protected $table = 'ahli_botani';
+    use HasFactory;
 
+    protected $table = 'ahli_botani';
+    protected $primaryKey = 'id';
+    
     protected $fillable = [
         'user_id',
         'nama_ahli',
@@ -16,11 +20,22 @@ class AhliBotani extends Model
         'tanggal_lahir_ahli',
         'jenis_kelamin_ahli',
         'domisili',
-        'nama_almamater',
-    ]; 
+        'nama_almamater'
+    ];
 
+    protected $casts = [
+        'tanggal_lahir_ahli' => 'date'
+    ];
+
+    // Relasi ke user
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    // Relasi ke rating (yang menerima rating)
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class, 'id_ahli', 'id');
     }
 }

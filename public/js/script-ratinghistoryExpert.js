@@ -255,9 +255,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         </div>
                     </div>
 
-                    <div class="review-action">
-                        <button type="button" class="detail-btn">View Detail</button>
-                    </div>
+                    
                 </article>
             `).join("");
         }
