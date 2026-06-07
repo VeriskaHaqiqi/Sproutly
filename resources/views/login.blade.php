@@ -82,13 +82,6 @@
             <button class="login-btn" id="loginBtn" type="submit">Log In</button>
           </form>
 
-          <div class="divider">Or continue with</div>
-
-          <div class="social-row">
-            <button class="social-btn" type="button">Google</button>
-            <button class="social-btn" type="button">Apple</button>
-          </div>
-
           <div class="signup">
             Don't have an account?<br>
             <a href="{{ route('register') }}">Sign up</a>
