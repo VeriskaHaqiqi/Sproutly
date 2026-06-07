@@ -44,13 +44,28 @@ class ArtikelController extends Controller
     }
 
     // detail artikel
+    // detail artikel
     public function show($id)
     {
-        $artikel = Artikel::findOrFail($id);
-
+    try {
+        $artikel = Artikel::find($id);
+        
+        if (!$artikel) {
+            return response()->json([
+                'message' => 'Artikel tidak ditemukan'
+            ], 404);
+        }
+        
         return response()->json([
+            'message' => 'Detail artikel berhasil diambil',
             'data' => $artikel
         ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Terjadi kesalahan',
+            'error' => $e->getMessage()
+        ], 500);
+    }
     }
 
     // update artikel

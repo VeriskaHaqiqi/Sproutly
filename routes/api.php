@@ -62,7 +62,7 @@ Route::delete('/tarif-ahli/{id}', [TarifAhliController::class, 'destroy']);Route
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index']);
-    Route::put('/profile/photo', [ProfileController::class, 'updatePhoto']);
+    Route::post('/profile/photo', [ProfileController::class, 'updatePhoto']);
     Route::get('/profile/payments', [ProfileController::class, 'paymentHistory']);
     Route::get('/profile/ratings', [ProfileController::class, 'ratingsList']); // endpoint rating list
     Route::post('/profile/logout', [ProfileController::class, 'logout']);

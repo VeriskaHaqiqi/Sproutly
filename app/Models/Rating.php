@@ -9,19 +9,21 @@ class Rating extends Model
 {
     use HasFactory;
 
-    protected $table = 'ratings';
-    protected $primaryKey = 'id_rating';
+    protected $table = 'rating'; // ← perhatikan: 'rating' bukan 'ratings'
+    protected $primaryKey = 'id';
     
     protected $fillable = [
-        'id_user',
-        'id_ahli',
-        'id_konsultasi',
-        'bintang',
-        'ulasan'
+        'user_id',        // ← sesuai migration
+        'ahli_botani_id', // ← sesuai migration
+        'konsultasi_id',  // ← sesuai migration
+        'nilai',          // ← sesuai migration (bukan bintang)
+        'ulasan',
+        'tanggal'
     ];
 
     protected $casts = [
-        'bintang' => 'integer',
+        'nilai' => 'integer',
+        'tanggal' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime'
     ];
@@ -29,18 +31,18 @@ class Rating extends Model
     // Relasi ke user (pemberi rating)
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     // Relasi ke ahli botani (yang dirating)
     public function ahliBotani()
     {
-        return $this->belongsTo(AhliBotani::class, 'id_ahli', 'id');
+        return $this->belongsTo(AhliBotani::class, 'ahli_botani_id', 'id');
     }
 
     // Relasi ke konsultasi
     public function konsultasi()
     {
-        return $this->belongsTo(Konsultasi::class, 'id_konsultasi', 'id_konsultasi');
+        return $this->belongsTo(Konsultasi::class, 'konsultasi_id', 'id');
     }
 }

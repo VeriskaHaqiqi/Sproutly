@@ -9,37 +9,27 @@ use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
-    public function __construct()
+    /*public function __construct()
     {
         $this->middleware('auth:sanctum');
     }
+        */
 
     // Get profile data
     public function index()
-    {
-    try {
-        $user = Auth::user();
-        
-        if (!$user) {
-            return response()->json([
-                'error' => 'User not authenticated',
-                'message' => 'Please login first'
-            ], 401);
-        }
-        
-        return response()->json([
-            'success' => true,
-            'user_id' => $user->id,
+{
+    $user = Auth::user();
+    
+    return response()->json([
+        'user' => [
+            'id' => $user->id,
+            'name' => $user->nama_user,
             'email' => $user->email,
-            'nama' => $user->nama_user
-        ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'error' => $e->getMessage(),
-            'line' => $e->getLine()
-        ], 500);
-    }
-    }   
+            'phone' => $user->no_telp_user,
+            'profile_picture' => $user->profile_picture ? asset('storage/' . $user->profile_picture) : null,
+        ]
+    ]);
+    }  
     // Update profile photo
     public function updatePhoto(Request $request)
     {
@@ -77,39 +67,39 @@ class ProfileController extends Controller
     }
 
     // Get ratings list (rating yang diberikan user ke ahli botani)
+    // Get ratings list (rating yang diberikan user ke ahli botani)
     public function ratingsList()
     {
-        $user = Auth::user();
-        
-        $ratings = Rating::where('id_user', $user->id)
-            ->with('ahliBotani')
-            ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function ($rating) {
-                return [
-                    'id_rating' => $rating->id_rating,
-                    'bintang' => $rating->bintang,
-                    'bintang_display' => $rating->bintang . '/5',
-                    'ahli_botani_name' => $rating->ahliBotani->nama_ahli ?? 'Ahli Botani',
-                    'id_konsultasi' => $rating->id_konsultasi,
-                    'ulasan' => $rating->ulasan,
-                    'tanggal' => $rating->created_at->format('d M Y H:i'),
-                    'rating_stars' => str_repeat('⭐', $rating->bintang) . str_repeat('☆', 5 - $rating->bintang)
-                ];
-            });
+    $user = Auth::user();
+    
+    $ratings = Rating::where('user_id', $user->id)  // ← user_id, bukan id_user
+        ->with('ahliBotani')
+        ->orderBy('created_at', 'desc')
+        ->get()
+        ->map(function ($rating) {
+            return [
+                'id' => $rating->id,
+                'nilai' => $rating->nilai,  // ← nilai, bukan bintang
+                'bintang_display' => $rating->nilai . '/5',
+                'ahli_botani_name' => $rating->ahliBotani->nama_ahli ?? 'Ahli Botani',
+                'konsultasi_id' => $rating->konsultasi_id,
+                'ulasan' => $rating->ulasan,
+                'tanggal' => $rating->tanggal ? $rating->tanggal->format('d M Y H:i') : $rating->created_at->format('d M Y H:i'),
+                'rating_stars' => str_repeat('⭐', $rating->nilai) . str_repeat('☆', 5 - $rating->nilai)
+            ];
+        });
 
-        $averageRating = $ratings->avg('bintang') ?? 0;
+    $averageRating = $ratings->avg('nilai') ?? 0;  // ← nilai, bukan bintang
 
-        return response()->json([
-            'success' => true,
-            'ratings' => $ratings,
-            'total_ratings' => $ratings->count(),
-            'average_rating' => round($averageRating, 1),
-            'average_stars' => str_repeat('⭐', round($averageRating)) . str_repeat('☆', 5 - round($averageRating)),
-            'message' => $ratings->isEmpty() ? 'Belum ada rating yang diberikan' : null
-        ]);
+    return response()->json([
+        'success' => true,
+        'ratings' => $ratings,
+        'total_ratings' => $ratings->count(),
+        'average_rating' => round($averageRating, 1),
+        'average_stars' => str_repeat('⭐', round($averageRating)) . str_repeat('☆', 5 - round($averageRating)),
+        'message' => $ratings->isEmpty() ? 'Belum ada rating yang diberikan' : null
+    ]);
     }
-
     // Logout
     public function logout(Request $request)
     {
