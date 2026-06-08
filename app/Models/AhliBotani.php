@@ -38,4 +38,8 @@ class AhliBotani extends Model
     {
         return $this->hasMany(Rating::class, 'id_ahli', 'id');
     }
+    public function artikel()
+    {
+    return $this->hasMany(Artikel::class, 'ahli_botani_id', 'id');
+    }
 }

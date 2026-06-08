@@ -50,15 +50,21 @@ Route::get('/jadwal-ahli', [JadwalAhliController::class, 'index']);
 Route::post('/jadwal-ahli', [JadwalAhliController::class, 'store']);
 Route::get('/konsultasi', [KonsultasiController::class, 'index']);
 Route::post('/konsultasi', [KonsultasiController::class, 'store']);
-Route::get('/artikel', [ArtikelController::class, 'index']);
-Route::get('/artikel/{id}', [ArtikelController::class, 'show']);
-Route::post('/artikel', [ArtikelController::class, 'store']);
-Route::put('/artikel/{id}', [ArtikelController::class, 'update']);
+
 Route::get('/tarif-ahli', [TarifAhliController::class, 'index']);
 Route::get('/tarif-ahli/{id}', [TarifAhliController::class, 'show']);
 Route::post('/tarif-ahli', [TarifAhliController::class, 'store']);
 Route::put('/tarif-ahli/{id}', [TarifAhliController::class, 'update']);
 Route::delete('/tarif-ahli/{id}', [TarifAhliController::class, 'destroy']);Route::delete('/artikel/{id}', [ArtikelController::class, 'destroy']);
+
+Route::get('/artikel', [ArtikelController::class, 'index']);
+Route::get('/artikel/{id}', [ArtikelController::class, 'show']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/artikel', [ArtikelController::class, 'store']);
+    Route::put('/artikel/{id}', [ArtikelController::class, 'update']);
+    Route::delete('/artikel/{id}', [ArtikelController::class, 'destroy']);
+});
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index']);
@@ -66,4 +72,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile/payments', [ProfileController::class, 'paymentHistory']);
     Route::get('/profile/ratings', [ProfileController::class, 'ratingsList']); // endpoint rating list
     Route::post('/profile/logout', [ProfileController::class, 'logout']);
+    Route::post('/artikel/{id}/bookmark', [ArtikelController::class, 'bookmark']);
+    Route::delete('/artikel/{id}/bookmark', [ArtikelController::class, 'unbookmark']);
+    Route::get('/bookmark-artikel', [ArtikelController::class, 'myBookmark']);
+
 });
