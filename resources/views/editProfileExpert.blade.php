@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sproutly - Edit Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ asset('css/style-editProfileExpert.css') }}">
+</head>
+<body>
+
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ========================
+       SIDEBAR
+  ========================= -->
+  <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="{{ route('homeExpert') }}" class="logo-wrap">
+                <div class="logo-box">
+                    <img src="images/logo.png" class="logo-img">
+                </div>
+                <span class="logo-text">Sproutly</span>
+            </a>
+        </div>
+
+        <div class="sidebar-line"></div>
+
+        <nav class="sidebar-menu">
+            <a href="{{ route('dashboard-ahli') }}" 
+            class="menu-link {{ request()->routeIs('dashboard-ahli') ? 'active' : '' }}">
+                <img src="images/dashboard.png">
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{{ route('consultexpert') }}" 
+            class="menu-link {{ request()->routeIs('consultexpert') ? 'active' : '' }}">
+                <img src="images/consultation.png">
+                <span>Consultation</span>
+            </a>
+
+            <a href="{{ route('articleExpert') }}" 
+            class="menu-link {{ request()->routeIs('articleExpert') ? 'active' : '' }}">
+                <img src="images/article.png">
+                <span>Article</span>
+            </a>
+
+            <a href="{{ route('myarticleExpert') }}" 
+            class="menu-link child-link {{ request()->routeIs('myarticleExpert') ? 'active' : '' }}">
+                <img src="images/myarticle.png">
+                <span>My Article</span>
+            </a>
+
+            <a href="{{ route('setpricingexpert') }}" 
+            class="menu-link child-link {{ request()->routeIs('setpricingexpert') ? 'active' : '' }}">
+                <img src="images/pricing.png">
+                <span>Pricing</span>
+            </a>
+
+            <a href="{{ route('ConsultationhistoryExpert') }}" 
+            class="menu-link child-link {{ request()->routeIs('ConsultationhistoryExpert') ? 'active' : '' }}">
+                <img src="images/clienthistory.png">
+                <span>Client History</span>
+            </a>
+
+            <a href="{{ route('accountExpert') }}" 
+            class="menu-link active" {{ request()->routeIs('accountExpert') ? 'active' : '' }}">
+                <img src="images/settings.png">
+                <span>Setting</span>
+            </a>
+        </nav>
+    </aside>
+
+  <!-- ========================
+       MAIN LAYOUT
+  ========================= -->
+  <div class="layout" id="mainContent">
+
+    <!-- TOP NAV -->
+    <header class="topnav">
+        <button class="burger-btn" id="sidebarToggle" aria-label="Toggle sidebar">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="topnav-title">
+            <h1>Edit Profile</h1>
+        </div>
+    </header>
+
+    <!-- PAGE BODY -->
+    <main class="page-body">
+
+      <div class="form-card">
+
+        <!-- ========================
+             FORM
+        ========================= -->
+        <form class="edit-form" method="POST" action="{{ route('expert.profile.update') }}" enctype="multipart/form-data">
+          @csrf
+          @method('PUT')
+
+          <!-- ========================
+               AVATAR SECTION
+          ========================= -->
+          <div class="avatar-section">
+            <div class="avatar-wrap" id="avatarWrap">
+              <img
+                src="{{ $user->profile_picture ? asset('storage/' . $user->profile_picture) : 'https://randomuser.me/api/portraits/women/44.jpg' }}"
+                alt="Profile Photo"
+                class="avatar-img"
+                id="avatarImg"
+              />
+              <label for="photoInput" class="avatar-edit-btn" title="Change photo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+              </label>
+              <input type="file" id="photoInput" name="photo" accept="image/*" class="photo-input" />
+            </div>
+
+            <div class="avatar-actions">
+              <label for="photoInput" class="btn-change-photo">Change Photo</label>
+              <button type="button" class="btn-remove-photo" id="removePhoto">Remove</button>
+            </div>
+          </div>
+
+          <div class="form-grid">
+
+            <!-- Full Name -->
+            <div class="form-group">
+              <label class="form-label" for="full_name">Full Name</label>
+              <div class="input-wrap">
+                <span class="input-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                  </svg>
+                </span>
+                <input
+                  type="text"
+                  id="full_name"
+                  name="full_name"
+                  class="form-input @error('full_name') is-error @enderror"
+                  value="{{ old('full_name', $expert->nama_ahli ?? $user->nama_user) }}"
+                  placeholder="Enter your full name"
+                  required
+                />
+              </div>
+              @error('full_name')
+                <span class="field-error">{{ $message }}</span>
+              @enderror
+            </div>
+
+            <!-- Email Address -->
+            <div class="form-group">
+              <label class="form-label" for="email">Email Address</label>
+              <div class="input-wrap">
+                <span class="input-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                  </svg>
+                </span>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-input @error('email') is-error @enderror"
+                  value="{{ old('email', $user->email) }}"
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
+              @error('email')
+                <span class="field-error">{{ $message }}</span>
+              @enderror
+            </div>
+
+            <!-- Phone Number -->
+            <div class="form-group">
+              <label class="form-label" for="phone">Phone Number</label>
+              <div class="input-wrap">
+                <span class="input-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.18 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6.29 6.29l.97-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                  </svg>
+                </span>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  class="form-input @error('phone') is-error @enderror"
+                  value="{{ old('phone', $expert->no_telp_ahli ?? $user->no_telp_user) }}"
+                  placeholder="Enter phone number"
+                />
+              </div>
+              @error('phone')
+                <span class="field-error">{{ $message }}</span>
+              @enderror
+            </div>
+
+            <!-- Gender -->
+            <div class="form-group">
+              <label class="form-label" for="gender">Gender</label>
+              <div class="input-wrap select-wrap">
+                <span class="input-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                  </svg>
+                </span>
+                <select
+                  id="gender"
+                  name="gender"
+                  class="form-input form-select @error('gender') is-error @enderror"
+                >
+                  <option value="" disabled>Select gender</option>
+                  <option value="male"   {{ old('gender', ($expert->jenis_kelamin_ahli ?? $user->jenis_kelamin_user) == 'L' ? 'male' : '') == 'male'   ? 'selected' : '' }}>Male</option>
+                  <option value="female" {{ old('gender', ($expert->jenis_kelamin_ahli ?? $user->jenis_kelamin_user) == 'P' ? 'female' : '') == 'female' ? 'selected' : '' }}>Female</option>
+                  <option value="other"  {{ old('gender', !in_array($expert->jenis_kelamin_ahli ?? $user->jenis_kelamin_user, ['L', 'P']) ? 'other' : '') == 'other'  ? 'selected' : '' }}>Prefer not to say</option>
+                </select>
+                <span class="select-chevron">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m6 9 6 6 6-6"/>
+                  </svg>
+                </span>
+              </div>
+              @error('gender')
+                <span class="field-error">{{ $message }}</span>
+              @enderror
+            </div>
+
+            <!-- Domisili -->
+            <div class="form-group">
+              <label class="form-label" for="domisili">Domisili</label>
+              <div class="input-wrap">
+                <span class="input-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                  </svg>
+                </span>
+                <input
+                  type="text"
+                  id="domisili"
+                  name="domisili"
+                  class="form-input @error('domisili') is-error @enderror"
+                  value="{{ old('domisili', $expert->domisili ?? '') }}"
+                  placeholder="Enter your location"
+                />
+              </div>
+              @error('domisili')
+                <span class="field-error">{{ $message }}</span>
+              @enderror
+            </div>
+
+            <!-- Nama Almamater -->
+            <div class="form-group">
+              <label class="form-label" for="nama_almamater">Almamater</label>
+              <div class="input-wrap">
+                <span class="input-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+                  </svg>
+                </span>
+                <input
+                  type="text"
+                  id="nama_almamater"
+                  name="nama_almamater"
+                  class="form-input @error('nama_almamater') is-error @enderror"
+                  value="{{ old('nama_almamater', $expert->nama_almamater ?? '') }}"
+                  placeholder="Enter your university/school"
+                />
+              </div>
+              @error('nama_almamater')
+                <span class="field-error">{{ $message }}</span>
+              @enderror
+            </div>
+
+          </div><!-- /.form-grid -->
+
+          <!-- Spacer line -->
+          <div class="form-divider"></div>
+
+          <!-- ========================
+               ACTION BUTTONS
+          ========================= -->
+          <div class="form-actions">
+            <a href="{{ route('accountExpert') }}" class="btn-cancel">Cancel</a>
+            <button type="submit" class="btn-save">Save Changes</button>
+          </div>
+
+        </form>
+      </div><!-- /.form-card -->
+
+    </main>
+  </div><!-- /.layout -->
+  <!-- Footer -->
+      <footer class="site-footer">
+          <div class="footer-grid">
+              <div class="footer-brand">
+                  <div class="footer-brand-top">
+                      <div class="footer-logo-box">
+                          <img src="images/logo.png" alt="Sproutly Logo" class="footer-logo">
+                      </div>
+                      <div>
+                          <h3>Sproutly</h3>
+                          <span>by AVI</span>
+                      </div>
+                  </div>
+                  <p>A modern agriculture consultation platform for a greener and more sustainable future.</p>
+              </div>
+
+              <div class="footer-links">
+                  <h4>About Us</h4>
+                  <a href="#">Our Team</a>
+                  <a href="#">Blog</a>
+                  <a href="#">Privacy Policy</a>
+              </div>
+
+              <div class="footer-contact">
+                  <h4>Contact</h4>
+                  <p><i class="fa-solid fa-envelope"></i> sproutly@gmail.com</p>
+                  <p><i class="fa-solid fa-phone"></i> +62 851 5693 2186</p>
+                  <div class="social-icons">
+                      <a href="#"><img src="images/instagram.jpg" alt="Instagram"></a>
+                      <a href="#"><img src="images/facebook.png" alt="Facebook"></a>
+                      <a href="#"><img src="images/X.jpg" alt="X"></a>
+                  </div>
+              </div>
+          </div>
+          <div class="footer-bottom">
+              &copy; 2025 Sproutly by AVI. All rights reserved.
+          </div>
+      </footer>
+
+  <script src="{{ asset('js/script-editProfileExpert.js') }}"></script>
+</body>
+</html>

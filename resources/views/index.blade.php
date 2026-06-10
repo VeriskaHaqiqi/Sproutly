@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sproutly by AVI – Konsultasi Pertanian Terpercaya</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:ital,wght@0,600;1,400&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">🌱</span>
+      <span class="brand-name">Sproutly by AVI</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#">progress</a></li> 
+      <li><a href="#">progress</a></li>
+      <li><a href="#">progress</a></li>
+      <li><a href="#" class="btn-nav">progress</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg-blob blob1"></div>
+    <div class="hero-bg-blob blob2"></div>
+    <div class="hero-card">
+      <h1 class="hero-title">Konsultasi Pertanian <span class="accent">Terpercaya</span></h1>
+      <p class="hero-desc">
+        Sproutly by AVI adalah platform konsultasi pertanian digital yang menghubungkan petani dengan ahli pertanian berpengalaman. Dapatkan solusi terbaik untuk masalah tanaman Anda melalui konsultasi langsung, diagnosis foto, dan artikel edukatif yang komprehensif.
+      </p>
+      <p class="hero-sub">
+        Bergabunglah dengan ratusan petani yang telah merasakan manfaat teknologi pertanian modern untuk meningkatkan hasil panen dan efisiensi usaha tani mereka.
+      </p>
+    </div>
+  </section>
+
+  <!-- FITUR UNGGULAN -->
+  <section class="section features-section">
+    <h2 class="section-title">Fitur Unggulan</h2>
+    <div class="features-grid">
+      <div class="feature-card card-green">
+        <div class="feature-icon">📹</div>
+        <h3>Live Consultation</h3>
+        <p>Konsultasi langsung dengan para ahli pertanian melalui video call atau chat real-time untuk mendapatkan solusi instan.</p>
+      </div>
+      <div class="feature-card card-teal">
+        <div class="feature-icon">📷</div>
+        <h3>Photo Diagnosis</h3>
+        <p>Upload foto tanaman bermasalah dan dapatkan diagnosis akurat dari sistem AI dan verifikasi expert.</p>
+      </div>
+      <div class="feature-card card-yellow">
+        <div class="feature-icon">📰</div>
+        <h3>Educational Articles</h3>
+        <p>Akses ribuan artikel edukatif tentang teknik pertanian modern, tips perawatan, dan trend agrikultur terbaru.</p>
+      </div>
+      <div class="feature-card card-purple">
+        <div class="feature-icon">⭐</div>
+        <h3>Rating & Review</h3>
+        <p>Sistem rating transparan untuk membantu Anda memilih expert terbaik berdasarkan pengalaman pengguna lain.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERT TERPILIH -->
+  <section class="section experts-section">
+    <h2 class="section-title">Expert Terpilih</h2>
+    <div class="experts-grid">
+      <div class="expert-card">
+        <div class="expert-avatar" style="background: linear-gradient(135deg,#f9a8d4,#818cf8)">
+          <span>A</span>
+        </div>
+        <h3 class="expert-name">Ahmad Sahroni</h3>
+        <p class="expert-spec green">Spesialis Padi & Jagung</p>
+        <button class="btn-profile btn-green">View Profile</button>
+      </div>
+      <div class="expert-card">
+        <div class="expert-avatar" style="background: linear-gradient(135deg,#fde68a,#f9a8d4)">
+          <span>S</span>
+        </div>
+        <h3 class="expert-name">Sari Wijaya</h3>
+        <p class="expert-spec teal">Spesialis Tanah dan Irigasi</p>
+        <button class="btn-profile btn-teal">View Profile</button>
+      </div>
+      <div class="expert-card">
+        <div class="expert-avatar" style="background: linear-gradient(135deg,#d1fae5,#6ee7b7)">
+          <span>B</span>
+        </div>
+        <h3 class="expert-name">Budi Pratama</h3>
+        <p class="expert-spec yellow">Spesialis Organik</p>
+        <button class="btn-profile btn-yellow">View Profile</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA LOGIN / DAFTAR -->
+  <section class="section cta-section">
+    <div class="cta-grid">
+      <div class="cta-card cta-green">
+        <h3>Masuk</h3>
+        <p>Sudah punya akun? Masuk untuk mengakses semua fitur konsultasi dan artikel premium.</p>
+        <button class="btn-cta btn-white" onclick="window.location.href='login.html'">Login Sekarang</button>
+      </div>
+      <div class="cta-card cta-lime">
+        <h3>Daftar</h3>
+        <p>Bergabung dengan komunitas petani modern dan nikmati konsultasi gratis untuk anggota baru.</p>
+        <button class="btn-cta btn-white" onclick="window.location.href='register.html'">Daftar Sekarang</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- DAFTAR ARTIKEL -->
+  <section class="section articles-section">
+    <h2 class="section-title">Daftar Artikel</h2>
+    <div class="articles-grid">
+      <div class="article-card">
+        <div class="article-img" style="background: linear-gradient(135deg,#86efac,#16a34a)">🌾</div>
+        <div class="article-body"><p>Teknik Budidaya Padi Modern</p></div>
+      </div>
+      <div class="article-card">
+        <div class="article-img" style="background: linear-gradient(135deg,#fca5a5,#ef4444)">🍅</div>
+        <div class="article-body"><p>Pertanian Organik untuk Pemula</p></div>
+      </div>
+      <div class="article-card">
+        <div class="article-img" style="background: linear-gradient(135deg,#93c5fd,#3b82f6)">💧</div>
+        <div class="article-body"><p>Sistem Irigasi Pintar</p></div>
+      </div>
+      <div class="article-card">
+        <div class="article-img" style="background: linear-gradient(135deg,#fde68a,#f59e0b)">🌿</div>
+        <div class="article-body"><p>Mengenali Penyakit Tanaman</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="nav-brand">
+          <span class="brand-icon">🌱</span>
+          <span class="brand-name">Sproutly by AVI</span>
+        </div>
+        <p>Platform konsultasi pertanian terpercaya untuk petani modern Indonesia.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Tentang Kami</h4>
+        <ul>
+          <li>Adela Ulin</li>
+          <li>Isyana Azhara</li>
+          <li>Veriska Haqiqi</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Kontak & Social Media</h4>
+        <div class="social-icons">
+          <a href="#" class="social-icon">📸</a>
+          <a href="#" class="social-icon">📘</a>
+          <a href="#" class="social-icon">X</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
