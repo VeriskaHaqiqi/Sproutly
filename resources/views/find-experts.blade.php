@@ -136,221 +136,41 @@
       <div class="experts-main">
         <section class="experts-grid" id="expertsGrid">
 
+          @foreach($experts as $expert)
+          @php
+            $fee = $expert->active_tarif ?? 45000;
+            $feeFormatted = 'Rp' . number_format($fee, 0, ',', '.');
+            $rating = 4.8;
+            if ($expert->ratings()->exists()) {
+                $rating = round($expert->ratings()->avg('nilai'), 1);
+            }
+            $avatar = $expert->user->profile_picture ? asset('storage/' . $expert->user->profile_picture) : ($expert->user->jenis_kelamin_user == 'P' ? 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop' : 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop');
+          @endphp
           <article class="expert-card"
-            data-name="Reza Firmansyah"
-            data-specialization="Crop Science"
-            data-rating="4.9" data-experience="15" data-price="45000"
+            data-id="{{ $expert->id }}"
+            data-name="{{ $expert->nama_ahli }}"
+            data-specialization="{{ $expert->spesialisasi ?? 'General Botanist' }}"
+            data-rating="{{ $rating }}" data-experience="{{ $expert->pengalaman_tahun ?? 5 }}" data-price="{{ $fee }}"
             data-online="true" data-fast-response="true" data-popular="true" data-indonesia="true"
-            data-title="Senior Agronomist"
-            data-university="Institut Pertanian Bogor (IPB)"
-            data-location="Bogor, Jawa Barat"
-            data-consultations="320"
-            data-bio="Reza is a senior agronomist with over 15 years of experience in crop science and sustainable agriculture. His focus includes harvest optimization, crop rotation, and soil fertility management for both commercial farms and smallholders."
-            data-avatar="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop">
+            data-title="{{ $expert->spesialisasi ?? 'Expert Botanist' }}"
+            data-university="{{ $expert->nama_almamater ?? 'Institut Pertanian Bogor' }}"
+            data-location="{{ $expert->domisili ?? 'Indonesia' }}"
+            data-consultations="120"
+            data-bio="{{ $expert->bio ?? 'Experienced botanist specializing in plant care.' }}"
+            data-avatar="{{ $avatar }}">
             <div class="expert-top">
-              <img class="expert-avatar" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop" alt="Reza Firmansyah">
-              <div class="rating-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L14.4 8.1L20 8.9L16 12.8L17 18.3L12 15.6L7 18.3L8 12.8L4 8.9L9.6 8.1L12 3Z" fill="#d89a00"/></svg><span>4.9</span></div>
+              <img class="expert-avatar" src="{{ $avatar }}" alt="{{ $expert->nama_ahli }}">
+              <div class="rating-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L14.4 8.1L20 8.9L16 12.8L17 18.3L12 15.6L7 18.3L8 12.8L4 8.9L9.6 8.1L12 3Z" fill="#d89a00"/></svg><span>{{ $rating }}</span></div>
             </div>
-            <h3>Reza Firmansyah</h3>
-            <div class="specialization-tag tag-blue">Crop Science</div>
-            <p class="expert-desc">Crop science specialist for harvest optimization and sustainable commercial-scale agriculture.</p>
+            <h3>{{ $expert->nama_ahli }}</h3>
+            <div class="specialization-tag tag-blue">{{ $expert->spesialisasi ?? 'General Botanist' }}</div>
+            <p class="expert-desc">{{ Str::limit($expert->bio ?? 'Experienced botanist specializing in plant care.', 80) }}</p>
             <div class="expert-bottom">
-              <div class="price-wrap"><span class="price-main">Rp45.000</span><span class="price-sub">/hr</span></div>
+              <div class="price-wrap"><span class="price-main">{{ $feeFormatted }}</span><span class="price-sub">/hr</span></div>
               <button class="details-btn" type="button" onclick="openExpertModal(this.closest('.expert-card'))">View Details</button>
             </div>
           </article>
-
-          <article class="expert-card"
-            data-name="Sarah Chen"
-            data-specialization="Soil Management"
-            data-rating="4.8" data-experience="12" data-price="52000"
-            data-online="true" data-fast-response="false" data-popular="true" data-indonesia="true"
-            data-title="Konsultan Kesehatan Tanah"
-            data-university="Universitas Gadjah Mada (UGM)"
-            data-location="Yogyakarta, DIY"
-            data-consultations="275"
-            data-bio="Siti specializes in soil health assessment and nutrient management. She has helped over 200 farmers improve land productivity through in-depth soil analysis and science-based fertilizer recommendations."
-            data-avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop">
-            <div class="expert-top">
-              <img class="expert-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop" alt="Sarah Chen">
-              <div class="rating-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L14.4 8.1L20 8.9L16 12.8L17 18.3L12 15.6L7 18.3L8 12.8L4 8.9L9.6 8.1L12 3Z" fill="#d89a00"/></svg><span>4.8</span></div>
-            </div>
-            <h3>Sarah Chen</h3>
-            <div class="specialization-tag tag-blue">Soil Management</div>
-            <p class="expert-desc">Expert in soil health assessment and nutrient management for improved land productivity.</p>
-            <div class="expert-bottom">
-              <div class="price-wrap"><span class="price-main">Rp52.000</span><span class="price-sub">/hr</span></div>
-              <button class="details-btn" type="button" onclick="openExpertModal(this.closest('.expert-card'))">View Details</button>
-            </div>
-          </article>
-
-          <article class="expert-card"
-            data-name="Bagas Priyatno"
-            data-specialization="Pest Control"
-            data-rating="4.7" data-experience="10" data-price="38000"
-            data-online="false" data-fast-response="true" data-popular="false" data-indonesia="true"
-            data-title="Ahli Pengendalian Hama Terpadu"
-            data-university="Universitas Brawijaya (UB)"
-            data-location="Malang, Jawa Timur"
-            data-consultations="198"
-            data-bio="Bagas is an integrated pest management (IPM) specialist with an eco-friendly approach. He develops evidence-based biological and chemical solutions to protect crops from pests without disrupting the surrounding ecosystem."
-            data-avatar="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=200&auto=format&fit=crop">
-            <div class="expert-top">
-              <img class="expert-avatar" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=200&auto=format&fit=crop" alt="Bagas Priyatno">
-              <div class="rating-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L14.4 8.1L20 8.9L16 12.8L17 18.3L12 15.6L7 18.3L8 12.8L4 8.9L9.6 8.1L12 3Z" fill="#d89a00"/></svg><span>4.7</span></div>
-            </div>
-            <h3>Bagas Priyatno</h3>
-            <div class="specialization-tag tag-green">Pest Control</div>
-            <p class="expert-desc">Eco-friendly IPM specialist with evidence-based biological solutions for crop protection.</p>
-            <div class="expert-bottom">
-              <div class="price-wrap"><span class="price-main">Rp38.000</span><span class="price-sub">/hr</span></div>
-              <button class="details-btn" type="button" onclick="openExpertModal(this.closest('.expert-card'))">View Details</button>
-            </div>
-          </article>
-
-          <article class="expert-card"
-            data-name="Dewi Kusuma"
-            data-specialization="Organic Farming"
-            data-rating="4.9" data-experience="14" data-price="48000"
-            data-online="true" data-fast-response="true" data-popular="false" data-indonesia="true"
-            data-title="Konsultan Pertanian Organik Bersertifikat"
-            data-university="Institut Pertanian Bogor (IPB)"
-            data-location="Bandung, Jawa Barat"
-            data-consultations="412"
-            data-bio="Dewi is a certified organic farming consultant who has helped hundreds of farmers transition to organic systems. Her expertise covers organic certification, composting, and holistic farm ecosystem management."
-            data-avatar="https://images.unsplash.com/photo-1504593811423-6dd665756598?q=80&w=200&auto=format&fit=crop">
-            <div class="expert-top">
-              <img class="expert-avatar" src="https://images.unsplash.com/photo-1504593811423-6dd665756598?q=80&w=200&auto=format&fit=crop" alt="Dewi Kusuma">
-              <div class="rating-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L14.4 8.1L20 8.9L16 12.8L17 18.3L12 15.6L7 18.3L8 12.8L4 8.9L9.6 8.1L12 3Z" fill="#d89a00"/></svg><span>4.9</span></div>
-            </div>
-            <h3>Dewi Kusuma</h3>
-            <div class="specialization-tag tag-green">Organic Farming</div>
-            <p class="expert-desc">Certified organic consultant for farm transition, composting, and organic certification.</p>
-            <div class="expert-bottom">
-              <div class="price-wrap"><span class="price-main">Rp48.000</span><span class="price-sub">/hr</span></div>
-              <button class="details-btn" type="button" onclick="openExpertModal(this.closest('.expert-card'))">View Details</button>
-            </div>
-          </article>
-
-          <article class="expert-card"
-            data-name="Hendra Wibowo"
-            data-specialization="Irrigation Systems"
-            data-rating="4.6" data-experience="8" data-price="55000"
-            data-online="true" data-fast-response="false" data-popular="false" data-indonesia="true"
-            data-title="Insinyur Sistem Irigasi"
-            data-university="Institut Teknologi Bandung (ITB)"
-            data-location="Surabaya, Jawa Timur"
-            data-consultations="143"
-            data-bio="Hendra is an agricultural irrigation systems engineer experienced in designing drip irrigation, sprinkler, and canal systems for various farm scales. His focus is on water use efficiency and soil moisture sensor technology."
-            data-avatar="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop">
-            <div class="expert-top">
-              <img class="expert-avatar" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop" alt="Hendra Wibowo">
-              <div class="rating-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L14.4 8.1L20 8.9L16 12.8L17 18.3L12 15.6L7 18.3L8 12.8L4 8.9L9.6 8.1L12 3Z" fill="#d89a00"/></svg><span>4.6</span></div>
-            </div>
-            <h3>Hendra Wibowo</h3>
-            <div class="specialization-tag tag-blue">Irrigation Systems</div>
-            <p class="expert-desc">Agricultural irrigation engineer for drip irrigation, sprinkler design, and efficient water management.</p>
-            <div class="expert-bottom">
-              <div class="price-wrap"><span class="price-main">Rp55.000</span><span class="price-sub">/hr</span></div>
-              <button class="details-btn" type="button" onclick="openExpertModal(this.closest('.expert-card'))">View Details</button>
-            </div>
-          </article>
-
-          <article class="expert-card"
-            data-name="Nadia Santoso"
-            data-specialization="Plant Pathology"
-            data-rating="4.8" data-experience="11" data-price="42000"
-            data-online="true" data-fast-response="true" data-popular="true" data-indonesia="true"
-            data-title="Ahli Patologi Tanaman"
-            data-university="Universitas Padjadjaran (UNPAD)"
-            data-location="Bandung, Jawa Barat"
-            data-consultations="289"
-            data-bio="Nadia specializes in plant disease diagnosis and treatment of fungal, bacterial, and viral infections. She uses both laboratory and field approaches to provide targeted solutions for cultivated plant health."
-            data-avatar="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=200&auto=format&fit=crop">
-            <div class="expert-top">
-              <img class="expert-avatar" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=200&auto=format&fit=crop" alt="Nadia Santoso">
-              <div class="rating-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L14.4 8.1L20 8.9L16 12.8L17 18.3L12 15.6L7 18.3L8 12.8L4 8.9L9.6 8.1L12 3Z" fill="#d89a00"/></svg><span>4.8</span></div>
-            </div>
-            <h3>Nadia Santoso</h3>
-            <div class="specialization-tag tag-green">Plant Pathology</div>
-            <p class="expert-desc">Expert in diagnosing plant diseases from fungi, bacteria, and viruses for cultivated crops.</p>
-            <div class="expert-bottom">
-              <div class="price-wrap"><span class="price-main">Rp42.000</span><span class="price-sub">/hr</span></div>
-              <button class="details-btn" type="button" onclick="openExpertModal(this.closest('.expert-card'))">View Details</button>
-            </div>
-          </article>
-
-          <article class="expert-card"
-            data-name="Aulia Pranata"
-            data-specialization="Orchid Specialist"
-            data-rating="4.9" data-experience="9" data-price="50000"
-            data-online="true" data-fast-response="true" data-popular="true" data-indonesia="true"
-            data-title="Spesialis Anggrek & Hortikultura"
-            data-university="Institut Pertanian Bogor (IPB)"
-            data-location="Jakarta Selatan, DKI Jakarta"
-            data-consultations="356"
-            data-bio="Aulia is an orchid specialist with deep expertise in care, blooming, and root health of tropical and subtropical orchids. She actively guides collectors and growers in greenhouse management and orchid growth optimization."
-            data-avatar="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200&auto=format&fit=crop">
-            <div class="expert-top">
-              <img class="expert-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200&auto=format&fit=crop" alt="Aulia Pranata">
-              <div class="rating-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L14.4 8.1L20 8.9L16 12.8L17 18.3L12 15.6L7 18.3L8 12.8L4 8.9L9.6 8.1L12 3Z" fill="#d89a00"/></svg><span>4.9</span></div>
-            </div>
-            <h3>Aulia Pranata</h3>
-            <div class="specialization-tag tag-blue">Orchid Specialist</div>
-            <p class="expert-desc">Tropical orchid specialist for care, optimal blooming, and greenhouse management.</p>
-            <div class="expert-bottom">
-              <div class="price-wrap"><span class="price-main">Rp50.000</span><span class="price-sub">/hr</span></div>
-              <button class="details-btn" type="button" onclick="openExpertModal(this.closest('.expert-card'))">View Details</button>
-            </div>
-          </article>
-
-          <article class="expert-card"
-            data-name="Bima Nugraha"
-            data-specialization="Tomato Specialist"
-            data-rating="4.7" data-experience="7" data-price="36000"
-            data-online="true" data-fast-response="false" data-popular="false" data-indonesia="true"
-            data-title="Konsultan Budidaya Tomat"
-            data-university="Universitas Brawijaya (UB)"
-            data-location="Batu, Jawa Timur"
-            data-consultations="167"
-            data-bio="Bima is a tomato cultivation specialist focused on disease prevention, fruit quality improvement, and greenhouse production. He has extensive experience working with tomato farmers in the highlands of East Java."
-            data-avatar="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?q=80&w=200&auto=format&fit=crop">
-            <div class="expert-top">
-              <img class="expert-avatar" src="https://images.unsplash.com/photo-1507591064344-4c6ce005b128?q=80&w=200&auto=format&fit=crop" alt="Bima Nugraha">
-              <div class="rating-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L14.4 8.1L20 8.9L16 12.8L17 18.3L12 15.6L7 18.3L8 12.8L4 8.9L9.6 8.1L12 3Z" fill="#d89a00"/></svg><span>4.7</span></div>
-            </div>
-            <h3>Bima Nugraha</h3>
-            <div class="specialization-tag tag-green">Tomato Specialist</div>
-            <p class="expert-desc">Tomato consultant for disease prevention, fruit quality, and highland greenhouse production.</p>
-            <div class="expert-bottom">
-              <div class="price-wrap"><span class="price-main">Rp36.000</span><span class="price-sub">/hr</span></div>
-              <button class="details-btn" type="button" onclick="openExpertModal(this.closest('.expert-card'))">View Details</button>
-            </div>
-          </article>
-
-          <article class="expert-card"
-            data-name="William Hartono"
-            data-specialization="Orchid Specialist"
-            data-rating="4.8" data-experience="6" data-price="40000"
-            data-online="true" data-fast-response="true" data-popular="false" data-indonesia="true"
-            data-title="Ahli Botani & Perawatan Anggrek"
-            data-university="Universitas Indonesia (UI)"
-            data-location="Depok, Jawa Barat"
-            data-consultations="201"
-            data-bio="William is a botanist specializing in orchid adaptation, leaf care, humidity management, and blooming stability. His science-based approach makes him the top choice for premium orchid collectors."
-            data-avatar="https://images.unsplash.com/photo-1504257432389-52343af06ae3?q=80&w=200&auto=format&fit=crop">
-            <div class="expert-top">
-              <img class="expert-avatar" src="https://images.unsplash.com/photo-1504257432389-52343af06ae3?q=80&w=200&auto=format&fit=crop" alt="William Hartono">
-              <div class="rating-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3L14.4 8.1L20 8.9L16 12.8L17 18.3L12 15.6L7 18.3L8 12.8L4 8.9L9.6 8.1L12 3Z" fill="#d89a00"/></svg><span>4.8</span></div>
-            </div>
-            <h3>William Hartono</h3>
-            <div class="specialization-tag tag-blue">Orchid Specialist</div>
-            <p class="expert-desc">Botanist for orchid adaptation, leaf care, humidity management, and premium blooming stability.</p>
-            <div class="expert-bottom">
-              <div class="price-wrap"><span class="price-main">Rp40.000</span><span class="price-sub">/hr</span></div>
-              <button class="details-btn" type="button" onclick="openExpertModal(this.closest('.expert-card'))">View Details</button>
-            </div>
-          </article>
+          @endforeach
 
         </section>
 

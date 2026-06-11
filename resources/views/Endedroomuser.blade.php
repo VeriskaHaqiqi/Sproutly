@@ -11,6 +11,10 @@
   <link rel="stylesheet" href="{{ asset('css/style-endedRoomUser.css') }}">
 </head>
 <body>
+@php
+  $expert = $konsultasi->ahliBotani;
+  $expertAvatar = $expert->user->profile_picture ? asset('storage/' . $expert->user->profile_picture) : ($expert->user->jenis_kelamin_user == 'P' ? 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=300&auto=format&fit=crop' : 'https://images.unsplash.com/photo-1504593811423-6dd665756598?w=200&q=80');
+@endphp
 <div class="room-page">
 
   <!-- TOPBAR -->
@@ -24,12 +28,12 @@
     </a>
     <div class="room-topbar-center">
       <div class="expert-avatar-wrap">
-        <img src="https://images.unsplash.com/photo-1504593811423-6dd665756598?w=200&q=80" alt="Dewi Kusuma" class="expert-avatar">
+        <img src="{{ $expertAvatar }}" alt="{{ $expert->nama_ahli }}" class="expert-avatar">
         <span class="status-dot ended"></span>
       </div>
       <div class="expert-info">
-        <span class="expert-name">Dewi Kusuma</span>
-        <span class="expert-tag">Organic Farming</span>
+        <span class="expert-name">{{ $expert->nama_ahli }}</span>
+        <span class="expert-tag">{{ $expert->spesialisasi ?? 'Expert Botanist' }}</span>
       </div>
     </div>
     <div class="room-topbar-right">
@@ -47,116 +51,95 @@
 
     <!-- Session start marker -->
     <div class="day-divider">
-      <span>March 10, 2024 — Session Started</span>
+      <span>{{ $konsultasi->created_at->format('F d, Y') }} — Session Started</span>
     </div>
 
     <!-- Messages -->
-    <div class="msg-row received">
-      <img src="https://images.unsplash.com/photo-1504593811423-6dd665756598?w=200&q=80" class="msg-avatar" alt="Dewi">
-      <div class="msg-bubble">
-        Hello! I'm Dewi Kusuma, an organic farming specialist. How can I help you today?
-        <span class="msg-time">09:00</span>
-      </div>
-    </div>
-
-    <div class="msg-row sent">
-      <div class="msg-bubble">
-        Hi Dewi! I've been struggling with aphids on my chili plants. I'd like to avoid chemical pesticides.
-        <span class="msg-time">09:02</span>
-      </div>
-    </div>
-
-    <div class="msg-row received">
-      <img src="https://images.unsplash.com/photo-1504593811423-6dd665756598?w=200&q=80" class="msg-avatar" alt="Dewi">
-      <div class="msg-bubble">
-        Great choice going organic! For aphids on chili, I recommend a neem oil spray. Mix 2 tsp neem oil with 1 tsp dish soap in 1 litre of water. Spray in the early morning or evening.
-        <span class="msg-time">09:05</span>
-      </div>
-    </div>
-
-    <div class="msg-row sent">
-      <div class="msg-bubble">
-        That sounds manageable. How often should I apply it?
-        <span class="msg-time">09:07</span>
-      </div>
-    </div>
-
-    <div class="msg-row received">
-      <img src="https://images.unsplash.com/photo-1504593811423-6dd665756598?w=200&q=80" class="msg-avatar" alt="Dewi">
-      <div class="msg-bubble">
-        Apply every 5–7 days for 3 weeks. If the infestation is heavy, you can also introduce ladybugs — they're natural predators of aphids and very effective in open garden setups.
-        <span class="msg-time">09:10</span>
-      </div>
-    </div>
-
-    <div class="msg-row sent">
-      <div class="msg-bubble">
-        Perfect. Also, should I remove the heavily infested leaves first?
-        <span class="msg-time">09:12</span>
-      </div>
-    </div>
-
-    <div class="msg-row received">
-      <img src="https://images.unsplash.com/photo-1504593811423-6dd665756598?w=200&q=80" class="msg-avatar" alt="Dewi">
-      <div class="msg-bubble">
-        Yes, definitely. Prune any leaves with heavy aphid colonies first, then apply the neem oil spray to the rest. This makes the treatment much more effective.
-        <span class="msg-time">09:15</span>
-      </div>
-    </div>
-
-    <div class="msg-row sent">
-      <div class="msg-bubble">
-        Thank you so much! Your organic compost plan also looked really solid.
-        <span class="msg-time">09:18</span>
-      </div>
-    </div>
-
-    <div class="msg-row received">
-      <img src="https://images.unsplash.com/photo-1504593811423-6dd665756598?w=200&q=80" class="msg-avatar" alt="Dewi">
-      <div class="msg-bubble">
-        Great, your organic compost plan looks solid. Keep it up! Feel free to reach out again if you need follow-up advice.
-        <span class="msg-time">09:20</span>
-      </div>
-    </div>
+    @foreach($konsultasi->pesan as $msg)
+      @if($msg->pengirim === 'user')
+        <div class="msg-row sent">
+          <div class="msg-bubble">
+            @if($msg->gambar)
+              @if(preg_match('/\.(mp4|webm|ogg|mov)$/i', $msg->gambar))
+                <video src="{{ asset('storage/' . $msg->gambar) }}" controls style="max-width: 100%; border-radius: 8px;"></video>
+              @else
+                <img src="{{ asset('storage/' . $msg->gambar) }}" alt="Image" style="max-width: 100%; border-radius: 8px;">
+              @endif
+            @endif
+            @if($msg->isi_pesan)
+              <p style="margin: 0;">{{ $msg->isi_pesan }}</p>
+            @endif
+            <span class="msg-time">{{ $msg->waktu_kirim->format('h:i A') }}</span>
+          </div>
+        </div>
+      @else
+        <div class="msg-row received">
+          <img src="{{ $expertAvatar }}" class="msg-avatar" alt="{{ $expert->nama_ahli }}">
+          <div class="msg-bubble">
+            @if($msg->gambar)
+              @if(preg_match('/\.(mp4|webm|ogg|mov)$/i', $msg->gambar))
+                <video src="{{ asset('storage/' . $msg->gambar) }}" controls style="max-width: 100%; border-radius: 8px;"></video>
+              @else
+                <img src="{{ asset('storage/' . $msg->gambar) }}" alt="Image" style="max-width: 100%; border-radius: 8px;">
+              @endif
+            @endif
+            @if($msg->isi_pesan)
+              <p style="margin: 0;">{{ $msg->isi_pesan }}</p>
+            @endif
+            <span class="msg-time">{{ $msg->waktu_kirim->format('h:i A') }}</span>
+          </div>
+        </div>
+      @endif
+    @endforeach
 
     <!-- Session ended marker -->
-    <div class="day-divider ended-divider">
-      <span>Session ended — March 10, 2024 at 09:22</span>
-    </div>
+    @if($konsultasi->tanggal_selesai)
+      <div class="day-divider ended-divider">
+        <span>Session ended — {{ \Carbon\Carbon::parse($konsultasi->tanggal_selesai)->format('F d, Y \a\t h:i A') }}</span>
+      </div>
+    @endif
 
   </div>
 
-  <!-- SESSION ENDED BANNER + DISABLED INPUT -->
-  <div class="session-ended-bar">
-    <div class="ended-banner">
-      <div class="ended-banner-icon">
-        <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
-          <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z" fill="currentColor"/>
-        </svg>
+  <!-- SESSION ENDED BANNER + FEEDBACK FORM -->
+  <div class="session-ended-bar" style="max-width: 600px; margin: 0 auto; width: 100%; padding: 10px;">
+    <div class="ended-banner" style="display: flex; flex-direction: column; gap: 15px; padding: 20px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #eef2f6;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div class="ended-banner-icon" style="background: #fee2e2; color: #ef4444; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+          <svg viewBox="0 0 24 24" fill="none" width="20" height="20" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="15" y1="9" x2="9" y2="15"/>
+            <line x1="9" y1="9" x2="15" y2="15"/>
+          </svg>
+        </div>
+        <div class="ended-banner-text" style="display: flex; flex-direction: column; align-items: flex-start; text-align: left;">
+          <strong style="color: #1e293b; font-size: 16px;">This session has ended.</strong>
+          <span style="color: #64748b; font-size: 14px;">Leave a rating and review for your expert below.</span>
+        </div>
       </div>
-      <div class="ended-banner-text">
-        <strong>This session has ended.</strong>
-        <span>To continue consulting with this expert, please start a new session.</span>
-      </div>
-      <a href="{{ url('/find-experts') }}" class="ended-restart-btn">
-        Start New Session
-      </a>
-    </div>
 
-    <!-- Input bar — disabled -->
-    <div class="chat-input-row disabled">
-      <button class="input-attach" disabled>
-        <i class="fa-solid fa-paperclip"></i>
-      </button>
-      <div class="input-field">
-        <input type="text" placeholder="Session has ended — start a new session to chat" disabled/>
-      </div>
-      <button class="input-send" disabled>
-        <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
-          <path d="M22 2L11 13" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
+      <!-- REVIEW FORM -->
+      <form action="{{ route('consultation.submitReview', ['id' => $konsultasi->id]) }}" method="POST" style="width: 100%;">
+        @csrf
+        <!-- Star Rating -->
+        <div class="rating-stars" style="display: flex; gap: 8px; justify-content: center; margin: 15px 0;">
+          @for ($i = 1; $i <= 5; $i++)
+            <label style="cursor: pointer;">
+              <input type="radio" name="rating" value="{{ $i }}" style="display: none;" required>
+              <i class="fa-solid fa-star star-icon" data-value="{{ $i }}" style="font-size: 28px; color: #cbd5e1; transition: color 0.2s;"></i>
+            </label>
+          @endfor
+        </div>
+
+        <div style="margin-bottom: 15px;">
+          <textarea name="comment" rows="3" placeholder="Describe your experience (optional)..." style="width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px; font-family: inherit; font-size: 14px; resize: none; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#10b981'"></textarea>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <button type="submit" class="submit-review-btn" style="flex: 1; background: #10b981; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#059669'" onmouseout="this.style.background='#10b981'">Submit Review</button>
+          <a href="{{ url('/find-experts') }}" class="ended-restart-btn" style="flex: 1; display: flex; align-items: center; justify-content: center; background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; padding: 10px 16px; border-radius: 8px; font-weight: 600; text-decoration: none; text-align: center; transition: background 0.2s;" onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f1f5f9'">Start New Session</a>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -165,6 +148,50 @@
   // Scroll chat to bottom on load
   const chatArea = document.getElementById("chatArea");
   if (chatArea) chatArea.scrollTop = chatArea.scrollHeight;
+
+  // Star rating interactivity
+  const stars = document.querySelectorAll('.star-icon');
+  const radios = document.querySelectorAll('input[name="rating"]');
+
+  stars.forEach((star, index) => {
+    star.addEventListener('click', () => {
+      // Set radio button checked
+      radios[index].checked = true;
+      // Color selected stars and reset others
+      stars.forEach((s, idx) => {
+        if (idx <= index) {
+          s.style.color = '#fbbf24'; // Gold star
+        } else {
+          s.style.color = '#cbd5e1'; // Gray star
+        }
+      });
+    });
+
+    star.addEventListener('mouseover', () => {
+      // Highlights stars on hover
+      stars.forEach((s, idx) => {
+        if (idx <= index) {
+          s.style.color = '#fde047'; // Light gold star
+        }
+      });
+    });
+
+    star.addEventListener('mouseout', () => {
+      // Restores selected stars state
+      let selectedIdx = -1;
+      radios.forEach((r, idx) => {
+        if (r.checked) selectedIdx = idx;
+      });
+
+      stars.forEach((s, idx) => {
+        if (idx <= selectedIdx) {
+          s.style.color = '#fbbf24';
+        } else {
+          s.style.color = '#cbd5e1';
+        }
+      });
+    });
+  });
 </script>
 </body>
 </html>

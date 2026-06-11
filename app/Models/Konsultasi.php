@@ -38,4 +38,9 @@ class Konsultasi extends Model
     {
         return $this->belongsTo(TarifAhli::class, 'tarif_ahli_id');
     }
+
+    public function pesan()
+    {
+        return $this->hasMany(Pesan::class);
+    }
 }

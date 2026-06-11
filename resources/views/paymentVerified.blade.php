@@ -171,13 +171,24 @@
 
         {{-- Modal Title --}}
         <h2 class="modal-title">Payment Verified</h2>
-        <p class="modal-desc">The user's payment has been successfully verified. You can now begin the consultation session.</p>
+        <p class="modal-desc">
+            @if(Auth::user()->role === 'ahli')
+                The user's payment has been successfully verified. You can now begin the consultation session.
+            @else
+                Your payment has been successfully verified. You can now start your consultation session.
+            @endif
+        </p>
 
         {{-- Client Info Card --}}
         <div class="client-info-card">
             <div class="client-info-col">
-                <span class="info-label">CLIENT NAME</span>
-                <span class="info-value">{{ $clientName ?? 'Sarah Johnson' }}</span>
+                @if(Auth::user()->role === 'ahli')
+                    <span class="info-label">CLIENT NAME</span>
+                    <span class="info-value">{{ $konsultasi->user->nama_user }}</span>
+                @else
+                    <span class="info-label">EXPERT NAME</span>
+                    <span class="info-value">{{ $konsultasi->ahliBotani->nama_ahli }}</span>
+                @endif
             </div>
             <div class="divider-vertical"></div>
             <div class="client-info-col">
@@ -192,8 +203,8 @@
         {{-- Action Buttons --}}
         <div class="modal-actions">
             <button class="btn-start" id="btnStartConsultation"
-                data-session-id="{{ $sessionId ?? 'sess_001' }}"
-                data-client-name="{{ $clientName ?? 'Sarah Johnson' }}">
+                data-session-id="{{ $konsultasi->id }}"
+                data-client-name="{{ Auth::user()->role === 'ahli' ? $konsultasi->user->nama_user : $konsultasi->ahliBotani->nama_ahli }}">
                 Start Consultation
             </button>
             <button class="btn-close" id="btnClose">
@@ -210,7 +221,7 @@
 {{-- Inject Laravel routes ke JS --}}
 <script>
     window.ROUTES = {
-        roomChatExpert: "/roomChatExpert"
+        roomChatExpert: "{{ Auth::user()->role === 'ahli' ? route('roomChatExpert', ['id' => $konsultasi->id]) : route('roomChatUser', ['id' => $konsultasi->id]) }}"
     };
 </script>
 <script src="{{ asset('js/script-paymentVerified.js') }}"></script>

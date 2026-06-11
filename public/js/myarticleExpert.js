@@ -164,14 +164,46 @@ document.addEventListener("DOMContentLoaded", function () {
     if (confirmDeleteBtn) {
         confirmDeleteBtn.addEventListener("click", function () {
             const selectedCards = document.querySelectorAll(".article-card.selected");
+            const ids = Array.from(selectedCards).map(card => card.dataset.id);
 
-            selectedCards.forEach((card) => {
-                card.remove();
+            if (ids.length === 0) return;
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+            confirmDeleteBtn.disabled = true;
+            confirmDeleteBtn.textContent = "Deleting...";
+
+            fetch("/myarticleExpert/delete", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrfToken
+                },
+                body: JSON.stringify({ ids: ids })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to delete articles");
+                }
+                return response.json();
+            })
+            .then(data => {
+                selectedCards.forEach((card) => {
+                    card.remove();
+                });
+
+                confirmDeleteModal.classList.remove("show");
+                deletedModal.classList.add("show");
+                disableDeleteMode();
+            })
+            .catch(error => {
+                console.error(error);
+                alert("Error deleting articles. Please try again.");
+            })
+            .finally(() => {
+                confirmDeleteBtn.disabled = false;
+                confirmDeleteBtn.textContent = "Yes";
             });
-
-            confirmDeleteModal.classList.remove("show");
-            deletedModal.classList.add("show");
-            disableDeleteMode();
         });
     }
 

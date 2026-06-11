@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController; 
 use App\Http\Controllers\WebProfileController;
+use App\Http\Controllers\KonsultasiController;
+use App\Http\Controllers\ArtikelController;
 use Illuminate\Support\Facades\Password;    
 
 Route::get('/reset-password/{token}', function ($token) {
@@ -55,9 +57,8 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         return view('homeUser');
     });
 
-    Route::get('/find-experts', function () {
-        return view('find-experts');
-    });
+    Route::get('/find-experts', [KonsultasiController::class, 'findExperts'])
+        ->name('find-experts');
 
     Route::get('/accountUser', [WebProfileController::class, 'accountUser'])
         ->name('accountUser');
@@ -68,37 +69,32 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::put('/profile/update', [WebProfileController::class, 'updateProfileUser'])
         ->name('profile.update');
 
-    Route::get('/daftarArtikel', function () {
-        return view('daftarArtikel');
-    });
+    Route::get('/daftarArtikel', [ArtikelController::class, 'webDaftarArtikel'])
+        ->name('daftarArtikel');
 
-    Route::get('/detailArtikelUser', function () {
-        return view('detailArtikelUser');
-    });
+    Route::get('/detailArtikelUser', [ArtikelController::class, 'webDetailArtikel'])
+        ->name('detailArtikelUser');
 
-    Route::get('/bookmarkArtikelUser', function () {
-        return view('bookmarkArtikelUser');
-    });
+    Route::get('/bookmarkArtikelUser', [ArtikelController::class, 'webBookmarkArtikel'])
+        ->name('bookmarkArtikelUser');
 
-    Route::get('/consultationUser', function () {
-        return view('consultationUser');
-    });
+    Route::post('/bookmark/toggle/{id}', [ArtikelController::class, 'toggleBookmark'])
+        ->name('bookmark.toggle');
 
-    Route::get('/infoahli', function () {
-        return view('infoahli');
-    })->name('infoahli');
+    Route::get('/consultationUser', [KonsultasiController::class, 'consultationUser'])
+        ->name('consultationUser');
 
-    Route::get('/paymentUser', function () {
-        return view('paymentUser');
-    });
+    Route::get('/infoahli', [KonsultasiController::class, 'infoAhli'])
+        ->name('infoahli');
 
-    Route::get('/roomChatUser', function () {
-        return view('roomChatUser');
-    });
+    Route::get('/paymentUser', [KonsultasiController::class, 'paymentUser'])
+        ->name('paymentUser');
 
-    Route::get('/ConsultationhistoryUser', function () {
-        return view('ConsultationhistoryUser');
-    });
+    Route::get('/roomChatUser', [KonsultasiController::class, 'roomChatUser'])
+        ->name('roomChatUser');
+
+    Route::get('/ConsultationhistoryUser', [KonsultasiController::class, 'consultationUser'])
+        ->name('ConsultationhistoryUser');
 
     Route::get('/supportUser', function () {
         return view('supportUser');
@@ -108,13 +104,11 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         return view('reviewsUser');
     });
 
-    Route::get('/lockRoomUser', function () {
-        return view('lockRoomUser');
-    });
+    Route::get('/lockRoomUser', [KonsultasiController::class, 'lockRoomUser'])
+        ->name('lockRoomUser');
 
-    Route::get('/paymentVerified', function () {
-        return view('paymentVerified');
-    });
+    Route::get('/paymentVerified', [KonsultasiController::class, 'paymentVerified'])
+        ->name('paymentVerified');
 
     Route::get('/payment-failed', function () {
         return view('payment-failed');
@@ -132,13 +126,24 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         return view('setPayMethod');
     })->name('setPayMethod');
 
-    Route::get('/endedRoomUser', function () {
-        return view('endedRoomUser');
-    });
+    Route::get('/endedRoomUser', [KonsultasiController::class, 'endedRoomUser'])
+        ->name('endedRoomUser');
 
     Route::get('/userInfo', function () {
         return view('userInfo');
     })->name('userInfo');
+
+    // New Booking & Chat AJAX endpoints
+    Route::get('/consultation/book/{expert_id}', [KonsultasiController::class, 'book'])
+        ->name('consultation.book');
+    Route::post('/consultation/{id}/payment', [KonsultasiController::class, 'submitPayment'])
+        ->name('consultation.submitPayment');
+    Route::post('/consultation/{id}/review', [KonsultasiController::class, 'submitReview'])
+        ->name('consultation.submitReview');
+    Route::get('/consultation/{id}/messages', [KonsultasiController::class, 'getMessages'])
+        ->name('consultation.messages');
+    Route::post('/consultation/{id}/messages', [KonsultasiController::class, 'sendMessage'])
+        ->name('consultation.sendMessage');
 });
 
 // Expert Protected Routes
@@ -160,13 +165,11 @@ Route::middleware(['auth', 'role:ahli'])->group(function () {
     Route::put('/expert/profile/update', [WebProfileController::class, 'updateProfileExpert'])
         ->name('expert.profile.update');
 
-    Route::get('/articleExpert', function () {
-        return view('articleExpert');
-    })->name('articleExpert');
+    Route::get('/articleExpert', [ArtikelController::class, 'expertIndex'])
+        ->name('articleExpert');
 
-    Route::get('/myarticleExpert', function () {
-        return view('myarticleExpert');
-    })->name('myarticleExpert');
+    Route::get('/myarticleExpert', [ArtikelController::class, 'expertMyArticles'])
+        ->name('myarticleExpert');
 
     Route::get('/manageSchedule', [WebProfileController::class, 'getSchedule'])
         ->name('manageSchedule');
@@ -174,13 +177,17 @@ Route::middleware(['auth', 'role:ahli'])->group(function () {
     Route::post('/manageSchedule', [WebProfileController::class, 'saveSchedule'])
         ->name('expert.schedule.save');
 
-    Route::get('/tulisartikelExpert', function () {
-        return view('tulisartikelExpert');
-    });
+    Route::get('/tulisartikelExpert', [ArtikelController::class, 'createArticleForm'])
+        ->name('tulisartikelExpert');
 
-    Route::get('/consulexpert', function () {
-        return view('consulexpert');
-    })->name('consultexpert');
+    Route::post('/tulisartikelExpert/store', [ArtikelController::class, 'storeArticle'])
+        ->name('tulisartikelExpert.store');
+
+    Route::post('/myarticleExpert/delete', [ArtikelController::class, 'deleteArticles'])
+        ->name('myarticleExpert.delete');
+
+    Route::get('/consulexpert', [KonsultasiController::class, 'consultexpert'])
+        ->name('consultexpert');
 
     Route::get('/setpricingexpert', [WebProfileController::class, 'getPricing'])
         ->name('setpricingexpert');
@@ -192,13 +199,19 @@ Route::middleware(['auth', 'role:ahli'])->group(function () {
         return view('ratinghistoryExpert');
     });
 
-    Route::get('/roomChatExpert', function () {
-        return view('roomChatExpert');
-    });
+    Route::get('/roomChatExpert', [KonsultasiController::class, 'roomChatExpert'])
+        ->name('roomChatExpert');
 
-    Route::get('/ConsultationhistoryExpert', function () {
-        return view('ConsultationhistoryExpert');
-    })->name('ConsultationhistoryExpert');
+    Route::get('/ConsultationhistoryExpert', [KonsultasiController::class, 'consultexpert'])
+        ->name('ConsultationhistoryExpert');
+
+    // Expert AJAX chat routes
+    Route::get('/expert/consultation/{id}/messages', [KonsultasiController::class, 'getMessages'])
+        ->name('expert.consultation.messages');
+    Route::post('/expert/consultation/{id}/messages', [KonsultasiController::class, 'sendMessage'])
+        ->name('expert.consultation.sendMessage');
+    Route::post('/expert/consultation/{id}/end', [KonsultasiController::class, 'endChat'])
+        ->name('expert.consultation.end');
 
     Route::get('/supportExpert', function () {
         return view('supportExpert');

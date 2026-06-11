@@ -43,6 +43,11 @@ class User extends Authenticatable
     }
     public function ahliBotani()
     {
-    return $this->hasOne(AhliBotani::class, 'user_id', 'id');
+        return $this->hasOne(AhliBotani::class, 'user_id', 'id');
+    }
+
+    public function bookmarkedArticles()
+    {
+        return $this->belongsToMany(Artikel::class, 'bookmark_artikel', 'user_id', 'artikel_id')->withTimestamps();
     }
 }

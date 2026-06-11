@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Sproutly - Article</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,8 +59,8 @@
           </svg>
         </button>
         <a href="{{ url('/accountUser') }}" class="profile-chip">
-          <span class="profile-name">Sarah Green</span>
-          <img src="{{ asset('images/fotoprofile.png') }}" alt="Profile">
+          <span class="profile-name">{{ Auth::user()->nama_user ?? 'User' }}</span>
+          <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('images/fotoprofile.png') }}" alt="Profile">
         </a>
       </div>
     </header>
@@ -100,203 +101,47 @@
     <section class="article-section">
       <div class="article-grid" id="articleGrid">
 
-        <article class="article-card" data-title="Modern Irrigation Techniques for Water Conservation" data-key="irrigation" data-topic="irrigation" data-keywords="irrigation water drip smart farming conservation" data-author="John Parker">
-          <a href="{{ url('/detailArtikelUser') }}?article=irrigation" class="article-link">
-            <div class="article-image-wrap">
-              <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&q=80" alt="Irrigation">
-              <span class="article-topic-label">Irrigation</span>
-            </div>
-            <div class="article-body">
-              <h3>Modern Irrigation Techniques for Water Conservation</h3>
-              <p>Learn how to optimize water usage with advanced drip irrigation systems and smart scheduling methods.</p>
-              <div class="article-meta">
-                <div class="author-meta">
-                  <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John Parker">
-                  <div><strong>John Parker</strong><span>Mar 15, 2024</span></div>
+        @foreach($artikel as $art)
+          @php
+            $author = $art->ahliBotani;
+            $authorName = $author->nama_ahli ?? 'Expert Botanist';
+            $authorAvatar = ($author && $author->user && $author->user->profile_picture) 
+                ? asset('storage/' . $author->user->profile_picture) 
+                : (($author && $author->user && $author->user->jenis_kelamin_user == 'P') 
+                    ? 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop' 
+                    : 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop');
+            $date = $art->tanggal_unggah ? \Carbon\Carbon::parse($art->tanggal_unggah)->format('M d, Y') : 'Recent';
+            $readTime = ceil(str_word_count(strip_tags($art->konten)) / 200) . ' min read';
+            $isBookmarked = Auth::check() ? Auth::user()->bookmarkedArticles()->where('artikel_id', $art->id)->exists() : false;
+            $thumbnailUrl = $art->thumbnail ? (Str::startsWith($art->thumbnail, 'http') ? $art->thumbnail : asset('storage/' . $art->thumbnail)) : 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&q=80';
+          @endphp
+          <article class="article-card" 
+                   data-title="{{ $art->judul }}" 
+                   data-key="{{ $art->id }}" 
+                   data-topic="{{ strtolower($art->kategori) }}" 
+                   data-keywords="{{ strtolower($art->judul . ' ' . $art->kategori) }}" 
+                   data-author="{{ $authorName }}">
+            <a href="{{ route('detailArtikelUser', ['id' => $art->id]) }}" class="article-link">
+              <div class="article-image-wrap">
+                <img src="{{ $thumbnailUrl }}" alt="{{ $art->judul }}" onerror="this.src='https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&q=80'">
+                <span class="article-topic-label">{{ ucfirst($art->kategori) }}</span>
+              </div>
+              <div class="article-body">
+                <h3>{{ $art->judul }}</h3>
+                <p>{{ Str::limit(strip_tags($art->konten), 120) }}</p>
+                <div class="article-meta">
+                  <div class="author-meta">
+                    <img src="{{ $authorAvatar }}" alt="{{ $authorName }}">
+                    <div><strong>{{ $authorName }}</strong><span>{{ $date }}</span></div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </a>
-          <button class="bookmark-btn" type="button" aria-label="Bookmark article">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M8 4H16C17.1 4 18 4.9 18 6V20L12 16L6 20V6C6 4.9 6.9 4 8 4Z" stroke="currentColor" stroke-width="2"/></svg>
-          </button>
-        </article>
-
-        <article class="article-card" data-title="Building Healthy Soil Through Composting" data-key="soil" data-topic="soil health" data-keywords="soil compost composting nutrients organic soil health" data-author="Sarah Mitchell">
-          <a href="{{ url('/detailArtikelUser') }}?article=soil" class="article-link">
-            <div class="article-image-wrap">
-              <img src="https://images.unsplash.com/photo-1461354464878-ad92f492a5a0?w=800&q=80" alt="Soil">
-              <span class="article-topic-label">Soil Health</span>
-            </div>
-            <div class="article-body">
-              <h3>Building Healthy Soil Through Composting</h3>
-              <p>Discover the benefits of composting and how to create nutrient-rich soil for improved crop growth.</p>
-              <div class="article-meta">
-                <div class="author-meta">
-                  <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Mitchell">
-                  <div><strong>Sarah Mitchell</strong><span>Mar 14, 2024</span></div>
-                </div>
-              </div>
-            </div>
-          </a>
-          <button class="bookmark-btn" type="button" aria-label="Bookmark article">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M8 4H16C17.1 4 18 4.9 18 6V20L12 16L6 20V6C6 4.9 6.9 4 8 4Z" stroke="currentColor" stroke-width="2"/></svg>
-          </button>
-        </article>
-
-        <article class="article-card" data-title="Organic Pest Management Strategies" data-key="pest" data-topic="pest control" data-keywords="pest control organic insects crop protection natural methods" data-author="Michael Chen">
-          <a href="{{ url('/detailArtikelUser') }}?article=pest" class="article-link">
-            <div class="article-image-wrap">
-              <img src="https://images.unsplash.com/photo-1471193945509-9ad0617afabf?w=800&q=80" alt="Pest">
-              <span class="article-topic-label">Pest Control</span>
-            </div>
-            <div class="article-body">
-              <h3>Organic Pest Management Strategies</h3>
-              <p>Explore natural and effective methods to protect your crops without harmful chemical pesticides.</p>
-              <div class="article-meta">
-                <div class="author-meta">
-                  <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Michael Chen">
-                  <div><strong>Michael Chen</strong><span>Mar 13, 2024</span></div>
-                </div>
-              </div>
-            </div>
-          </a>
-          <button class="bookmark-btn" type="button" aria-label="Bookmark article">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M8 4H16C17.1 4 18 4.9 18 6V20L12 16L6 20V6C6 4.9 6.9 4 8 4Z" stroke="currentColor" stroke-width="2"/></svg>
-          </button>
-        </article>
-
-        <article class="article-card" data-title="Using Drones for Precision Agriculture" data-key="drone" data-topic="technology" data-keywords="drone drones technology precision agriculture monitoring field" data-author="David Rodriguez">
-          <a href="{{ url('/detailArtikelUser') }}?article=drone" class="article-link">
-            <div class="article-image-wrap">
-              <img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=800&q=80" alt="Drone">
-              <span class="article-topic-label">Technology</span>
-            </div>
-            <div class="article-body">
-              <h3>Using Drones for Precision Agriculture</h3>
-              <p>How aerial technology is revolutionizing crop monitoring and field management practices.</p>
-              <div class="article-meta">
-                <div class="author-meta">
-                  <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="David Rodriguez">
-                  <div><strong>David Rodriguez</strong><span>Mar 12, 2024</span></div>
-                </div>
-              </div>
-            </div>
-          </a>
-          <button class="bookmark-btn" type="button" aria-label="Bookmark article">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M8 4H16C17.1 4 18 4.9 18 6V20L12 16L6 20V6C6 4.9 6.9 4 8 4Z" stroke="currentColor" stroke-width="2"/></svg>
-          </button>
-        </article>
-
-        <article class="article-card" data-title="Crop Rotation for Long-Term Sustainability" data-key="rotation" data-topic="sustainability" data-keywords="crop rotation sustainable farming long term soil fertility" data-author="Emma Thompson">
-          <a href="{{ url('/detailArtikelUser') }}?article=rotation" class="article-link">
-            <div class="article-image-wrap">
-              <img src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&q=80" alt="Crop Rotation">
-              <span class="article-topic-label">Sustainability</span>
-            </div>
-            <div class="article-body">
-              <h3>Crop Rotation for Long-Term Sustainability</h3>
-              <p>Master the art of crop rotation to maintain soil fertility and reduce disease pressure over time.</p>
-              <div class="article-meta">
-                <div class="author-meta">
-                  <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Emma Thompson">
-                  <div><strong>Emma Thompson</strong><span>Mar 11, 2024</span></div>
-                </div>
-              </div>
-            </div>
-          </a>
-          <button class="bookmark-btn" type="button" aria-label="Bookmark article">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M8 4H16C17.1 4 18 4.9 18 6V20L12 16L6 20V6C6 4.9 6.9 4 8 4Z" stroke="currentColor" stroke-width="2"/></svg>
-          </button>
-        </article>
-
-        <article class="article-card" data-title="Climate-Smart Farming Practices" data-key="climate" data-topic="crop management" data-keywords="climate farming weather adaptation crop management resilience" data-author="James Wilson">
-          <a href="{{ url('/detailArtikelUser') }}?article=climate" class="article-link">
-            <div class="article-image-wrap">
-              <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=800&q=80" alt="Climate Smart">
-              <span class="article-topic-label">Crop Management</span>
-            </div>
-            <div class="article-body">
-              <h3>Climate-Smart Farming Practices</h3>
-              <p>Adapt your farming methods to changing weather patterns and build resilience against climate challenges.</p>
-              <div class="article-meta">
-                <div class="author-meta">
-                  <img src="https://randomuser.me/api/portraits/men/11.jpg" alt="James Wilson">
-                  <div><strong>James Wilson</strong><span>Mar 10, 2024</span></div>
-                </div>
-              </div>
-            </div>
-          </a>
-          <button class="bookmark-btn" type="button" aria-label="Bookmark article">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M8 4H16C17.1 4 18 4.9 18 6V20L12 16L6 20V6C6 4.9 6.9 4 8 4Z" stroke="currentColor" stroke-width="2"/></svg>
-          </button>
-        </article>
-
-        <article class="article-card" data-title="Introduction to Hydroponic Farming" data-key="hydroponic" data-topic="technology" data-keywords="hydroponic farming technology indoor water efficient" data-author="Lisa Anderson">
-          <a href="{{ url('/detailArtikelUser') }}?article=hydroponic" class="article-link">
-            <div class="article-image-wrap">
-              <img src="https://images.unsplash.com/photo-1516253593875-bd7ba052fbc5?w=800&q=80" alt="Hydroponic">
-              <span class="article-topic-label">Technology</span>
-            </div>
-            <div class="article-body">
-              <h3>Introduction to Hydroponic Farming</h3>
-              <p>Explore soil-less growing systems that maximize space efficiency and water conservation.</p>
-              <div class="article-meta">
-                <div class="author-meta">
-                  <img src="https://randomuser.me/api/portraits/women/21.jpg" alt="Lisa Anderson">
-                  <div><strong>Lisa Anderson</strong><span>Mar 9, 2024</span></div>
-                </div>
-              </div>
-            </div>
-          </a>
-          <button class="bookmark-btn" type="button" aria-label="Bookmark article">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M8 4H16C17.1 4 18 4.9 18 6V20L12 16L6 20V6C6 4.9 6.9 4 8 4Z" stroke="currentColor" stroke-width="2"/></svg>
-          </button>
-        </article>
-
-        <article class="article-card" data-title="Understanding Soil Nutrients and Fertilization" data-key="nutrients" data-topic="soil health" data-keywords="soil nutrients fertilization nitrogen phosphorus potassium" data-author="Robert Martinez">
-          <a href="{{ url('/detailArtikelUser') }}?article=nutrients" class="article-link">
-            <div class="article-image-wrap">
-              <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80" alt="Soil Nutrients">
-              <span class="article-topic-label">Soil Health</span>
-            </div>
-            <div class="article-body">
-              <h3>Understanding Soil Nutrients and Fertilization</h3>
-              <p>Learn how to test soil and apply the right nutrients for optimal plant growth and health.</p>
-              <div class="article-meta">
-                <div class="author-meta">
-                  <img src="https://randomuser.me/api/portraits/men/51.jpg" alt="Robert Martinez">
-                  <div><strong>Robert Martinez</strong><span>Mar 8, 2024</span></div>
-                </div>
-              </div>
-            </div>
-          </a>
-          <button class="bookmark-btn" type="button" aria-label="Bookmark article">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M8 4H16C17.1 4 18 4.9 18 6V20L12 16L6 20V6C6 4.9 6.9 4 8 4Z" stroke="currentColor" stroke-width="2"/></svg>
-          </button>
-        </article>
-
-        <article class="article-card" data-title="Rainwater Harvesting for Farm Use" data-key="rainwater" data-topic="irrigation" data-keywords="rainwater harvesting water storage irrigation farm use" data-author="Olivia Green">
-          <a href="{{ url('/detailArtikelUser') }}?article=rainwater" class="article-link">
-            <div class="article-image-wrap">
-              <img src="https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=800&q=80" alt="Rainwater">
-              <span class="article-topic-label">Irrigation</span>
-            </div>
-            <div class="article-body">
-              <h3>Rainwater Harvesting for Farm Use</h3>
-              <p>Implement effective rainwater collection systems to reduce dependency on external water sources.</p>
-              <div class="article-meta">
-                <div class="author-meta">
-                  <img src="https://randomuser.me/api/portraits/women/54.jpg" alt="Olivia Green">
-                  <div><strong>Olivia Green</strong><span>Mar 7, 2024</span></div>
-                </div>
-              </div>
-            </div>
-          </a>
-          <button class="bookmark-btn" type="button" aria-label="Bookmark article">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M8 4H16C17.1 4 18 4.9 18 6V20L12 16L6 20V6C6 4.9 6.9 4 8 4Z" stroke="currentColor" stroke-width="2"/></svg>
-          </button>
-        </article>
+            </a>
+            <button class="bookmark-btn {{ $isBookmarked ? 'bookmarked' : '' }}" type="button" aria-label="Bookmark article" data-id="{{ $art->id }}">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M8 4H16C17.1 4 18 4.9 18 6V20L12 16L6 20V6C6 4.9 6.9 4 8 4Z" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
+          </article>
+        @endforeach
 
       </div>
 

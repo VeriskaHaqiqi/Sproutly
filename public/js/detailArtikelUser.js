@@ -273,33 +273,39 @@ function setText(id, text, src, cls) {
   if (text !== undefined && text !== null) el.textContent = text;
 }
 
-// ── Bookmark — persisted in localStorage ─────────────────
-function getBookmarkKey() {
-  return "bookmark_" + getArticleKey();
-}
-
+// ── Bookmark — persisted in DB ─────────────────
 function initBookmark() {
   const btn   = document.getElementById("bookmarkBtn");
   const label = btn?.querySelector("span");
   if (!btn) return;
 
-  // Read saved state for THIS article key from localStorage
-  const key   = getBookmarkKey();
-  const saved = localStorage.getItem(key) === "true";
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const articleId = btn.dataset.id;
+    if (!articleId) return;
 
-  // Apply saved state on load
-  if (saved) {
-    btn.classList.add("saved");
-    if (label) label.textContent = "Saved";
-  } else {
-    btn.classList.remove("saved");
-    if (label) label.textContent = "Save";
-  }
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
-  btn.addEventListener("click", () => {
-    const isSaved = btn.classList.toggle("saved");
-    localStorage.setItem(key, isSaved ? "true" : "false");
-    if (label) label.textContent = isSaved ? "Saved" : "Save";
+    fetch(`/bookmark/toggle/${articleId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': csrfToken
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'success') {
+        if (data.bookmark_status === 'bookmarked') {
+          btn.classList.add("saved");
+          if (label) label.textContent = "Saved";
+        } else {
+          btn.classList.remove("saved");
+          if (label) label.textContent = "Save";
+        }
+      }
+    })
+    .catch(err => console.error("Error toggling bookmark:", err));
   });
 }
 
@@ -332,6 +338,6 @@ function initSidebar() {
 }
 
 // ── Init ──────────────────────────────────────────────────
-loadArticle();
+// loadArticle(); // Disabled to allow Blade database-driven rendering
 initBookmark();
 initSidebar();

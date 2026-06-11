@@ -86,92 +86,31 @@
     </div>
 
     <div class="chat-list" id="chatList">
-
-        <div class="chat-item active" data-room="sarah" onclick="switchRoom('sarah')">
+        @foreach($activeChats as $chat)
+        @php
+            $chatUser = $chat->user;
+            $chatAvatar = $chatUser->profile_picture ? asset('storage/' . $chatUser->profile_picture) : ($chatUser->jenis_kelamin_user == 'P' ? 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=300&auto=format&fit=crop' : 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop');
+            $initials = implode('', array_map(function($w) { return strtoupper($w[0]); }, explode(' ', $chatUser->nama_user)));
+            $initials = substr($initials, 0, 2);
+        @endphp
+        <a href="{{ route('roomChatExpert', ['id' => $chat->id]) }}" class="chat-item {{ $chat->id == $konsultasi->id ? 'active' : '' }}" style="text-decoration: none; color: inherit;">
             <div class="avatar-wrapper">
-                <div class="avatar-shell" data-initials="SJ" data-color="0">
-                    <img src="{{ asset('image/avatar-sarah.png') }}" alt="Sarah Johnson" class="avatar-img" onerror="this.style.display='none'">
+                <div class="avatar-shell" style="background:linear-gradient(135deg,#d0ff99,#99ff99); width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+                    <img src="{{ $chatAvatar }}" alt="{{ $chatUser->nama_user }}" class="avatar-img" style="width:100%; height:100%; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <span style="display:none; color:#333; font-weight:600; font-size:14px;">{{ $initials }}</span>
                 </div>
                 <span class="status-dot online"></span>
             </div>
             <div class="chat-info">
                 <div class="chat-meta">
-                    <span class="chat-name">Sarah Johnson</span>
-                    <span class="chat-time">2m ago</span>
+                    <span class="chat-name">{{ $chatUser->nama_user }}</span>
+                    <span class="chat-time">Active</span>
                 </div>
-                <span class="chat-topic">Tomato Plant Issue</span>
+                <span class="chat-topic">{{ $chat->topik ?? 'General Consultation' }}</span>
                 <span class="chat-status active-label">Active</span>
             </div>
-        </div>
-
-        <div class="chat-item" data-room="marcus" onclick="switchRoom('marcus')">
-            <div class="avatar-wrapper">
-                <div class="avatar-shell" data-initials="MC" data-color="1">
-                    <img src="{{ asset('image/avatar-marcus.png') }}" alt="Marcus Chen" class="avatar-img" onerror="this.style.display='none'">
-                </div>
-                <span class="status-dot away"></span>
-            </div>
-            <div class="chat-info">
-                <div class="chat-meta">
-                    <span class="chat-name">Marcus Chen</span>
-                    <span class="chat-time">1h ago</span>
-                </div>
-                <span class="chat-topic">Hydroponic pH levels...</span>
-                <span class="chat-status await-label">Awaiting reply</span>
-            </div>
-        </div>
-
-        <div class="chat-item" data-room="elena" onclick="switchRoom('elena')">
-            <div class="avatar-wrapper">
-                <div class="avatar-shell" data-initials="ER" data-color="2">
-                    <img src="{{ asset('image/avatar-elena.png') }}" alt="Elena Rodriguez" class="avatar-img" onerror="this.style.display='none'">
-                </div>
-                <span class="status-dot offline"></span>
-            </div>
-            <div class="chat-info">
-                <div class="chat-meta">
-                    <span class="chat-name">Elena Rodriguez</span>
-                    <span class="chat-time">Yesterday</span>
-                </div>
-                <span class="chat-topic">Vineyard pest control</span>
-                <span class="chat-status offline-label">Offline</span>
-            </div>
-        </div>
-
-        <div class="chat-item" data-room="james" onclick="switchRoom('james')">
-            <div class="avatar-wrapper">
-                <div class="avatar-shell" data-initials="DJ" data-color="3">
-                    <img src="{{ asset('image/avatar-james.png') }}" alt="Dr. James" class="avatar-img" onerror="this.style.display='none'">
-                </div>
-                <span class="status-dot online"></span>
-            </div>
-            <div class="chat-info">
-                <div class="chat-meta">
-                    <span class="chat-name">Dr. James</span>
-                    <span class="chat-time">3h ago</span>
-                </div>
-                <span class="chat-topic">Orchid root rot issue</span>
-                <span class="chat-status active-label">Active</span>
-            </div>
-        </div>
-
-        <div class="chat-item" data-room="emma" onclick="switchRoom('emma')">
-            <div class="avatar-wrapper">
-                <div class="avatar-shell" data-initials="DE" data-color="4">
-                    <img src="{{ asset('image/avatar-emma.png') }}" alt="Dr. Emma" class="avatar-img" onerror="this.style.display='none'">
-                </div>
-                <span class="status-dot online"></span>
-            </div>
-            <div class="chat-info">
-                <div class="chat-meta">
-                    <span class="chat-name">Dr. Emma</span>
-                    <span class="chat-time">5h ago</span>
-                </div>
-                <span class="chat-topic">Lavender propagation</span>
-                <span class="chat-status active-label">Active</span>
-            </div>
-        </div>
-
+        </a>
+        @endforeach
     </div>
 </div>
 
@@ -181,24 +120,27 @@
     {{-- CHAT HEADER --}}
     <div class="chat-header">
         <div class="header-user">
-            <a href="{{ url('/userInfo') }}" class="header-user">
+            @php
+                $clientAvatar = $client->profile_picture ? asset('storage/' . $client->profile_picture) : ($client->jenis_kelamin_user == 'P' ? 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=300&auto=format&fit=crop' : 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop');
+                $clientInitials = implode('', array_map(function($w) { return strtoupper($w[0]); }, explode(' ', $client->nama_user)));
+                $clientInitials = substr($clientInitials, 0, 2);
+            @endphp
+            <div style="display: flex; align-items: center; text-decoration: none; color: inherit;">
                 <div class="avatar-wrapper">
-                    <div class="avatar-shell avatar-shell--lg" data-initials="SJ" data-color="0" id="headerAvatarShell">
-                        <img src="{{ asset('image/avatar-sarah.png') }}" alt="User" class="avatar-img" id="headerAvatarImg" onerror="this.style.display='none'">
+                    <div class="avatar-shell avatar-shell--lg" style="background:linear-gradient(135deg,#d0ff99,#99ff99); width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+                        <img src="{{ $clientAvatar }}" alt="{{ $client->nama_user }}" class="avatar-img" id="headerAvatarImg" style="width:100%; height:100%; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                        <span style="display:none; color:#333; font-weight:600; font-size:16px;">{{ $clientInitials }}</span>
                     </div>
                     <span class="status-dot online" id="headerStatusDot"></span>
                 </div>
-                <div class="header-info">
+                <div class="header-info" style="margin-left: 12px;">
                     <div class="header-name-row">
-                        <span class="header-name" id="headerName">Sarah Johnson</span>
+                        <span class="header-name" id="headerName">{{ $client->nama_user }}</span>
                     </div>
                 </div>
-            </a>
+            </div>
         </div>
         <div class="header-actions">
-            <button class="icon-btn" onclick="openMoreOptions()" title="More options">
-                <svg class="icon-sm icon-muted" aria-hidden="true"><use href="#icon-more"/></svg>
-            </button>
             <button class="end-chat-btn" id="endChatBtn" onclick="openEndChatModal()">
                 <svg class="icon-sm icon-end" aria-hidden="true"><use href="#icon-x-circle"/></svg>
                 End Chat
@@ -288,6 +230,16 @@
 
 </div>
 
+<script>
+    window.CONSULTATION = {
+        id: {{ $konsultasi->id }},
+        role: "ahli",
+        getMessagesUrl: "{{ route('expert.consultation.messages', ['id' => $konsultasi->id]) }}",
+        sendMessageUrl: "{{ route('expert.consultation.sendMessage', ['id' => $konsultasi->id]) }}",
+        endChatUrl: "{{ route('expert.consultation.end', ['id' => $konsultasi->id]) }}",
+        csrfToken: "{{ csrf_token() }}"
+    };
+</script>
 <script src="{{ asset('js/script-roomChatExpert.js') }}"></script>
 </body>
 </html>
