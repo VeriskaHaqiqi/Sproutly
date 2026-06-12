@@ -111,57 +111,201 @@
       <form id="scheduleForm" method="POST" action="{{ route('expert.schedule.save') }}">
         @csrf
 
-        <!-- Day cards will be rendered dynamically -->
-        @php
-          $allDays = [
-            'monday' => 'Monday',
-            'tuesday' => 'Tuesday',
-            'wednesday' => 'Wednesday',
-            'thursday' => 'Thursday',
-            'friday' => 'Friday',
-            'saturday' => 'Saturday',
-            'sunday' => 'Sunday'
-          ];
-        @endphp
+        <!-- Day cards will be rendered here -->
         <div class="days-list" id="daysList">
-          @foreach($allDays as $dayKey => $dayName)
-            @php
-              $daySlots = $scheduleByDay[$dayKey] ?? [];
-              $isActive = !empty($daySlots);
-            @endphp
-            <div class="day-card day-card--{{ $isActive ? 'active' : 'inactive' }}" data-day="{{ $dayKey }}">
-              <div class="day-header">
-                <div class="day-left">
-                  <span class="day-name">{{ $dayName }}</span>
-                  <label class="toggle">
-                    <input type="checkbox" name="days[{{ $dayKey }}][active]" value="1" {{ $isActive ? 'checked' : '' }} class="toggle-input" />
-                    <span class="toggle-track"></span>
-                  </label>
-                </div>
-                @if(!$isActive)
-                  <span class="unavailable-label">Unavailable</span>
-                @endif
-              </div>
-              <div class="day-slots" id="slots-{{ $dayKey }}" style="{{ $isActive ? '' : 'display:none;' }}">
-                @foreach($daySlots as $idx => $slot)
-                  <div class="slot-row" data-slot="{{ $idx }}">
-                    <div class="slot-pill">
-                      <input type="time" name="days[{{ $dayKey }}][slots][{{ $idx }}][start]" value="{{ $slot['start'] }}" class="time-input" />
-                      <span class="slot-sep">–</span>
-                      <input type="time" name="days[{{ $dayKey }}][slots][{{ $idx }}][end]" value="{{ $slot['end'] }}" class="time-input" />
-                      <button type="button" class="slot-edit-btn" title="Edit">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                      </button>
-                      <button type="button" class="slot-remove-btn" title="Remove">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                      </button>
-                    </div>
-                  </div>
-                @endforeach
-                <button type="button" class="btn-add-slot" data-day="{{ $dayKey }}">+ Add Time Slot</button>
+
+          <!-- MONDAY (active) -->
+          <div class="day-card day-card--active" data-day="monday">
+            <div class="day-header">
+              <div class="day-left">
+                <span class="day-name">Monday</span>
+                <label class="toggle">
+                  <input type="checkbox" name="days[monday][active]" value="1" checked class="toggle-input" />
+                  <span class="toggle-track"></span>
+                </label>
               </div>
             </div>
-          @endforeach
+            <div class="day-slots" id="slots-monday">
+              <div class="slot-row" data-slot="0">
+                <div class="slot-pill">
+                  <input type="time" name="days[monday][slots][0][start]" value="09:00" class="time-input" />
+                  <span class="slot-sep">–</span>
+                  <input type="time" name="days[monday][slots][0][end]" value="12:00" class="time-input" />
+                  <button type="button" class="slot-edit-btn" title="Edit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  </button>
+                  <button type="button" class="slot-remove-btn" title="Remove">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="slot-row" data-slot="1">
+                <div class="slot-pill">
+                  <input type="time" name="days[monday][slots][1][start]" value="14:00" class="time-input" />
+                  <span class="slot-sep">–</span>
+                  <input type="time" name="days[monday][slots][1][end]" value="17:00" class="time-input" />
+                  <button type="button" class="slot-edit-btn" title="Edit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  </button>
+                  <button type="button" class="slot-remove-btn" title="Remove">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                </div>
+              </div>
+              <button type="button" class="btn-add-slot" data-day="monday">+ Add Time Slot</button>
+            </div>
+          </div>
+
+          <!-- TUESDAY (active) -->
+          <div class="day-card day-card--active" data-day="tuesday">
+            <div class="day-header">
+              <div class="day-left">
+                <span class="day-name">Tuesday</span>
+                <label class="toggle">
+                  <input type="checkbox" name="days[tuesday][active]" value="1" checked class="toggle-input" />
+                  <span class="toggle-track"></span>
+                </label>
+              </div>
+            </div>
+            <div class="day-slots" id="slots-tuesday">
+              <div class="slot-row" data-slot="0">
+                <div class="slot-pill">
+                  <input type="time" name="days[tuesday][slots][0][start]" value="10:00" class="time-input" />
+                  <span class="slot-sep">–</span>
+                  <input type="time" name="days[tuesday][slots][0][end]" value="15:00" class="time-input" />
+                  <button type="button" class="slot-edit-btn" title="Edit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  </button>
+                  <button type="button" class="slot-remove-btn" title="Remove">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                </div>
+              </div>
+              <button type="button" class="btn-add-slot" data-day="tuesday">+ Add Time Slot</button>
+            </div>
+          </div>
+
+          <!-- WEDNESDAY (inactive) -->
+          <div class="day-card day-card--inactive" data-day="wednesday">
+            <div class="day-header">
+              <div class="day-left">
+                <span class="day-name">Wednesday</span>
+                <label class="toggle">
+                  <input type="checkbox" name="days[wednesday][active]" value="1" class="toggle-input" />
+                  <span class="toggle-track"></span>
+                </label>
+              </div>
+              <span class="unavailable-label">Unavailable</span>
+            </div>
+            <div class="day-slots" id="slots-wednesday" style="display:none;">
+              <button type="button" class="btn-add-slot" data-day="wednesday">+ Add Time Slot</button>
+            </div>
+          </div>
+
+          <!-- THURSDAY (active) -->
+          <div class="day-card day-card--active" data-day="thursday">
+            <div class="day-header">
+              <div class="day-left">
+                <span class="day-name">Thursday</span>
+                <label class="toggle">
+                  <input type="checkbox" name="days[thursday][active]" value="1" checked class="toggle-input" />
+                  <span class="toggle-track"></span>
+                </label>
+              </div>
+            </div>
+            <div class="day-slots" id="slots-thursday">
+              <div class="slot-row" data-slot="0">
+                <div class="slot-pill">
+                  <input type="time" name="days[thursday][slots][0][start]" value="09:00" class="time-input" />
+                  <span class="slot-sep">–</span>
+                  <input type="time" name="days[thursday][slots][0][end]" value="12:00" class="time-input" />
+                  <button type="button" class="slot-edit-btn" title="Edit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  </button>
+                  <button type="button" class="slot-remove-btn" title="Remove">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                </div>
+              </div>
+              <button type="button" class="btn-add-slot" data-day="thursday">+ Add Time Slot</button>
+            </div>
+          </div>
+
+          <!-- FRIDAY (active) -->
+          <div class="day-card day-card--active" data-day="friday">
+            <div class="day-header">
+              <div class="day-left">
+                <span class="day-name">Friday</span>
+                <label class="toggle">
+                  <input type="checkbox" name="days[friday][active]" value="1" checked class="toggle-input" />
+                  <span class="toggle-track"></span>
+                </label>
+              </div>
+            </div>
+            <div class="day-slots" id="slots-friday">
+              <div class="slot-row" data-slot="0">
+                <div class="slot-pill">
+                  <input type="time" name="days[friday][slots][0][start]" value="13:00" class="time-input" />
+                  <span class="slot-sep">–</span>
+                  <input type="time" name="days[friday][slots][0][end]" value="18:00" class="time-input" />
+                  <button type="button" class="slot-edit-btn" title="Edit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  </button>
+                  <button type="button" class="slot-remove-btn" title="Remove">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                </div>
+              </div>
+              <button type="button" class="btn-add-slot" data-day="friday">+ Add Time Slot</button>
+            </div>
+          </div>
+
+          <!-- SUNDAY (inactive) -->
+          <div class="day-card day-card--inactive" data-day="sunday">
+            <div class="day-header">
+              <div class="day-left">
+                <span class="day-name">Sunday</span>
+                <label class="toggle">
+                  <input type="checkbox" name="days[sunday][active]" value="1" class="toggle-input" />
+                  <span class="toggle-track"></span>
+                </label>
+              </div>
+              <span class="unavailable-label">Unavailable</span>
+            </div>
+            <div class="day-slots" id="slots-sunday" style="display:none;">
+              <button type="button" class="btn-add-slot" data-day="sunday">+ Add Time Slot</button>
+            </div>
+          </div>
+
+          <!-- SATURDAY (active) -->
+          <div class="day-card day-card--active" data-day="saturday">
+            <div class="day-header">
+              <div class="day-left">
+                <span class="day-name">Saturday</span>
+                <label class="toggle">
+                  <input type="checkbox" name="days[saturday][active]" value="1" checked class="toggle-input" />
+                  <span class="toggle-track"></span>
+                </label>
+              </div>
+            </div>
+            <div class="day-slots" id="slots-saturday">
+              <div class="slot-row" data-slot="0">
+                <div class="slot-pill">
+                  <input type="time" name="days[saturday][slots][0][start]" value="10:00" class="time-input" />
+                  <span class="slot-sep">–</span>
+                  <input type="time" name="days[saturday][slots][0][end]" value="14:00" class="time-input" />
+                  <button type="button" class="slot-edit-btn" title="Edit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  </button>
+                  <button type="button" class="slot-remove-btn" title="Remove">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                  </button>
+                </div>
+              </div>
+              <button type="button" class="btn-add-slot" data-day="saturday">+ Add Time Slot</button>
+            </div>
+          </div>
+
         </div><!-- /.days-list -->
 
         <!-- ========================

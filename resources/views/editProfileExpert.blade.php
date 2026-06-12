@@ -97,37 +97,37 @@
       <div class="form-card">
 
         <!-- ========================
+             AVATAR SECTION
+        ========================= -->
+        <div class="avatar-section">
+          <div class="avatar-wrap" id="avatarWrap">
+            <img
+              src="https://randomuser.me/api/portraits/women/44.jpg"
+              alt="Profile Photo"
+              class="avatar-img"
+              id="avatarImg"
+            />
+            <label for="photoInput" class="avatar-edit-btn" title="Change photo">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+            </label>
+            <input type="file" id="photoInput" name="photo" accept="image/*" class="photo-input" />
+          </div>
+
+          <div class="avatar-actions">
+            <label for="photoInput" class="btn-change-photo">Change Photo</label>
+            <button type="button" class="btn-remove-photo" id="removePhoto">Remove</button>
+          </div>
+        </div>
+
+        <!-- ========================
              FORM
         ========================= -->
-        <form class="edit-form" method="POST" action="{{ route('expert.profile.update') }}" enctype="multipart/form-data">
+        <form class="edit-form" method="POST" action="{{ route('expert.profile.update') ?? '#' }}" enctype="multipart/form-data">
           @csrf
           @method('PUT')
-
-          <!-- ========================
-               AVATAR SECTION
-          ========================= -->
-          <div class="avatar-section">
-            <div class="avatar-wrap" id="avatarWrap">
-              <img
-                src="{{ $user->profile_picture ? asset('storage/' . $user->profile_picture) : 'https://randomuser.me/api/portraits/women/44.jpg' }}"
-                alt="Profile Photo"
-                class="avatar-img"
-                id="avatarImg"
-              />
-              <label for="photoInput" class="avatar-edit-btn" title="Change photo">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                </svg>
-              </label>
-              <input type="file" id="photoInput" name="photo" accept="image/*" class="photo-input" />
-            </div>
-
-            <div class="avatar-actions">
-              <label for="photoInput" class="btn-change-photo">Change Photo</label>
-              <button type="button" class="btn-remove-photo" id="removePhoto">Remove</button>
-            </div>
-          </div>
 
           <div class="form-grid">
 
@@ -145,7 +145,7 @@
                   id="full_name"
                   name="full_name"
                   class="form-input @error('full_name') is-error @enderror"
-                  value="{{ old('full_name', $expert->nama_ahli ?? $user->nama_user) }}"
+                  value="{{ old('full_name', auth()->user()->name ?? 'Sarah Johnson') }}"
                   placeholder="Enter your full name"
                   required
                 />
@@ -169,7 +169,7 @@
                   id="email"
                   name="email"
                   class="form-input @error('email') is-error @enderror"
-                  value="{{ old('email', $user->email) }}"
+                  value="{{ old('email', auth()->user()->email ?? 'sarah.johnson@email.com') }}"
                   placeholder="Enter your email"
                   required
                 />
@@ -193,7 +193,7 @@
                   id="phone"
                   name="phone"
                   class="form-input @error('phone') is-error @enderror"
-                  value="{{ old('phone', $expert->no_telp_ahli ?? $user->no_telp_user) }}"
+                  value="{{ old('phone', auth()->user()->phone ?? '+1 (555) 000-0000') }}"
                   placeholder="Enter phone number"
                 />
               </div>
@@ -217,9 +217,9 @@
                   class="form-input form-select @error('gender') is-error @enderror"
                 >
                   <option value="" disabled>Select gender</option>
-                  <option value="male"   {{ old('gender', ($expert->jenis_kelamin_ahli ?? $user->jenis_kelamin_user) == 'L' ? 'male' : '') == 'male'   ? 'selected' : '' }}>Male</option>
-                  <option value="female" {{ old('gender', ($expert->jenis_kelamin_ahli ?? $user->jenis_kelamin_user) == 'P' ? 'female' : '') == 'female' ? 'selected' : '' }}>Female</option>
-                  <option value="other"  {{ old('gender', !in_array($expert->jenis_kelamin_ahli ?? $user->jenis_kelamin_user, ['L', 'P']) ? 'other' : '') == 'other'  ? 'selected' : '' }}>Prefer not to say</option>
+                  <option value="male"   {{ old('gender', auth()->user()->gender ?? '') == 'male'   ? 'selected' : '' }}>Male</option>
+                  <option value="female" {{ old('gender', auth()->user()->gender ?? 'female') == 'female' ? 'selected' : '' }}>Female</option>
+                  <option value="other"  {{ old('gender', auth()->user()->gender ?? '') == 'other'  ? 'selected' : '' }}>Prefer not to say</option>
                 </select>
                 <span class="select-chevron">
                   <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -228,52 +228,6 @@
                 </span>
               </div>
               @error('gender')
-                <span class="field-error">{{ $message }}</span>
-              @enderror
-            </div>
-
-            <!-- Domisili -->
-            <div class="form-group">
-              <label class="form-label" for="domisili">Domisili</label>
-              <div class="input-wrap">
-                <span class="input-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
-                  </svg>
-                </span>
-                <input
-                  type="text"
-                  id="domisili"
-                  name="domisili"
-                  class="form-input @error('domisili') is-error @enderror"
-                  value="{{ old('domisili', $expert->domisili ?? '') }}"
-                  placeholder="Enter your location"
-                />
-              </div>
-              @error('domisili')
-                <span class="field-error">{{ $message }}</span>
-              @enderror
-            </div>
-
-            <!-- Nama Almamater -->
-            <div class="form-group">
-              <label class="form-label" for="nama_almamater">Almamater</label>
-              <div class="input-wrap">
-                <span class="input-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
-                  </svg>
-                </span>
-                <input
-                  type="text"
-                  id="nama_almamater"
-                  name="nama_almamater"
-                  class="form-input @error('nama_almamater') is-error @enderror"
-                  value="{{ old('nama_almamater', $expert->nama_almamater ?? '') }}"
-                  placeholder="Enter your university/school"
-                />
-              </div>
-              @error('nama_almamater')
                 <span class="field-error">{{ $message }}</span>
               @enderror
             </div>
@@ -287,7 +241,7 @@
                ACTION BUTTONS
           ========================= -->
           <div class="form-actions">
-            <a href="{{ route('accountExpert') }}" class="btn-cancel">Cancel</a>
+            <a href="{{ url()->previous() }}" class="btn-cancel">Cancel</a>
             <button type="submit" class="btn-save">Save Changes</button>
           </div>
 

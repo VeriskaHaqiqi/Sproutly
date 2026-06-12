@@ -45,29 +45,7 @@ bookmarkBtns.forEach((btn) => {
   btn.addEventListener("click", (e) => {
     e.preventDefault(); // jangan ikut link artikel
     e.stopPropagation();
-    const articleId = btn.dataset.id;
-    if (!articleId) return;
-
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-
-    fetch(`/bookmark/toggle/${articleId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': csrfToken
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === 'success') {
-        if (data.bookmark_status === 'bookmarked') {
-          btn.classList.add("bookmarked");
-        } else {
-          btn.classList.remove("bookmarked");
-        }
-      }
-    })
-    .catch(err => console.error("Error toggling bookmark:", err));
+    btn.classList.toggle("bookmarked");
   });
 });
 

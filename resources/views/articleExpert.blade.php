@@ -128,47 +128,137 @@
                 </section>
 
                 <section class="article-grid" id="articleGrid">
-                    @forelse($artikel as $art)
-                        @php
-                            $tagClass = '';
-                            $kat = strtolower($art->kategori);
-                            if (str_contains($kat, 'tech') || str_contains($kat, 'integration')) $tagClass = 'tag-blue';
-                            elseif (str_contains($kat, 'urban') || str_contains($kat, 'planning') || str_contains($kat, 'hydro')) $tagClass = 'tag-green';
-                            elseif (str_contains($kat, 'iot') || str_contains($kat, 'sensor')) $tagClass = 'tag-yellow';
-                            elseif (str_contains($kat, 'organic') || str_contains($kat, 'care')) $tagClass = 'tag-lime';
-                            elseif (str_contains($kat, 'education') || str_contains($kat, 'learning')) $tagClass = 'tag-pink';
-
-                            $thumbnailUrl = $art->thumbnail ? (Str::startsWith($art->thumbnail, 'http') ? $art->thumbnail : asset('storage/' . $art->thumbnail)) : 'https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=1200&q=80';
-                            $dateStr = $art->tanggal_unggah ? \Carbon\Carbon::parse($art->tanggal_unggah)->format('Y-m-d') : '2023-10-12';
-                            $dateDisplay = $art->tanggal_unggah ? \Carbon\Carbon::parse($art->tanggal_unggah)->format('M d, Y') : 'Recent';
-
-                            $wordCount = str_word_count(strip_tags($art->konten));
-                            $readTime = max(1, ceil($wordCount / 200)) . ' min read';
-                        @endphp
-                        <article class="article-card"
-                            data-title="{{ $art->judul }}"
-                            data-category="{{ $art->kategori }}"
-                            data-status="Published"
-                            data-date="{{ $dateStr }}">
-                            <div class="article-thumb">
-                                <img src="{{ $thumbnailUrl }}" alt="{{ $art->judul }}" onerror="this.src='https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=1200&q=80'">
-                                <span class="article-tag {{ $tagClass }}">{{ strtoupper($art->kategori) }}</span>
+                    <article class="article-card"
+                        data-title="Sustainable Indoor Gardening"
+                        data-category="Horticulture"
+                        data-status="Published"
+                        data-date="2023-10-12">
+                        <div class="article-thumb">
+                            <img src="https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=1200&q=80" alt="Sustainable Indoor Gardening">
+                            <span class="article-tag">HORTICULTURE</span>
+                        </div>
+                        <div class="article-body">
+                            <div class="article-meta">
+                                Oct 12, 2023 <span>•</span> 8 min read
                             </div>
-                            <div class="article-body">
-                                <div class="article-meta">
-                                    {{ $dateDisplay }} <span>•</span> {{ $readTime }}
-                                </div>
-                                <div class="article-topline">
-                                    <h3>{{ $art->judul }}</h3>
-                                    <span class="article-status published">Published</span>
-                                </div>
-                                <p>{{ Str::limit(strip_tags($art->konten), 90) }}</p>
-                                <a href="/detailArtikelUser?id={{ $art->id }}" class="edit-link">View Article <i class="fa-solid fa-arrow-right"></i></a>
+                            <div class="article-topline">
+                                <h3>Sustainable Indoor Gardening</h3>
+                                <span class="article-status published">Published</span>
                             </div>
-                        </article>
-                    @empty
-                        <!-- Handled by emptyState div -->
-                    @endforelse
+                            <p>Discover the revolutionary methods of maintaining a lush, water-efficient indoor garden in modern living spaces...</p>
+                            <a href="#" class="edit-link">Edit Article <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+
+                    <article class="article-card"
+                        data-title="Hydroponic Systems for Beginners"
+                        data-category="Tech Integration"
+                        data-status="Draft"
+                        data-date="2023-10-10">
+                        <div class="article-thumb">
+                            <img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1200&q=80" alt="Hydroponic Systems for Beginners">
+                            <span class="article-tag tag-blue">TECH INTEGRATION</span>
+                        </div>
+                        <div class="article-body">
+                            <div class="article-meta">
+                                Oct 10, 2023 <span>•</span> 5 min read
+                            </div>
+                            <div class="article-topline">
+                                <h3>Hydroponic Systems for Beginners</h3>
+                                <span class="article-status draft">Draft</span>
+                            </div>
+                            <p>The ultimate guide to setting up your first soil-less growth kit with practical steps for beginners...</p>
+                            <a href="#" class="edit-link">Edit Article <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+
+                    <article class="article-card"
+                        data-title="The Future of Urban Farming"
+                        data-category="Urban Planning"
+                        data-status="Published"
+                        data-date="2023-10-08">
+                        <div class="article-thumb">
+                            <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1200&q=80" alt="The Future of Urban Farming">
+                            <span class="article-tag tag-green">URBAN PLANNING</span>
+                        </div>
+                        <div class="article-body">
+                            <div class="article-meta">
+                                Oct 08, 2023 <span>•</span> 12 min read
+                            </div>
+                            <div class="article-topline">
+                                <h3>The Future of Urban Farming</h3>
+                                <span class="article-status published">Published</span>
+                            </div>
+                            <p>Exploring how smart city infrastructure and innovation are shaping the future of sustainable agriculture...</p>
+                            <a href="#" class="edit-link">Edit Article <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+
+                    <article class="article-card"
+                        data-title="Smart Irrigation Tech"
+                        data-category="IoT & Sensors"
+                        data-status="Published"
+                        data-date="2023-10-05">
+                        <div class="article-thumb">
+                            <img src="https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&w=1200&q=80" alt="Smart Irrigation Tech">
+                            <span class="article-tag tag-yellow">IOT &amp; SENSORS</span>
+                        </div>
+                        <div class="article-body">
+                            <div class="article-meta">
+                                Oct 05, 2023 <span>•</span> 6 min read
+                            </div>
+                            <div class="article-topline">
+                                <h3>Smart Irrigation Tech</h3>
+                                <span class="article-status published">Published</span>
+                            </div>
+                            <p>How low-energy sensors and connected devices are revolutionizing water efficiency in modern agriculture...</p>
+                            <a href="#" class="edit-link">Edit Article <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+
+                    <article class="article-card"
+                        data-title="Natural Pest Control"
+                        data-category="Organic Care"
+                        data-status="Archived"
+                        data-date="2023-10-02">
+                        <div class="article-thumb">
+                            <img src="https://images.unsplash.com/photo-1461354464878-ad92f492a5a0?auto=format&fit=crop&w=1200&q=80" alt="Natural Pest Control">
+                            <span class="article-tag tag-lime">ORGANIC CARE</span>
+                        </div>
+                        <div class="article-body">
+                            <div class="article-meta">
+                                Oct 02, 2023 <span>•</span> 10 min read
+                            </div>
+                            <div class="article-topline">
+                                <h3>Natural Pest Control</h3>
+                                <span class="article-status archived">Archived</span>
+                            </div>
+                            <p>Avoid chemicals by using safer organic predator-based methods for healthier plants and more sustainable results...</p>
+                            <a href="#" class="edit-link">Edit Article <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+
+                    <article class="article-card"
+                        data-title="Seasonal Plant Care"
+                        data-category="Education"
+                        data-status="Draft"
+                        data-date="2023-09-28">
+                        <div class="article-thumb">
+                            <img src="https://images.unsplash.com/photo-1468327768560-75b778cbb551?auto=format&fit=crop&w=1200&q=80" alt="Seasonal Plant Care">
+                            <span class="article-tag tag-pink">EDUCATION</span>
+                        </div>
+                        <div class="article-body">
+                            <div class="article-meta">
+                                Sep 28, 2023 <span>•</span> 7 min read
+                            </div>
+                            <div class="article-topline">
+                                <h3>Seasonal Plant Care</h3>
+                                <span class="article-status draft">Draft</span>
+                            </div>
+                            <p>A month-by-month guide to ensuring your plants thrive during changing weather and seasonal transitions...</p>
+                            <a href="#" class="edit-link">Edit Article <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+                    </article>
                 </section>
 
                 <div class="empty-state" id="emptyState">

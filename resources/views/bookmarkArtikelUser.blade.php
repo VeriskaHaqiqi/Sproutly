@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Sproutly - Bookmarked Articles</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,8 +60,8 @@
             </svg>
           </button>
           <a href="{{ url('/accountUser') }}" class="profile-chip">
-            <span class="profile-name">{{ Auth::user()->nama_user ?? 'User' }}</span>
-            <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('images/fotoprofile.png') }}" alt="Profile">
+            <span class="profile-name">Sarah Green</span>
+            <img src="{{ asset('images/fotoprofile.png') }}" alt="Profile">
           </a>
         </div>
       </header>
@@ -220,29 +219,6 @@
     </main>
   </div>
 
-  <script>
-    window.SproutlyBookmarks = [
-      @foreach($bookmarks as $bk)
-        @php
-          $author = $bk->ahliBotani;
-          $authorName = $author->nama_ahli ?? 'Expert Botanist';
-          $thumbnailUrl = $bk->thumbnail ? (Str::startsWith($bk->thumbnail, 'http') ? $bk->thumbnail : asset('storage/' . $bk->thumbnail)) : 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&q=80';
-          $displayDate = $bk->tanggal_unggah ? \Carbon\Carbon::parse($bk->tanggal_unggah)->format('M d, Y') : 'Recent';
-          $date = $bk->tanggal_unggah ? \Carbon\Carbon::parse($bk->tanggal_unggah)->format('Y-m-d') : '';
-        @endphp
-        {
-          id: "{{ $bk->id }}",
-          title: {!! json_encode($bk->judul) !!},
-          topic: "{{ ucfirst($bk->kategori) }}",
-          date: "{{ $date }}",
-          displayDate: "{{ $displayDate }}",
-          author: {!! json_encode($authorName) !!},
-          description: {!! json_encode(Str::limit(strip_tags($bk->konten), 120)) !!},
-          image: "{{ $thumbnailUrl }}"
-        },
-      @endforeach
-    ];
-  </script>
   <script src="{{ asset('js/bookmarkArtikelUser.js') }}"></script>
 </body>
 </html>

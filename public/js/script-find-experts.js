@@ -138,11 +138,6 @@ function openExpertModal(card) {
   const price = Number(d.price).toLocaleString("id-ID");
   document.getElementById("modalPrice").textContent = `Rp${price}`;
 
-  const consultBtn = expertModal.querySelector(".modal-consult-btn");
-  if (consultBtn) {
-    consultBtn.href = `/consultation/book/${d.id}`;
-  }
-
   expertModal.classList.add("show");
   expertModal.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";

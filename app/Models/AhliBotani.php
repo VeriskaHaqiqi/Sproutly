@@ -20,10 +20,7 @@ class AhliBotani extends Model
         'tanggal_lahir_ahli',
         'jenis_kelamin_ahli',
         'domisili',
-        'nama_almamater',
-        'spesialisasi',
-        'bio',
-        'pengalaman_tahun'
+        'nama_almamater'
     ];
 
     protected $casts = [

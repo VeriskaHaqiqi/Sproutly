@@ -28,19 +28,4 @@ class Konsultasi extends Model
     {
         return $this->belongsTo(AhliBotani::class);
     }
-
-    public function pembayaran()
-    {
-        return $this->belongsTo(Pembayaran::class);
-    }
-
-    public function tarifAhli()
-    {
-        return $this->belongsTo(TarifAhli::class, 'tarif_ahli_id');
-    }
-
-    public function pesan()
-    {
-        return $this->hasMany(Pesan::class);
-    }
 }

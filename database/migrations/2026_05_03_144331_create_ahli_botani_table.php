@@ -23,9 +23,6 @@ return new class extends Migration
             $table->enum('jenis_kelamin_ahli', ['L', 'P'])->nullable();
             $table->string('domisili', 30)->nullable();
             $table->string('nama_almamater', 50)->nullable();
-            $table->string('spesialisasi', 50)->nullable();
-            $table->text('bio')->nullable();
-            $table->integer('pengalaman_tahun')->default(0);
 
             $table->timestamps();
         });

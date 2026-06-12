@@ -24,26 +24,55 @@
     </a>
 
     <div class="expert-list">
-      @foreach($activeChats as $chat)
-      @php
-        $chatExpert = $chat->ahliBotani;
-        $chatAvatar = $chatExpert->user->profile_picture ? asset('storage/' . $chatExpert->user->profile_picture) : ($chatExpert->user->jenis_kelamin_user == 'P' ? 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop' : 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop');
-        $initials = implode('', array_map(function($w) { return strtoupper($w[0]); }, explode(' ', $chatExpert->nama_ahli)));
-        $initials = substr($initials, 0, 2);
-      @endphp
-      <a href="{{ route('roomChatUser', ['id' => $chat->id]) }}" class="expert-item {{ $chat->id == $konsultasi->id ? 'active' : '' }}" style="text-decoration: none; color: inherit;">
+
+      <div class="expert-item active" data-expert="sarah">
         <div class="avatar-wrap">
-          <img src="{{ $chatAvatar }}" alt="{{ $chatExpert->nama_ahli }}" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-          <div class="avatar-initials" style="background:linear-gradient(135deg,#d0ff99,#99ff99); display: none;">{{ $initials }}</div>
+          <div class="avatar-initials" style="background:linear-gradient(135deg,#d0ff99,#99ff99);">SW</div>
           <span class="status-dot online"></span>
         </div>
         <div class="expert-info">
-          <p class="expert-name">{{ $chatExpert->nama_ahli }}</p>
-          <p class="expert-role">{{ $chatExpert->spesialisasi ?? 'Expert Botanist' }}</p>
-          <p class="expert-status chatting">{{ $chat->status_konsultasi == 'aktif' ? 'Currently chatting' : 'Pending payment' }}</p>
+          <p class="expert-name">Dr. Sarah Williams</p>
+          <p class="expert-role">Soil Health Expert</p>
+          <p class="expert-status chatting">Currently chatting</p>
         </div>
-      </a>
-      @endforeach
+      </div>
+
+      <div class="expert-item" data-expert="marcus">
+        <div class="avatar-wrap">
+          <div class="avatar-initials" style="background:linear-gradient(135deg,#76ead0,#76d7ea);">MC</div>
+          <span class="status-dot online"></span>
+        </div>
+        <div class="expert-info">
+          <p class="expert-name">Dr. Marcus Chen</p>
+          <p class="expert-role">Crop Disease Specialist</p>
+          <p class="expert-status available">Available now</p>
+        </div>
+      </div>
+
+      <div class="expert-item" data-expert="james">
+        <div class="avatar-wrap">
+          <div class="avatar-initials" style="background:linear-gradient(135deg,#fde68a,#fbbf24);">JR</div>
+          <span class="status-dot away"></span>
+        </div>
+        <div class="expert-info">
+          <p class="expert-name">Dr. James Rodriguez</p>
+          <p class="expert-role">Pest Management</p>
+          <p class="expert-status away-status">Away · 2 hours</p>
+        </div>
+      </div>
+
+      <div class="expert-item" data-expert="emma">
+        <div class="avatar-wrap">
+          <div class="avatar-initials" style="background:linear-gradient(135deg,#e2e8f0,#94a3b8);">ET</div>
+          <span class="status-dot offline"></span>
+        </div>
+        <div class="expert-info">
+          <p class="expert-name">Dr. Emma Thompson</p>
+          <p class="expert-role">Organic Farming</p>
+          <p class="expert-status offline-status">Offline</p>
+        </div>
+      </div>
+
     </div>
 
     <div class="sidebar-footer">
@@ -64,18 +93,12 @@
     <!-- Header -->
     <header class="chat-header">
       <div class="header-expert">
-        @php
-          $expertAvatar = $expert->user->profile_picture ? asset('storage/' . $expert->user->profile_picture) : ($expert->user->jenis_kelamin_user == 'P' ? 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop' : 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop');
-          $expertInitials = implode('', array_map(function($w) { return strtoupper($w[0]); }, explode(' ', $expert->nama_ahli)));
-          $expertInitials = substr($expertInitials, 0, 2);
-        @endphp
-        <img src="{{ $expertAvatar }}" alt="{{ $expert->nama_ahli }}" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-        <div class="header-avatar-initials" id="headerAvatar" style="background:linear-gradient(135deg,#d0ff99,#99ff99); display: none;">{{ $expertInitials }}</div>
-        <div style="margin-left: 10px;">
-          <p class="header-name" id="headerName">{{ $expert->nama_ahli }}</p>
+        <div class="header-avatar-initials" id="headerAvatar" style="background:linear-gradient(135deg,#d0ff99,#99ff99);">SW</div>
+        <div>
+          <p class="header-name" id="headerName">Dr. Sarah Williams</p>
           <div class="header-status">
             <span class="dot-status online" id="headerDot"></span>
-            <span id="headerStatusText">Online · {{ $expert->spesialisasi ?? 'Expert Botanist' }}</span>
+            <span id="headerStatusText">Online · Soil Health Expert</span>
           </div>
         </div>
       </div>
@@ -116,15 +139,6 @@
   </div>
 </div>
 
-<script>
-    window.CONSULTATION = {
-        id: {{ $konsultasi->id }},
-        role: "user",
-        getMessagesUrl: "{{ route('consultation.messages', ['id' => $konsultasi->id]) }}",
-        sendMessageUrl: "{{ route('consultation.sendMessage', ['id' => $konsultasi->id]) }}",
-        csrfToken: "{{ csrf_token() }}"
-    };
-</script>
 <script src="{{ asset('js/script-roomChatUser.js') }}"></script>
 </body>
 </html>

@@ -99,13 +99,13 @@
       ========================= -->
       <div class="account-card profile-card">
         <div class="avatar-wrap">
-          <img src="{{ $user->profile_picture ? asset('storage/' . $user->profile_picture) : asset('images/fotoprofile.png') }}" alt="Expert {{ $expert->nama_ahli ?? $user->nama_user }}" class="avatar-img" />
+          <img src="images/fotoprofile.png" alt="Expert Sarah Chen" class="avatar-img" />
           <span class="avatar-badge">✏️</span>
         </div>
-        <h2 class="expert-name">{{ $expert->nama_ahli ?? $user->nama_user }}</h2>
-        <p class="expert-title">{{ $expert->domisili ?? '-' }} | {{ $expert->nama_almamater ?? '-' }}</p>
-        <p class="expert-contact">{{ $user->email }}</p>
-        <p class="expert-contact">{{ $expert->no_telp_ahli ?? $user->no_telp_user ?? '-' }}</p>
+        <h2 class="expert-name">Expert Sarah Chen</h2>
+        <p class="expert-title">Plant Pathologist &amp; Indoor Plant Expert</p>
+        <p class="expert-contact">sarah.chen@sproutly.com</p>
+        <p class="expert-contact">+1 (234) 567-890</p>
         <div class="expert-tags">
           <span class="tag tag--outline">Plant Pathology</span>
           <span class="tag tag--teal">Indoor Plants</span>
@@ -123,7 +123,7 @@
         <h3 class="card-section-title">Professional Settings</h3>
         <ul class="menu-list">
           <li class="menu-item">
-            <a href="{{ route('setpricingexpert') }}" class="menu-link">
+            <a href="#" class="menu-link">
               <span class="menu-link-left">
                 <span class="menu-item-icon">
                     <img src="{{ asset('images/ikon set consultation.png') }}" alt="">

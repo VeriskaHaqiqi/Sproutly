@@ -136,92 +136,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function getArticleContent() {
-        // Create a temporary element to manipulate HTML formatting to markdown headers/quotes
-        const temp = document.createElement('div');
-        temp.innerHTML = articleEditor.innerHTML;
-        
-        const headings1 = temp.querySelectorAll('h1');
-        headings1.forEach(h => {
-            h.outerHTML = `\n# ${h.textContent}\n`;
-        });
-        const headings2 = temp.querySelectorAll('h2');
-        headings2.forEach(h => {
-            h.outerHTML = `\n## ${h.textContent}\n`;
-        });
-        const quotes = temp.querySelectorAll('blockquote');
-        quotes.forEach(q => {
-            q.outerHTML = `\n> ${q.textContent}\n`;
-        });
-        
-        return temp.textContent.trim().replace(/\n{3,}/g, '\n\n');
-    }
-
     if (publishBtn) {
         publishBtn.addEventListener("click", function () {
-            const title = document.getElementById("articleTitle")?.value.trim();
-            const content = getArticleContent();
-            const tagChips = document.querySelectorAll("#tagList .tag-chip");
-            let tags = Array.from(tagChips).map(chip => {
-                let text = chip.textContent || chip.innerText || "";
-                return text.replace("×", "").trim();
-            });
-            const category = tags.length > 0 ? tags[0] : "General";
-            const fileInput = document.getElementById("featureImage");
-            
-            if (!title) {
-                alert("Please enter an article title.");
-                return;
-            }
-            if (!content) {
-                alert("Please write some content for your article.");
-                return;
-            }
-            
-            const formData = new FormData();
-            formData.append("judul", title);
-            formData.append("konten", content);
-            formData.append("kategori", category);
-            if (fileInput && fileInput.files.length > 0) {
-                formData.append("thumbnail", fileInput.files[0]);
-            }
-            
-            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-            
-            publishBtn.disabled = true;
-            publishBtn.textContent = "Publishing...";
-            
-            fetch("/tulisartikelExpert/store", {
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": csrfToken
-                },
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Failed to publish article");
-                }
-                return response.json();
-            })
-            .then(data => {
-                publishModal.classList.add("show");
-            })
-            .catch(error => {
-                console.error(error);
-                alert("Error publishing article. Please try again.");
-            })
-            .finally(() => {
-                publishBtn.disabled = false;
-                publishBtn.textContent = "Publish >";
-            });
+            publishModal.classList.add("show");
         });
     }
 
     if (closeModalBtn) {
         closeModalBtn.addEventListener("click", function () {
             publishModal.classList.remove("show");
-            window.location.href = "/myarticleExpert";
         });
     }
 
@@ -229,7 +152,6 @@ document.addEventListener("DOMContentLoaded", function () {
         publishModal.addEventListener("click", function (e) {
             if (e.target === publishModal) {
                 publishModal.classList.remove("show");
-                window.location.href = "/myarticleExpert";
             }
         });
     }

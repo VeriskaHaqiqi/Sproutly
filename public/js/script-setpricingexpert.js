@@ -72,31 +72,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            const rawVal = consultationFee.value.replace(/\D/g, "");
+            successMessage.classList.add("show");
 
-            fetch('/expert/pricing/update', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({ tarif: rawVal })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    successMessage.classList.add("show");
-                    setTimeout(() => {
-                        successMessage.classList.remove("show");
-                    }, 2500);
-                } else {
-                    alert(data.message || 'Error updating fee');
-                }
-            })
-            .catch(err => {
-                console.error(err);
-                alert('An error occurred. Please try again.');
-            });
+            setTimeout(() => {
+                successMessage.classList.remove("show");
+            }, 2500);
         });
     }
 });

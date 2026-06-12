@@ -88,7 +88,7 @@
         <div class="avatar-section">
           <div class="avatar-wrap" id="avatarWrap">
             <img
-              src="{{ $user->profile_picture ? asset('storage/' . $user->profile_picture) : 'https://randomuser.me/api/portraits/women/44.jpg' }}"
+              src="https://randomuser.me/api/portraits/women/44.jpg"
               alt="Profile Photo"
               class="avatar-img"
               id="avatarImg"
@@ -132,7 +132,7 @@
                   id="full_name"
                   name="full_name"
                   class="form-input @error('full_name') is-error @enderror"
-                  value="{{ old('full_name', $user->nama_user) }}"
+                  value="{{ old('full_name', auth()->user()->name ?? 'Sarah Johnson') }}"
                   required
                 />
               </div>
@@ -155,7 +155,7 @@
                   id="email"
                   name="email"
                   class="form-input @error('email') is-error @enderror"
-                  value="{{ old('email', $user->email) }}"
+                  value="{{ old('email', auth()->user()->email ?? 'sarah.johnson@email.com') }}"
                   required
                 />
               </div>
@@ -178,7 +178,7 @@
                   id="phone"
                   name="phone"
                   class="form-input @error('phone') is-error @enderror"
-                  value="{{ old('phone', $user->no_telp_user) }}"
+                  value="{{ old('phone', auth()->user()->phone ?? '+1 (555) 000-0000') }}"
                 />
               </div>
               @error('phone')
@@ -201,9 +201,9 @@
                   class="form-input form-select @error('gender') is-error @enderror"
                 >
                   <option value="" disabled>Select gender</option>
-                  <option value="male"   {{ old('gender', $user->jenis_kelamin_user == 'L' ? 'male' : '') == 'male'   ? 'selected' : '' }}>Male</option>
-                  <option value="female" {{ old('gender', $user->jenis_kelamin_user == 'P' ? 'female' : '') == 'female' ? 'selected' : '' }}>Female</option>
-                  <option value="other"  {{ old('gender', !in_array($user->jenis_kelamin_user, ['L', 'P']) ? 'other' : '') == 'other'  ? 'selected' : '' }}>Prefer not to say</option>
+                  <option value="male"   {{ old('gender', auth()->user()->gender ?? '') == 'male'   ? 'selected' : '' }}>Male</option>
+                  <option value="female" {{ old('gender', auth()->user()->gender ?? 'female') == 'female' ? 'selected' : '' }}>Female</option>
+                  <option value="other"  {{ old('gender', auth()->user()->gender ?? '') == 'other'  ? 'selected' : '' }}>Prefer not to say</option>
                 </select>
                 <span class="select-chevron">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">

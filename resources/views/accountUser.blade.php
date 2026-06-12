@@ -91,16 +91,16 @@
       <div class="account-card profile-card">
         <div class="profile-left">
           <div class="avatar-wrap">
-            <img src="{{ $user->profile_picture ? asset('storage/' . $user->profile_picture) : 'https://randomuser.me/api/portraits/women/44.jpg' }}" alt="{{ $user->nama_user }}" class="avatar-img" />
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Johnson" class="avatar-img" />
             <span class="avatar-badge">✏️</span>
           </div>
           <div class="profile-info">
-            <h2 class="profile-name">{{ $user->nama_user }}</h2>
+            <h2 class="profile-name">Sarah Johnson</h2>
             <p class="profile-meta">
-              <span class="meta-icon">✉</span> {{ $user->email }}
+              <span class="meta-icon">✉</span> sarah.johnson@example.com
             </p>
             <p class="profile-meta">
-              <span class="meta-icon">📞</span> {{ $user->no_telp_user ?? '-' }}
+              <span class="meta-icon">📞</span> +1 (555) 123-4567
             </p>
           </div>
         </div>
