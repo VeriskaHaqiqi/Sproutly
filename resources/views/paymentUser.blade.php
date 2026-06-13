@@ -292,6 +292,7 @@
 
             <a href="/roomChatUser" class="primary-link-btn">View Consultation</a>
             <a href="/dashboard-user" class="secondary-link-btn">Back to Dashboard</a>
+
         </div>
     </div>
 

@@ -222,3 +222,4 @@ Route::get('/register', function () {
 Route::get('/incomeHistory', function () {
     return view('incomeHistory');
 });
+

@@ -146,6 +146,7 @@
           </li>
           <li class="menu-item">
             <a href="/incomeHistory" class="menu-link">
+
               <span class="menu-link-left">
                 <span class="menu-item-icon">
                     <img src="{{ asset('images/ikon histori pendapatan.png') }}" alt="">

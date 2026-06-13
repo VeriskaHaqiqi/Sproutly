@@ -143,10 +143,17 @@
                             </div>
                             <div class="article-topline">
                                 <h3>Sustainable Indoor Gardening</h3>
+<<<<<<< HEAD
                                 
                             </div>
                             <p>Discover the revolutionary methods of maintaining a lush, water-efficient indoor garden in modern living spaces...</p>
                             
+=======
+                                <span class="article-status published">Published</span>
+                            </div>
+                            <p>Discover the revolutionary methods of maintaining a lush, water-efficient indoor garden in modern living spaces...</p>
+                            <a href="#" class="edit-link">Edit Article <i class="fa-solid fa-arrow-right"></i></a>
+>>>>>>> a11fed10b8e2c844a2517d1171996c0d8e818737
                         </div>
                     </article>
 
@@ -165,10 +172,17 @@
                             </div>
                             <div class="article-topline">
                                 <h3>Hydroponic Systems for Beginners</h3>
+<<<<<<< HEAD
                               
                             </div>
                             <p>The ultimate guide to setting up your first soil-less growth kit with practical steps for beginners...</p>
                             
+=======
+                                <span class="article-status draft">Draft</span>
+                            </div>
+                            <p>The ultimate guide to setting up your first soil-less growth kit with practical steps for beginners...</p>
+                            <a href="#" class="edit-link">Edit Article <i class="fa-solid fa-arrow-right"></i></a>
+>>>>>>> a11fed10b8e2c844a2517d1171996c0d8e818737
                         </div>
                     </article>
 
@@ -187,10 +201,17 @@
                             </div>
                             <div class="article-topline">
                                 <h3>The Future of Urban Farming</h3>
+<<<<<<< HEAD
                               
                             </div>
                             <p>Exploring how smart city infrastructure and innovation are shaping the future of sustainable agriculture...</p>
                             
+=======
+                                <span class="article-status published">Published</span>
+                            </div>
+                            <p>Exploring how smart city infrastructure and innovation are shaping the future of sustainable agriculture...</p>
+                            <a href="#" class="edit-link">Edit Article <i class="fa-solid fa-arrow-right"></i></a>
+>>>>>>> a11fed10b8e2c844a2517d1171996c0d8e818737
                         </div>
                     </article>
 
@@ -209,10 +230,18 @@
                             </div>
                             <div class="article-topline">
                                 <h3>Smart Irrigation Tech</h3>
+<<<<<<< HEAD
 
                             </div>
                             <p>How low-energy sensors and connected devices are revolutionizing water efficiency in modern agriculture...</p>
                             
+=======
+                                <span class="article-status published">Published</span>
+                            </div>
+                            <p>How low-energy sensors and connected devices are revolutionizing water efficiency in modern agriculture...</p>
+                            <a href="#" class="edit-link">Edit Article <i class="fa-solid fa-arrow-right"></i></a>
+                        </div>
+>>>>>>> a11fed10b8e2c844a2517d1171996c0d8e818737
                     </article>
 
                     <article class="article-card"
@@ -229,11 +258,13 @@
                                 Oct 02, 2023 <span>•</span> 10 min read
                             </div>
                             <div class="article-topline">
-                                <h3>Natural Pest Control</h3>
-                               
+                                <h3>Natural Pest Control</h3>               
+
+                                <span class="article-status archived">Archived</span>
                             </div>
                             <p>Avoid chemicals by using safer organic predator-based methods for healthier plants and more sustainable results...</p>
-                            
+                            <a href="#" class="edit-link">Edit Article <i class="fa-solid fa-arrow-right"></i></a>
+
                         </div>
                     </article>
 
@@ -252,10 +283,17 @@
                             </div>
                             <div class="article-topline">
                                 <h3>Seasonal Plant Care</h3>
+<<<<<<< HEAD
                                
                             </div>
                             <p>A month-by-month guide to ensuring your plants thrive during changing weather and seasonal transitions...</p>
                            
+=======
+                                <span class="article-status draft">Draft</span>
+                            </div>
+                            <p>A month-by-month guide to ensuring your plants thrive during changing weather and seasonal transitions...</p>
+                            <a href="#" class="edit-link">Edit Article <i class="fa-solid fa-arrow-right"></i></a>
+>>>>>>> a11fed10b8e2c844a2517d1171996c0d8e818737
                         </div>
                     </article>
                 </section>

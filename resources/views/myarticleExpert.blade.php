@@ -114,7 +114,9 @@
 
                             <div class="article-footer">
                                 <span>1.2k Views</span>
-                              
+
+                                <a href="#">Edit Article →</a>
+
                             </div>
                         </div>
                     </article>
@@ -138,7 +140,11 @@
 
                             <div class="article-footer">
                                 <span>845 Views</span>
+<<<<<<< HEAD
                         
+=======
+                                <a href="#">Edit Article →</a>
+>>>>>>> a11fed10b8e2c844a2517d1171996c0d8e818737
                             </div>
                         </div>
                     </article>
@@ -162,7 +168,11 @@
 
                             <div class="article-footer">
                                 <span>2.4k Views</span>
+<<<<<<< HEAD
                              
+=======
+                                <a href="#">Edit Article →</a>
+>>>>>>> a11fed10b8e2c844a2517d1171996c0d8e818737
                             </div>
                         </div>
                     </article>
@@ -186,7 +196,11 @@
 
                             <div class="article-footer">
                                 <span>512 Views</span>
+<<<<<<< HEAD
                                 
+=======
+                                <a href="#">Edit Article →</a>
+>>>>>>> a11fed10b8e2c844a2517d1171996c0d8e818737
                             </div>
                         </div>
                     </article>
