@@ -9,14 +9,14 @@ class Rating extends Model
 {
     use HasFactory;
 
-    protected $table = 'rating'; // ← perhatikan: 'rating' bukan 'ratings'
+    protected $table = 'rating';
     protected $primaryKey = 'id';
     
     protected $fillable = [
-        'user_id',        // ← sesuai migration
-        'ahli_botani_id', // ← sesuai migration
-        'konsultasi_id',  // ← sesuai migration
-        'nilai',          // ← sesuai migration (bukan bintang)
+        'user_id',       
+        'ahli_botani_id', 
+        'konsultasi_id', 
+        'nilai',          
         'ulasan',
         'tanggal'
     ];

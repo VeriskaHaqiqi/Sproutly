@@ -46,8 +46,7 @@ Route::post('/register', [AuthController::class, 'apiRegister']);
 //Route::post('/login', [AuthController::class, 'apiLogin']);
 Route::post('/forgot-password', [PasswordResetController::class, 'forgotPassword']);
 Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
-Route::get('/jadwal-ahli', [JadwalAhliController::class, 'index']);
-Route::post('/jadwal-ahli', [JadwalAhliController::class, 'store']);
+
 Route::get('/konsultasi', [KonsultasiController::class, 'index']);
 Route::post('/konsultasi', [KonsultasiController::class, 'store']);
 
@@ -75,5 +74,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/artikel/{id}/bookmark', [ArtikelController::class, 'bookmark']);
     Route::delete('/artikel/{id}/bookmark', [ArtikelController::class, 'unbookmark']);
     Route::get('/bookmark-artikel', [ArtikelController::class, 'myBookmark']);
-
+    
+    Route::get('/jadwal-ahli', [JadwalAhliController::class, 'index']);
+    Route::post('/jadwal-ahli', [JadwalAhliController::class, 'store']);
 });

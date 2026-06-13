@@ -69,7 +69,7 @@
 {{-- SIDEBAR --}}
 <div class="sidebar">
     <div class="sidebar-header">
-        <a href="/consultexpert" class="back-btn">
+        <a href="/consulexpert" class="back-btn">
             <svg class="icon-sm" aria-hidden="true"><use href="#icon-arrow-left"/></svg>
             <span>Back to Consultation</span>
         </a>

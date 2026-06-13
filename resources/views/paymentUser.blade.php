@@ -290,8 +290,8 @@
                 </div>
             </div>
 
-            <a href="#" class="primary-link-btn">View Consultation</a>
-            <a href="#" class="secondary-link-btn">Back to Dashboard</a>
+            <a href="/roomChatUser" class="primary-link-btn">View Consultation</a>
+            <a href="/dashboard-user" class="secondary-link-btn">Back to Dashboard</a>
         </div>
     </div>
 

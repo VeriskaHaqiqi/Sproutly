@@ -9,13 +9,33 @@ class JadwalAhliController extends Controller
 {
     public function index()
     {
-        return response()->json(JadwalAhli::all());
+        $jadwal = JadwalAhli::with('ahliBotani')->get();
+
+        return response()->json([
+            'message' => 'Data jadwal ahli berhasil diambil',
+            'data' => $jadwal
+        ]);
     }
 
     public function store(Request $request)
     {
+        $user = $request->user();
+
+        if ($user->role !== 'ahli') {
+            return response()->json([
+                'message' => 'Hanya ahli botani yang bisa menambahkan jadwal'
+            ], 403);
+        }
+
+        $ahliBotani = $user->ahliBotani;
+
+        if (!$ahliBotani) {
+            return response()->json([
+                'message' => 'Data ahli botani tidak ditemukan'
+            ], 404);
+        }
+
         $validated = $request->validate([
-            'ahli_botani_id' => 'required|exists:ahli_botani,id',
             'hari' => 'required|string|max:10',
             'jam_mulai' => 'required|date_format:H:i',
             'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
@@ -23,7 +43,7 @@ class JadwalAhliController extends Controller
         ]);
 
         $jadwal = JadwalAhli::create([
-            'ahli_botani_id' => $validated['ahli_botani_id'],
+            'ahli_botani_id' => $ahliBotani->id,
             'hari' => $validated['hari'],
             'jam_mulai' => $validated['jam_mulai'],
             'jam_selesai' => $validated['jam_selesai'],

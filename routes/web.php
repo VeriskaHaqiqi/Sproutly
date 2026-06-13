@@ -219,4 +219,6 @@ Route::get('/register', function () {
     return view('register');
 })->name('register');
 
-
+Route::get('/incomeHistory', function () {
+    return view('incomeHistory');
+});

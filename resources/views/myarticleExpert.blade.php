@@ -114,7 +114,7 @@
 
                             <div class="article-footer">
                                 <span>1.2k Views</span>
-                                <a href="#">Edit Article →</a>
+                              
                             </div>
                         </div>
                     </article>
@@ -138,7 +138,7 @@
 
                             <div class="article-footer">
                                 <span>845 Views</span>
-                                <a href="#">Edit Article →</a>
+                        
                             </div>
                         </div>
                     </article>
@@ -162,7 +162,7 @@
 
                             <div class="article-footer">
                                 <span>2.4k Views</span>
-                                <a href="#">Edit Article →</a>
+                             
                             </div>
                         </div>
                     </article>
@@ -186,7 +186,7 @@
 
                             <div class="article-footer">
                                 <span>512 Views</span>
-                                <a href="#">Edit Article →</a>
+                                
                             </div>
                         </div>
                     </article>
