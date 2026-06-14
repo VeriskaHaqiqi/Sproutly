@@ -72,11 +72,29 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            successMessage.classList.add("show");
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
-            setTimeout(() => {
-                successMessage.classList.remove("show");
-            }, 2500);
+            fetch('/setpricingexpert', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: JSON.stringify({
+                    tarif: consultationFee.value
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                successMessage.classList.add("show");
+                setTimeout(() => {
+                    successMessage.classList.remove("show");
+                }, 2500);
+            })
+            .catch(error => {
+                console.error('Error updating fee:', error);
+                alert('Failed to update consultation fee. Please try again.');
+            });
         });
     }
 });

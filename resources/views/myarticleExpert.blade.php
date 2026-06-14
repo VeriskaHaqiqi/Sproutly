@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Articles - Sproutly</title> 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('css/style-myarticleExpert.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -95,101 +96,123 @@
                 </div>
 
                 <div class="articles-grid" id="articlesGrid">
-                    <!-- CARD 1 -->
-                    <article class="article-card" data-id="1">
-                        <button type="button" class="select-circle" aria-label="Select Article"></button>
+                    @if(isset($artikels) && count($artikels) > 0)
+                        @foreach($artikels as $artikel)
+                            <article class="article-card" data-id="{{ $artikel->id }}">
+                                <button type="button" class="select-circle" aria-label="Select Article"></button>
 
-                        <div class="article-image-wrap">
-                            <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6" alt="Article Thumbnail">
-                        </div>
+                                <div class="article-image-wrap">
+                                    <img src="{{ $artikel->thumbnail ? (str_starts_with($artikel->thumbnail, 'http') ? $artikel->thumbnail : asset('storage/' . $artikel->thumbnail)) : 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6' }}" alt="Article Thumbnail">
+                                </div>
 
-                        <div class="article-body">
-                            <div class="article-meta">
-                                <span class="tag tag-green">HYDROPONICS</span>
-                                <span class="date">Oct 12, 2023</span>
+                                <div class="article-body">
+                                    <div class="article-meta">
+                                        <span class="tag tag-green">{{ strtoupper($artikel->kategori ?? 'HYDROPONICS') }}</span>
+                                        <span class="date">{{ \Carbon\Carbon::parse($artikel->tanggal_unggah ?? $artikel->created_at)->format('M d, Y') }}</span>
+                                    </div>
+
+                                    <h3>{{ $artikel->judul }}</h3>
+                                    <p>{{ Str::limit(strip_tags($artikel->konten), 120) }}</p>
+
+                                    <div class="article-footer">
+                                        <span>0 Views</span>
+                                    </div>
+                                </div>
+                            </article>
+                        @endforeach
+                    @else
+                        <!-- CARD 1 -->
+                        <article class="article-card" data-id="1">
+                            <button type="button" class="select-circle" aria-label="Select Article"></button>
+
+                            <div class="article-image-wrap">
+                                <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6" alt="Article Thumbnail">
                             </div>
 
-                            <h3>Optimizing Nutrient Flow for Leafy Greens</h3>
-                            <p>Discover the critical balance of nitrogen, phosphorus, and more for healthier crops.</p>
+                            <div class="article-body">
+                                <div class="article-meta">
+                                    <span class="tag tag-green">HYDROPONICS</span>
+                                    <span class="date">Oct 12, 2023</span>
+                                </div>
 
-                            <div class="article-footer">
-                                <span>1.2k Views</span>
+                                <h3>Optimizing Nutrient Flow for Leafy Greens</h3>
+                                <p>Discover the critical balance of nitrogen, phosphorus, and more for healthier crops.</p>
 
-
+                                <div class="article-footer">
+                                    <span>1.2k Views</span>
+                                </div>
                             </div>
-                        </div>
-                    </article>
+                        </article>
 
-                    <!-- CARD 2 -->
-                    <article class="article-card" data-id="2">
-                        <button type="button" class="select-circle" aria-label="Select Article"></button>
+                        <!-- CARD 2 -->
+                        <article class="article-card" data-id="2">
+                            <button type="button" class="select-circle" aria-label="Select Article"></button>
 
-                        <div class="article-image-wrap">
-                            <img src="https://plus.unsplash.com/premium_photo-1664299650802-c61f55b00c96?q=80&w=870&auto=format&fit=crop" alt="Article Thumbnail">
-                        </div>
-
-                        <div class="article-body">
-                            <div class="article-meta">
-                                <span class="tag tag-light-green">SOIL HEALTH</span>
-                                <span class="date">Sep 28, 2023</span>
+                            <div class="article-image-wrap">
+                                <img src="https://plus.unsplash.com/premium_photo-1664299650802-c61f55b00c96?q=80&w=870&auto=format&fit=crop" alt="Article Thumbnail">
                             </div>
 
-                            <h3>Restoring the Microbiome of Depleted Fields</h3>
-                            <p>A deep dive into regenerative farming practices that bring life back to the soil.</p>
+                            <div class="article-body">
+                                <div class="article-meta">
+                                    <span class="tag tag-light-green">SOIL HEALTH</span>
+                                    <span class="date">Sep 28, 2023</span>
+                                </div>
 
-                            <div class="article-footer">
-                                <span>845 Views</span>
+                                <h3>Restoring the Microbiome of Depleted Fields</h3>
+                                <p>A deep dive into regenerative farming practices that bring life back to the soil.</p>
 
+                                <div class="article-footer">
+                                    <span>845 Views</span>
+                                </div>
                             </div>
-                        </div>
-                    </article>
+                        </article>
 
-                    <!-- CARD 3 -->
-                    <article class="article-card" data-id="3">
-                        <button type="button" class="select-circle" aria-label="Select Article"></button>
+                        <!-- CARD 3 -->
+                        <article class="article-card" data-id="3">
+                            <button type="button" class="select-circle" aria-label="Select Article"></button>
 
-                        <div class="article-image-wrap">
-                            <img src="https://images.unsplash.com/photo-1646237642132-1c74e65d0282?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHdpbnRlciUyMHBsYW50fGVufDB8fDB8fHww" alt="Article Thumbnail">
-                        </div>
-
-                        <div class="article-body">
-                            <div class="article-meta">
-                                <span class="tag tag-blue">VERTICAL FARMING</span>
-                                <span class="date">Sep 15, 2023</span>
-                            </div>
-
-                            <h3>LED Spectrum Tuning for Winter Growth</h3>
-                            <p>How adjusting light wavelengths can trick plants into year-round productive cycles.</p>
-
-                            <div class="article-footer">
-                                <span>2.4k Views</span>
-
-                        </div>
-                    </article>
-
-                    <!-- CARD 4 -->
-                    <article class="article-card" data-id="4">
-                        <button type="button" class="select-circle" aria-label="Select Article"></button>
-
-                        <div class="article-image-wrap">
-                            <img src="https://images.unsplash.com/photo-1740927115720-5e528c435e1a?q=80&w=874&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Article Thumbnail">
-                        </div>
-
-                        <div class="article-body">
-                            <div class="article-meta">
-                                <span class="tag tag-yellow">TECH TOOLS</span>
-                                <span class="date">Aug 30, 2023</span>
+                            <div class="article-image-wrap">
+                                <img src="https://images.unsplash.com/photo-1646237642132-1c74e65d0282?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHdpbnRlciUyMHBsYW50fGVufDB8fDB8fHww" alt="Article Thumbnail">
                             </div>
 
-                            <h3>AI-Driven Pest Detection Systems</h3>
-                            <p>Implementing computer vision models to identify early signs of infestation in crops.</p>
+                            <div class="article-body">
+                                <div class="article-meta">
+                                    <span class="tag tag-blue">VERTICAL FARMING</span>
+                                    <span class="date">Sep 15, 2023</span>
+                                </div>
 
-                            <div class="article-footer">
-                                <span>512 Views</span>
+                                <h3>LED Spectrum Tuning for Winter Growth</h3>
+                                <p>How adjusting light wavelengths can trick plants into year-round productive cycles.</p>
 
+                                <div class="article-footer">
+                                    <span>2.4k Views</span>
+                                </div>
                             </div>
-                        </div>
-                    </article>
+                        </article>
+
+                        <!-- CARD 4 -->
+                        <article class="article-card" data-id="4">
+                            <button type="button" class="select-circle" aria-label="Select Article"></button>
+
+                            <div class="article-image-wrap">
+                                <img src="https://images.unsplash.com/photo-1740927115720-5e528c435e1a?q=80&w=874&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Article Thumbnail">
+                            </div>
+
+                            <div class="article-body">
+                                <div class="article-meta">
+                                    <span class="tag tag-yellow">TECH TOOLS</span>
+                                    <span class="date">Aug 30, 2023</span>
+                                </div>
+
+                                <h3>AI-Driven Pest Detection Systems</h3>
+                                <p>Implementing computer vision models to identify early signs of infestation in crops.</p>
+
+                                <div class="article-footer">
+                                    <span>512 Views</span>
+                                </div>
+                            </div>
+                        </article>
+                    @endif
                 </div>
             </section>
 

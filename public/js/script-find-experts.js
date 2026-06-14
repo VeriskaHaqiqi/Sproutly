@@ -138,6 +138,15 @@ function openExpertModal(card) {
   const price = Number(d.price).toLocaleString("id-ID");
   document.getElementById("modalPrice").textContent = `Rp${price}`;
 
+  const consultBtn = document.querySelector(".modal-consult-btn");
+  if (consultBtn) {
+      if (d.ahliId) {
+          consultBtn.href = `/lockRoomUser?expert_id=${d.ahliId}`;
+      } else {
+          consultBtn.href = `/lockRoomUser`;
+      }
+  }
+
   expertModal.classList.add("show");
   expertModal.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";

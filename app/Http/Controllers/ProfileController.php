@@ -104,35 +104,42 @@ class ProfileController extends Controller
     // Update Profile (User & Expert)
     public function updateProfile(Request $request)
     {
+        // Pastikan user sudah login
+        if (!Auth::check()) {
+            return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
+        }
+
         $user = Auth::user();
         
         $rules = [
             'full_name' => 'required|string|max:50',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'phone' => 'nullable|string|max:16',
-            'gender' => 'nullable|in:male,female,other',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'email'     => 'required|email|unique:users,email,' . $user->id,
+            'phone'     => 'nullable|string|max:16',
+            'gender'    => 'nullable|in:male,female,other',
+            'photo'     => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ];
 
         if ($user->role === 'ahli') {
             $rules['specialization'] = 'nullable|string|max:100';
-            $rules['experience'] = 'nullable|integer|min:0';
-            $rules['bio'] = 'nullable|string|max:1000';
+            $rules['experience']     = 'nullable|integer|min:0';
+            $rules['bio']            = 'nullable|string|max:1000';
         }
 
-        $request->validate($rules);
+        $validated = $request->validate($rules);
 
         $genderMap = [
-            'male' => 1,
+            'male'   => 1,
             'female' => 2,
-            'other' => null
+            'other'  => null
         ];
 
-        $user->nama_user = $request->full_name;
-        $user->email = $request->email;
-        $user->no_telp_user = $request->phone;
+        // Update kolom User
+        $user->nama_user        = $request->full_name;
+        $user->email            = $request->email;
+        $user->no_telp_user     = $request->phone;
         $user->jenis_kelamin_user = $genderMap[$request->gender] ?? null;
 
+        // Update foto profil jika ada upload baru
         if ($request->hasFile('photo')) {
             if ($user->profile_picture) {
                 Storage::disk('public')->delete($user->profile_picture);
@@ -143,31 +150,30 @@ class ProfileController extends Controller
 
         $user->save();
 
+        // Jika role ahli, update tabel ahli_botani
         if ($user->role === 'ahli') {
             $ahli = $user->ahliBotani;
             if ($ahli) {
-                $ahli->update([
-                    'nama_ahli' => $request->full_name,
-                    'no_telp_ahli' => $request->phone,
-                    'jenis_kelamin_ahli' => $request->gender === 'male' ? 'L' : ($request->gender === 'female' ? 'P' : null),
-                    'spesialisasi' => $request->specialization,
-                    'pengalaman_tahun' => $request->experience,
-                    'bio' => $request->bio,
-                ]);
+                $ahli->nama_ahli        = $request->full_name;
+                $ahli->no_telp_ahli     = $request->phone;
+                $ahli->jenis_kelamin_ahli = $request->gender === 'male' ? 'L' : ($request->gender === 'female' ? 'P' : null);
+                $ahli->spesialisasi     = $request->specialization;
+                $ahli->pengalaman_tahun = $request->experience ? (int)$request->experience : 0;
+                $ahli->bio              = $request->bio;
+                $ahli->save();
             }
-            return redirect()->route('accountExpert')->with('success', 'Profile updated successfully');
+            return redirect()->route('accountExpert')->with('success', 'Profil berhasil diperbarui!');
         }
 
-        return redirect()->route('accountUser')->with('success', 'Profile updated successfully');
+        return redirect()->route('accountUser')->with('success', 'Profil berhasil diperbarui!');
     }
 
     // Logout
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
-        
-        return response()->json([
-            'message' => 'Logged out successfully'
-        ]);
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/login');
     }
 }

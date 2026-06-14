@@ -58,14 +58,14 @@
           </svg>
         </button>
         <a href="{{ url('/accountUser') }}" class="profile-chip">
-          <span class="profile-name">Sarah Green</span>
-          <img src="{{ asset('images/fotoprofile.png') }}" alt="Profile">
+          <span class="profile-name">{{ auth()->user()->nama_user }}</span>
+          <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/fotoprofile.png') }}" alt="Profile">
         </a>
       </div>
     </header>
 
     <!-- HERO IMAGE -->
-    <section class="article-hero" id="articleHero">
+    <section class="article-hero" id="articleHero" style="background-image: linear-gradient(rgba(18,43,27,0.30), rgba(18,43,27,0.42)), url('{{ $artikel->thumbnail ? (str_starts_with($artikel->thumbnail, 'http') ? $artikel->thumbnail : asset('storage/' . $artikel->thumbnail)) : 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6' }}'); background-size: cover; background-position: center;">
       <div class="hero-overlay"></div>
     </section>
 
@@ -74,14 +74,20 @@
       <div class="article-meta-card">
         <div class="article-meta-left">
           <div class="author-avatar">
-            <img id="authorAvatar" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80" alt="Author">
+            @php
+              $authorName = $artikel->ahliBotani->nama_ahli ?? 'Expert';
+              $authorAvatar = ($artikel->ahliBotani && $artikel->ahliBotani->user && $artikel->ahliBotani->user->profile_picture) 
+                ? asset('storage/' . $artikel->ahliBotani->user->profile_picture) 
+                : asset('images/fotoprofile.png');
+            @endphp
+            <img id="authorAvatar" src="{{ $authorAvatar }}" alt="{{ $authorName }}">
           </div>
           <div class="author-info">
-            <h4 id="articleAuthor">Sarah Chen</h4>
+            <h4 id="articleAuthor">{{ $authorName }}</h4>
             <div class="author-subinfo">
-              <span id="articleDate">March 15, 2024</span>
+              <span id="articleDate">{{ \Carbon\Carbon::parse($artikel->tanggal_unggah ?? $artikel->created_at)->format('F d, Y') }}</span>
               <span class="meta-dot"></span>
-              <span id="articleReadTime">8 min read</span>
+              <span id="articleReadTime">5 min read</span>
             </div>
           </div>
         </div>
@@ -99,31 +105,42 @@
       <div class="side-accent left-accent"></div>
       <div class="side-accent right-accent"></div>
       <article class="article-detail-card">
-        <div class="article-inner">
-          <p class="article-lead" id="articleLead">
-            As the global population continues to grow and climate change presents new challenges, sustainable agriculture has become more critical than ever. Modern farmers are embracing innovative practices that not only increase productivity but also protect our environment for future generations.
-          </p>
-          <h1 class="article-heading" id="articleTitle">Understanding Sustainable Agriculture</h1>
-          <p class="article-text" id="paragraph1">Sustainable agriculture is a farming approach that focuses on producing food while maintaining the health of the environment, supporting economic viability, and promoting social equity. This holistic method considers the long-term impact of farming practices on soil health, water quality, biodiversity, and climate.</p>
-          <p class="article-text" id="paragraph2">The core principles of sustainable agriculture include crop rotation, integrated pest management, conservation tillage, and the use of cover crops. These practices work together to create a farming system that is both productive and environmentally responsible.</p>
-          <div class="quote-box">
-            <div class="quote-symbol">"</div>
-            <p id="articleQuote">Sustainable agriculture is not just about growing food — it's about growing a future where farming works in harmony with nature, ensuring that we can feed the world while preserving our planet for generations to come.</p>
-            <span id="articleQuoteAuthor">- Michael Rodriguez, Agricultural Sustainability Expert</span>
+        <div class="article-inner" id="articleInner">
+          <!-- Legacy layout container (for static/hardcoded articles) -->
+          <div id="legacyLayout">
+            <p class="article-lead" id="articleLead">
+              As the global population continues to grow and climate change presents new challenges, sustainable agriculture has become more critical than ever. Modern farmers are embracing innovative practices that not only increase productivity but also protect our environment for future generations.
+            </p>
+            <h1 class="article-heading" id="articleTitle">Understanding Sustainable Agriculture</h1>
+            <p class="article-text" id="paragraph1">Sustainable agriculture is a farming approach that focuses on producing food while maintaining the health of the environment, supporting economic viability, and promoting social equity. This holistic method considers the long-term impact of farming practices on soil health, water quality, biodiversity, and climate.</p>
+            <p class="article-text" id="paragraph2">The core principles of sustainable agriculture include crop rotation, integrated pest management, conservation tillage, and the use of cover crops. These practices work together to create a farming system that is both productive and environmentally responsible.</p>
+            <div class="quote-box">
+              <div class="quote-symbol">"</div>
+              <p id="articleQuote">Sustainable agriculture is not just about growing food — it's about growing a future where farming works in harmony with nature, ensuring that we can feed the world while preserving our planet for generations to come.</p>
+              <span id="articleQuoteAuthor">- Michael Rodriguez, Agricultural Sustainability Expert</span>
+            </div>
+            <h2 class="article-subheading" id="subtitle1">Key Sustainable Practices</h2>
+            <p class="article-text" id="paragraph3">Several innovative practices are revolutionizing modern agriculture. Precision farming uses GPS technology and data analytics to optimize planting, fertilizing, and harvesting. This approach reduces waste, minimizes environmental impact, and maximizes crop yields.</p>
+            <figure class="article-figure">
+              <img id="articleInlineImage" src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80" alt="Article illustration">
+              <figcaption id="articleImageCaption">Precision farming technology helps optimize resource use and reduce environmental impact</figcaption>
+            </figure>
+            <p class="article-text" id="paragraph4">Cover cropping is another essential practice that involves planting specific crops to cover the soil during off-seasons. These crops prevent soil erosion, improve soil fertility, and provide habitat for beneficial insects.</p>
+            <h2 class="article-subheading" id="subtitle2">The Role of Technology</h2>
+            <p class="article-text" id="paragraph5">Modern technology plays a crucial role in sustainable agriculture. Drone technology allows farmers to monitor crop health, identify pest problems early, and apply treatments precisely where needed.</p>
+            <p class="article-text" id="paragraph6">Artificial intelligence and machine learning are also transforming agriculture by predicting weather patterns, optimizing irrigation schedules, and identifying the best planting strategies for specific conditions.</p>
+            <h2 class="article-subheading" id="subtitle3">Looking Forward</h2>
+            <p class="article-text" id="paragraph7">The future of sustainable agriculture looks promising, with continued innovations in biotechnology, renewable energy integration, and sustainable pest management.</p>
+            <p class="article-text" id="paragraph8">By embracing sustainable agriculture practices, farmers can contribute to a healthier planet while building resilient, profitable farming operations.</p>
           </div>
-          <h2 class="article-subheading" id="subtitle1">Key Sustainable Practices</h2>
-          <p class="article-text" id="paragraph3">Several innovative practices are revolutionizing modern agriculture. Precision farming uses GPS technology and data analytics to optimize planting, fertilizing, and harvesting. This approach reduces waste, minimizes environmental impact, and maximizes crop yields.</p>
-          <figure class="article-figure">
-            <img id="articleInlineImage" src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80" alt="Article illustration">
-            <figcaption id="articleImageCaption">Precision farming technology helps optimize resource use and reduce environmental impact</figcaption>
-          </figure>
-          <p class="article-text" id="paragraph4">Cover cropping is another essential practice that involves planting specific crops to cover the soil during off-seasons. These crops prevent soil erosion, improve soil fertility, and provide habitat for beneficial insects.</p>
-          <h2 class="article-subheading" id="subtitle2">The Role of Technology</h2>
-          <p class="article-text" id="paragraph5">Modern technology plays a crucial role in sustainable agriculture. Drone technology allows farmers to monitor crop health, identify pest problems early, and apply treatments precisely where needed.</p>
-          <p class="article-text" id="paragraph6">Artificial intelligence and machine learning are also transforming agriculture by predicting weather patterns, optimizing irrigation schedules, and identifying the best planting strategies for specific conditions.</p>
-          <h2 class="article-subheading" id="subtitle3">Looking Forward</h2>
-          <p class="article-text" id="paragraph7">The future of sustainable agriculture looks promising, with continued innovations in biotechnology, renewable energy integration, and sustainable pest management.</p>
-          <p class="article-text" id="paragraph8">By embracing sustainable agriculture practices, farmers can contribute to a healthier planet while building resilient, profitable farming operations.</p>
+
+          <!-- Dynamic Database content container (for newly written articles) -->
+          <div id="dynamicLayout" style="display: none;">
+            <h1 class="article-heading" id="dynamicTitle" style="margin-bottom: 24px;">{{ $artikel->judul }}</h1>
+            <div class="article-text-content" style="font-size: 1.1rem; line-height: 1.8; color: var(--text-muted); padding: 0 10px;">
+              {!! $artikel->konten !!}
+            </div>
+          </div>
         </div>
       </article>
     </section>
@@ -132,52 +149,28 @@
     <section class="recommended-section">
       <h2>Recommended Articles</h2>
       <div class="recommended-grid">
-
-        <a href="/detailArtikelUser?article=pest" class="recommended-card">
-          <div class="recommended-image-wrap">
-            <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=900&q=80" alt="Organic Farming">
-          </div>
-          <div class="recommended-body">
-            <span class="recommended-tag green">Organic Farming</span>
-            <h3>Organic Pest Control: Natural Solutions for Healthy Crops</h3>
-            <p>Discover effective organic methods to protect your crops without harmful chemicals...</p>
-            <div class="recommended-author">
-              <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80" alt="Emma Thompson">
-              <div><strong>Emma Thompson</strong></div>
+        @foreach($recommended as $rec)
+          @php
+            $recAuthorName = $rec->ahliBotani->nama_ahli ?? 'Expert';
+            $recAuthorAvatar = ($rec->ahliBotani && $rec->ahliBotani->user && $rec->ahliBotani->user->profile_picture) 
+              ? asset('storage/' . $rec->ahliBotani->user->profile_picture) 
+              : asset('images/fotoprofile.png');
+          @endphp
+          <a href="/detailArtikelUser?article={{ $rec->id }}" class="recommended-card">
+            <div class="recommended-image-wrap">
+              <img src="{{ $rec->thumbnail ? (str_starts_with($rec->thumbnail, 'http') ? $rec->thumbnail : asset('storage/' . $rec->thumbnail)) : 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6' }}" alt="{{ $rec->judul }}">
             </div>
-          </div>
-        </a>
-
-        <a href="/detailArtikelUser?article=nutrients" class="recommended-card">
-          <div class="recommended-image-wrap">
-            <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=900&q=80" alt="Water Management">
-          </div>
-          <div class="recommended-body">
-            <span class="recommended-tag blue">Water Management</span>
-            <h3>Smart Irrigation: Maximizing Water Efficiency</h3>
-            <p>Learn how smart irrigation systems can reduce water usage while improving crop yields...</p>
-            <div class="recommended-author">
-              <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="James Wilson">
-              <div><strong>James Wilson</strong></div>
+            <div class="recommended-body">
+              <span class="recommended-tag green">{{ ucwords($rec->kategori) }}</span>
+              <h3>{{ $rec->judul }}</h3>
+              <p>{{ Str::limit(strip_tags($rec->konten), 80) }}...</p>
+              <div class="recommended-author">
+                <img src="{{ $recAuthorAvatar }}" alt="{{ $recAuthorName }}">
+                <div><strong>{{ $recAuthorName }}</strong></div>
+              </div>
             </div>
-          </div>
-        </a>
-
-        <a href="/detailArtikelUser?article=rotation" class="recommended-card">
-          <div class="recommended-image-wrap">
-            <img src="https://images.unsplash.com/photo-1471193945509-9ad0617afabf?w=900&q=80" alt="Crop Planning">
-          </div>
-          <div class="recommended-body">
-            <span class="recommended-tag yellow">Crop Planning</span>
-            <h3>Crop Rotation Strategies for Soil Health</h3>
-            <p>Master the art of crop rotation to improve soil fertility and reduce pest pressure...</p>
-            <div class="recommended-author">
-              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="Maria Garcia">
-              <div><strong>Maria Garcia</strong></div>
-            </div>
-          </div>
-        </a>
-
+          </a>
+        @endforeach
       </div>
     </section>
 

@@ -25,7 +25,29 @@
 
     <div class="expert-list">
 
-      <div class="expert-item active" data-expert="sarah">
+      @if(isset($consultations))
+        @foreach($consultations as $con)
+          <div class="expert-item {{ isset($activeConsultation) && $activeConsultation->id == $con->id ? 'active' : '' }}" 
+               data-expert="db-{{ $con->id }}"
+               onclick="window.location.href='/roomChatUser?id={{ $con->id }}'">
+            <div class="avatar-wrap">
+              @if($con->ahliBotani->user?->profile_picture)
+                <img src="{{ asset('storage/' . $con->ahliBotani->user->profile_picture) }}" alt="{{ $con->ahliBotani->nama_ahli }}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+              @else
+                <div class="avatar-initials" style="background:linear-gradient(135deg,#76ead0,#76d7ea);">{{ substr($con->ahliBotani->nama_ahli, 0, 2) }}</div>
+              @endif
+              <span class="status-dot online"></span>
+            </div>
+            <div class="expert-info">
+              <p class="expert-name">{{ $con->ahliBotani->nama_ahli }}</p>
+              <p class="expert-role">{{ $con->ahliBotani->spesialisasi }}</p>
+              <p class="expert-status chatting">Currently chatting</p>
+            </div>
+          </div>
+        @endforeach
+      @endif
+
+      <div class="expert-item {{ !isset($activeConsultation) ? 'active' : '' }}" data-expert="sarah">
         <div class="avatar-wrap">
           <div class="avatar-initials" style="background:linear-gradient(135deg,#d0ff99,#99ff99);">SW</div>
           <span class="status-dot online"></span>
@@ -36,7 +58,6 @@
           <p class="expert-status chatting">Currently chatting</p>
         </div>
       </div>
-
       <div class="expert-item" data-expert="marcus">
         <div class="avatar-wrap">
           <div class="avatar-initials" style="background:linear-gradient(135deg,#76ead0,#76d7ea);">MC</div>
@@ -139,6 +160,27 @@
   </div>
 </div>
 
+<script>
+  window.DB_CONSULTATION = {!! json_encode($activeConsultation ? [
+      'id' => $activeConsultation->id,
+      'expert' => [
+          'name' => $activeConsultation->ahliBotani->nama_ahli,
+          'role' => $activeConsultation->ahliBotani->spesialisasi ?? 'Expert Botanist',
+          'initials' => substr($activeConsultation->ahliBotani->nama_ahli, 0, 2),
+          'avatarBg' => 'linear-gradient(135deg,#76ead0,#76d7ea)',
+          'status' => 'online',
+          'statusText' => 'Online · ' . ($activeConsultation->ahliBotani->spesialisasi ?? 'Expert Botanist'),
+          'replies' => [
+              'Hello! Thank you for consulting with me. I have received your payment proof.',
+              'I am currently reviewing the details. Could you describe the symptoms or environmental conditions of your plant?',
+              'Great. I recommend watering only in the morning and ensuring proper drainage.',
+              'We can also use organic fertilizer to boost its immunity. Let me know if you need specific recommendations.',
+              'Feel free to upload photos of the infected parts anytime.'
+          ],
+          'greeting' => "Hello! I'm " . $activeConsultation->ahliBotani->nama_ahli . ", your " . ($activeConsultation->ahliBotani->spesialisasi ?? 'Expert Botanist') . ". How can I help you today?"
+      ]
+  ] : null) !!};
+</script>
 <script src="{{ asset('js/script-roomChatUser.js') }}"></script>
 </body>
 </html>

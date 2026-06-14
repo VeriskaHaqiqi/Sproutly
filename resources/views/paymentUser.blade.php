@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment - Sproutly</title>
+    <title>Consultation Payment - Sproutly</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('css/style-paymentUser.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -83,21 +84,21 @@
                         <div class="card">
                             <h2>Consultation Summary</h2>
 
-                            <div class="expert-summary">
-                                <img src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?q=80&w=300&auto=format&fit=crop" alt="Expert" class="expert-avatar">
+                             <div class="expert-summary">
+                                <img src="{{ $expert->user?->profile_picture ? asset('storage/' . $expert->user->profile_picture) : asset('images/fotoprofile.png') }}" alt="{{ $expert->nama_ahli }}" class="expert-avatar" onerror="this.src='{{ asset('images/fotoprofile.png') }}'">
 
                                 <div class="expert-details">
                                     <div class="expert-head">
                                         <div>
-                                            <h3>Dr. Sarah Mitchell</h3>
-                                            <span>Plant Disease Specialist</span>
+                                            <h3>{{ $expert->nama_ahli }}</h3>
+                                            <span>{{ $expert->spesialisasi }}</span>
                                         </div>
                                         <strong class="waiting-text">Waiting for Payment</strong>
                                     </div>
 
                                     <ul class="consultation-meta">
                                         <li>Chat Consultation</li>
-                                        <li>Scheduled for Today, 3:00 PM</li>
+                                        <li>Scheduled for Today</li>
                                         <li>30 minutes session</li>
                                     </ul>
                                 </div>
@@ -182,28 +183,28 @@
                     </div>
 
                     <div class="right-column">
-                        <div class="card payment-summary-card">
+                        <div class="card payment-summary-card" data-expert-id="{{ $expert->id }}">
                             <h2>Payment Summary</h2>
 
                             <div class="summary-line">
                                 <span>Consultation Fee</span>
-                                <strong>$45.00</strong>
+                                <strong>Rp {{ number_format($price, 0, ',', '.') }}</strong>
                             </div>
 
                             <div class="summary-line">
                                 <span>Admin Fee</span>
-                                <strong>$2.00</strong>
+                                <strong>Rp 30.000</strong>
                             </div>
 
                             <div class="summary-divider"></div>
 
                             <div class="summary-total">
                                 <span>Total Payment</span>
-                                <strong>$47.00</strong>
+                                <strong>Rp {{ number_format($price + 30000, 0, ',', '.') }}</strong>
                             </div>
 
                             <button type="button" class="confirm-btn" id="confirmPaymentBtn">Confirm Payment</button>
-                            <button type="button" class="cancel-btn">Cancel</button>
+                            <a href="/find-experts" class="cancel-btn" style="display:block; text-align:center; padding:12px; margin-top:10px; border-radius:10px; background:#f0f2f5; color:#5e6d84; text-decoration:none;">Cancel</a>
 
                             <div class="secure-note">
                                 <span>🛡</span>
@@ -274,7 +275,7 @@
             <div class="payment-modal-summary">
                 <div class="payment-modal-line">
                     <span>Expert</span>
-                    <strong>Dr. Sarah Mitchell</strong>
+                    <strong>{{ $expert->nama_ahli }}</strong>
                 </div>
                 <div class="payment-modal-line">
                     <span>Consultation Type</span>
@@ -282,7 +283,7 @@
                 </div>
                 <div class="payment-modal-line">
                     <span>Amount Paid</span>
-                    <strong>$47.00</strong>
+                    <strong>Rp {{ number_format($price + 30000, 0, ',', '.') }}</strong>
                 </div>
                 <div class="payment-modal-line">
                     <span>Payment Status</span>

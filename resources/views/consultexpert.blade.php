@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -78,7 +78,7 @@
             </button>
             <a href="{{ url('/expert/account') }}" class="profile-card">
                 <div class="profile-info">
-                    <span class="profile-name">Dr. Sarah Green</span>
+                    <span class="profile-name">{{ auth()->user()->nama_user }}</span>
                     <span class="profile-role">Agriculture Expert</span>
                 </div>
                 <img src="{{ asset('images/fotoprofile.png') }}" alt="Expert Profile" class="profile-avatar">

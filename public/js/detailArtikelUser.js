@@ -227,7 +227,24 @@ function getArticleKey() {
 // ── Populate page with article data ───────────────────────
 function loadArticle() {
   const key = getArticleKey();
-  const data = articles[key] || articles["irrigation"];
+  const data = articles[key];
+
+  if (!data) {
+    // It is a database article! Show dynamic layout, hide legacy layout and return.
+    const dl = document.getElementById("dynamicLayout");
+    const ll = document.getElementById("legacyLayout");
+    if (dl) dl.style.display = "block";
+    if (ll) ll.style.display = "none";
+    return;
+  }
+
+  // It's a legacy static article, show legacy layout, hide dynamic layout
+  const dl = document.getElementById("dynamicLayout");
+  const ll = document.getElementById("legacyLayout");
+  if (dl) dl.style.display = "none";
+  if (ll) ll.style.display = "block";
+
+
 
   // Hero background
   const hero = document.getElementById("articleHero");
@@ -273,19 +290,16 @@ function setText(id, text, src, cls) {
   if (text !== undefined && text !== null) el.textContent = text;
 }
 
-// ── Bookmark — persisted in localStorage ─────────────────
-function getBookmarkKey() {
-  return "bookmark_" + getArticleKey();
-}
-
 function initBookmark() {
   const btn   = document.getElementById("bookmarkBtn");
   const label = btn?.querySelector("span");
   if (!btn) return;
 
-  // Read saved state for THIS article key from localStorage
-  const key   = getBookmarkKey();
-  const saved = localStorage.getItem(key) === "true";
+  const articleKey = getArticleKey();
+  
+  // Read saved state from localStorage
+  let keys = JSON.parse(localStorage.getItem('bookmarked_articles') || '[]');
+  const saved = keys.includes(articleKey);
 
   // Apply saved state on load
   if (saved) {
@@ -298,7 +312,13 @@ function initBookmark() {
 
   btn.addEventListener("click", () => {
     const isSaved = btn.classList.toggle("saved");
-    localStorage.setItem(key, isSaved ? "true" : "false");
+    let currentKeys = JSON.parse(localStorage.getItem('bookmarked_articles') || '[]');
+    if (isSaved) {
+      if (!currentKeys.includes(articleKey)) currentKeys.push(articleKey);
+    } else {
+      currentKeys = currentKeys.filter(k => k !== articleKey);
+    }
+    localStorage.setItem('bookmarked_articles', JSON.stringify(currentKeys));
     if (label) label.textContent = isSaved ? "Saved" : "Save";
   });
 }

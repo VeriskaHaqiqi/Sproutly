@@ -164,8 +164,26 @@ document.addEventListener("DOMContentLoaded", function () {
     if (confirmDeleteBtn) {
         confirmDeleteBtn.addEventListener("click", function () {
             const selectedCards = document.querySelectorAll(".article-card.selected");
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
             selectedCards.forEach((card) => {
+                const articleId = card.getAttribute("data-id");
+                if (articleId && !['1', '2', '3', '4'].includes(articleId)) {
+                    fetch(`/tulisartikelExpert/${articleId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Deleted article:', data);
+                    })
+                    .catch(error => {
+                        console.error('Error deleting article:', error);
+                    });
+                }
                 card.remove();
             });
 

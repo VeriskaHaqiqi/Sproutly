@@ -118,6 +118,14 @@ class SproutlySeeder extends Seeder
                 'status_aktif' => 'aktif',
             ]);
 
+            \App\Models\JadwalAhli::create([
+                'ahli_botani_id' => $expert->id,
+                'hari' => 'Senin',
+                'jam_mulai' => '09:00',
+                'jam_selesai' => '17:00',
+                'status_ketersediaan' => 'tersedia',
+            ]);
+
             $createdExperts[$data['name']] = $expert->id;
         }
 

@@ -22,31 +22,31 @@
         </a>
     </div>
     <nav class="sidebar-nav">
-        <a href="{{ url('/dashboard') }}" class="sidebar-item">
+        <a href="{{ url('/dashboard-user') }}" class="sidebar-item">
             <img src="{{ asset('images/dashboard.png') }}" alt="Dashboard" class="sidebar-icon">
             <span>Dashboard</span>
         </a>
-        <a href="{{ url('/consultation') }}" class="sidebar-item active">
+        <a href="{{ url('/consultationUser') }}" class="sidebar-item active">
             <img src="{{ asset('images/consultation.png') }}" alt="Consultation" class="sidebar-icon">
             <span>Consultation</span>
         </a>
-        <a href="{{ url('/articles') }}" class="sidebar-item">
+        <a href="{{ url('/daftarArtikel') }}" class="sidebar-item">
             <img src="{{ asset('images/article.png') }}" alt="Article" class="sidebar-icon">
             <span>Article</span>
         </a>
-        <a href="{{ url('/bookmarks') }}" class="sidebar-item">
+        <a href="{{ url('/bookmarkArtikelUser') }}" class="sidebar-item">
             <img src="{{ asset('images/bookmark article.jpg') }}" alt="Bookmarked Article" class="sidebar-icon">
             <span>Bookmarked Article</span>
         </a>
-        <a href="#" class="sidebar-item">
+        <a href="{{ url('/reviewsUser') }}" class="sidebar-item">
             <img src="{{ asset('images/reviews.png') }}" alt="Reviews" class="sidebar-icon">
             <span>Reviews</span>
         </a>
-        <a href="#" class="sidebar-item">
+        <a href="{{ url('/invoice') }}" class="sidebar-item">
             <img src="{{ asset('images/payment.png') }}" alt="Payment" class="sidebar-icon">
             <span>Payment</span>
         </a>
-        <a href="#" class="sidebar-item">
+        <a href="{{ url('/accountUser') }}" class="sidebar-item">
             <img src="{{ asset('images/settings.png') }}" alt="Setting" class="sidebar-icon">
             <span>Setting</span>
         </a>
@@ -64,7 +64,7 @@
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
             </button>
-            <a href="{{ url('/home') }}" class="navbar-brand">
+            <a href="{{ url('/homeUser') }}" class="navbar-brand">
                 <img src="{{ asset('images/logo-hijau.png') }}" alt="Sproutly" class="navbar-logo-img">
                 <span class="navbar-brand-text">Sproutly</span>
             </a>
@@ -76,11 +76,11 @@
                     <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
                 </svg>
             </button>
-            <a href="{{ url('/account') }}" class="profile-card">
+            <a href="{{ url('/accountUser') }}" class="profile-card">
                 <div class="profile-info">
-                    <span class="profile-name">Sarah Green</span>
+                    <span class="profile-name">{{ auth()->user()->nama_user }}</span>
                 </div>
-                <img src="{{ asset('images/fotoprofile.png') }}" alt="Profile" class="profile-avatar">
+                <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/fotoprofile.png') }}" alt="Profile" class="profile-avatar">
             </a>
         </div>
     </header>
@@ -130,7 +130,7 @@
                     </svg>
                 </div>
 
-                <a href="{{ url('/find-expert') }}" class="btn-new-consultation">
+                <a href="{{ url('/find-experts') }}" class="btn-new-consultation">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="12" y1="5" x2="12" y2="19"/>
                         <line x1="5" y1="12" x2="19" y2="12"/>

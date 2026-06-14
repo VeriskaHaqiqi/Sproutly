@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -58,8 +58,8 @@
           </svg>
         </button>
         <a href="{{ url('/accountUser') }}" class="profile-chip">
-          <span class="profile-name">Sarah Green</span>
-          <img src="{{ asset('images/fotoprofile.png') }}" alt="Profile">
+          <span class="profile-name">{{ auth()->user()->nama_user }}</span>
+          <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/fotoprofile.png') }}" alt="Profile">
         </a>
       </div>
     </header>

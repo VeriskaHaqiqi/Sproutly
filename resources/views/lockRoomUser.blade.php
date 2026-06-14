@@ -28,18 +28,18 @@
         <div class="doctor-bar">
             <div class="doctor-info">
                 <div class="doctor-avatar">
-                    <img src="{{ asset('image/doctor-sarah.png') }}" alt="Dr. Sarah Chen"
-                         onerror="this.style.display='none'; this.parentElement.innerHTML='SC'; this.parentElement.classList.add('doctor-avatar-fallback');">
+                    <img src="{{ $expert->user?->profile_picture ? asset('storage/' . $expert->user->profile_picture) : asset('images/fotoprofile.png') }}" alt="{{ $expert->nama_ahli }}"
+                         onerror="this.style.display='none'; this.parentElement.innerHTML='{{ substr($expert->nama_ahli, 0, 2) }}'; this.parentElement.classList.add('doctor-avatar-fallback');">
                 </div>
                 <div class="doctor-details">
                     <div class="doctor-name-row">
-                        <h2 class="doctor-name">Dr. Sarah Chen</h2>
-                        <span class="doctor-badge">ORCHID SPECIALIST</span>
+                        <h2 class="doctor-name">{{ $expert->nama_ahli }}</h2>
+                        <span class="doctor-badge">{{ strtoupper($expert->spesialisasi) }}</span>
                     </div>
                     <div class="doctor-meta">
-                        <span class="doctor-rating">★ 4.9</span>
+                        <span class="doctor-rating">★ 4.8</span>
                         <span class="doctor-sep">•</span>
-                        <span class="doctor-exp">8 years experience</span>
+                        <span class="doctor-exp">{{ $expert->pengalaman_tahun }} years experience</span>
                     </div>
                 </div>
             </div>
@@ -103,24 +103,24 @@
                 <div class="payment-card">
 
                     <div class="lock-icon-wrap">
-                        <img src="{{ asset('image/lock.png') }}" alt="Lock">
+                        <img src="{{ asset('images/lock.png') }}" alt="Lock" onerror="this.src='{{ asset('images/logo.png') }}'">
                     </div>
 
                     <h3 class="payment-title">Expert Consultation</h3>
 
                     <p class="payment-desc">
-                        Get personalized plant care advice and diagnosis directly from Dr. Sarah Chen.
+                        Get personalized plant care advice and diagnosis directly from {{ $expert->nama_ahli }}.
                     </p>
 
                     <div class="price-box">
                         <div class="price-info">
-                            <span class="price-amount">Rp45.000</span>
+                            <span class="price-amount">Rp{{ number_format($price, 0, ',', '.') }}</span>
                             <span class="price-label">One-time payment</span>
                         </div>
                         <div class="price-shield">🛡️</div>
                     </div>
 
-                    <a href="/paymentUser" class="pay-btn" id="payBtn">
+                    <a href="/paymentUser?expert_id={{ $expert->id }}" class="pay-btn" id="payBtn">
                         Pay Now &amp; Unlock Chat
                         <span class="btn-arrow">→</span>
                     </a>

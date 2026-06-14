@@ -10,9 +10,32 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentStatus = "active";
   let currentSearch = "";
 
-  const conversations = [
+  // ── Real consultations from database ────────────────────────────
+  const DB_CONSULTATIONS = window.DB_CONSULTATIONS || [];
+
+  // Map DB consultations to the same shape as static entries
+  const dbConversations = DB_CONSULTATIONS.map(function(c) {
+    return {
+      id:         c.id,
+      name:       c.name,
+      topic:      c.topic,
+      topicClass: 'tag-' + c.topic.toLowerCase().replace(/\s+/g, '-'),
+      preview:    c.preview,
+      time:       c.time,
+      status:     c.status,
+      online:     c.online,
+      read:       c.read,
+      avatar:     c.avatar,
+      initials:   c.initials,
+      isDb:       true,
+      keywords:   [c.name.toLowerCase(), c.topic.toLowerCase()]
+    };
+  });
+
+  // Static fallback conversations (shown only when no DB data)
+  const staticConversations = DB_CONSULTATIONS.length > 0 ? [] : [
     {
-      id: 1,
+      id: 'static-1',
       name: "Michael Chen",
       topic: "Soil Science",
       topicClass: "tag-soil-science",
@@ -25,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
       keywords: ["soil", "ph", "fertilizer", "tomato", "samples"]
     },
     {
-      id: 2,
+      id: 'static-2',
       name: "Emma Rodriguez",
       topic: "Pest Control",
       topicClass: "tag-pest-control",
@@ -38,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
       keywords: ["aphids", "pest", "chili", "tomato", "leaves"]
     },
     {
-      id: 3,
+      id: 'static-3',
       name: "James Wilson",
       topic: "Crop Rotation",
       topicClass: "tag-crop-rotation",
@@ -50,46 +73,9 @@ document.addEventListener("DOMContentLoaded", function () {
       avatar: "https://randomuser.me/api/portraits/men/45.jpg",
       keywords: ["rotation", "soil health", "field", "season", "corn"]
     },
-    {
-      id: 4,
-      name: "Lisa Park",
-      topic: "Irrigation",
-      topicClass: "tag-irrigation",
-      preview: "The drip irrigation system you mentioned would be perfect for your tomato field. It can help maintain consistent moisture...",
-      time: "5h ago",
-      status: "active",
-      online: false,
-      read: false,
-      avatar: "https://randomuser.me/api/portraits/women/65.jpg",
-      keywords: ["irrigation", "drip", "tomato", "water", "field"]
-    },
-    {
-      id: 5,
-      name: "Robert Thompson",
-      topic: "Organic Farming",
-      topicClass: "tag-organic-farming",
-      preview: "You're welcome! Let me know how the organic fertilizer works out for your crops and whether the compost mix improves growth...",
-      time: "1d ago",
-      status: "completed",
-      online: false,
-      read: true,
-      avatar: "https://randomuser.me/api/portraits/men/51.jpg",
-      keywords: ["organic", "fertilizer", "compost", "crops", "growth"]
-    },
-    {
-      id: 6,
-      name: "Alicia Warren",
-      topic: "Soil Science",
-      topicClass: "tag-soil-science",
-      preview: "For your lettuce bed, I suggest increasing organic matter and checking drainage. The soil looks slightly compacted from your description...",
-      time: "2d ago",
-      status: "active",
-      online: true,
-      read: false,
-      avatar: "https://randomuser.me/api/portraits/women/21.jpg",
-      keywords: ["lettuce", "soil", "organic matter", "drainage", "bed"]
-    }
   ];
+
+  const conversations = [...dbConversations, ...staticConversations];
 
   function normalizeText(text) {
     return text.toLowerCase().trim();
@@ -135,10 +121,15 @@ document.addEventListener("DOMContentLoaded", function () {
       const card = document.createElement("article");
       card.className = "conversation-item";
 
+      // Avatar: show initials badge if no avatar URL
+      const avatarHtml = item.avatar
+        ? `<img src="${item.avatar}" alt="${item.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=width:100%;height:100%;background:linear-gradient(135deg,#76ead0,#76d7ea);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#155a4a;font-size:14px'>${item.initials || item.name.substring(0,2).toUpperCase()}</div>"`
+        : `<div style="width:100%;height:100%;background:linear-gradient(135deg,#76ead0,#76d7ea);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#155a4a;font-size:14px">${item.initials || item.name.substring(0,2).toUpperCase()}</div>`;
+
       card.innerHTML = `
         <div class="conversation-left">
           <div class="conversation-avatar">
-            <img src="${item.avatar}" alt="${item.name}">
+            ${avatarHtml}
           </div>
 
           <div class="conversation-main">
@@ -152,7 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
 
         <div class="conversation-right">
-          <span class="read-check ${item.read ? "" : "hidden"}">
+          <span class="read-check ${item.read ? '' : 'hidden'}">
             <svg viewBox="0 0 24 24" fill="none">
               <path d="M7 12L10 15L17 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M3 12L6 15L13 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -163,7 +154,21 @@ document.addEventListener("DOMContentLoaded", function () {
       `;
 
       card.addEventListener("click", function () {
-        alert(`Open conversation with ${item.name}`);
+        if (item.isDb) {
+          // DB consultation: route with ID for correct room
+          if (item.status === 'active') {
+            window.location.href = '/roomChatUser?id=' + item.id;
+          } else {
+            window.location.href = '/ConsultationhistoryUser';
+          }
+        } else {
+          // Static placeholder: generic navigation
+          if (item.status === 'active') {
+            window.location.href = '/roomChatUser';
+          } else {
+            window.location.href = '/ConsultationhistoryUser';
+          }
+        }
       });
 
       conversationList.appendChild(card);
@@ -192,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (startConversationBtn) {
     startConversationBtn.addEventListener("click", function () {
-      alert("Start new conversation clicked");
+      window.location.href = '/find-experts';
     });
   }
 

@@ -41,11 +41,26 @@ articleSearch?.addEventListener("input", filterArticles);
 searchButton?.addEventListener("click", filterArticles);
 
 // ── Bookmark ──────────────────────────────────────
+const bookmarkedKeys = JSON.parse(localStorage.getItem('bookmarked_articles') || '[]');
 bookmarkBtns.forEach((btn) => {
+  const card = btn.closest('.article-card');
+  if (!card) return;
+  const key = card.dataset.key;
+  if (bookmarkedKeys.includes(key)) {
+    btn.classList.add('bookmarked');
+  }
+
   btn.addEventListener("click", (e) => {
     e.preventDefault(); // jangan ikut link artikel
     e.stopPropagation();
-    btn.classList.toggle("bookmarked");
+    const isBookmarked = btn.classList.toggle("bookmarked");
+    let keys = JSON.parse(localStorage.getItem('bookmarked_articles') || '[]');
+    if (isBookmarked) {
+      if (!keys.includes(key)) keys.push(key);
+    } else {
+      keys = keys.filter(k => k !== key);
+    }
+    localStorage.setItem('bookmarked_articles', JSON.stringify(keys));
   });
 });
 

@@ -85,6 +85,14 @@ document.addEventListener('DOMContentLoaded', function () {
     let replyIndexes   = { marcus: 0, sarah: 0, james: 0, emma: 0 };
     let isTyping       = false;
 
+    if (window.DB_CONSULTATION && window.DB_CONSULTATION.expert) {
+        const dbKey = 'db-' + window.DB_CONSULTATION.id;
+        EXPERTS[dbKey] = window.DB_CONSULTATION.expert;
+        roomHistory[dbKey] = [];
+        replyIndexes[dbKey] = 0;
+        currentExpert = dbKey;
+    }
+
     // ── DOM ──────────────────────────────────────────────────────────
     const messagesArea  = document.getElementById('messagesArea');
     const messageInput  = document.getElementById('messageInput');
@@ -98,16 +106,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const headerStatus  = document.getElementById('headerStatusText');
 
     // ── Init ─────────────────────────────────────────────────────────
-    // Load greeting for sarah (default active room)
-    loadInitialGreeting('sarah');
-    renderRoom('sarah');
-    updateHeader('sarah');
+    loadInitialGreeting(currentExpert);
+    renderRoom(currentExpert);
+    updateHeader(currentExpert);
 
     // ── Sidebar click ────────────────────────────────────────────────
     document.querySelectorAll('.expert-item').forEach(function (item) {
-        item.addEventListener('click', function () {
+        item.addEventListener('click', function (e) {
             const key = this.dataset.expert;
             if (key === currentExpert) return;
+            if (key && key.startsWith('db-') && !EXPERTS[key]) {
+                return; // Let the inline onclick handler redirect
+            }
             switchRoom(key, this);
         });
     });
@@ -116,17 +126,21 @@ document.addEventListener('DOMContentLoaded', function () {
         // Update sidebar active state
         document.querySelectorAll('.expert-item').forEach(function (el) {
             el.classList.remove('active');
-            // Reset status label
+            // Reset status label — guard against unknown keys
             const expert = EXPERTS[el.dataset.expert];
             const statusEl = el.querySelector('.expert-status');
-            statusEl.className = 'expert-status ' + getStatusClass(expert.status);
-            statusEl.textContent = getStatusLabel(expert);
+            if (expert && statusEl) {
+                statusEl.className = 'expert-status ' + getStatusClass(expert.status);
+                statusEl.textContent = getStatusLabel(expert);
+            }
         });
 
         clickedItem.classList.add('active');
         const statusEl = clickedItem.querySelector('.expert-status');
-        statusEl.className = 'expert-status chatting';
-        statusEl.textContent = 'Currently chatting';
+        if (statusEl) {
+            statusEl.className = 'expert-status chatting';
+            statusEl.textContent = 'Currently chatting';
+        }
 
         currentExpert = key;
 

@@ -63,10 +63,16 @@
                 <path d="M18 17H6C6.9 16.2 7.5 15 7.5 13.8V10.8C7.5 8.2 9.4 6 12 6C14.6 6 16.5 8.2 16.5 10.8V13.8C16.5 15 17.1 16.2 18 17Z" fill="currentColor"/>
               </svg>
             </button>
-            <a href="{{ url('/accountUser') }}" class="profile-chip">
-              <span class="profile-name">Sarah Green</span>
-              <img src="{{ asset('images/fotoprofile.png') }}" alt="Profile">
-            </a>
+            @auth
+              <a href="{{ auth()->user()->role === 'ahli' ? url('/accountExpert') : url('/accountUser') }}" class="profile-chip">
+                <span class="profile-name">{{ auth()->user()->nama_user }}</span>
+                <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/fotoprofile.png') }}" alt="Profile">
+              </a>
+            @else
+              <a href="{{ url('/login') }}" class="profile-chip" style="padding: 10px 20px; font-weight: 600;">
+                <span class="profile-name">Log In</span>
+              </a>
+            @endauth
           </div>
         </div>
         <div class="topbar-row2">
@@ -135,6 +141,51 @@
       <!-- Experts Grid -->
       <div class="experts-main">
         <section class="experts-grid" id="expertsGrid">
+
+          {{-- ======= AHLI DARI DATABASE (DINAMIS) ======= --}}
+          @if(isset($dbExperts) && count($dbExperts) > 0)
+            @foreach($dbExperts as $ahli)
+              <article class="expert-card"
+                data-name="{{ $ahli['nama_ahli'] }}"
+                data-specialization="{{ $ahli['spesialisasi'] }}"
+                data-rating="{{ $ahli['rating'] }}"
+                data-experience="{{ $ahli['pengalaman'] }}"
+                data-price="{{ $ahli['tarif'] }}"
+                data-online="{{ $ahli['online'] }}"
+                data-fast-response="{{ $ahli['fast_response'] }}"
+                data-popular="{{ $ahli['popular'] }}"
+                data-indonesia="{{ $ahli['indonesia'] }}"
+                data-title="{{ $ahli['title'] }}"
+                data-university="{{ $ahli['almamater'] }}"
+                data-location="{{ $ahli['domisili'] }}"
+                data-consultations="{{ $ahli['total_rating'] }}"
+                data-bio="{{ $ahli['bio'] }}"
+                data-avatar="{{ $ahli['profile_picture'] ?? asset('images/fotoprofile.png') }}"
+                data-ahli-id="{{ $ahli['id'] }}">
+                <div class="expert-top">
+                  <img class="expert-avatar"
+                    src="{{ $ahli['profile_picture'] ?? asset('images/fotoprofile.png') }}"
+                    alt="{{ $ahli['nama_ahli'] }}"
+                    onerror="this.src='{{ asset('images/fotoprofile.png') }}'">
+                  <div class="rating-badge">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M12 3L14.4 8.1L20 8.9L16 12.8L17 18.3L12 15.6L7 18.3L8 12.8L4 8.9L9.6 8.1L12 3Z" fill="#d89a00"/></svg>
+                    <span>{{ $ahli['rating'] ?: '–' }}</span>
+                  </div>
+                </div>
+                <h3>{{ $ahli['nama_ahli'] }}</h3>
+                <div class="specialization-tag tag-green">{{ $ahli['spesialisasi'] }} <span style="font-size:10px;opacity:.7">✓ Terdaftar</span></div>
+                <p class="expert-desc">{{ \Illuminate\Support\Str::limit($ahli['bio'], 100, '...') }}</p>
+                <div class="expert-bottom">
+                  <div class="price-wrap">
+                    <span class="price-main">Rp{{ number_format($ahli['tarif'], 0, ',', '.') }}</span>
+                    <span class="price-sub">/sesi</span>
+                  </div>
+                  <button class="details-btn" type="button" onclick="openExpertModal(this.closest('.expert-card'))">View Details</button>
+                </div>
+              </article>
+            @endforeach
+          @endif
+          {{-- ======= END AHLI DARI DATABASE ======= --}}
 
           <article class="expert-card"
             data-name="Reza Firmansyah"

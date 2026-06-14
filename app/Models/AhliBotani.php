@@ -39,10 +39,20 @@ class AhliBotani extends Model
     // Relasi ke rating (yang menerima rating)
     public function ratings()
     {
-        return $this->hasMany(Rating::class, 'id_ahli', 'id');
+        return $this->hasMany(Rating::class, 'ahli_botani_id', 'id');
     }
     public function artikel()
     {
-    return $this->hasMany(Artikel::class, 'ahli_botani_id', 'id');
+        return $this->hasMany(Artikel::class, 'ahli_botani_id', 'id');
+    }
+
+    public function jadwalAhli()
+    {
+        return $this->hasMany(JadwalAhli::class, 'ahli_botani_id', 'id');
+    }
+
+    public function tarif()
+    {
+        return $this->hasMany(TarifAhli::class, 'ahli_botani_id', 'id');
     }
 }

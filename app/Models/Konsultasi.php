@@ -28,4 +28,9 @@ class Konsultasi extends Model
     {
         return $this->belongsTo(AhliBotani::class);
     }
+
+    public function pembayaran()
+    {
+        return $this->belongsTo(Pembayaran::class, 'pembayaran_id');
+    }
 }

@@ -49,6 +49,9 @@ Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']
 
 Route::get('/konsultasi', [KonsultasiController::class, 'index']);
 Route::post('/konsultasi', [KonsultasiController::class, 'store']);
+Route::get('/konsultasi/{id}', [KonsultasiController::class, 'show']);
+Route::patch('/konsultasi/{id}/status', [KonsultasiController::class, 'updateStatus']);
+Route::get('/available-experts', [KonsultasiController::class, 'getAvailableExperts']);
 
 Route::get('/tarif-ahli', [TarifAhliController::class, 'index']);
 Route::get('/tarif-ahli/{id}', [TarifAhliController::class, 'show']);

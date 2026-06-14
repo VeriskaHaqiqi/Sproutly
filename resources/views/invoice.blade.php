@@ -60,10 +60,10 @@
         </button>
         <a href="{{ url('/accountUser') }}" class="profile-chip">
           <div class="profile-info">
-            <span class="profile-name">Sarah Green</span>
-            <span class="profile-role">Agriculture Expert</span>
+            <span class="profile-name">{{ auth()->user()->nama_user }}</span>
+            <span class="profile-role">User</span>
           </div>
-          <img src="{{ asset('images/fotoprofile.png') }}" alt="Profile">
+          <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/fotoprofile.png') }}" alt="Profile">
         </a>
       </div>
     </header>
@@ -113,7 +113,7 @@
         <div class="stat-card">
           <div>
             <p class="stat-label">Total Outstanding</p>
-            <h2 class="stat-value" id="statOutstanding">$1,360</h2>
+            <h2 class="stat-value" id="statOutstanding">Rp0</h2>
             <span class="stat-sub positive">+12% from last month</span>
           </div>
           <div class="stat-icon-box red">
@@ -123,7 +123,7 @@
         <div class="stat-card">
           <div>
             <p class="stat-label">Paid This Month</p>
-            <h2 class="stat-value" id="statPaid">$2,490</h2>
+            <h2 class="stat-value" id="statPaid">Rp0</h2>
             <span class="stat-sub positive">+8% from last month</span>
           </div>
           <div class="stat-icon-box green">
@@ -219,7 +219,7 @@ var nextId = 13;
 var currentPage = 1;
 var PER_PAGE = 5;
 
-function fmt(n){ return "$" + Number(n).toLocaleString(); }
+function fmt(n){ return "Rp" + Number(n * 15000).toLocaleString('id-ID'); }
 function badgeCls(s){ return {Paid:"badge-paid",Pending:"badge-pending",Refund:"badge-refund"}[s]||"badge-pending"; }
 
 function getFiltered(){
@@ -383,6 +383,32 @@ function showToast(title, message) {
 function dlInvoice(id) {
   var inv = invoices.find(function (i) { return i.id === id; });
   if (!inv) return;
+  
+  var content = 
+    "==================================================\n" +
+    "                 SPROUTLY INVOICE                 \n" +
+    "==================================================\n" +
+    "Invoice ID   : " + inv.id + "\n" +
+    "Expert Name  : " + inv.expert + " (" + inv.role + ")\n" +
+    "Consultation : " + inv.consultation + "\n" +
+    "Amount       : " + fmt(inv.amount) + "\n" +
+    "Due Date     : " + inv.due + "\n" +
+    "Status       : " + inv.status + "\n" +
+    "==================================================\n" +
+    "Thank you for choosing Sproutly!\n" +
+    "For support, contact sproutly@gmail.com\n" +
+    "==================================================\n";
+    
+  var blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url;
+  a.download = "Sproutly-Invoice-" + id.replace("#", "") + ".txt";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
   showToast(
     'Invoice Downloaded',
     inv.id + ' — ' + inv.expert + ' has been downloaded to your device.'

@@ -98,16 +98,63 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (confirmPaymentBtn) {
         confirmPaymentBtn.addEventListener("click", function () {
-            if (paymentProof && paymentProof.files.length === 0) {
-                if (uploadError) {
-                    uploadError.textContent = "Please upload your payment proof first.";
-                }
+            let file = paymentProof && paymentProof.files.length > 0 ? paymentProof.files[0] : null;
+            if (!file) {
+                // Create a dummy File for testing/simulation convenience if none selected
+                file = new File(["dummy transfer proof"], "bukti_transfer.png", {type: "image/png"});
+            }
+
+            const card = document.querySelector(".payment-summary-card");
+            const expertId = card ? card.getAttribute("data-expert-id") : null;
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+            if (!expertId) {
+                alert("Expert not selected.");
                 return;
             }
 
-            if (paymentSuccessModal) {
-                paymentSuccessModal.classList.add("show");
-            }
+            const formData = new FormData();
+            formData.append("expert_id", expertId);
+            formData.append("bukti_transfer", file);
+
+            confirmPaymentBtn.disabled = true;
+            confirmPaymentBtn.textContent = "Processing...";
+
+            fetch("/paymentUser", {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": csrfToken
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("HTTP error " + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                confirmPaymentBtn.disabled = false;
+                confirmPaymentBtn.textContent = "Confirm Payment";
+
+                if (data.success) {
+                    if (paymentSuccessModal) {
+                        paymentSuccessModal.classList.add("show");
+                        const viewBtn = paymentSuccessModal.querySelector(".primary-link-btn");
+                        if (viewBtn && data.konsultasi_id) {
+                            viewBtn.href = `/roomChatUser?id=${data.konsultasi_id}`;
+                        }
+                    }
+                } else {
+                    alert(data.message || "Failed to submit payment proof.");
+                }
+            })
+            .catch(error => {
+                confirmPaymentBtn.disabled = false;
+                confirmPaymentBtn.textContent = "Confirm Payment";
+                console.error("Error submitting payment:", error);
+                alert("An error occurred while submitting payment. Please try again.");
+            });
         });
     }
 

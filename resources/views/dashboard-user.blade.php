@@ -128,7 +128,7 @@
                 <path d="M4 9H20" stroke="#ffffff" stroke-width="2"/>
               </svg>
             </span>
-            <span>Dec 21, 2026</span>
+            <span id="realtimeDate">Loading...</span>
           </div>
         </div>
 
@@ -370,5 +370,15 @@
   </div>
 
   <script src="{{ asset('js/script-dashboard-user.js') }}"></script>
+  <script>
+    // Real-time date matching homeUser format
+    (function() {
+      var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      var now = new Date();
+      var el = document.getElementById('realtimeDate');
+      if (el) el.textContent = days[now.getDay()] + ', ' + now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+    })();
+  </script>
 </body>
 </html>

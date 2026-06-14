@@ -63,85 +63,102 @@
 
         <!-- MAIN -->
         <div class="main-content" id="mainContent">
-            <section class="write-article-section">
-                <div class="write-header">
-                    <div class="write-title-group">
-                        <button type="button" class="toggle-btn" id="sidebarToggle" aria-label="Toggle Sidebar">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </button>
+            <form action="{{ route('article.store') }}" method="POST" enctype="multipart/form-data" id="articleActualForm">
+                @csrf
+                <section class="write-article-section">
+                    <div class="write-header">
+                        <div class="write-title-group">
+                            <button type="button" class="toggle-btn" id="sidebarToggle" aria-label="Toggle Sidebar">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </button>
 
-                        <div class="write-title-icon">✎</div>
-                        <h1>Write Article</h1>
-                    </div>
-
-                    <button type="button" class="publish-btn" id="publishBtn">Publish &gt;</button>
-                </div>
-
-                <div class="header-line"></div>
-
-                <div class="article-form">
-                    <!-- Upload Image -->
-                    <label for="featureImage" class="upload-box">
-                        <input type="file" id="featureImage" accept="image/*" hidden>
-                        <div class="upload-placeholder" id="uploadPlaceholder">
-                            <div class="upload-icon">🖼️</div>
-                            <p>Upload Feature Image</p>
-                            <span>Recommended size: 1200x500px</span>
-                        </div>
-                        <img id="imagePreview" class="image-preview" alt="Preview">
-                    </label>
-
-                    <!-- Title -->
-                    <input
-                        type="text"
-                        class="article-title-input"
-                        id="articleTitle"
-                        placeholder="Enter your article title..."
-                    >
-
-                    <!-- Tags -->
-                    <div class="tag-row">
-                        <div class="tag-list" id="tagList">
-                            <span class="tag-chip">Hydroponics <button type="button" class="remove-tag">×</button></span>
-                            <span class="tag-chip">Soil Health <button type="button" class="remove-tag">×</button></span>
+                            <div class="write-title-icon">✎</div>
+                            <h1>Write Article</h1>
                         </div>
 
-                        <button type="button" class="add-tag-btn" id="addTagBtn">+ Add Tag</button>
+                        <button type="submit" class="publish-btn" id="publishBtn">Publish &gt;</button>
                     </div>
 
-                    <!-- Summary -->
-                    <div class="summary-box">
-                        <label for="articleSummary">ARTICLE SUMMARY</label>
-                        <textarea
-                            id="articleSummary"
-                            placeholder="Write a short summary of your article for SEO and previews..."
-                        ></textarea>
+                    @if($errors->any())
+                      <div style="background:#fee2e2;border:1px solid #fca5a5;color:#991b1b;padding:12px 18px;border-radius:10px;margin-bottom:16px;font-size:14px;max-width:800px;margin-left:auto;margin-right:auto;">
+                        <ul style="margin:0;padding-left:18px;">
+                          @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                          @endforeach
+                        </ul>
+                      </div>
+                    @endif
+
+                    <div class="article-form">
+                        <!-- Upload Image -->
+                        <label for="featureImage" class="upload-box">
+                            <input type="file" id="featureImage" name="thumbnail" accept="image/*" hidden>
+                            <div class="upload-placeholder" id="uploadPlaceholder">
+                                <div class="upload-icon">🖼️</div>
+                                <p>Upload Feature Image</p>
+                                <span>Recommended size: 1200x500px</span>
+                            </div>
+                            <img id="imagePreview" class="image-preview" alt="Preview">
+                        </label>
+
+                        <!-- Title -->
+                        <input
+                            type="text"
+                            name="judul"
+                            class="article-title-input"
+                            id="articleTitle"
+                            placeholder="Enter your article title..."
+                            required
+                        >
+
+                        <!-- Tags -->
+                        <div class="tag-row">
+                            <div class="tag-list" id="tagList">
+                                <span class="tag-chip">Hydroponics <button type="button" class="remove-tag">×</button></span>
+                                <span class="tag-chip">Soil Health <button type="button" class="remove-tag">×</button></span>
+                            </div>
+
+                            <button type="button" class="add-tag-btn" id="addTagBtn">+ Add Tag</button>
+                        </div>
+
+                        <!-- Hidden Inputs for content and category -->
+                        <textarea name="konten" id="hiddenContent" style="display:none;"></textarea>
+                        <input type="hidden" name="kategori" id="hiddenCategory" value="Hydroponics">
+
+                        <!-- Summary -->
+                        <div class="summary-box">
+                            <label for="articleSummary">ARTICLE SUMMARY</label>
+                            <textarea
+                                id="articleSummary"
+                                placeholder="Write a short summary of your article for SEO and previews..."
+                            ></textarea>
+                        </div>
+
+                        <div class="content-line"></div>
+
+                        <!-- Toolbar -->
+                        <div class="editor-toolbar">
+                            <button type="button" class="toolbar-btn" data-command="bold"><b>B</b></button>
+                            <button type="button" class="toolbar-btn" data-command="italic"><i>I</i></button>
+                            <button type="button" class="toolbar-btn heading-btn" data-heading="H1">H1</button>
+                            <button type="button" class="toolbar-btn heading-btn" data-heading="H2">H2</button>
+                            <button type="button" class="toolbar-btn" data-command="insertUnorderedList">• List</button>
+                            <button type="button" class="toolbar-btn" id="quoteBtn">❞</button>
+                            <button type="button" class="toolbar-btn" id="linkBtn">🔗</button>
+                        </div>
+
+                        <!-- Editor -->
+                        <div
+                            class="article-editor"
+                            id="articleEditor"
+                            contenteditable="true"
+                            data-placeholder="Start writing your article..."
+                        ></div>
                     </div>
-
-                    <div class="content-line"></div>
-
-                    <!-- Toolbar -->
-                    <div class="editor-toolbar">
-                        <button type="button" class="toolbar-btn" data-command="bold"><b>B</b></button>
-                        <button type="button" class="toolbar-btn" data-command="italic"><i>I</i></button>
-                        <button type="button" class="toolbar-btn heading-btn" data-heading="H1">H1</button>
-                        <button type="button" class="toolbar-btn heading-btn" data-heading="H2">H2</button>
-                        <button type="button" class="toolbar-btn" data-command="insertUnorderedList">• List</button>
-                        <button type="button" class="toolbar-btn" id="quoteBtn">❞</button>
-                        <button type="button" class="toolbar-btn" id="linkBtn">🔗</button>
-                    </div>
-
-                    <!-- Editor -->
-                    <div
-                        class="article-editor"
-                        id="articleEditor"
-                        contenteditable="true"
-                        data-placeholder="Start writing your article..."
-                    ></div>
-                </div>
-            </section>
+                </section>
+            </form>
 
             <!-- FOOTER -->
             <footer class="footer">

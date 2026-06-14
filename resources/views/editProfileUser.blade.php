@@ -83,6 +83,26 @@
     <main class="page-body">
 
       <div class="form-card">
+        <!-- Flash Messages -->
+        @if(session('success'))
+          <div style="background:#d1fae5;border:1px solid #6ee7b7;color:#065f46;padding:12px 18px;border-radius:10px;margin-bottom:16px;font-size:14px;">
+            ✅ {{ session('success') }}
+          </div>
+        @endif
+        @if(session('error'))
+          <div style="background:#fee2e2;border:1px solid #fca5a5;color:#991b1b;padding:12px 18px;border-radius:10px;margin-bottom:16px;font-size:14px;">
+            ❌ {{ session('error') }}
+          </div>
+        @endif
+        @if($errors->any())
+          <div style="background:#fee2e2;border:1px solid #fca5a5;color:#991b1b;padding:12px 18px;border-radius:10px;margin-bottom:16px;font-size:14px;">
+            <ul style="margin:0;padding-left:18px;">
+              @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div>
+        @endif
         <!-- FORM -->
         <form class="edit-form" method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
           @csrf

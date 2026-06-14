@@ -80,12 +80,9 @@
                 <div class="topbar-right">
                     <select id="categoryFilter" class="filter-select">
                         <option value="all">All Categories</option>
-                        <option value="Horticulture">Horticulture</option>
-                        <option value="Tech Integration">Tech Integration</option>
-                        <option value="Urban Planning">Urban Planning</option>
-                        <option value="IoT & Sensors">IoT & Sensors</option>
-                        <option value="Organic Care">Organic Care</option>
-                        <option value="Education">Education</option>
+                        @foreach($artikels->pluck('kategori')->unique()->filter() as $kat)
+                            <option value="{{ ucwords($kat) }}">{{ ucwords($kat) }}</option>
+                        @endforeach
                     </select>
 
                     <select id="statusFilter" class="filter-select">
@@ -128,140 +125,38 @@
                 </section>
 
                 <section class="article-grid" id="articleGrid">
-                    <article class="article-card"
-                        data-title="Sustainable Indoor Gardening"
-                        data-category="Horticulture"
-                        data-status="Published"
-                        data-date="2023-10-12">
-                        <div class="article-thumb">
-                            <img src="https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=1200&q=80" alt="Sustainable Indoor Gardening">
-                            <span class="article-tag">HORTICULTURE</span>
-                        </div>
-                        <div class="article-body">
-                            <div class="article-meta">
-                                Oct 12, 2023 <span>•</span> 8 min read
+                    @foreach($artikels as $artikel)
+                        @php
+                            $authorName = $artikel->ahliBotani->nama_ahli ?? 'Expert';
+                            $status = $artikel->status ?? 'Published';
+                            $date = \Carbon\Carbon::parse($artikel->tanggal_unggah ?? $artikel->created_at)->format('Y-m-d');
+                            $displayDate = \Carbon\Carbon::parse($artikel->tanggal_unggah ?? $artikel->created_at)->format('M d, Y');
+                        @endphp
+                        <article class="article-card"
+                            data-title="{{ $artikel->judul }}"
+                            data-category="{{ ucwords($artikel->kategori) }}"
+                            data-status="{{ $status }}"
+                            data-date="{{ $date }}">
+                            <div class="article-thumb">
+                                <img src="{{ $artikel->thumbnail ? (str_starts_with($artikel->thumbnail, 'http') ? $artikel->thumbnail : asset('storage/' . $artikel->thumbnail)) : 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6' }}" alt="{{ $artikel->judul }}">
+                                <span class="article-tag">{{ strtoupper($artikel->kategori) }}</span>
                             </div>
-                            <div class="article-topline">
-                                <h3>Sustainable Indoor Gardening</h3>
-                    
+                            <div class="article-body">
+                                <div class="article-meta">
+                                    {{ $displayDate }} <span>•</span> 5 min read
+                                </div>
+                                <div class="article-topline">
+                                    <h3>{{ $artikel->judul }}</h3>
+                                    @if(strtolower($status) === 'draft')
+                                        <span class="article-status draft">Draft</span>
+                                    @elseif(strtolower($status) === 'archived')
+                                        <span class="article-status archived">Archived</span>
+                                    @endif
+                                </div>
+                                <p>{{ Str::limit(strip_tags($artikel->konten), 120) }}</p>
                             </div>
-                            <p>Discover the revolutionary methods of maintaining a lush, water-efficient indoor garden in modern living spaces...</p>
-                            
-                        </div>
-                    </article>
-
-                    <article class="article-card"
-                        data-title="Hydroponic Systems for Beginners"
-                        data-category="Tech Integration"
-                        data-status="Draft"
-                        data-date="2023-10-10">
-                        <div class="article-thumb">
-                            <img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1200&q=80" alt="Hydroponic Systems for Beginners">
-                            <span class="article-tag tag-blue">TECH INTEGRATION</span>
-                        </div>
-                        <div class="article-body">
-                            <div class="article-meta">
-                                Oct 10, 2023 <span>•</span> 5 min read
-                            </div>
-                            <div class="article-topline">
-                                <h3>Hydroponic Systems for Beginners</h3>
-              
-                            </div>
-                            <p>The ultimate guide to setting up your first soil-less growth kit with practical steps for beginners...</p>
-                            
-                        </div>
-                    </article>
-
-                    <article class="article-card"
-                        data-title="The Future of Urban Farming"
-                        data-category="Urban Planning"
-                        data-status="Published"
-                        data-date="2023-10-08">
-                        <div class="article-thumb">
-                            <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1200&q=80" alt="The Future of Urban Farming">
-                            <span class="article-tag tag-green">URBAN PLANNING</span>
-                        </div>
-                        <div class="article-body">
-                            <div class="article-meta">
-                                Oct 08, 2023 <span>•</span> 12 min read
-                            </div>
-                            <div class="article-topline">
-                                <h3>The Future of Urban Farming</h3>
-               
-                            </div>
-                            <p>Exploring how smart city infrastructure and innovation are shaping the future of sustainable agriculture...</p>
-                            
-                        </div>
-                    </article>
-
-                    <article class="article-card"
-                        data-title="Smart Irrigation Tech"
-                        data-category="IoT & Sensors"
-                        data-status="Published"
-                        data-date="2023-10-05">
-                        <div class="article-thumb">
-                            <img src="https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&w=1200&q=80" alt="Smart Irrigation Tech">
-                            <span class="article-tag tag-yellow">IOT &amp; SENSORS</span>
-                        </div>
-                        <div class="article-body">
-                            <div class="article-meta">
-                                Oct 05, 2023 <span>•</span> 6 min read
-                            </div>
-                            <div class="article-topline">
-                                <h3>Smart Irrigation Tech</h3>
-
-
-                            </div>
-                            <p>How low-energy sensors and connected devices are revolutionizing water efficiency in modern agriculture...</p>
-                            
-                    </article>
-
-                    <article class="article-card"
-                        data-title="Natural Pest Control"
-                        data-category="Organic Care"
-                        data-status="Archived"
-                        data-date="2023-10-02">
-                        <div class="article-thumb">
-                            <img src="https://images.unsplash.com/photo-1461354464878-ad92f492a5a0?auto=format&fit=crop&w=1200&q=80" alt="Natural Pest Control">
-                            <span class="article-tag tag-lime">ORGANIC CARE</span>
-                        </div>
-                        <div class="article-body">
-                            <div class="article-meta">
-                                Oct 02, 2023 <span>•</span> 10 min read
-                            </div>
-                            <div class="article-topline">
-                                <h3>Natural Pest Control</h3>               
-
-                                <span class="article-status archived">Archived</span>
-                            </div>
-                            <p>Avoid chemicals by using safer organic predator-based methods for healthier plants and more sustainable results...</p>
-                          
-                        </div>
-                    </article>
-
-                    <article class="article-card"
-                        data-title="Seasonal Plant Care"
-                        data-category="Education"
-                        data-status="Draft"
-                        data-date="2023-09-28">
-                        <div class="article-thumb">
-                            <img src="https://images.unsplash.com/photo-1468327768560-75b778cbb551?auto=format&fit=crop&w=1200&q=80" alt="Seasonal Plant Care">
-                            <span class="article-tag tag-pink">EDUCATION</span>
-                        </div>
-                        <div class="article-body">
-                            <div class="article-meta">
-                                Sep 28, 2023 <span>•</span> 7 min read
-                            </div>
-                            <div class="article-topline">
-                                <h3>Seasonal Plant Care</h3>
-
-                               
-                            </div>
-                            <p>A month-by-month guide to ensuring your plants thrive during changing weather and seasonal transitions...</p>
-                           
-
-                        </div>
-                    </article>
+                        </article>
+                    @endforeach
                 </section>
 
                 <div class="empty-state" id="emptyState">

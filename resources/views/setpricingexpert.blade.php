@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultation Pricing - Sproutly</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('css/style-setpricingexpert.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -95,6 +96,7 @@
                                 type="text"
                                 id="consultationFee"
                                 class="fee-input"
+                                value="{{ number_format($currentTarif, 0, ',', ',') }}"
                             >
                         </div>
 
@@ -109,7 +111,7 @@
                     <div class="pricing-card earnings-card">
                         <h2>Total Earnings</h2>
 
-                        <div class="earnings-box" id="earningsBox">Rp 12,500,000</div>
+                        <div class="earnings-box" id="earningsBox">Rp {{ number_format($totalEarnings, 0, ',', ',') }}</div>
 
                         <p class="helper-text">Total income from completed consultations</p>
                     </div>

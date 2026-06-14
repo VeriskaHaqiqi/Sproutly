@@ -58,6 +58,44 @@ class ArtikelController extends Controller
     ], 201);
     }
 
+    // web tambah artikel
+    public function storeWeb(Request $request)
+    {
+        $user = auth()->user();
+
+        if ($user->role !== 'ahli') {
+            return redirect()->back()->with('error', 'Hanya ahli botani yang bisa membuat artikel');
+        }
+
+        $ahliBotani = $user->ahliBotani;
+
+        if (!$ahliBotani) {
+            return redirect()->back()->with('error', 'Data ahli botani tidak ditemukan');
+        }
+
+        $validated = $request->validate([
+            'judul' => 'required|string|max:100',
+            'konten' => 'required|string',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'kategori' => 'nullable|string|max:50',
+        ]);
+
+        $thumbnailPath = null;
+        if ($request->hasFile('thumbnail')) {
+            $thumbnailPath = $request->file('thumbnail')->store('articles', 'public');
+        }
+
+        Artikel::create([
+            'ahli_botani_id' => $ahliBotani->id,
+            'judul' => $validated['judul'],
+            'konten' => $validated['konten'],
+            'thumbnail' => $thumbnailPath,
+            'kategori' => $validated['kategori'] ?? 'Hydroponics',
+        ]);
+
+        return redirect()->route('myarticleExpert')->with('success', 'Artikel berhasil dibuat');
+    }
+
     // detail artikel
     public function show($id)
     {

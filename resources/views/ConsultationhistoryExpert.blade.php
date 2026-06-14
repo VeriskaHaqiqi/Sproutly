@@ -53,10 +53,10 @@
         </button>
         <a href="{{ url('/accountExpert') }}" class="profile-chip">
           <div class="profile-info">
-            <span class="profile-name">Sarah Green</span>
+            <span class="profile-name">{{ auth()->user()->nama_user }}</span>
             <span class="profile-role">Agriculture Expert</span>
           </div>
-          <img src="{{ asset('images/fotoprofile.png') }}" alt="Profile">
+          <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/fotoprofile.png') }}" alt="Profile">
         </a>
       </div>
     </header>

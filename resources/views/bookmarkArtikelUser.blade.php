@@ -60,8 +60,8 @@
             </svg>
           </button>
           <a href="{{ url('/accountUser') }}" class="profile-chip">
-            <span class="profile-name">Sarah Green</span>
-            <img src="{{ asset('images/fotoprofile.png') }}" alt="Profile">
+            <span class="profile-name">{{ auth()->user()->nama_user }}</span>
+            <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/fotoprofile.png') }}" alt="Profile">
           </a>
         </div>
       </header>
@@ -97,12 +97,12 @@
           <h4>Topic</h4>
           <div class="filter-chips" id="topicFilters">
             <button class="filter-chip active" type="button" data-topic="all">All Topics</button>
-            <button class="filter-chip" type="button" data-topic="hydroponics">Hydroponics</button>
+            <button class="filter-chip" type="button" data-topic="crop management">Crop Management</button>
             <button class="filter-chip" type="button" data-topic="soil health">Soil Health</button>
-            <button class="filter-chip" type="button" data-topic="smart farming">Smart Farming</button>
             <button class="filter-chip" type="button" data-topic="pest control">Pest Control</button>
-            <button class="filter-chip" type="button" data-topic="climate">Climate</button>
-            <button class="filter-chip" type="button" data-topic="vertical farming">Vertical Farming</button>
+            <button class="filter-chip" type="button" data-topic="irrigation">Irrigation</button>
+            <button class="filter-chip" type="button" data-topic="sustainability">Sustainability</button>
+            <button class="filter-chip" type="button" data-topic="technology">Technology</button>
           </div>
         </div>
         <div class="filter-group filter-group-inline">
@@ -219,6 +219,9 @@
     </main>
   </div>
 
+  <script>
+    window.ALL_ARTICLES = @json($allArticles);
+  </script>
   <script src="{{ asset('js/bookmarkArtikelUser.js') }}"></script>
 </body>
 </html>
