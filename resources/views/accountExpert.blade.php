@@ -99,17 +99,18 @@
       ========================= -->
       <div class="account-card profile-card">
         <div class="avatar-wrap">
-          <img src="images/fotoprofile.png" alt="Expert Sarah Chen" class="avatar-img" />
+          <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/fotoprofile.png') }}" alt="Expert {{ auth()->user()->nama_user }}" class="avatar-img" />
           <span class="avatar-badge">✏️</span>
         </div>
-        <h2 class="expert-name">Expert Sarah Chen</h2>
-        <p class="expert-title">Plant Pathologist &amp; Indoor Plant Expert</p>
-        <p class="expert-contact">sarah.chen@sproutly.com</p>
-        <p class="expert-contact">+1 (234) 567-890</p>
+        <h2 class="expert-name">{{ auth()->user()->nama_user }}</h2>
+        <p class="expert-title">{{ auth()->user()->ahliBotani->spesialisasi ?? 'Expert Botanist' }}</p>
+        <p class="expert-contact">{{ auth()->user()->email }}</p>
+        <p class="expert-contact">{{ auth()->user()->no_telp_user ?? '-' }}</p>
         <div class="expert-tags">
-          <span class="tag tag--outline">Plant Pathology</span>
-          <span class="tag tag--teal">Indoor Plants</span>
-          <span class="tag tag--outline">Sustainable Farming</span>
+          <span class="tag tag--teal">{{ auth()->user()->ahliBotani->spesialisasi ?? 'Agriculture' }}</span>
+          @if(auth()->user()->ahliBotani && auth()->user()->ahliBotani->pengalaman_tahun)
+            <span class="tag tag--outline">{{ auth()->user()->ahliBotani->pengalaman_tahun }} Years Exp.</span>
+          @endif
         </div>
         <a href="{{ route('editProfileExpert') }}" class="btn-edit-profile">
           ✏️ Edit Profile
@@ -123,7 +124,7 @@
         <h3 class="card-section-title">Professional Settings</h3>
         <ul class="menu-list">
           <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a href="{{ route('setpricingexpert') }}" class="menu-link">
               <span class="menu-link-left">
                 <span class="menu-item-icon">
                     <img src="{{ asset('images/ikon set consultation.png') }}" alt="">
@@ -145,7 +146,7 @@
             </a>
           </li>
           <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a href="{{ url('/incomeHistory') }}" class="menu-link">
               <span class="menu-link-left">
                 <span class="menu-item-icon">
                     <img src="{{ asset('images/ikon histori pendapatan.png') }}" alt="">

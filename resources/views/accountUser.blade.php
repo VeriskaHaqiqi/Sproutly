@@ -91,16 +91,16 @@
       <div class="account-card profile-card">
         <div class="profile-left">
           <div class="avatar-wrap">
-            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Johnson" class="avatar-img" />
+            <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/fotoprofile.png') }}" alt="{{ auth()->user()->nama_user }}" class="avatar-img" />
             <span class="avatar-badge">✏️</span>
           </div>
           <div class="profile-info">
-            <h2 class="profile-name">Sarah Johnson</h2>
+            <h2 class="profile-name">{{ auth()->user()->nama_user }}</h2>
             <p class="profile-meta">
-              <span class="meta-icon">✉</span> sarah.johnson@example.com
+              <span class="meta-icon">✉</span> {{ auth()->user()->email }}
             </p>
             <p class="profile-meta">
-              <span class="meta-icon">📞</span> +1 (555) 123-4567
+              <span class="meta-icon">📞</span> {{ auth()->user()->no_telp_user ?? '-' }}
             </p>
           </div>
         </div>
@@ -128,7 +128,7 @@
             </a>
           </li>
           <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a href="{{ url('/invoice') }}" class="menu-link">
               <span class="menu-link-left">
                 <span class="menu-item-icon">🕒</span>
                 Payment History
@@ -170,7 +170,7 @@
         </div>
         <ul class="menu-list">
           <li class="menu-item">
-            <a href="#" class="menu-link">
+            <a href="{{ url('/reviewsUser') }}" class="menu-link">
               <span class="menu-link-left">
                 <span class="menu-item-icon">📋</span>
                 Ratings List

@@ -68,12 +68,12 @@
       </div>
       <div class="topbar-right">
         <div class="topbar-avatar">
-          <img src="{{ asset('images/fotoprofile.png') }}" alt="Expert"
+          <img src="{{ auth()->check() && auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/fotoprofile.png') }}" alt="Expert"
                onerror="this.style.display='none';this.parentElement.classList.add('avatar-fallback')" />
         </div>
         <div class="topbar-info">
-          <span class="topbar-name">Alex Green</span>
-          <span class="topbar-role">Expert Botanist</span>
+          <span class="topbar-name">{{ auth()->check() ? auth()->user()->nama_user : 'Alex Green' }}</span>
+          <span class="topbar-role">{{ auth()->check() && auth()->user()->role === 'ahli' ? 'Expert Botanist' : 'User' }}</span>
         </div>
       </div>
     </header>
@@ -95,7 +95,7 @@
           </div>
           <div class="summary-body">
             <span class="summary-label">Total Income</span>
-            <span class="summary-value" id="totalIncome">$2,847</span>
+            <span class="summary-value" id="totalIncome">Rp 2.847.000</span>
           </div>
         </div>
         <div class="summary-card card-month">
@@ -104,7 +104,7 @@
           </div>
           <div class="summary-body">
             <span class="summary-label">This Month</span>
-            <span class="summary-value" id="monthIncome">$485</span>
+            <span class="summary-value" id="monthIncome">Rp 485.000</span>
           </div>
         </div>
         <div class="summary-card card-session">
@@ -143,7 +143,7 @@
               <span class="tx-date">Dec 15, 2024 · 2:30 PM</span>
             </div>
             <div class="tx-right">
-              <span class="tx-amount">$45</span>
+              <span class="tx-amount">Rp 45.000</span>
               <span class="tx-badge badge-paid">● Paid</span>
               <span class="tx-id">ID: #CON-2847</span>
             </div>
@@ -157,7 +157,7 @@
               <span class="tx-date">Dec 14, 2024 · 10:15 AM</span>
             </div>
             <div class="tx-right">
-              <span class="tx-amount">$85</span>
+              <span class="tx-amount">Rp 85.000</span>
               <span class="tx-badge badge-paid">● Paid</span>
               <span class="tx-id">ID: #CON-2846</span>
             </div>
@@ -171,7 +171,7 @@
               <span class="tx-date">Dec 13, 2024 · 4:45 PM</span>
             </div>
             <div class="tx-right">
-              <span class="tx-amount">$65</span>
+              <span class="tx-amount">Rp 65.000</span>
               <span class="tx-badge badge-pending">● Pending</span>
               <span class="tx-id">ID: #CON-2845</span>
             </div>
@@ -185,7 +185,7 @@
               <span class="tx-date">Dec 12, 2024 · 11:20 AM</span>
             </div>
             <div class="tx-right">
-              <span class="tx-amount">$45</span>
+              <span class="tx-amount">Rp 45.000</span>
               <span class="tx-badge badge-paid">● Paid</span>
               <span class="tx-id">ID: #CON-2844</span>
             </div>
@@ -199,7 +199,7 @@
               <span class="tx-date">Dec 11, 2024 · 3:00 PM</span>
             </div>
             <div class="tx-right">
-              <span class="tx-amount">$85</span>
+              <span class="tx-amount">Rp 85.000</span>
               <span class="tx-badge badge-paid">● Paid</span>
               <span class="tx-id">ID: #CON-2843</span>
             </div>
@@ -213,7 +213,7 @@
               <span class="tx-date">Nov 28, 2024 · 9:00 AM</span>
             </div>
             <div class="tx-right">
-              <span class="tx-amount">$120</span>
+              <span class="tx-amount">Rp 120.000</span>
               <span class="tx-badge badge-paid">● Paid</span>
               <span class="tx-id">ID: #CON-2842</span>
             </div>
@@ -227,7 +227,7 @@
               <span class="tx-date">Nov 20, 2024 · 1:30 PM</span>
             </div>
             <div class="tx-right">
-              <span class="tx-amount">$85</span>
+              <span class="tx-amount">Rp 85.000</span>
               <span class="tx-badge badge-paid">● Paid</span>
               <span class="tx-id">ID: #CON-2841</span>
             </div>
@@ -241,7 +241,7 @@
               <span class="tx-date">Nov 15, 2024 · 11:00 AM</span>
             </div>
             <div class="tx-right">
-              <span class="tx-amount">$45</span>
+              <span class="tx-amount">Rp 45.000</span>
               <span class="tx-badge badge-pending">● Pending</span>
               <span class="tx-id">ID: #CON-2840</span>
             </div>
@@ -259,31 +259,55 @@
       <section class="chart-section">
         <h2 class="chart-title">Weekly Earnings Trend</h2>
         <div class="chart-wrap">
-          <div class="bar-chart">
-            <div class="bar-col">
-              <div class="bar-value">$125</div>
-              <div class="bar-bg"><div class="bar-fill" style="height:44%" data-color="mint"></div></div>
-              <div class="bar-label">Mon</div>
-            </div>
-            <div class="bar-col">
-              <div class="bar-value">$180</div>
-              <div class="bar-bg"><div class="bar-fill" style="height:63%" data-color="sky"></div></div>
-              <div class="bar-label">Tue</div>
-            </div>
-            <div class="bar-col">
-              <div class="bar-value">$225</div>
-              <div class="bar-bg"><div class="bar-fill" style="height:79%" data-color="lime1"></div></div>
-              <div class="bar-label">Wed</div>
-            </div>
-            <div class="bar-col">
-              <div class="bar-value">$285</div>
-              <div class="bar-bg"><div class="bar-fill" style="height:100%" data-color="yellow"></div></div>
-              <div class="bar-label">Thu</div>
-            </div>
-            <div class="bar-col">
-              <div class="bar-value">$200</div>
-              <div class="bar-bg"><div class="bar-fill" style="height:70%" data-color="lime2"></div></div>
-              <div class="bar-label">Fri</div>
+          <div class="line-chart-container">
+            <svg class="line-chart" viewBox="0 0 500 200" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#169857" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#169857" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              
+              <!-- Grid lines -->
+              <line x1="0" y1="40" x2="500" y2="40" stroke="#e1e8e6" stroke-width="1" stroke-dasharray="5,5" />
+              <line x1="0" y1="90" x2="500" y2="90" stroke="#e1e8e6" stroke-width="1" stroke-dasharray="5,5" />
+              <line x1="0" y1="140" x2="500" y2="140" stroke="#e1e8e6" stroke-width="1" stroke-dasharray="5,5" />
+              
+              <!-- Area under path -->
+              <path d="M 50 144 L 150 110 L 250 82 L 350 46 L 450 64 L 450 200 L 50 200 Z" fill="url(#chartGradient)"></path>
+              
+              <!-- The Line -->
+              <path d="M 50 144 L 150 110 L 250 82 L 350 46 L 450 64" fill="none" stroke="#169857" stroke-width="4" stroke-linecap="round"></path>
+              
+              <!-- Data Points (Circles) -->
+              <circle cx="50" cy="144" r="6" fill="#ffffff" stroke="#169857" stroke-width="3"></circle>
+              <circle cx="150" cy="110" r="6" fill="#ffffff" stroke="#169857" stroke-width="3"></circle>
+              <circle cx="250" cy="82" r="6" fill="#ffffff" stroke="#169857" stroke-width="3"></circle>
+              <circle cx="350" cy="46" r="6" fill="#ffffff" stroke="#169857" stroke-width="3"></circle>
+              <circle cx="450" cy="64" r="6" fill="#ffffff" stroke="#169857" stroke-width="3"></circle>
+            </svg>
+            
+            <div class="chart-labels">
+              <div class="chart-label-item">
+                <span class="tooltip">Rp 125.000</span>
+                <span class="day">Mon</span>
+              </div>
+              <div class="chart-label-item">
+                <span class="tooltip">Rp 180.000</span>
+                <span class="day">Tue</span>
+              </div>
+              <div class="chart-label-item">
+                <span class="tooltip">Rp 225.000</span>
+                <span class="day">Wed</span>
+              </div>
+              <div class="chart-label-item">
+                <span class="tooltip">Rp 285.000</span>
+                <span class="day">Thu</span>
+              </div>
+              <div class="chart-label-item">
+                <span class="tooltip">Rp 200.000</span>
+                <span class="day">Fri</span>
+              </div>
             </div>
           </div>
         </div>

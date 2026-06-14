@@ -95,39 +95,36 @@
     <main class="page-body">
 
       <div class="form-card">
-
-        <!-- ========================
-             AVATAR SECTION
-        ========================= -->
-        <div class="avatar-section">
-          <div class="avatar-wrap" id="avatarWrap">
-            <img
-              src="https://randomuser.me/api/portraits/women/44.jpg"
-              alt="Profile Photo"
-              class="avatar-img"
-              id="avatarImg"
-            />
-            <label for="photoInput" class="avatar-edit-btn" title="Change photo">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-              </svg>
-            </label>
-            <input type="file" id="photoInput" name="photo" accept="image/*" class="photo-input" />
-          </div>
-
-          <div class="avatar-actions">
-            <label for="photoInput" class="btn-change-photo">Change Photo</label>
-            <button type="button" class="btn-remove-photo" id="removePhoto">Remove</button>
-          </div>
-        </div>
-
-        <!-- ========================
-             FORM
-        ========================= -->
-        <form class="edit-form" method="POST" action="{{ route('expert.profile.update') ?? '#' }}" enctype="multipart/form-data">
+        <!-- FORM -->
+        <form class="edit-form" method="POST" action="{{ route('expert.profile.update') }}" enctype="multipart/form-data">
           @csrf
           @method('PUT')
+
+          <!-- ========================
+               AVATAR SECTION
+          ========================= -->
+          <div class="avatar-section">
+            <div class="avatar-wrap" id="avatarWrap">
+              <img
+                src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/fotoprofile.png') }}"
+                alt="Profile Photo"
+                class="avatar-img"
+                id="avatarImg"
+              />
+              <label for="photoInput" class="avatar-edit-btn" title="Change photo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+              </label>
+              <input type="file" id="photoInput" name="photo" accept="image/*" class="photo-input" />
+            </div>
+
+            <div class="avatar-actions">
+              <label for="photoInput" class="btn-change-photo">Change Photo</label>
+              <button type="button" class="btn-remove-photo" id="removePhoto">Remove</button>
+            </div>
+          </div>
 
           <div class="form-grid">
 
@@ -145,7 +142,7 @@
                   id="full_name"
                   name="full_name"
                   class="form-input @error('full_name') is-error @enderror"
-                  value="{{ old('full_name', auth()->user()->name ?? 'Sarah Johnson') }}"
+                  value="{{ old('full_name', auth()->user()->nama_user) }}"
                   placeholder="Enter your full name"
                   required
                 />
@@ -169,7 +166,7 @@
                   id="email"
                   name="email"
                   class="form-input @error('email') is-error @enderror"
-                  value="{{ old('email', auth()->user()->email ?? 'sarah.johnson@email.com') }}"
+                  value="{{ old('email', auth()->user()->email) }}"
                   placeholder="Enter your email"
                   required
                 />
@@ -193,7 +190,7 @@
                   id="phone"
                   name="phone"
                   class="form-input @error('phone') is-error @enderror"
-                  value="{{ old('phone', auth()->user()->phone ?? '+1 (555) 000-0000') }}"
+                  value="{{ old('phone', auth()->user()->no_telp_user) }}"
                   placeholder="Enter phone number"
                 />
               </div>
@@ -211,15 +208,18 @@
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                   </svg>
                 </span>
+                @php
+                  $genderVal = auth()->user()->jenis_kelamin_user == 1 ? 'male' : (auth()->user()->jenis_kelamin_user == 2 ? 'female' : 'other');
+                @endphp
                 <select
                   id="gender"
                   name="gender"
                   class="form-input form-select @error('gender') is-error @enderror"
                 >
                   <option value="" disabled>Select gender</option>
-                  <option value="male"   {{ old('gender', auth()->user()->gender ?? '') == 'male'   ? 'selected' : '' }}>Male</option>
-                  <option value="female" {{ old('gender', auth()->user()->gender ?? 'female') == 'female' ? 'selected' : '' }}>Female</option>
-                  <option value="other"  {{ old('gender', auth()->user()->gender ?? '') == 'other'  ? 'selected' : '' }}>Prefer not to say</option>
+                  <option value="male"   {{ old('gender', $genderVal) == 'male'   ? 'selected' : '' }}>Male</option>
+                  <option value="female" {{ old('gender', $genderVal) == 'female' ? 'selected' : '' }}>Female</option>
+                  <option value="other"  {{ old('gender', $genderVal) == 'other'  ? 'selected' : '' }}>Prefer not to say</option>
                 </select>
                 <span class="select-chevron">
                   <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -228,6 +228,70 @@
                 </span>
               </div>
               @error('gender')
+                <span class="field-error">{{ $message }}</span>
+              @enderror
+            </div>
+
+            <!-- Specialization -->
+            <div class="form-group">
+              <label class="form-label" for="specialization">Specialization</label>
+              <div class="input-wrap">
+                <span class="input-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                  </svg>
+                </span>
+                <input
+                  type="text"
+                  id="specialization"
+                  name="specialization"
+                  class="form-input @error('specialization') is-error @enderror"
+                  value="{{ old('specialization', auth()->user()->ahliBotani->spesialisasi ?? '') }}"
+                  placeholder="e.g. Orchid Specialist"
+                />
+              </div>
+              @error('specialization')
+                <span class="field-error">{{ $message }}</span>
+              @enderror
+            </div>
+
+            <!-- Experience (Years) -->
+            <div class="form-group">
+              <label class="form-label" for="experience">Experience (Years)</label>
+              <div class="input-wrap">
+                <span class="input-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                </span>
+                <input
+                  type="number"
+                  id="experience"
+                  name="experience"
+                  class="form-input @error('experience') is-error @enderror"
+                  value="{{ old('experience', auth()->user()->ahliBotani->pengalaman_tahun ?? '') }}"
+                  placeholder="e.g. 5"
+                />
+              </div>
+              @error('experience')
+                <span class="field-error">{{ $message }}</span>
+              @enderror
+            </div>
+
+            <!-- Bio -->
+            <div class="form-group" style="grid-column: span 2;">
+              <label class="form-label" for="bio">Bio / Description</label>
+              <div class="input-wrap">
+                <textarea
+                  id="bio"
+                  name="bio"
+                  class="form-input @error('bio') is-error @enderror"
+                  rows="4"
+                  placeholder="Tell us about your expertise..."
+                  style="padding: 12px; height: auto;"
+                >{{ old('bio', auth()->user()->ahliBotani->bio ?? '') }}</textarea>
+              </div>
+              @error('bio')
                 <span class="field-error">{{ $message }}</span>
               @enderror
             </div>
@@ -246,7 +310,7 @@
           </div>
 
         </form>
-      </div><!-- /.form-card -->
+      </div>
 
     </main>
   </div><!-- /.layout -->

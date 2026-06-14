@@ -94,7 +94,7 @@
             <!-- Hero Greeting -->
             <section class="hero-card">
                 <div class="hero-text">
-                    <h1 class="hero-title">Hallo, Dr. Sarah!</h1>
+                    <h1 class="hero-title">Hallo, {{ auth()->user()->nama_user }}!</h1>
                     <p class="hero-subtitle">Ready to help Indonesian farmers achieve their best harvest today?</p>
                 </div>
             </section>

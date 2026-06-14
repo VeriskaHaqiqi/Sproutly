@@ -42,9 +42,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ── Filter Tabs ───────────────────────────────────
   const summaryData = {
-    "all":        { total: "$2,847", month: "$485",  sessions: "23 sessions" },
-    "this-month": { total: "$325",   month: "$325",  sessions: "5 sessions"  },
-    "last-month": { total: "$250",   month: "$250",  sessions: "3 sessions"  },
+    "all":        { total: "Rp 2.847.000", month: "Rp 485.000",  sessions: "23 sessions" },
+    "this-month": { total: "Rp 325.000",   month: "Rp 325.000",  sessions: "5 sessions"  },
+    "last-month": { total: "Rp 250.000",   month: "Rp 250.000",  sessions: "3 sessions"  },
   };
 
   let activeFilter = "all";

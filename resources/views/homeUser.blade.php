@@ -72,10 +72,10 @@
 
         <div class="topbar-user">
             <div class="user-avatar">
-                <img src="{{ asset('images/fotoprofile.png') }}" alt="Isyana Saraswati" />
+                <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/fotoprofile.png') }}" alt="{{ auth()->user()->nama_user }}" />
             </div>
             <a href="/accountUser" class="user-name" > 
-                <span class="user-name">Isyana Saraswati</span>
+                <span class="user-name">{{ auth()->user()->nama_user }}</span>
             </a>
         </div>
     </header>
@@ -87,7 +87,7 @@
         <section class="greeting-banner">
             <div class="greeting-text">
                 <h1 class="greeting-title">
-                    Hallo, Sarah! <span class="greeting-emoji">👋</span>
+                    Hallo, {{ auth()->user()->nama_user }}! <span class="greeting-emoji">👋</span>
                 </h1>
                 <p class="greeting-desc">Welcome back to Sproutly! Today is a great day to learn about plant care and consult with the experts.</p>
             </div>

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController; 
+use App\Http\Controllers\ProfileController; 
 use Illuminate\Support\Facades\Password;    
 
 Route::get('/reset-password/{token}', function ($token) {
@@ -69,17 +70,13 @@ Route::get('/editProfileUser', function () {
     return view('editProfileUser');
 })->name('editProfileUser');
 
-Route::put('/profile/update', function () {
-    return redirect()->route('accountUser');
-})->name('profile.update');
+Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
 
 Route::get('/editProfileExpert', function () {
     return view('editProfileExpert');
 })->name('editProfileExpert');
 
-Route::put('/expert/profile/update', function () {
-    return redirect()->route('accountExpert'); // fix: rouate → route
-})->name('expert.profile.update');
+Route::put('/expert/profile/update', [ProfileController::class, 'updateProfile'])->name('expert.profile.update');
 
 Route::get('/daftarArtikel', function () {
     return view('daftarArtikel');

@@ -100,6 +100,67 @@ class ProfileController extends Controller
         'message' => $ratings->isEmpty() ? 'Belum ada rating yang diberikan' : null
     ]);
     }
+
+    // Update Profile (User & Expert)
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+        
+        $rules = [
+            'full_name' => 'required|string|max:50',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'phone' => 'nullable|string|max:16',
+            'gender' => 'nullable|in:male,female,other',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ];
+
+        if ($user->role === 'ahli') {
+            $rules['specialization'] = 'nullable|string|max:100';
+            $rules['experience'] = 'nullable|integer|min:0';
+            $rules['bio'] = 'nullable|string|max:1000';
+        }
+
+        $request->validate($rules);
+
+        $genderMap = [
+            'male' => 1,
+            'female' => 2,
+            'other' => null
+        ];
+
+        $user->nama_user = $request->full_name;
+        $user->email = $request->email;
+        $user->no_telp_user = $request->phone;
+        $user->jenis_kelamin_user = $genderMap[$request->gender] ?? null;
+
+        if ($request->hasFile('photo')) {
+            if ($user->profile_picture) {
+                Storage::disk('public')->delete($user->profile_picture);
+            }
+            $path = $request->file('photo')->store('profile-photos', 'public');
+            $user->profile_picture = $path;
+        }
+
+        $user->save();
+
+        if ($user->role === 'ahli') {
+            $ahli = $user->ahliBotani;
+            if ($ahli) {
+                $ahli->update([
+                    'nama_ahli' => $request->full_name,
+                    'no_telp_ahli' => $request->phone,
+                    'jenis_kelamin_ahli' => $request->gender === 'male' ? 'L' : ($request->gender === 'female' ? 'P' : null),
+                    'spesialisasi' => $request->specialization,
+                    'pengalaman_tahun' => $request->experience,
+                    'bio' => $request->bio,
+                ]);
+            }
+            return redirect()->route('accountExpert')->with('success', 'Profile updated successfully');
+        }
+
+        return redirect()->route('accountUser')->with('success', 'Profile updated successfully');
+    }
+
     // Logout
     public function logout(Request $request)
     {

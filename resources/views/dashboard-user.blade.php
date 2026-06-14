@@ -95,8 +95,8 @@
           </button>
 
           <a href="{{ url('/accountUser') }}" class="profile-chip">
-            <span class="profile-name">Sarah Green</span>
-            <img src="{{ asset('images/fotoprofile.png') }}" alt="Profile">
+            <span class="profile-name">{{ auth()->user()->nama_user }}</span>
+            <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/fotoprofile.png') }}" alt="Profile">
           </a>
         </div>
       </header>
@@ -107,7 +107,7 @@
         <!-- Hero -->
         <div class="hero-row">
           <div class="hero-text">
-            <h1>Welcome back, Sarah!
+            <h1>Welcome back, {{ auth()->user()->nama_user }}!
               <span class="leaf-inline">
                 <svg viewBox="0 0 34 30" fill="none">
                   <path d="M7 19C7 19 5 10 11 6C17 2 25 6 24 14C23 21 15 22 10 20" fill="#6dbb1f"/>

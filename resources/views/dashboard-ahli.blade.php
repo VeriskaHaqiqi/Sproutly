@@ -56,10 +56,10 @@
         </button>
         <a href="{{ url('/accountExpert') }}" class="profile-chip">
           <div class="profile-info">
-            <span class="profile-name">Sarah Green</span>
-            <span class="profile-role">Agriculture Expert</span>
+            <span class="profile-name">{{ auth()->user()->nama_user }}</span>
+            <span class="profile-role">{{ auth()->user()->ahliBotani->spesialisasi ?? 'Agriculture Expert' }}</span>
           </div>
-          <img src="{{ asset('images/fotoprofile.png') }}" alt="Profile">
+          <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/fotoprofile.png') }}" alt="Profile">
         </a>
       </div>
     </header>
@@ -70,7 +70,7 @@
       <!-- Welcome row -->
       <div class="welcome-row">
         <div class="welcome-text">
-          <h1>Welcome back, Sarah!
+          <h1>Welcome back, {{ auth()->user()->nama_user }}!
             <span class="leaf-icon">
               <svg viewBox="0 0 34 30" fill="none">
                 <path d="M7 19C7 19 5 10 11 6C17 2 25 6 24 14C23 21 15 22 10 20" fill="#6dbb1f"/>
