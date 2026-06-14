@@ -76,8 +76,8 @@
                         </button>
 
                         <div class="consultation-title-text">
-                            <h1>Consultation Requests</h1>
-                            <p>Review incoming consultation requests from farmers and users.</p>
+                            <h1>Consultation</h1>
+                            <p>Review consultation  from farmers or users.</p>
                         </div>
                     </div>
                 </div>

@@ -36,8 +36,8 @@
                 <span>Dashboard</span>
             </a>
 
-            <a href="{{ route('consultexpert') }}" 
-            class="menu-link {{ request()->routeIs('consultexpert') ? 'active' : '' }}">
+            <a href="{{ route('consulexpert') }}" 
+            class="menu-link {{ request()->routeIs('consulexpert') ? 'active' : '' }}">
                 <img src="images/consultation.png">
                 <span>Consultation</span>
             </a>
