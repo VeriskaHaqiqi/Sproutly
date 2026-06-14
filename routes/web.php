@@ -104,7 +104,7 @@ Route::get('/infoahli', function () {
 
 Route::get('/paymentUser', function () {
     return view('paymentUser');
-});
+})->name('paymentUser');
 
 Route::get('/articleExpert', function () {
     return view('articleExpert');
@@ -128,7 +128,7 @@ Route::get('/tulisartikelExpert', function () {
 
 Route::get('/consulexpert', function () {
     return view('consulexpert');
-});
+})->name('consulexpert');
 
 Route::get('/setpricingexpert', function () {
     return view('setpricingexpert');
