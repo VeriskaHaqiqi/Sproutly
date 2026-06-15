@@ -9,6 +9,8 @@ use App\Models\AhliBotani;
 use App\Models\TarifAhli;
 use Illuminate\Support\Facades\Password;    
 
+
+
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -173,6 +175,10 @@ Route::middleware(['auth'])->group(function () {
     })->name('editProfileUser');
 
     Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
+
+
+    Route::post('/update-photo', [ProfileController::class, 'updatePhoto'])
+        ->name('updatePhoto');
 
     Route::get('/editProfileExpert', function () {
         return view('editProfileExpert');
