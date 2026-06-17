@@ -33,4 +33,14 @@ class Konsultasi extends Model
     {
         return $this->belongsTo(Pembayaran::class, 'pembayaran_id');
     }
+
+    public function pesan()
+    {
+        return $this->hasMany(Pesan::class, 'konsultasi_id')->orderBy('waktu_kirim', 'asc');
+    }
+
+    public function tarifAhli()
+    {
+        return $this->belongsTo(TarifAhli::class, 'tarif_ahli_id');
+    }
 }

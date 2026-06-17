@@ -82,115 +82,59 @@
 
     <div class="sidebar-section">
         <span class="section-label">RECENT CHATS</span>
-        <span class="active-badge">3 ACTIVE</span>
+        <span class="active-badge">{{ $consultations->count() }} ACTIVE</span>
     </div>
 
     <div class="chat-list" id="chatList">
-
-        <div class="chat-item active" data-room="sarah" onclick="switchRoom('sarah')">
+        @forelse($consultations as $konsul)
+        <div class="chat-item {{ isset($activeConsultation) && $activeConsultation->id == $konsul->id ? 'active' : '' }}" 
+             data-room="db-{{ $konsul->id }}" 
+             data-consultation-id="{{ $konsul->id }}"
+             onclick="window.location.href='/roomChatExpert?id={{ $konsul->id }}'">
             <div class="avatar-wrapper">
-                <div class="avatar-shell" data-initials="SJ" data-color="0">
-                    <img src="{{ asset('image/avatar-sarah.png') }}" alt="Sarah Johnson" class="avatar-img" onerror="this.style.display='none'">
+                <div class="avatar-shell" data-initials="{{ strtoupper(substr($konsul->user->nama_user, 0, 2)) }}" data-color="{{ $loop->index % 5 }}">
+                    @if($konsul->user->profile_picture)
+                    <img src="{{ asset('storage/' . $konsul->user->profile_picture) }}" alt="{{ $konsul->user->nama_user }}" class="avatar-img" onerror="this.style.display='none'">
+                    @endif
                 </div>
                 <span class="status-dot online"></span>
             </div>
             <div class="chat-info">
                 <div class="chat-meta">
-                    <span class="chat-name">Sarah Johnson</span>
-                    <span class="chat-time">2m ago</span>
+                    <span class="chat-name">{{ $konsul->user->nama_user }}</span>
+                    <span class="chat-time">{{ $konsul->created_at->diffForHumans() }}</span>
                 </div>
-                <span class="chat-topic">Tomato Plant Issue</span>
+                <span class="chat-topic">{{ $konsul->topik ?? 'Plant Consultation' }}</span>
                 <span class="chat-status active-label">Active</span>
             </div>
         </div>
-
-        <div class="chat-item" data-room="marcus" onclick="switchRoom('marcus')">
-            <div class="avatar-wrapper">
-                <div class="avatar-shell" data-initials="MC" data-color="1">
-                    <img src="{{ asset('image/avatar-marcus.png') }}" alt="Marcus Chen" class="avatar-img" onerror="this.style.display='none'">
-                </div>
-                <span class="status-dot away"></span>
-            </div>
-            <div class="chat-info">
-                <div class="chat-meta">
-                    <span class="chat-name">Marcus Chen</span>
-                    <span class="chat-time">1h ago</span>
-                </div>
-                <span class="chat-topic">Hydroponic pH levels...</span>
-                <span class="chat-status await-label">Awaiting reply</span>
-            </div>
+        @empty
+        <div style="text-align:center;padding:40px 16px;color:#94a3b8;font-size:13px;">
+            No active consultations
         </div>
-
-        <div class="chat-item" data-room="elena" onclick="switchRoom('elena')">
-            <div class="avatar-wrapper">
-                <div class="avatar-shell" data-initials="ER" data-color="2">
-                    <img src="{{ asset('image/avatar-elena.png') }}" alt="Elena Rodriguez" class="avatar-img" onerror="this.style.display='none'">
-                </div>
-                <span class="status-dot offline"></span>
-            </div>
-            <div class="chat-info">
-                <div class="chat-meta">
-                    <span class="chat-name">Elena Rodriguez</span>
-                    <span class="chat-time">Yesterday</span>
-                </div>
-                <span class="chat-topic">Vineyard pest control</span>
-                <span class="chat-status offline-label">Offline</span>
-            </div>
-        </div>
-
-        <div class="chat-item" data-room="james" onclick="switchRoom('james')">
-            <div class="avatar-wrapper">
-                <div class="avatar-shell" data-initials="DJ" data-color="3">
-                    <img src="{{ asset('image/avatar-james.png') }}" alt="Dr. James" class="avatar-img" onerror="this.style.display='none'">
-                </div>
-                <span class="status-dot online"></span>
-            </div>
-            <div class="chat-info">
-                <div class="chat-meta">
-                    <span class="chat-name">Dr. James</span>
-                    <span class="chat-time">3h ago</span>
-                </div>
-                <span class="chat-topic">Orchid root rot issue</span>
-                <span class="chat-status active-label">Active</span>
-            </div>
-        </div>
-
-        <div class="chat-item" data-room="emma" onclick="switchRoom('emma')">
-            <div class="avatar-wrapper">
-                <div class="avatar-shell" data-initials="DE" data-color="4">
-                    <img src="{{ asset('image/avatar-emma.png') }}" alt="Dr. Emma" class="avatar-img" onerror="this.style.display='none'">
-                </div>
-                <span class="status-dot online"></span>
-            </div>
-            <div class="chat-info">
-                <div class="chat-meta">
-                    <span class="chat-name">Dr. Emma</span>
-                    <span class="chat-time">5h ago</span>
-                </div>
-                <span class="chat-topic">Lavender propagation</span>
-                <span class="chat-status active-label">Active</span>
-            </div>
-        </div>
-
+        @endforelse
     </div>
 </div>
 
 {{-- MAIN CHAT --}}
 <div class="chat-main">
 
+    @if($activeConsultation)
     {{-- CHAT HEADER --}}
     <div class="chat-header">
         <div class="header-user">
             <a href="{{ url('/userInfo') }}" class="header-user">
                 <div class="avatar-wrapper">
-                    <div class="avatar-shell avatar-shell--lg" data-initials="SJ" data-color="0" id="headerAvatarShell">
-                        <img src="{{ asset('image/avatar-sarah.png') }}" alt="User" class="avatar-img" id="headerAvatarImg" onerror="this.style.display='none'">
+                    <div class="avatar-shell avatar-shell--lg" data-initials="{{ strtoupper(substr($activeConsultation->user->nama_user, 0, 2)) }}" data-color="0" id="headerAvatarShell">
+                        @if($activeConsultation->user->profile_picture)
+                        <img src="{{ asset('storage/' . $activeConsultation->user->profile_picture) }}" alt="{{ $activeConsultation->user->nama_user }}" class="avatar-img" id="headerAvatarImg" onerror="this.style.display='none'">
+                        @endif
                     </div>
                     <span class="status-dot online" id="headerStatusDot"></span>
                 </div>
                 <div class="header-info">
                     <div class="header-name-row">
-                        <span class="header-name" id="headerName">Sarah Johnson</span>
+                        <span class="header-name" id="headerName">{{ $activeConsultation->user->nama_user }}</span>
                     </div>
                 </div>
             </a>
@@ -219,7 +163,7 @@
     {{-- MESSAGES --}}
     <div class="messages-container" id="messagesContainer">
         <div class="date-divider" id="dateDivider">
-            <span id="dateDividerText">MONDAY, MAY 22</span>
+            <span id="dateDividerText"></span>
         </div>
         <div id="messagesList"></div>
     </div>
@@ -286,8 +230,40 @@
         </button>
     </div>
 
+    @else
+    {{-- NO ACTIVE CONSULTATION --}}
+    <div style="display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;color:#94a3b8;gap:12px;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+        </svg>
+        <p style="font-size:16px;font-weight:500;">Select a consultation to start chatting</p>
+    </div>
+    @endif
+
 </div>
 
+<script>
+    window.ACTIVE_CONSULTATION = {!! json_encode($activeConsultation ? [
+        'id' => $activeConsultation->id,
+        'user_name' => $activeConsultation->user->nama_user,
+        'user_initials' => strtoupper(substr($activeConsultation->user->nama_user, 0, 2)),
+        'user_avatar' => $activeConsultation->user->profile_picture ? asset('storage/' . $activeConsultation->user->profile_picture) : null,
+        'topik' => $activeConsultation->topik ?? 'Plant Consultation',
+        'status' => $activeConsultation->status_konsultasi,
+    ] : null) !!};
+
+    window.INITIAL_MESSAGES = {!! json_encode($messages->map(function($m) {
+        return [
+            'id' => $m->id,
+            'pengirim' => $m->pengirim,
+            'isi_pesan' => $m->isi_pesan,
+            'gambar' => $m->gambar ? asset('storage/' . $m->gambar) : null,
+            'waktu_kirim' => $m->waktu_kirim->format('g:i A'),
+        ];
+    })) !!};
+
+    window.CSRF_TOKEN = '{{ csrf_token() }}';
+</script>
 <script src="{{ asset('js/script-roomChatExpert.js') }}"></script>
 </body>
 </html>

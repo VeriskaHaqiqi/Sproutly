@@ -7,6 +7,8 @@ use App\Http\Controllers\JadwalAhliController;
 use App\Http\Controllers\ArtikelController;
 use App\Models\AhliBotani;
 use App\Models\TarifAhli;
+use App\Models\Konsultasi;
+use App\Models\Pesan;
 use Illuminate\Support\Facades\Password;    
 
 
@@ -407,7 +409,17 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/tulisartikelExpert/{id}', [ArtikelController::class, 'destroy'])->name('article.destroy');
 
     Route::get('/consulexpert', function () {
-        return view('consulexpert');
+        $user = auth()->user();
+        $ahli = $user->ahliBotani;
+        $consultations = collect();
+        if ($ahli) {
+            $consultations = Konsultasi::where('ahli_botani_id', $ahli->id)
+                ->whereIn('status_konsultasi', ['active', 'pending'])
+                ->with(['user', 'pesan' => function($q) { $q->latest('waktu_kirim')->limit(1); }])
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
+        return view('consulexpert', compact('consultations'));
     })->name('consulexpert');
 
     Route::get('/setpricingexpert', function () {
@@ -491,8 +503,37 @@ Route::middleware(['auth'])->group(function () {
         return view('roomChatUser', compact('consultations', 'activeConsultation'));
     })->name('roomChatUser');
 
-    Route::get('/roomChatExpert', function () {
-        return view('roomChatExpert');
+    Route::get('/roomChatExpert', function (\Illuminate\Http\Request $request) {
+        $user = auth()->user();
+        $ahli = $user->ahliBotani;
+        $consultationId = $request->query('id');
+
+        $consultations = collect();
+        if ($ahli) {
+            $consultations = Konsultasi::where('ahli_botani_id', $ahli->id)
+                ->whereIn('status_konsultasi', ['active', 'pending'])
+                ->with(['user'])
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
+
+        $activeConsultation = null;
+        if ($consultationId) {
+            $activeConsultation = Konsultasi::with(['user'])->find($consultationId);
+        }
+        if (!$activeConsultation && $consultations->count() > 0) {
+            $activeConsultation = $consultations->first();
+        }
+
+        // Load messages for active consultation
+        $messages = collect();
+        if ($activeConsultation) {
+            $messages = Pesan::where('konsultasi_id', $activeConsultation->id)
+                ->orderBy('waktu_kirim', 'asc')
+                ->get();
+        }
+
+        return view('roomChatExpert', compact('consultations', 'activeConsultation', 'messages'));
     })->name('roomChatExpert');
 
     Route::get('/ConsultationhistoryUser', function () {
@@ -571,4 +612,106 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/userInfo', function () {
         return view('userInfo');
     })->name('userInfo');
+
+    // ── Message Routes (Chat) ─────────────────────────────
+    Route::post('/pesan', function (\Illuminate\Http\Request $request) {
+        $request->validate([
+            'konsultasi_id' => 'required|exists:konsultasi,id',
+            'isi_pesan' => 'nullable|string',
+            'gambar' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:5120',
+        ]);
+
+        $user = auth()->user();
+        $konsultasi = Konsultasi::findOrFail($request->konsultasi_id);
+
+        // Determine sender type
+        $pengirim = 'user';
+        if ($user->role === 'ahli') {
+            $pengirim = 'ahli';
+        }
+
+        // Verify user belongs to this consultation
+        if ($pengirim === 'user' && $konsultasi->user_id !== $user->id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        if ($pengirim === 'ahli') {
+            $ahli = $user->ahliBotani;
+            if (!$ahli || $konsultasi->ahli_botani_id !== $ahli->id) {
+                return response()->json(['message' => 'Unauthorized'], 403);
+            }
+        }
+
+        $gambarPath = null;
+        if ($request->hasFile('gambar')) {
+            $gambarPath = $request->file('gambar')->store('chat_images', 'public');
+        }
+
+        $pesan = Pesan::create([
+            'konsultasi_id' => $konsultasi->id,
+            'pengirim' => $pengirim,
+            'isi_pesan' => $request->isi_pesan,
+            'gambar' => $gambarPath,
+            'waktu_kirim' => now(),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'id' => $pesan->id,
+                'pengirim' => $pesan->pengirim,
+                'isi_pesan' => $pesan->isi_pesan,
+                'gambar' => $gambarPath ? asset('storage/' . $gambarPath) : null,
+                'waktu_kirim' => $pesan->waktu_kirim->format('g:i A'),
+                'created_at' => $pesan->created_at->toISOString(),
+            ]
+        ]);
+    })->name('pesan.store');
+
+    Route::get('/pesan/{konsultasi_id}', function ($konsultasi_id, \Illuminate\Http\Request $request) {
+        $user = auth()->user();
+        $konsultasi = Konsultasi::findOrFail($konsultasi_id);
+
+        // Verify access
+        if ($user->role === 'user' && $konsultasi->user_id !== $user->id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        if ($user->role === 'ahli') {
+            $ahli = $user->ahliBotani;
+            if (!$ahli || $konsultasi->ahli_botani_id !== $ahli->id) {
+                return response()->json(['message' => 'Unauthorized'], 403);
+            }
+        }
+
+        $afterId = $request->query('after_id', 0);
+        $messages = Pesan::where('konsultasi_id', $konsultasi_id)
+            ->when($afterId, function($q) use ($afterId) {
+                $q->where('id', '>', $afterId);
+            })
+            ->orderBy('waktu_kirim', 'asc')
+            ->get()
+            ->map(function($p) {
+                return [
+                    'id' => $p->id,
+                    'pengirim' => $p->pengirim,
+                    'isi_pesan' => $p->isi_pesan,
+                    'gambar' => $p->gambar ? asset('storage/' . $p->gambar) : null,
+                    'waktu_kirim' => $p->waktu_kirim->format('g:i A'),
+                    'created_at' => $p->created_at->toISOString(),
+                ];
+            });
+
+        return response()->json(['data' => $messages]);
+    })->name('pesan.index');
+
+    // End consultation
+    Route::post('/konsultasi/{id}/end', function ($id) {
+        $user = auth()->user();
+        $konsultasi = Konsultasi::findOrFail($id);
+
+        $konsultasi->status_konsultasi = 'selesai';
+        $konsultasi->tanggal_selesai = now();
+        $konsultasi->save();
+
+        return response()->json(['success' => true, 'message' => 'Konsultasi diakhiri']);
+    })->name('konsultasi.end');
 });

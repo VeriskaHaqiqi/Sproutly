@@ -90,125 +90,44 @@
                 </div>
 
                 <div class="requests-list" id="requestsList">
-                    <article class="request-card" data-url="/roomChatExpert">
+                    @forelse($consultations as $konsul)
+                    <article class="request-card" data-url="/roomChatExpert?id={{ $konsul->id }}">
                         <div class="request-left">
-                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=300&auto=format&fit=crop" alt="Michael Thompson" class="avatar">
+                            @if($konsul->user->profile_picture)
+                                <img src="{{ asset('storage/' . $konsul->user->profile_picture) }}" alt="{{ $konsul->user->nama_user }}" class="avatar">
+                            @else
+                                <div class="avatar" style="background:linear-gradient(135deg,#76ead0,#76d7ea);display:flex;align-items:center;justify-content:center;font-weight:700;color:#155a4a;font-size:16px;border-radius:50%;width:48px;height:48px;">
+                                    {{ strtoupper(substr($konsul->user->nama_user, 0, 2)) }}
+                                </div>
+                            @endif
 
                             <div class="request-content">
                                 <div class="request-topline">
-                                    <h3>Michael Thompson</h3>
-                                    <span class="expertise">Soil Science</span>
-                                    <span class="time">5m ago</span>
+                                    <h3>{{ $konsul->user->nama_user }}</h3>
+                                    <span class="expertise">{{ $konsul->topik ?? 'Plant Consultation' }}</span>
+                                    <span class="time">{{ $konsul->created_at->diffForHumans() }}</span>
                                 </div>
 
-                                <h4>Soil pH levels affecting crop yield</h4>
+                                <h4>{{ $konsul->topik ?? 'Plant Consultation' }}</h4>
                                 <p>
-                                    I've been experiencing poor crop yields in my wheat field. Recent tests show pH levels around 5.2.
-                                    What amendments would you recommend to bring it to optimal levels?
+                                    @if($konsul->pesan->count() > 0)
+                                        {{ Str::limit($konsul->pesan->last()->isi_pesan, 120) }}
+                                    @else
+                                        New consultation request. Click to start chatting.
+                                    @endif
                                 </p>
                             </div>
                         </div>
                     </article>
-
-                    <article class="request-card" data-url="/roomChatExpert">
-                        <div class="request-left">
-                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=300&auto=format&fit=crop" alt="Sarah Martinez" class="avatar">
-
-                            <div class="request-content">
-                                <div class="request-topline">
-                                    <h3>Sarah Martinez</h3>
-                                    <span class="expertise">Pest Control</span>
-                                    <span class="time">1h ago</span>
-                                </div>
-
-                                <h4>Aphid infestation on tomato plants</h4>
-                                <p>
-                                    My greenhouse tomatoes are heavily infested with aphids. I prefer organic solutions.
-                                    What's the most effective treatment that won't harm beneficial insects?
-                                </p>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="request-card" data-url="/roomChatExpert">
-                        <div class="request-left">
-                            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=300&auto=format&fit=crop" alt="Robert Chen" class="avatar">
-
-                            <div class="request-content">
-                                <div class="request-topline">
-                                    <h3>Robert Chen</h3>
-                                    <span class="expertise">Irrigation</span>
-                                    <span class="time">2h ago</span>
-                                </div>
-
-                                <h4>Drip irrigation system design for vineyard</h4>
-                                <p>
-                                    Planning to install a drip irrigation system for my 5-acre vineyard. Need advice on optimal spacing,
-                                    flow rates, and whether to use pressure compensating emitters.
-                                </p>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="request-card" data-url="/roomChatExpert">
-                        <div class="request-left">
-                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=300&auto=format&fit=crop" alt="Emily Johnson" class="avatar">
-
-                            <div class="request-content">
-                                <div class="request-topline">
-                                    <h3>Emily Johnson</h3>
-                                    <span class="expertise">Crop Rotation</span>
-                                    <span class="time">3h ago</span>
-                                </div>
-
-                                <h4>Rotation plan for corn-soybean system</h4>
-                                <p>
-                                    I've been doing corn-soybean rotation for years. Wondering if I should incorporate cover crops
-                                    or add another cash crop to improve soil health and profitability.
-                                </p>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="request-card" data-url="/roomChatExpert">
-                        <div class="request-left">
-                            <img src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?q=80&w=300&auto=format&fit=crop" alt="David Kumar" class="avatar">
-
-                            <div class="request-content">
-                                <div class="request-topline">
-                                    <h3>David Kumar</h3>
-                                    <span class="expertise">Soil Science</span>
-                                    <span class="time">5h ago</span>
-                                </div>
-
-                                <h4>Nutrient deficiency in rice paddies</h4>
-                                <p>
-                                    Noticing yellowing leaves in my rice crop, particularly older leaves. Soil test shows low nitrogen.
-                                    What's the best fertilization strategy at this growth stage?
-                                </p>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="request-card" data-url="/roomChatExpert">
-                        <div class="request-left">
-                            <img src="https://images.unsplash.com/photo-1504593811423-6dd665756598?q=80&w=300&auto=format&fit=crop" alt="Lisa Anderson" class="avatar">
-
-                            <div class="request-content">
-                                <div class="request-topline">
-                                    <h3>Lisa Anderson</h3>
-                                    <span class="expertise">Pest Control</span>
-                                    <span class="time">6h ago</span>
-                                </div>
-
-                                <h4>Fungal disease on apple trees</h4>
-                                <p>
-                                    Apple scab appearing on my orchard trees. Already did dormant spray in spring. Should I apply fungicide now
-                                    or wait until next season? Trees are 5 years old.
-                                </p>
-                            </div>
-                        </div>
-                    </article>
+                    @empty
+                    <div style="text-align:center;padding:60px 20px;color:#94a3b8;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:12px;">
+                            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                        </svg>
+                        <h3 style="font-size:18px;margin-bottom:8px;color:#64748b;">No consultations yet</h3>
+                        <p style="font-size:14px;">When users book a consultation with you, they will appear here.</p>
+                    </div>
+                    @endforelse
                 </div>
             </section>
 

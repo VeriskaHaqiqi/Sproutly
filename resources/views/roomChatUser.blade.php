@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('css/style-roomChatUser.css') }}">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
 <div class="app-wrapper">
@@ -34,65 +35,25 @@
               @if($con->ahliBotani->user?->profile_picture)
                 <img src="{{ asset('storage/' . $con->ahliBotani->user->profile_picture) }}" alt="{{ $con->ahliBotani->nama_ahli }}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
               @else
-                <div class="avatar-initials" style="background:linear-gradient(135deg,#76ead0,#76d7ea);">{{ substr($con->ahliBotani->nama_ahli, 0, 2) }}</div>
+                <div class="avatar-initials" style="background:linear-gradient(135deg,#76ead0,#76d7ea);">{{ strtoupper(substr($con->ahliBotani->nama_ahli, 0, 2)) }}</div>
               @endif
               <span class="status-dot online"></span>
             </div>
             <div class="expert-info">
               <p class="expert-name">{{ $con->ahliBotani->nama_ahli }}</p>
-              <p class="expert-role">{{ $con->ahliBotani->spesialisasi }}</p>
+              <p class="expert-role">{{ $con->ahliBotani->spesialisasi ?? 'Expert Botanist' }}</p>
               <p class="expert-status chatting">Currently chatting</p>
             </div>
           </div>
         @endforeach
       @endif
 
-      <div class="expert-item {{ !isset($activeConsultation) ? 'active' : '' }}" data-expert="sarah">
-        <div class="avatar-wrap">
-          <div class="avatar-initials" style="background:linear-gradient(135deg,#d0ff99,#99ff99);">SW</div>
-          <span class="status-dot online"></span>
-        </div>
-        <div class="expert-info">
-          <p class="expert-name">Dr. Sarah Williams</p>
-          <p class="expert-role">Soil Health Expert</p>
-          <p class="expert-status chatting">Currently chatting</p>
-        </div>
+      @if(!isset($consultations) || $consultations->count() === 0)
+      <div style="text-align:center;padding:40px 16px;color:#94a3b8;font-size:13px;">
+          No active consultations.<br>
+          <a href="{{ url('/find-experts') }}" style="color:#76ead0;text-decoration:underline;margin-top:8px;display:inline-block;">Find an expert</a>
       </div>
-      <div class="expert-item" data-expert="marcus">
-        <div class="avatar-wrap">
-          <div class="avatar-initials" style="background:linear-gradient(135deg,#76ead0,#76d7ea);">MC</div>
-          <span class="status-dot online"></span>
-        </div>
-        <div class="expert-info">
-          <p class="expert-name">Dr. Marcus Chen</p>
-          <p class="expert-role">Crop Disease Specialist</p>
-          <p class="expert-status available">Available now</p>
-        </div>
-      </div>
-
-      <div class="expert-item" data-expert="james">
-        <div class="avatar-wrap">
-          <div class="avatar-initials" style="background:linear-gradient(135deg,#fde68a,#fbbf24);">JR</div>
-          <span class="status-dot away"></span>
-        </div>
-        <div class="expert-info">
-          <p class="expert-name">Dr. James Rodriguez</p>
-          <p class="expert-role">Pest Management</p>
-          <p class="expert-status away-status">Away · 2 hours</p>
-        </div>
-      </div>
-
-      <div class="expert-item" data-expert="emma">
-        <div class="avatar-wrap">
-          <div class="avatar-initials" style="background:linear-gradient(135deg,#e2e8f0,#94a3b8);">ET</div>
-          <span class="status-dot offline"></span>
-        </div>
-        <div class="expert-info">
-          <p class="expert-name">Dr. Emma Thompson</p>
-          <p class="expert-role">Organic Farming</p>
-          <p class="expert-status offline-status">Offline</p>
-        </div>
-      </div>
+      @endif
 
     </div>
 
@@ -111,15 +72,18 @@
   <!-- ── CHAT MAIN ── -->
   <div class="chat-main">
 
+    @if(isset($activeConsultation) && $activeConsultation)
     <!-- Header -->
     <header class="chat-header">
       <div class="header-expert">
-        <div class="header-avatar-initials" id="headerAvatar" style="background:linear-gradient(135deg,#d0ff99,#99ff99);">SW</div>
+        <div class="header-avatar-initials" id="headerAvatar" style="background:linear-gradient(135deg,#76ead0,#76d7ea);">
+          {{ strtoupper(substr($activeConsultation->ahliBotani->nama_ahli, 0, 2)) }}
+        </div>
         <div>
-          <p class="header-name" id="headerName">Dr. Sarah Williams</p>
+          <p class="header-name" id="headerName">{{ $activeConsultation->ahliBotani->nama_ahli }}</p>
           <div class="header-status">
             <span class="dot-status online" id="headerDot"></span>
-            <span id="headerStatusText">Online · Soil Health Expert</span>
+            <span id="headerStatusText">Online · {{ $activeConsultation->ahliBotani->spesialisasi ?? 'Expert Botanist' }}</span>
           </div>
         </div>
       </div>
@@ -136,7 +100,7 @@
         </svg>
       </button>
 
-      <input type="file" id="fileInput" style="display:none;" multiple accept="image/*,.pdf,.doc,.docx,.xls,.xlsx">
+      <input type="file" id="fileInput" style="display:none;" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx">
 
       <button class="btn-emoji" id="btnEmoji" title="Emoji">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -157,6 +121,17 @@
       </button>
     </div>
 
+    @else
+    <!-- NO ACTIVE CONSULTATION -->
+    <div style="display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;color:#94a3b8;gap:12px;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+        </svg>
+        <p style="font-size:16px;font-weight:500;">No active consultation</p>
+        <a href="{{ url('/find-experts') }}" style="color:#76ead0;text-decoration:underline;">Find an expert to start</a>
+    </div>
+    @endif
+
   </div>
 </div>
 
@@ -166,20 +141,14 @@
       'expert' => [
           'name' => $activeConsultation->ahliBotani->nama_ahli,
           'role' => $activeConsultation->ahliBotani->spesialisasi ?? 'Expert Botanist',
-          'initials' => substr($activeConsultation->ahliBotani->nama_ahli, 0, 2),
+          'initials' => strtoupper(substr($activeConsultation->ahliBotani->nama_ahli, 0, 2)),
           'avatarBg' => 'linear-gradient(135deg,#76ead0,#76d7ea)',
           'status' => 'online',
           'statusText' => 'Online · ' . ($activeConsultation->ahliBotani->spesialisasi ?? 'Expert Botanist'),
-          'replies' => [
-              'Hello! Thank you for consulting with me. I have received your payment proof.',
-              'I am currently reviewing the details. Could you describe the symptoms or environmental conditions of your plant?',
-              'Great. I recommend watering only in the morning and ensuring proper drainage.',
-              'We can also use organic fertilizer to boost its immunity. Let me know if you need specific recommendations.',
-              'Feel free to upload photos of the infected parts anytime.'
-          ],
-          'greeting' => "Hello! I'm " . $activeConsultation->ahliBotani->nama_ahli . ", your " . ($activeConsultation->ahliBotani->spesialisasi ?? 'Expert Botanist') . ". How can I help you today?"
       ]
   ] : null) !!};
+
+  window.CSRF_TOKEN = '{{ csrf_token() }}';
 </script>
 <script src="{{ asset('js/script-roomChatUser.js') }}"></script>
 </body>

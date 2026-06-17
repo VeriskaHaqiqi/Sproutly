@@ -32,48 +32,8 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   });
 
-  // Static fallback conversations (shown only when no DB data)
-  const staticConversations = DB_CONSULTATIONS.length > 0 ? [] : [
-    {
-      id: 'static-1',
-      name: "Michael Chen",
-      topic: "Soil Science",
-      topicClass: "tag-soil-science",
-      preview: "Thank you for the soil samples. Based on the pH levels, I recommend adjusting your fertilizer composition for the tomato plot...",
-      time: "2m ago",
-      status: "active",
-      online: true,
-      read: false,
-      avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-      keywords: ["soil", "ph", "fertilizer", "tomato", "samples"]
-    },
-    {
-      id: 'static-2',
-      name: "Emma Rodriguez",
-      topic: "Pest Control",
-      topicClass: "tag-pest-control",
-      preview: "I've reviewed the photos you sent. Those are definitely aphids. Here's what I recommend for your chili and tomato plants...",
-      time: "1h ago",
-      status: "active",
-      online: false,
-      read: false,
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-      keywords: ["aphids", "pest", "chili", "tomato", "leaves"]
-    },
-    {
-      id: 'static-3',
-      name: "James Wilson",
-      topic: "Crop Rotation",
-      topicClass: "tag-crop-rotation",
-      preview: "Perfect! Your rotation plan looks excellent. This should improve soil health significantly and help your field recover next season...",
-      time: "3h ago",
-      status: "completed",
-      online: false,
-      read: true,
-      avatar: "https://randomuser.me/api/portraits/men/45.jpg",
-      keywords: ["rotation", "soil health", "field", "season", "corn"]
-    },
-  ];
+  // Static fallback conversations — removed, only DB data shown
+  const staticConversations = [];
 
   const conversations = [...dbConversations, ...staticConversations];
 

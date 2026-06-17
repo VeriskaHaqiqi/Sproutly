@@ -150,54 +150,8 @@
         <!-- Date separator -->
         <div class="date-sep">Hari ini</div>
 
-        <!-- Message from expert -->
-        <div class="msg msg-in">
-          <div class="msg-avatar">
-            @if($activeConsultation->ahliBotani->user?->profile_picture)
-              <img src="{{ asset('storage/' . $activeConsultation->ahliBotani->user->profile_picture) }}" alt="{{ $activeConsultation->ahliBotani->nama_ahli }}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
-            @else
-              👨‍🔬
-            @endif
-          </div>
-          <div class="msg-bubble">
-            <div class="msg-text">Halo! Saya {{ $activeConsultation->ahliBotani->nama_ahli }}. Selamat datang di sesi konsultasi kita. Ada yang bisa saya bantu hari ini? 🌿</div>
-            <div class="msg-time">09:00</div>
-          </div>
-        </div>
-
-        <!-- Message from user -->
-        <div class="msg msg-out">
-          <div class="msg-bubble">
-            <div class="msg-text">Halo! Tanaman saya daunnya mulai menggulung dan ada bercak kuning. Sudah berlangsung 3 hari ini.</div>
-            <div class="msg-time">09:05 ✓✓</div>
-          </div>
-        </div>
-
-        <!-- Expert reply -->
-        <div class="msg msg-in">
-          <div class="msg-avatar">
-            @if($activeConsultation->ahliBotani->user?->profile_picture)
-              <img src="{{ asset('storage/' . $activeConsultation->ahliBotani->user->profile_picture) }}" alt="{{ $activeConsultation->ahliBotani->nama_ahli }}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
-            @else
-              👨‍🔬
-            @endif
-          </div>
-          <div class="msg-bubble">
-            <div class="msg-text">Terima kasih sudah menjelaskan gejalanya. Bisa tolong kirimkan foto daun yang menggulung tersebut? Saya perlu melihat lebih detail pola bercaknya untuk diagnosis yang akurat.</div>
-            <div class="msg-time">09:07</div>
-          </div>
-        </div>
-
-        <!-- User image message -->
-        <div class="msg msg-out">
-          <div class="msg-bubble">
-            <div class="msg-img-placeholder">
-              <span>🍅</span>
-              <span>foto_tanaman.jpg</span>
-            </div>
-            <div class="msg-time">09:12 ✓✓</div>
-          </div>
-        </div>
+        <!-- Messages loaded from DB -->
+        <div id="db-messages-container"></div>
 
         <!-- Typing indicator (hidden by default) -->
         <div class="msg msg-in" id="typing-indicator" style="display:none;">
@@ -294,11 +248,15 @@
   </div>
 
   <script>
+    const KONSULTASI_ID = {{ $activeConsultation->id }};
+    const CSRF_TOKEN = '{{ csrf_token() }}';
+    const expertAvatarUrl = {!! $activeConsultation && $activeConsultation->ahliBotani->user?->profile_picture ? json_encode(asset('storage/' . $activeConsultation->ahliBotani->user->profile_picture)) : 'null' !!};
+    let lastMsgId = 0;
+
     // ---- Select chat ----
     function selectChat(el, id) {
       document.querySelectorAll('.chat-item').forEach(i => i.classList.remove('active'));
       el.classList.add('active');
-      el.querySelector('.ci-badge') && el.querySelector('.ci-badge').remove();
     }
 
     // ---- Filter chats ----
@@ -310,43 +268,102 @@
       });
     }
 
-    // ---- Send message ----
+    // ---- Load messages from DB ----
+    function loadMessages() {
+      fetch('/pesan/' + KONSULTASI_ID + '?after_id=0', {
+        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+      })
+      .then(r => r.json())
+      .then(data => {
+        const container = document.getElementById('db-messages-container');
+        container.innerHTML = '';
+        if (data.data && data.data.length > 0) {
+          data.data.forEach(msg => {
+            appendMessage(msg.isi_pesan || '', msg.pengirim === 'ahli' ? 'in' : 'out', msg.waktu_kirim, msg.gambar);
+            if (msg.id > lastMsgId) lastMsgId = msg.id;
+          });
+        }
+        scrollBottom();
+      })
+      .catch(err => console.error('Load messages error:', err));
+    }
+
+    // ---- Poll for new messages ----
+    function pollMessages() {
+      fetch('/pesan/' + KONSULTASI_ID + '?after_id=' + lastMsgId, {
+        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (data.data && data.data.length > 0) {
+          data.data.forEach(msg => {
+            if (msg.id > lastMsgId) {
+              if (msg.pengirim === 'ahli') {
+                appendMessage(msg.isi_pesan || '', 'in', msg.waktu_kirim, msg.gambar);
+              }
+              lastMsgId = msg.id;
+            }
+          });
+          scrollBottom();
+        }
+      })
+      .catch(err => console.error('Poll error:', err));
+    }
+
+    // ---- Send message (real POST) ----
     function sendMessage() {
       const input = document.getElementById('msg-input');
       const text  = input.value.trim();
       if (!text) return;
 
-      appendMessage(text, 'out');
+      const now = new Date();
+      const time = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+
+      // Optimistic UI
+      appendMessage(text, 'out', time);
       input.value = '';
       input.style.height = 'auto';
       document.getElementById('send-btn').disabled = true;
 
-      // Show typing indicator
-      const typing = document.getElementById('typing-indicator');
-      typing.style.display = 'flex';
-      scrollBottom();
+      // POST to server
+      const formData = new FormData();
+      formData.append('konsultasi_id', KONSULTASI_ID);
+      formData.append('isi_pesan', text);
+      formData.append('_token', CSRF_TOKEN);
 
-      setTimeout(() => {
-        typing.style.display = 'none';
-        appendMessage('Terima kasih atas pertanyaannya! Saya akan segera memeriksa dan memberikan rekomendasi terbaik. 🌿', 'in');
-      }, 2000);
+      fetch('/pesan', {
+        method: 'POST',
+        body: formData,
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (data.success && data.data.id > lastMsgId) lastMsgId = data.data.id;
+      })
+      .catch(err => console.error('Send error:', err));
     }
 
-    function appendMessage(text, type) {
-      const area = document.getElementById('messages-area');
-      const now  = new Date();
-      const time = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+    function appendMessage(text, type, time, gambar) {
+      const container = document.getElementById('db-messages-container');
+      const avatarHtml = expertAvatarUrl ? `<img src="${expertAvatarUrl}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">` : '👨‍🔬';
 
       const div = document.createElement('div');
       div.className = `msg msg-${type}`;
-      const expertAvatarUrl = {!! $activeConsultation && $activeConsultation->ahliBotani->user?->profile_picture ? json_encode(asset('storage/' . $activeConsultation->ahliBotani->user->profile_picture)) : 'null' !!};
-      const avatarHtml = expertAvatarUrl ? `<img src="${expertAvatarUrl}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">` : '👨‍🔬';
+
+      let content = '';
+      if (gambar) {
+        content += `<img src="${gambar}" style="max-width:200px;border-radius:8px;margin-bottom:6px;">`;
+      }
+      if (text) {
+        content += `<div class="msg-text">${text}</div>`;
+      }
+
       div.innerHTML = type === 'in'
         ? `<div class="msg-avatar">${avatarHtml}</div>
-           <div class="msg-bubble"><div class="msg-text">${text}</div><div class="msg-time">${time}</div></div>`
-        : `<div class="msg-bubble"><div class="msg-text">${text}</div><div class="msg-time">${time} ✓✓</div></div>`;
+           <div class="msg-bubble">${content}<div class="msg-time">${time || ''}</div></div>`
+        : `<div class="msg-bubble">${content}<div class="msg-time">${time || ''} ✓✓</div></div>`;
 
-      area.insertBefore(div, document.getElementById('typing-indicator'));
+      container.appendChild(div);
       scrollBottom();
     }
 
@@ -370,40 +387,29 @@
       document.getElementById('send-btn').disabled = !val;
     }
 
-    // ---- Image upload ----
+    // ---- Image upload (real) ----
     function handleImageUpload(input) {
       if (!input.files[0]) return;
-      const name = input.files[0].name;
-      const area = document.getElementById('messages-area');
-      const now  = new Date();
-      const time = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+      const f = input.files[0];
+      const formData = new FormData();
+      formData.append('konsultasi_id', KONSULTASI_ID);
+      formData.append('gambar', f);
+      formData.append('isi_pesan', '');
+      formData.append('_token', CSRF_TOKEN);
 
-      const div = document.createElement('div');
-      div.className = 'msg msg-out';
-      div.innerHTML = `<div class="msg-bubble">
-        <div class="msg-img-placeholder"><span>🖼️</span><span>${name}</span></div>
-        <div class="msg-time">${time} ✓✓</div>
-      </div>`;
-      area.insertBefore(div, document.getElementById('typing-indicator'));
+      const previewUrl = URL.createObjectURL(f);
+      appendMessage('', 'out', '', previewUrl);
       scrollBottom();
+
+      fetch('/pesan', { method: 'POST', body: formData, headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+      .then(r => r.json()).then(data => { if (data.success && data.data.id > lastMsgId) lastMsgId = data.data.id; })
+      .catch(err => console.error('Upload error:', err));
     }
 
     // ---- File upload ----
     function handleFileUpload(input) {
       if (!input.files[0]) return;
-      const name = input.files[0].name;
-      const area = document.getElementById('messages-area');
-      const now  = new Date();
-      const time = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
-
-      const div = document.createElement('div');
-      div.className = 'msg msg-out';
-      div.innerHTML = `<div class="msg-bubble">
-        <div class="msg-file"><span>📄</span><span>${name}</span></div>
-        <div class="msg-time">${time} ✓✓</div>
-      </div>`;
-      area.insertBefore(div, document.getElementById('typing-indicator'));
-      scrollBottom();
+      handleImageUpload(input);
     }
 
     // ---- Bukti bayar ----
@@ -432,11 +438,12 @@
     // ---- Scroll to bottom ----
     function scrollBottom() {
       const area = document.getElementById('messages-area');
-      area.scrollTop = area.scrollHeight;
+      if (area) area.scrollTop = area.scrollHeight;
     }
 
-    // Init scroll
-    scrollBottom();
+    // ---- Init ----
+    loadMessages();
+    setInterval(pollMessages, 3000);
   </script>
 </body>
 </html>
