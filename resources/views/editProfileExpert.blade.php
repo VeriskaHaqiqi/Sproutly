@@ -36,8 +36,8 @@
                 <span>Dashboard</span>
             </a>
 
-            <a href="{{ route('consultexpert') }}" 
-            class="menu-link {{ request()->routeIs('consultexpert') ? 'active' : '' }}">
+            <a href="{{ route('consulexpert') }}" 
+            class="menu-link {{ request()->routeIs('consulexpert') ? 'active' : '' }}">
                 <img src="images/consultation.png">
                 <span>Consultation</span>
             </a>
@@ -80,14 +80,20 @@
   <div class="layout" id="mainContent">
 
     <!-- TOP NAV -->
-    <header class="topnav">
-        <button class="burger-btn" id="sidebarToggle" aria-label="Toggle sidebar">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <div class="topnav-title">
-            <h1>Edit Profile</h1>
+    <header class="topnav" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 24px;">
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <button class="burger-btn" id="sidebarToggle" aria-label="Toggle sidebar">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="topnav-title">
+                <h1>Edit Profile</h1>
+            </div>
+        </div>
+        <div class="topnav-user" style="display: flex; align-items: center; gap: 10px;">
+            <span class="profile-name" style="font-weight: 600; color: #1f2937; font-family: 'Inter', sans-serif;">{{ auth()->user()->nama_user }}</span>
+            <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/fotoprofile.png') }}" alt="User" class="avatar-img" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
         </div>
     </header>
 

@@ -20,6 +20,10 @@ class KonsultasiController extends Controller
     {
         $user = Auth::user();
 
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
         if ($user->role === 'ahli') {
             $ahli = $user->ahliBotani;
             $konsultasi = Konsultasi::where('ahli_botani_id', $ahli?->id)
@@ -75,6 +79,9 @@ class KonsultasiController extends Controller
     public function show($id)
     {
         $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
         $konsultasi = Konsultasi::with(['user', 'ahliBotani'])->findOrFail($id);
 
         // Cek ownership

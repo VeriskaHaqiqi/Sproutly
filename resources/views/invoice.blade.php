@@ -202,24 +202,24 @@
 <script>
 // ── DATA ─────────────────────────────────────────────────────
 var invoices = [
-  { id:"#INV-001", expert:"Dr. Sarah Johnson",  role:"Crop Specialist",          avatar:"https://randomuser.me/api/portraits/women/44.jpg",  consultation:"Tomato Disease Analysis",         amount:450,  due:"Dec 15, 2024", status:"Paid"    },
-  { id:"#INV-002", expert:"Michael Chen",        role:"Soil Expert",              avatar:"https://randomuser.me/api/portraits/men/32.jpg",    consultation:"Soil pH Assessment",              amount:320,  due:"Dec 20, 2024", status:"Paid"    },
-  { id:"#INV-003", expert:"Emily Rodriguez",     role:"Irrigation Consultant",    avatar:"https://randomuser.me/api/portraits/women/65.jpg",  consultation:"Water Management Plan",           amount:680,  due:"Dec 10, 2024", status:"Refund"  },
-  { id:"#INV-004", expert:"David Park",          role:"Pest Control Expert",      avatar:"https://randomuser.me/api/portraits/men/55.jpg",    consultation:"Integrated Pest Management",      amount:520,  due:"Dec 25, 2024", status:"Paid"    },
-  { id:"#INV-005", expert:"Lisa Thompson",       role:"Organic Farming Expert",   avatar:"https://randomuser.me/api/portraits/women/28.jpg",  consultation:"Organic Certification Guidance",  amount:750,  due:"Jan 5, 2025",  status:"Refund"  },
-  { id:"#INV-006", expert:"James Wilson",        role:"Climate Agronomist",       avatar:"https://randomuser.me/api/portraits/men/11.jpg",    consultation:"Climate-Smart Practices",         amount:410,  due:"Jan 10, 2025", status:"Paid"    },
-  { id:"#INV-007", expert:"Alicia Warren",       role:"Urban Farming Specialist", avatar:"https://randomuser.me/api/portraits/women/51.jpg",  consultation:"Hydroponic System Setup",         amount:890,  due:"Jan 12, 2025", status:"Pending" },
-  { id:"#INV-008", expert:"Robert Martinez",     role:"Soil Fertility Agronomist",avatar:"https://randomuser.me/api/portraits/men/22.jpg",   consultation:"Nutrient Management Plan",        amount:370,  due:"Jan 15, 2025", status:"Paid"    },
-  { id:"#INV-009", expert:"Olivia Green",        role:"Water Resource Consultant",avatar:"https://randomuser.me/api/portraits/women/54.jpg", consultation:"Rainwater Harvesting Plan",       amount:460,  due:"Jan 18, 2025", status:"Pending" },
-  { id:"#INV-010", expert:"Carlos Mendez",       role:"Irrigation Engineer",      avatar:"https://randomuser.me/api/portraits/men/45.jpg",   consultation:"Drip Irrigation Design",          amount:610,  due:"Jan 20, 2025", status:"Paid"    },
-  { id:"#INV-011", expert:"Sophie Laurent",      role:"Plant Nutrition Expert",   avatar:"https://randomuser.me/api/portraits/women/33.jpg", consultation:"Micronutrient Assessment",        amount:280,  due:"Jan 22, 2025", status:"Pending" },
-  { id:"#INV-012", expert:"Tom Walker",          role:"Agroforestry Specialist",  avatar:"https://randomuser.me/api/portraits/men/67.jpg",   consultation:"Cover Crop Strategy",             amount:340,  due:"Jan 25, 2025", status:"Paid"    }
+  { id:"#INV-001", expert:"Dr. Sarah Johnson",  role:"Crop Specialist",          avatar:"https://randomuser.me/api/portraits/women/44.jpg",  consultation:"Tomato Disease Analysis",         amount:75000,  due:"Dec 15, 2024", status:"Paid"    },
+  { id:"#INV-002", expert:"Michael Chen",        role:"Soil Expert",              avatar:"https://randomuser.me/api/portraits/men/32.jpg",    consultation:"Soil pH Assessment",              amount:52000,  due:"Dec 20, 2024", status:"Paid"    },
+  { id:"#INV-003", expert:"Emily Rodriguez",     role:"Irrigation Consultant",    avatar:"https://randomuser.me/api/portraits/women/65.jpg",  consultation:"Water Management Plan",           amount:85000,  due:"Dec 10, 2024", status:"Refund"  },
+  { id:"#INV-004", expert:"David Park",          role:"Pest Control Expert",      avatar:"https://randomuser.me/api/portraits/men/55.jpg",    consultation:"Integrated Pest Management",      amount:68000,  due:"Dec 25, 2024", status:"Paid"    },
+  { id:"#INV-005", expert:"Lisa Thompson",       role:"Organic Farming Expert",   avatar:"https://randomuser.me/api/portraits/women/28.jpg",  consultation:"Organic Certification Guidance",  amount:95000,  due:"Jan 5, 2025",  status:"Refund"  },
+  { id:"#INV-006", expert:"James Wilson",        role:"Climate Agronomist",       avatar:"https://randomuser.me/api/portraits/men/11.jpg",    consultation:"Climate-Smart Practices",         amount:55000,  due:"Jan 10, 2025", status:"Paid"    },
+  { id:"#INV-007", expert:"Alicia Warren",       role:"Urban Farming Specialist", avatar:"https://randomuser.me/api/portraits/women/51.jpg",  consultation:"Hydroponic System Setup",         amount:120000, due:"Jan 12, 2025", status:"Pending" },
+  { id:"#INV-008", expert:"Robert Martinez",     role:"Soil Fertility Agronomist",avatar:"https://randomuser.me/api/portraits/men/22.jpg",   consultation:"Nutrient Management Plan",        amount:48000,  due:"Jan 15, 2025", status:"Paid"    },
+  { id:"#INV-009", expert:"Olivia Green",        role:"Water Resource Consultant",avatar:"https://randomuser.me/api/portraits/women/54.jpg", consultation:"Rainwater Harvesting Plan",       amount:62000,  due:"Jan 18, 2025", status:"Pending" },
+  { id:"#INV-010", expert:"Carlos Mendez",       role:"Irrigation Engineer",      avatar:"https://randomuser.me/api/portraits/men/45.jpg",   consultation:"Drip Irrigation Design",          amount:78000,  due:"Jan 20, 2025", status:"Paid"    },
+  { id:"#INV-011", expert:"Sophie Laurent",      role:"Plant Nutrition Expert",   avatar:"https://randomuser.me/api/portraits/women/33.jpg", consultation:"Micronutrient Assessment",        amount:45000,  due:"Jan 22, 2025", status:"Pending" },
+  { id:"#INV-012", expert:"Tom Walker",          role:"Agroforestry Specialist",  avatar:"https://randomuser.me/api/portraits/men/67.jpg",   consultation:"Cover Crop Strategy",             amount:52000,  due:"Jan 25, 2025", status:"Paid"    }
 ];
 var nextId = 13;
 var currentPage = 1;
 var PER_PAGE = 5;
 
-function fmt(n){ return "Rp" + Number(n * 15000).toLocaleString('id-ID'); }
+function fmt(n){ return "Rp" + Number(n).toLocaleString('id-ID'); }
 function badgeCls(s){ return {Paid:"badge-paid",Pending:"badge-pending",Refund:"badge-refund"}[s]||"badge-pending"; }
 
 function getFiltered(){

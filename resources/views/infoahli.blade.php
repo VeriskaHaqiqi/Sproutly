@@ -89,14 +89,14 @@
             <section class="profile-card">
                 <div class="profile-header">
                     <div class="expert-avatar-wrap">
-                        <img src="{{ asset('images/fotoprofile.png') }}" alt="Expert" class="expert-avatar">
+                        <img src="{{ $expert->user?->profile_picture ? asset('storage/' . $expert->user->profile_picture) : asset('images/fotoprofile.png') }}" alt="{{ $expert->nama_ahli }}" class="expert-avatar" onerror="this.src='{{ asset('images/fotoprofile.png') }}'">
                         <span class="online-dot"></span>
                     </div>
 
-                    <h2>Dr. Aris Setiawan</h2>
+                    <h2>{{ $expert->nama_ahli }}</h2>
                     <p class="expert-role">
                         <i class="fa-regular fa-lightbulb"></i>
-                        Plant Pathology Specialist
+                        {{ $expert->spesialisasi ?? 'Expert Botanist' }}
                     </p>
                 </div>
 
@@ -106,7 +106,7 @@
                             <div class="info-icon"><i class="fa-solid fa-graduation-cap"></i></div>
                             <div>
                                 <p class="info-label">UNIVERSITY</p>
-                                <h4>University of Agriculture</h4>
+                                <h4>{{ $expert->nama_almamater ?? '-' }}</h4>
                             </div>
                         </div>
 
@@ -114,7 +114,7 @@
                             <div class="info-icon"><i class="fa-solid fa-briefcase"></i></div>
                             <div>
                                 <p class="info-label">EXPERIENCE</p>
-                                <h4>8+ years experience</h4>
+                                <h4>{{ $expert->pengalaman_tahun ?? '0' }}+ years experience</h4>
                             </div>
                         </div>
 
@@ -122,7 +122,7 @@
                             <div class="info-icon"><i class="fa-solid fa-leaf"></i></div>
                             <div>
                                 <p class="info-label">EXPERTISE</p>
-                                <h4>Soil health, hydroponics, pest control</h4>
+                                <h4>{{ $expert->spesialisasi ?? 'Agriculture' }}</h4>
                             </div>
                         </div>
 
@@ -130,7 +130,7 @@
                             <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
                             <div>
                                 <p class="info-label">LOCATION</p>
-                                <h4>Jakarta, Indonesia</h4>
+                                <h4>{{ $expert->domisili ?? 'Indonesia' }}</h4>
                             </div>
                         </div>
                     </div>
@@ -140,17 +140,13 @@
 
                         <div class="about-box">
                             <p>
-                                "With nearly a decade of hands-on experience in agricultural sciences, I am dedicated to
-                                empowering modern farmers through sustainable practices. My work focuses on integrating
-                                cutting-edge technology with traditional soil wisdom to create resilient food systems.
-                                I believe that every plant has a story, and understanding its pathology is the key to
-                                a flourishing green future."
+                                "{{ $expert->bio ?? 'No bio description available yet.' }}"
                             </p>
                         </div>
                     </div>
 
                     <div class="action-row">
-                        <a href="/consultationUser" class="btn btn-primary">
+                        <a href="/lockRoomUser?expert_id={{ $expert->id }}" class="btn btn-primary">
                             <i class="fa-regular fa-square-plus"></i>
                             Start Consultation
                         </a>

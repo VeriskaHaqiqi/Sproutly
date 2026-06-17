@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
     { id: "nutrients", title: "Understanding Soil Nutrients and Fertilization", topic: "Soil Health", date: "2024-03-08", displayDate: "Mar 08, 2024", author: "Robert Martinez", description: "Learn how to test soil and apply the right nutrients for optimal plant growth and health.", image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80" },
     { id: "rainwater", title: "Rainwater Harvesting for Farm Use", topic: "Irrigation", date: "2024-03-07", displayDate: "Mar 07, 2024", author: "Olivia Green", description: "Implement effective rainwater collection systems to reduce dependency on external water sources.", image: "https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=800&q=80" }
   ];
-  const articles = allArticles.filter(a => bookmarkedKeys.includes(String(a.id)));
+  const articles = allArticles;
 
   function topicClass(topic) { return `topic-${topic.toLowerCase().replace(/\s+/g, "-")}`; }
   function normalizeText(text) { return text.toLowerCase().trim(); }

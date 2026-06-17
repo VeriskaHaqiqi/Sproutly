@@ -87,7 +87,7 @@ class JadwalAhliController extends Controller
     {
         $user = $request->user();
 
-        if ($user->role !== 'ahli') {
+        if (!$user || $user->role !== 'ahli') {
             return response()->json([
                 'message' => 'Hanya ahli botani yang bisa menambahkan jadwal'
             ], 403);

@@ -23,7 +23,7 @@
                 </div>
 
                 <nav class="sidebar-menu">
-                    <a href="/dashboardUser" class="menu-item">
+                    <a href="/dashboard-user" class="menu-item">
                         <img src="{{ asset('images/dashboard.png') }}" alt="Dashboard">
                         <span>Dashboard</span>
                     </a>
@@ -269,7 +269,7 @@
             </div>
 
             <a href="#" class="primary-link-btn">View Consultation</a>
-            <a href="#" class="secondary-link-btn">Back to Dashboard</a>
+            <a href="/dashboard-user" class="secondary-link-btn">Back to Dashboard</a>
         </div>
     </div>
 

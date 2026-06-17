@@ -35,8 +35,8 @@
                 <span>Dashboard</span>
             </a>
 
-            <a href="{{ route('consultexpert') }}" 
-            class="menu-link {{ request()->routeIs('consultexpert') ? 'active' : '' }}">
+            <a href="{{ route('consulexpert') }}" 
+            class="menu-link {{ request()->routeIs('consulexpert') ? 'active' : '' }}">
                 <img src="images/consultation.png">
                 <span>Consultation</span>
             </a>
@@ -83,8 +83,9 @@
             <h1>Payment Method Settings</h1>
             <p>Manage how clients pay you for consultations</p>
         </div>
-        <div class="topnav-user">
-            <img src="images/avatar.png" alt="User" class="avatar-img">
+        <div class="topnav-user" style="display: flex; align-items: center; gap: 10px;">
+            <span class="profile-name" style="font-weight: 600; color: #1f2937; font-family: 'Inter', sans-serif;">{{ auth()->user()->nama_user }}</span>
+            <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/fotoprofile.png') }}" alt="User" class="avatar-img" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
         </div>
     </header>
 

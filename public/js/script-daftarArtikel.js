@@ -41,26 +41,37 @@ articleSearch?.addEventListener("input", filterArticles);
 searchButton?.addEventListener("click", filterArticles);
 
 // ── Bookmark ──────────────────────────────────────
-const bookmarkedKeys = JSON.parse(localStorage.getItem('bookmarked_articles') || '[]');
 bookmarkBtns.forEach((btn) => {
   const card = btn.closest('.article-card');
   if (!card) return;
   const key = card.dataset.key;
-  if (bookmarkedKeys.includes(key)) {
-    btn.classList.add('bookmarked');
-  }
 
-  btn.addEventListener("click", (e) => {
+  btn.addEventListener("click", async (e) => {
     e.preventDefault(); // jangan ikut link artikel
     e.stopPropagation();
-    const isBookmarked = btn.classList.toggle("bookmarked");
-    let keys = JSON.parse(localStorage.getItem('bookmarked_articles') || '[]');
-    if (isBookmarked) {
-      if (!keys.includes(key)) keys.push(key);
-    } else {
-      keys = keys.filter(k => k !== key);
+
+    const isCurrentlyBookmarked = btn.classList.contains("bookmarked");
+    const url = `/artikel/${key}/bookmark`;
+    const method = isCurrentlyBookmarked ? "DELETE" : "POST";
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+    try {
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          "X-CSRF-TOKEN": csrfToken,
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        }
+      });
+      if (response.ok) {
+        btn.classList.toggle("bookmarked");
+      } else {
+        console.error("Failed to update bookmark status");
+      }
+    } catch (err) {
+      console.error("Error updating bookmark:", err);
     }
-    localStorage.setItem('bookmarked_articles', JSON.stringify(keys));
   });
 });
 

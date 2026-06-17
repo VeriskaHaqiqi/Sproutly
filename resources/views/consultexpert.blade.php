@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -81,7 +81,7 @@
                     <span class="profile-name">{{ auth()->user()->nama_user }}</span>
                     <span class="profile-role">Agriculture Expert</span>
                 </div>
-                <img src="{{ asset('images/fotoprofile.png') }}" alt="Expert Profile" class="profile-avatar">
+                <img src="{{ auth()->user()->profile_picture ? asset('storage/' . auth()->user()->profile_picture) : asset('images/fotoprofile.png') }}" alt="Expert Profile" class="profile-avatar">
             </a>
         </div>
     </header>

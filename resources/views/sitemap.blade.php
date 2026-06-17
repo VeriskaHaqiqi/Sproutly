@@ -11,9 +11,9 @@
 <header>
     <h1>🌱 Site Map Sproutly</h1>
     <nav>
-        <a href="index.html">Home</a> 
-        <a href="login.html">Login</a> 
-        <a href="register.html">Daftar</a>
+        <a href="/">Home</a> 
+        <a href="/login">Login</a> 
+        <a href="/register">Daftar</a>
     </nav>
     <hr>
 </header>

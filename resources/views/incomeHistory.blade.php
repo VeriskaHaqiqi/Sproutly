@@ -42,7 +42,7 @@
       <a href="{{ url('/setpricingexpert') }}" class="menu-link">
         <i class="fa-solid fa-tag"></i><span>Pricing</span>
       </a>
-      <a href="{{ url('/ConsultationhistoryUser') }}" class="menu-link">
+      <a href="{{ url('/ConsultationhistoryExpert') }}" class="menu-link">
         <i class="fa-solid fa-clock-rotate-left"></i><span>Client History</span>
       </a>
       <a href="{{ url('/accountExpert') }}" class="menu-link">

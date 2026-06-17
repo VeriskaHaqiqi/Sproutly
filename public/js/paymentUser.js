@@ -123,12 +123,18 @@ document.addEventListener("DOMContentLoaded", function () {
             fetch("/paymentUser", {
                 method: "POST",
                 headers: {
-                    "X-CSRF-TOKEN": csrfToken
+                    "X-CSRF-TOKEN": csrfToken,
+                    "Accept": "application/json"
                 },
                 body: formData
             })
-            .then(response => {
+            .then(async response => {
                 if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    if (errData.errors) {
+                        const firstErr = Object.values(errData.errors)[0][0];
+                        throw new Error(firstErr);
+                    }
                     throw new Error("HTTP error " + response.status);
                 }
                 return response.json();

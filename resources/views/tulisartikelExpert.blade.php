@@ -24,7 +24,7 @@
             </div> 
  
             <nav class="sidebar-menu">
-                <a href="/dashborad-ahli" class="menu-item">
+                <a href="/dashboard-ahli" class="menu-item">
                     <img src="{{ asset('images/dashboard.png') }}" alt="Dashboard">
                     <span>Dashboard</span>
                 </a>

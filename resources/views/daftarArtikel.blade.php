@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Sproutly - Article</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -125,7 +126,7 @@
                 </div>
               </div>
             </a>
-            <button class="bookmark-btn" type="button" aria-label="Bookmark article">
+            <button class="bookmark-btn {{ in_array($artikel->id, $bookmarkedIds) ? 'bookmarked' : '' }}" type="button" aria-label="Bookmark article">
               <svg viewBox="0 0 24 24" fill="none"><path d="M8 4H16C17.1 4 18 4.9 18 6V20L12 16L6 20V6C6 4.9 6.9 4 8 4Z" stroke="currentColor" stroke-width="2"/></svg>
             </button>
           </article>

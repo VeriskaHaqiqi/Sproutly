@@ -1,3 +1,6 @@
+@php
+  $expert = $expert ?? (auth()->check() && auth()->user()->role === 'ahli' ? auth()->user()->ahliBotani : \App\Models\AhliBotani::with('user')->first());
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sproutly — Profil Ahli</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fraunces:wght@700;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="{{ asset('style.css') }}" />
 </head>
 <body>
 
@@ -22,14 +25,17 @@
       </div>
     </div>
     <nav class="nav">
-      <a href="../home/index.html" class="nav-item"><span class="nav-icon">🏠</span><span>Home</span></a>
-      <a href="../consultation/index.html" class="nav-item active"><span class="nav-icon">💬</span><span>Konsultasi</span></a>
-      <a href="#" class="nav-item"><span class="nav-icon">📰</span><span>Artikel</span></a>
-      <a href="#" class="nav-item"><span class="nav-icon">🔖</span><span>Bookmark</span></a>
-      <a href="#" class="nav-item"><span class="nav-icon">👤</span><span>Profil</span></a>
+      <a href="{{ url('/homeUser') }}" class="nav-item"><span class="nav-icon">🏠</span><span>Home</span></a>
+      <a href="{{ url('/consultationUser') }}" class="nav-item active"><span class="nav-icon">💬</span><span>Konsultasi</span></a>
+      <a href="{{ url('/daftarArtikel') }}" class="nav-item"><span class="nav-icon">📰</span><span>Artikel</span></a>
+      <a href="{{ url('/bookmarkArtikelUser') }}" class="nav-item"><span class="nav-icon">🔖</span><span>Bookmark</span></a>
+      <a href="{{ url('/accountUser') }}" class="nav-item"><span class="nav-icon">👤</span><span>Profil</span></a>
     </nav>
     <div class="sidebar-footer">
-      <a href="../login/index.html" class="logout-btn"><span>🚪</span> Logout</a>
+      <form method="POST" action="{{ route('logout') }}" id="logout-form" style="display: none;">
+        @csrf
+      </form>
+      <a href="#" class="logout-btn" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><span>🚪</span> Logout</a>
     </div>
   </div>
 
@@ -37,7 +43,7 @@
   <main class="main">
 
     <!-- Back button -->
-    <a href="../consultation/index.html" class="back-btn">
+    <a href="{{ url('/find-experts') }}" class="back-btn">
       <span>←</span> Kembali ke Daftar Ahli
     </a>
 
@@ -48,22 +54,28 @@
 
         <div class="profile-card">
           <div class="profile-status-badge">🟢 Online</div>
-          <div class="profile-avatar">👨‍🔬</div>
-          <div class="profile-name">Dr. Amara Wijaya</div>
-          <div class="profile-title">Spesialis Penyakit Tanaman</div>
+          <div class="profile-avatar">
+            @if($expert->user?->profile_picture)
+              <img src="{{ asset('storage/' . $expert->user->profile_picture) }}" alt="{{ $expert->nama_ahli }}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+            @else
+              👨‍🔬
+            @endif
+          </div>
+          <div class="profile-name">{{ $expert->nama_ahli }}</div>
+          <div class="profile-title">{{ $expert->spesialisasi ?? 'Spesialis Penyakit Tanaman' }}</div>
           <div class="profile-rating-row">
-            <span class="profile-rating">⭐ 4.9</span>
-            <span class="profile-reviews">128 ulasan</span>
+            <span class="profile-rating">⭐ {{ number_format($expert->ratings->avg('nilai') ?? 4.8, 1) }}</span>
+            <span class="profile-reviews">{{ $expert->ratings->count() ?? 128 }} ulasan</span>
           </div>
 
           <div class="profile-stats">
             <div class="pstat">
-              <div class="pstat-val">5+</div>
+              <div class="pstat-val">{{ $expert->pengalaman_tahun ?? '5' }}+</div>
               <div class="pstat-label">Tahun Pengalaman</div>
             </div>
             <div class="pstat-divider"></div>
             <div class="pstat">
-              <div class="pstat-val">340+</div>
+              <div class="pstat-val">{{ $expert->ratings->count() * 3 ?? 150 }}+</div>
               <div class="pstat-label">Konsultasi</div>
             </div>
             <div class="pstat-divider"></div>
@@ -75,7 +87,7 @@
 
           <div class="profile-price-box">
             <div class="price-label">Tarif Konsultasi</div>
-            <div class="price-value">Rp 75.000<span class="price-per">/sesi</span></div>
+            <div class="price-value">Rp {{ number_format($expert->tarif()->where('status_aktif', 'aktif')->first()?->tarif ?? 75000, 0, ',', '.') }}<span class="price-per">/sesi</span></div>
           </div>
 
           <!-- Payment Info -->
@@ -83,10 +95,10 @@
             <div class="payment-title">💳 Info Pembayaran</div>
             <div class="payment-row"><span class="payment-label">Bank</span><span class="payment-val">BCA</span></div>
             <div class="payment-row"><span class="payment-label">No. Rekening</span><span class="payment-val">1234567890</span></div>
-            <div class="payment-row"><span class="payment-label">Atas Nama</span><span class="payment-val">Amara Wijaya</span></div>
+            <div class="payment-row"><span class="payment-label">Atas Nama</span><span class="payment-val">{{ $expert->nama_ahli }}</span></div>
           </div>
 
-          <button class="start-consult-btn" onclick="alert('Fitur konsultasi segera aktif 🌱')">
+          <button class="start-consult-btn" onclick="window.location.href='/lockRoomUser?expert_id={{ $expert->id }}'">
             💬 Mulai Konsultasi
           </button>
           <button class="book-btn" onclick="alert('Jadwal konsultasi segera tersedia 🌿')">
@@ -103,7 +115,7 @@
         <div class="detail-card">
           <div class="detail-title">📋 Tentang</div>
           <p class="detail-text">
-            Dr. Amara Wijaya adalah ahli botani berpengalaman yang mengkhususkan diri dalam diagnosis dan penanganan penyakit tanaman. Beliau memiliki gelar Doktor Ilmu Tanaman dari Universitas Gadjah Mada dan telah membantu ratusan petani mengatasi masalah tanaman mereka.
+            {{ $expert->bio ?? 'Beliau adalah ahli botani berpengalaman yang mengkhususkan diri dalam diagnosis dan penanganan penyakit tanaman.' }}
           </p>
         </div>
 

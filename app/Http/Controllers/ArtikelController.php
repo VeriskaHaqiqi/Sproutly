@@ -23,7 +23,7 @@ class ArtikelController extends Controller
     {   
     $user = $request->user();
 
-    if ($user->role !== 'ahli') {
+    if (!$user || $user->role !== 'ahli') {
         return response()->json([
             'message' => 'Hanya ahli botani yang bisa membuat artikel'
         ], 403);
@@ -63,7 +63,7 @@ class ArtikelController extends Controller
     {
         $user = auth()->user();
 
-        if ($user->role !== 'ahli') {
+        if (!$user || $user->role !== 'ahli') {
             return redirect()->back()->with('error', 'Hanya ahli botani yang bisa membuat artikel');
         }
 
@@ -145,7 +145,7 @@ class ArtikelController extends Controller
     {
     $user = $request->user();
 
-    if ($user->role !== 'ahli') {
+    if (!$user || $user->role !== 'ahli') {
         return response()->json([
             'message' => 'Hanya ahli botani yang bisa menghapus artikel'
         ], 403);

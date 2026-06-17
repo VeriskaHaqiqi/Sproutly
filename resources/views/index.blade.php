@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sproutly by AVI – Konsultasi Pertanian Terpercaya</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="{{ asset('style.css') }}" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Lora:ital,wght@0,600;1,400&display=swap" rel="stylesheet" />
 </head>
 <body>
@@ -102,12 +102,12 @@
       <div class="cta-card cta-green">
         <h3>Masuk</h3>
         <p>Sudah punya akun? Masuk untuk mengakses semua fitur konsultasi dan artikel premium.</p>
-        <button class="btn-cta btn-white" onclick="window.location.href='login.html'">Login Sekarang</button>
+        <button class="btn-cta btn-white" onclick="window.location.href='/login'">Login Sekarang</button>
       </div>
       <div class="cta-card cta-lime">
         <h3>Daftar</h3>
         <p>Bergabung dengan komunitas petani modern dan nikmati konsultasi gratis untuk anggota baru.</p>
-        <button class="btn-cta btn-white" onclick="window.location.href='register.html'">Daftar Sekarang</button>
+        <button class="btn-cta btn-white" onclick="window.location.href='/register'">Daftar Sekarang</button>
       </div>
     </div>
   </section>

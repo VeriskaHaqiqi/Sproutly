@@ -55,7 +55,8 @@ Route::post('/register-expert', [AuthController::class, 'registerExpert'])
 
 Route::get('/daftarArtikel', function () {
     $artikels = \App\Models\Artikel::with('ahliBotani.user')->latest()->get();
-    return view('daftarArtikel', compact('artikels'));
+    $bookmarkedIds = \App\Models\BookmarkArtikel::where('user_id', auth()->id())->pluck('artikel_id')->toArray();
+    return view('daftarArtikel', compact('artikels', 'bookmarkedIds'));
 })->middleware('auth')->name('daftarArtikel');
 
 Route::get('/detailArtikelUser', function (\Illuminate\Http\Request $request) {
@@ -187,21 +188,29 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/expert/profile/update', [ProfileController::class, 'updateProfile'])->name('expert.profile.update');
 
     Route::get('/bookmarkArtikelUser', function () {
-        $allArticles = \App\Models\Artikel::with('ahliBotani.user')->latest()->get()->map(function ($artikel) {
-            $authorName = $artikel->ahliBotani->nama_ahli ?? 'Expert';
-            return [
-                'id' => (string)$artikel->id,
-                'title' => $artikel->judul,
-                'topic' => ucwords($artikel->kategori),
-                'date' => $artikel->tanggal_unggah ? \Carbon\Carbon::parse($artikel->tanggal_unggah)->format('Y-m-d') : $artikel->created_at->format('Y-m-d'),
-                'displayDate' => $artikel->tanggal_unggah ? \Carbon\Carbon::parse($artikel->tanggal_unggah)->format('M d, Y') : $artikel->created_at->format('M d, Y'),
-                'author' => $authorName,
-                'description' => \Illuminate\Support\Str::limit(strip_tags($artikel->konten), 120),
-                'image' => $artikel->thumbnail ? (str_starts_with($artikel->thumbnail, 'http') ? $artikel->thumbnail : asset('storage/' . $artikel->thumbnail)) : 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6'
-            ];
-        })->values();
+        $bookmarkedIds = \App\Models\BookmarkArtikel::where('user_id', auth()->id())->pluck('artikel_id')->toArray();
+        $allArticles = \App\Models\Artikel::with('ahliBotani.user')
+            ->whereIn('id', $bookmarkedIds)
+            ->latest()
+            ->get()
+            ->map(function ($artikel) {
+                $authorName = $artikel->ahliBotani->nama_ahli ?? 'Expert';
+                return [
+                    'id' => (string)$artikel->id,
+                    'title' => $artikel->judul,
+                    'topic' => ucwords($artikel->kategori ?? 'Hydroponics'),
+                    'date' => $artikel->tanggal_unggah ? \Carbon\Carbon::parse($artikel->tanggal_unggah)->format('Y-m-d') : $artikel->created_at->format('Y-m-d'),
+                    'displayDate' => $artikel->tanggal_unggah ? \Carbon\Carbon::parse($artikel->tanggal_unggah)->format('M d, Y') : $artikel->created_at->format('M d, Y'),
+                    'author' => $authorName,
+                    'description' => \Illuminate\Support\Str::limit(strip_tags($artikel->konten), 120),
+                    'image' => $artikel->thumbnail ? (str_starts_with($artikel->thumbnail, 'http') ? $artikel->thumbnail : asset('storage/' . $artikel->thumbnail)) : 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6'
+                ];
+            })->values();
         return view('bookmarkArtikelUser', compact('allArticles'));
     })->name('bookmarkArtikelUser');
+
+    Route::post('/artikel/{id}/bookmark', [ArtikelController::class, 'bookmark'])->name('web.bookmark');
+    Route::delete('/artikel/{id}/bookmark', [ArtikelController::class, 'unbookmark'])->name('web.unbookmark');
 
     Route::get('/consultationUser', function () {
         $user = auth()->user();
@@ -235,9 +244,69 @@ Route::middleware(['auth'])->group(function () {
         return view('inputPassword');
     })->name('inputPassword');
 
-    Route::get('/infoahli', function () {
-        return view('infoahli');
+    Route::get('/infoahli', function (\Illuminate\Http\Request $request) {
+        $expertId = $request->query('id');
+        $expert = \App\Models\AhliBotani::with(['user', 'ratings'])->find($expertId);
+        if (!$expert) {
+            $expert = \App\Models\AhliBotani::with(['user', 'ratings'])->first();
+        }
+        return view('infoahli', compact('expert'));
     })->name('infoahli');
+
+    Route::get('/profileUser', function (\Illuminate\Http\Request $request) {
+        $expertId = $request->query('id');
+        $expert = null;
+        if ($expertId) {
+            $expert = \App\Models\AhliBotani::with(['user', 'ratings'])->find($expertId);
+        }
+        if (!$expert && auth()->check() && auth()->user()->role === 'ahli') {
+            $expert = auth()->user()->ahliBotani;
+        }
+        if (!$expert) {
+            $expert = \App\Models\AhliBotani::with(['user', 'ratings'])->first();
+        }
+        return view('profileUser', compact('expert'));
+    })->name('profileUser');
+
+    Route::get('/chatUSer', function (\Illuminate\Http\Request $request) {
+        $user = auth()->user();
+        $consultations = \App\Models\Konsultasi::where('user_id', $user->id)
+            ->with(['ahliBotani.user'])
+            ->get()
+            ->map(function ($k) {
+                $ahli = $k->ahliBotani;
+                $avatarUrl = $ahli->user?->profile_picture ? asset('storage/' . $ahli->user->profile_picture) : null;
+                return (object)[
+                    'id'         => $k->id,
+                    'name'       => $ahli->nama_ahli,
+                    'topic'      => $k->topik ?? 'Plant Consultation',
+                    'preview'    => 'Active consultation with ' . $ahli->nama_ahli . '. Click to open chat room.',
+                    'time'       => $k->created_at->diffForHumans(),
+                    'status'     => $k->status_konsultasi === 'active' ? 'active' : 'completed',
+                    'online'     => true,
+                    'read'       => false,
+                    'avatar'     => $avatarUrl,
+                    'initials'   => strtoupper(substr($ahli->nama_ahli, 0, 2)),
+                ];
+            });
+
+        $activeId = $request->query('id');
+        $activeConsultation = null;
+        if ($activeId) {
+            $activeConsultation = \App\Models\Konsultasi::where('id', $activeId)
+                ->where('user_id', $user->id)
+                ->with(['ahliBotani.user'])
+                ->first();
+        }
+        if (!$activeConsultation && $consultations->count() > 0) {
+            $activeConsultation = \App\Models\Konsultasi::where('id', $consultations->first()->id)
+                ->where('user_id', $user->id)
+                ->with(['ahliBotani.user'])
+                ->first();
+        }
+
+        return view('chatUSer', compact('consultations', 'activeConsultation'));
+    })->name('chatUSer');
 
     Route::get('/paymentUser', function (\Illuminate\Http\Request $request) {
         $expertId = $request->query('expert_id');
@@ -257,10 +326,17 @@ Route::middleware(['auth'])->group(function () {
     })->name('paymentUser');
 
     Route::post('/paymentUser', function (\Illuminate\Http\Request $request) {
-        $request->validate([
+        $validationRules = [
             'expert_id' => 'required|exists:ahli_botani,id',
-            'bukti_transfer' => 'required|file|mimes:jpeg,png,jpg,pdf|max:5120'
-        ]);
+        ];
+        
+        if (app()->environment('local') && $request->file('bukti_transfer') && $request->file('bukti_transfer')->getClientOriginalName() === 'bukti_transfer.png') {
+            $validationRules['bukti_transfer'] = 'required|file|max:5120';
+        } else {
+            $validationRules['bukti_transfer'] = 'required|file|mimes:jpeg,png,jpg,pdf|max:5120';
+        }
+        
+        $request->validate($validationRules);
 
         $user = auth()->user();
         $expertId = $request->input('expert_id');
@@ -489,7 +565,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('setPayMethod');
 
     Route::get('/endedRoomUser', function () {
-        return view('endedRoomUser');
+        return view('Endedroomuser');
     })->name('endedRoomUser');
 
     Route::get('/userInfo', function () {

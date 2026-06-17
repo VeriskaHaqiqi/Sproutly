@@ -39,7 +39,7 @@ class ProfileController extends Controller
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
-        $user = Auth::user();
+        $user = \App\Models\User::find(Auth::id());
 
         if ($user->profile_picture) {
             Storage::disk('public')->delete($user->profile_picture);
@@ -47,7 +47,8 @@ class ProfileController extends Controller
 
         $path = $request->file('photo')->store('profile-photos', 'public');
         
-        $user->update(['profile_picture' => $path]);
+        $user->profile_picture = $path;
+        $user->save();
 
         return response()->json([
             'message' => 'Profile photo updated successfully',
@@ -110,7 +111,7 @@ class ProfileController extends Controller
             return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
         }
 
-        $user = Auth::user();
+        $user = \App\Models\User::find(Auth::id());
         
         $rules = [
             'full_name' => 'required|string|max:50',
