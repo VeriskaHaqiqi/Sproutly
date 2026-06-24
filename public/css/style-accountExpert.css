@@ -565,7 +565,7 @@ body::before {
     width: 100%;
     margin-left: 0;
     transition: margin-left 0.35s ease, width 0.35s ease;
-    background: background:
+    background: background
     radial-gradient(ellipse at 5% 10%, rgba(208,255,153,0.30), transparent 50%),
     radial-gradient(ellipse at 95% 85%, rgba(118,234,208,0.28), transparent 50%),
     radial-gradient(ellipse at 90% 5%, rgba(255,255,159,0.20), transparent 45%),
