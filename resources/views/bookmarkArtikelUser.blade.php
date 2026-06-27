@@ -220,7 +220,12 @@
   </div>
 
   <script>
-    window.ALL_ARTICLES = @json($allArticles);
+    window.BOOKMARKED_ARTICLES = @json($bookmarkedArticles ?? []);
+    window.BOOKMARK_STATS = @json([
+        'total' => $totalSaved ?? 0,
+        'this_week' => $savedThisWeek ?? 0,
+        'top_category' => $topCategory ?? 'No Articles'
+    ]);
   </script>
   <script src="{{ asset('js/bookmarkArtikelUser.js') }}"></script>
 </body>

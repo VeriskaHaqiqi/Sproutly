@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController; 
 use App\Http\Controllers\JadwalAhliController;
 use App\Http\Controllers\ArtikelController;
+use App\Http\Controllers\BookmarkUserController;
 use App\Models\AhliBotani;
 use App\Models\TarifAhli;
 use App\Models\Konsultasi;
@@ -14,6 +15,7 @@ use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\KonsultasiController;
 use App\Http\Controllers\UserHistoryController;
 use App\Http\Controllers\ReviewsController;
+
 
 
 
@@ -64,6 +66,15 @@ Route::get('/daftarArtikel', function () {
     $bookmarkedIds = \App\Models\BookmarkArtikel::where('user_id', auth()->id())->pluck('artikel_id')->toArray();
     return view('daftarArtikel', compact('artikels', 'bookmarkedIds'));
 })->middleware('auth')->name('daftarArtikel');
+
+Route::get('/bookmarkArtikelUser', 
+    [BookmarkUserController::class, 'index'])->middleware('auth');
+
+Route::get('/bookmark-data', 
+    [BookmarkUserController::class, 'getBookmarkData'])->middleware('auth');
+
+Route::post('/artikel/{id}/bookmark-toggle', 
+[ArtikelController::class, 'toggleBookmarkWeb'])->middleware('auth');
 
 Route::get('/detailArtikelUser', function (\Illuminate\Http\Request $request) {
     $id = $request->query('id');

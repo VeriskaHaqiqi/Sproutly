@@ -22,4 +22,10 @@ class BookmarkArtikel extends Model
     {
         return $this->belongsTo(Artikel::class, 'artikel_id');
     }
+
+    // Tambahkan scope untuk user
+    public function scopeForUser($query, $userId)
+    {
+        return $query->where('user_id', $userId);
+    }
 }

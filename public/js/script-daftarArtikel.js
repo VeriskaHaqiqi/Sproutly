@@ -7,6 +7,33 @@ const bookmarkBtns  = document.querySelectorAll(".bookmark-btn");
 
 let activeTopic = "all";
 
+// ── Toast Notification ────────────────────────────
+function showToast(message, type = 'success') {
+  const toast = document.createElement('div');
+  toast.style.cssText = `
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 12px 24px;
+    background: ${type === 'success' ? '#10b981' : '#ef4444'};
+    color: white;
+    border-radius: 8px;
+    font-size: 14px;
+    z-index: 9999;
+    animation: slideIn 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    font-family: 'Inter', sans-serif;
+  `;
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transition = 'opacity 0.3s';
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
 // ── Filter ────────────────────────────────────────
 function filterArticles() {
   const keyword = (articleSearch?.value || "").trim().toLowerCase();
@@ -51,26 +78,42 @@ bookmarkBtns.forEach((btn) => {
     e.stopPropagation();
 
     const isCurrentlyBookmarked = btn.classList.contains("bookmarked");
-    const url = `/artikel/${key}/bookmark`;
-    const method = isCurrentlyBookmarked ? "DELETE" : "POST";
+    const url = `/artikel/${key}/bookmark-toggle`;
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+    // Disable button sementara
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
 
     try {
       const response = await fetch(url, {
-        method: method,
+        method: "POST",
         headers: {
           "X-CSRF-TOKEN": csrfToken,
           "Accept": "application/json",
           "Content-Type": "application/json"
         }
       });
-      if (response.ok) {
+      
+      const data = await response.json();
+      
+      if (data.success) {
         btn.classList.toggle("bookmarked");
+        if (data.isBookmarked) {
+          showToast('✅ Artikel berhasil di-bookmark', 'success');
+        } else {
+          showToast('🗑️ Bookmark dihapus', 'success');
+        }
       } else {
+        showToast('❌ ' + (data.message || 'Gagal toggle bookmark'), 'error');
         console.error("Failed to update bookmark status");
       }
     } catch (err) {
       console.error("Error updating bookmark:", err);
+      showToast('❌ Gagal toggle bookmark', 'error');
+    } finally {
+      btn.disabled = false;
+      btn.style.opacity = '1';
     }
   });
 });
@@ -105,3 +148,13 @@ filterArticles();
     else { mainContent.classList.remove("shifted"); mainContent.classList.add("full"); }
   });
 })();
+
+// ── Tambahkan CSS untuk animasi toast ─────────────
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(20px) translateX(-50%); }
+    to { opacity: 1; transform: translateY(0) translateX(-50%); }
+  }
+`;
+document.head.appendChild(style);

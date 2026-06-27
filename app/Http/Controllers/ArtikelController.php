@@ -212,4 +212,53 @@ class ArtikelController extends Controller
             'data' => $bookmark
         ]);
     }
+    /**
+ * Toggle bookmark (web) - untuk user
+ */
+    public function toggleBookmarkWeb(Request $request, $id)
+    {
+    $user = auth()->user();
+    
+    if (!$user) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Silakan login terlebih dahulu'
+        ], 401);
+    }
+
+    $artikel = Artikel::find($id);
+    
+    if (!$artikel) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Artikel tidak ditemukan'
+        ], 404);
+    }
+
+    // Cek apakah sudah di-bookmark
+    $bookmark = BookmarkArtikel::where('user_id', $user->id)
+        ->where('artikel_id', $id)
+        ->first();
+
+    if ($bookmark) {
+        // Hapus bookmark
+        $bookmark->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'Bookmark berhasil dihapus',
+            'isBookmarked' => false,
+        ]);
+    } else {
+        // Tambah bookmark
+        BookmarkArtikel::create([
+            'user_id' => $user->id,
+            'artikel_id' => $id,
+        ]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Artikel berhasil di-bookmark',
+            'isBookmarked' => true,
+        ]);
+    }
+    }
 }
