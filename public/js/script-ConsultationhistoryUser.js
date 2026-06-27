@@ -1,109 +1,197 @@
-const menuToggle  = document.getElementById("menuToggle");
-const sidebar     = document.getElementById("sidebar");
-const mainContent = document.getElementById("mainContent");
+// ============================================================
+// script-ConsultationhistoryUser.js - Real Data from API
+// ============================================================
 
-function openSidebar() {
-  if (window.innerWidth <= 768) {
-    sidebar.classList.add("show");
-    sidebar.classList.remove("closed");
-  } else {
-    sidebar.classList.remove("closed");
-    mainContent.classList.add("shifted");
-    mainContent.classList.remove("full");
-  }
-}
-function closeSidebar() {
-  sidebar.classList.add("closed");
-  sidebar.classList.remove("show");
-  mainContent.classList.remove("shifted");
-  mainContent.classList.add("full");
-}
-function isSidebarOpen() {
-  if (window.innerWidth <= 768) return sidebar.classList.contains("show");
-  return !sidebar.classList.contains("closed");
-}
+var PER_PAGE = 5;
+var currentPage = 1;
+var allConsultations = [];
 
-menuToggle.addEventListener("click", () => {
-  isSidebarOpen() ? closeSidebar() : openSidebar();
-});
-document.addEventListener("click", (e) => {
-  if (window.innerWidth <= 768 && isSidebarOpen() && !sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
-    closeSidebar();
-  }
-});
-window.addEventListener("resize", () => {
-  if (window.innerWidth > 768) sidebar.classList.remove("show");
-  else { mainContent.classList.remove("shifted"); mainContent.classList.add("full"); }
-});
-
-const conversations = [
-  { id: 1, status: "active",    name: "Reza Firmansyah", tag: "Crop Science",       tagClass: "tag-soil-science",    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80", preview: "Reza: Morning, for watering you should do it before 9 AM...", time: "10:24", online: true,  unread: true,  url: "/roomChatUser" },
-  { id: 2, status: "active",    name: "Siti Rahayu",     tag: "Soil Management",    tagClass: "tag-soil-science",    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80", preview: "Siti: Soil samples show low nitrogen. I recommend organic fertilizer...", time: "09:15", online: true,  unread: false, url: "/roomChatUser" },
-  { id: 3, status: "active",    name: "Bagas Priyatno",  tag: "Pest Control",       tagClass: "tag-pest-control",    avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&q=80", preview: "Bagas: The pest you mentioned is likely Spodoptera frugiperda...", time: "Yesterday", online: false, unread: true,  url: "/roomChatUser" },
-  { id: 4, status: "completed", name: "Dewi Kusuma",     tag: "Organic Farming",    tagClass: "tag-organic-farming", avatar: "https://images.unsplash.com/photo-1504593811423-6dd665756598?w=200&q=80", preview: "Dewi: Great, your organic compost plan looks solid. Keep it up!", time: "Mar 10", online: false, unread: false, url: "/endedRoomUser" },
-  { id: 5, status: "completed", name: "Hendra Wibowo",   tag: "Irrigation Systems", tagClass: "tag-irrigation",      avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&q=80", preview: "Hendra: The drip irrigation plan has been sent to your email.", time: "Mar 5",  online: false, unread: false, url: "/endedRoomUser" },
-];
-
-let activeStatus  = "active";
-let searchKeyword = "";
-
-function renderConversations() {
-  const list  = document.getElementById("conversationList");
-  const empty = document.getElementById("emptyState");
-
-  const filtered = conversations.filter(c =>
-    c.status === activeStatus &&
-    (!searchKeyword ||
-      c.name.toLowerCase().includes(searchKeyword) ||
-      c.tag.toLowerCase().includes(searchKeyword) ||
-      c.preview.toLowerCase().includes(searchKeyword))
-  );
-
-  list.innerHTML = "";
-  if (filtered.length === 0) { empty.classList.remove("hidden"); return; }
-  empty.classList.add("hidden");
-
-  filtered.forEach(c => {
-    const div = document.createElement("div");
-    div.className = "conversation-item";
-
-    const onlineDot = c.online ? '<span class="online-dot"></span>' : "";
-    const badge = c.status === "completed"
-      ? `<span class="completed-badge"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M3 8L6.5 11.5L13 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Ended</span>`
-      : "";
-    const check = c.unread ? "" : `<svg class="read-check" viewBox="0 0 24 24" fill="none"><path d="M2 12L7 17L14 9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 17L16 9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-
-    div.innerHTML = `
-      <div class="conversation-left">
-        <div class="conversation-avatar"><img src="${c.avatar}" alt="${c.name}"></div>
-        <div class="conversation-main">
-          <div class="conversation-name">${c.name}</div>
-          <div class="conversation-meta-row">
-            <span class="conversation-tag ${c.tagClass}">${c.tag}</span>
-            ${onlineDot}${badge}
-          </div>
-          <div class="conversation-preview">${c.preview}</div>
-        </div>
-      </div>
-      <div class="conversation-right">${check}<span>${c.time}</span></div>`;
-
-    div.addEventListener("click", function () { window.location.href = c.url; });
-    list.appendChild(div);
-  });
+// ──────────────────────────────────────────────────────────────
+// FETCH DATA FROM API
+// ──────────────────────────────────────────────────────────────
+function fetchHistoryData() {
+    fetch('/history-user-data', {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json',
+        }
+    })
+    .then(function(res) {
+        return res.json();
+    })
+    .then(function(data) {
+        if (Array.isArray(data)) {
+            allConsultations = data;
+        } else {
+            allConsultations = [];
+        }
+        renderTable();
+    })
+    .catch(function(err) {
+        console.error('Failed to fetch history:', err);
+        allConsultations = [];
+        renderTable();
+    });
 }
 
-document.getElementById("statusTabs").addEventListener("click", (e) => {
-  const tab = e.target.closest(".status-tab");
-  if (!tab) return;
-  document.querySelectorAll(".status-tab").forEach(t => t.classList.remove("active"));
-  tab.classList.add("active");
-  activeStatus = tab.dataset.status;
-  renderConversations();
-});
+// ──────────────────────────────────────────────────────────────
+// FILTER
+// ──────────────────────────────────────────────────────────────
+function getFiltered() {
+    var q = document.getElementById("searchInput").value.trim().toLowerCase();
+    var st = document.getElementById("statusFilter").value;
+    var py = document.getElementById("paymentFilter").value;
+    var dt = document.getElementById("dateFilter").value;
 
-document.getElementById("conversationSearch").addEventListener("input", (e) => {
-  searchKeyword = e.target.value.trim().toLowerCase();
-  renderConversations();
-});
+    var dtStr = "";
+    if (dt) {
+        var d = new Date(dt + "T12:00:00");
+        dtStr = d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+        dtStr = dtStr.replace(/\s+/g, " ").trim();
+    }
 
-renderConversations();
+    return allConsultations.filter(function(c) {
+        var ms = !q || c.expert.toLowerCase().includes(q) || c.topic.toLowerCase().includes(q) || c.id.toLowerCase().includes(q);
+        var mv = !st || c.status.toLowerCase() === st.toLowerCase();
+        var mp = !py || c.payment.toLowerCase() === py.toLowerCase();
+        var cDate = c.date.replace(/\s+/g, " ").trim();
+        var md = !dtStr || cDate === dtStr;
+        return ms && mv && mp && md;
+    });
+}
+
+// ──────────────────────────────────────────────────────────────
+// RENDER TABLE
+// ──────────────────────────────────────────────────────────────
+// ── RENDER TABLE ──
+function renderTable() {
+    var filtered = getFiltered();
+    var totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+    if (currentPage > totalPages) currentPage = 1;
+    var items = filtered.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
+
+    var tbody = document.getElementById("tableBody");
+    if (!tbody) return;
+
+    if (items.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:48px;color:#9aaa9e;font-size:14px;">No completed consultations found.</td></tr>';
+    } else {
+        tbody.innerHTML = items.map(function(c) {
+            // HAPUS tombol Review di history, pindahkan ke halaman Reviews
+            return '<tr>' +
+                '<td class="td-id">' + c.id + '</td>' +
+                '<td>' + c.expert + '</td>' +  // HANYA NAMA, TANPA AVATAR
+                '<td>' + c.topic + '</td>' +
+                '<td class="td-date">' + c.date + '</td>' +
+                '<td><span class="status-badge status-completed">' + c.status + '</span></td>' +
+                '<td><span class="pay-badge ' + (c.payment === 'Refunded' ? 'pay-refunded' : 'pay-paid') + '">' + c.payment + '</span></td>' +
+                '<td>' +
+                    '<button class="view-btn" onclick="openDetail(\'' + c.id + '\')">View</button>' +
+                '</td>' +
+            '</tr>';
+        }).join("");
+    }
+
+    renderPagination(totalPages);
+}
+
+// ──────────────────────────────────────────────────────────────
+// PAGINATION
+// ──────────────────────────────────────────────────────────────
+function renderPagination(totalPages) {
+    var pg = document.getElementById("pagination");
+    if (!pg) return;
+    pg.innerHTML = "";
+
+    var prev = document.createElement("button");
+    prev.className = "pg-btn pg-arrow";
+    prev.innerHTML = '‹';
+    prev.disabled = currentPage === 1;
+    prev.onclick = function() { currentPage--; renderTable(); };
+    pg.appendChild(prev);
+
+    for (var i = 1; i <= totalPages; i++) {
+        (function(p) {
+            var b = document.createElement("button");
+            b.className = "pg-btn" + (p === currentPage ? " active" : "");
+            b.textContent = p;
+            b.onclick = function() { currentPage = p; renderTable(); };
+            pg.appendChild(b);
+        })(i);
+    }
+
+    var next = document.createElement("button");
+    next.className = "pg-btn pg-arrow";
+    next.innerHTML = '›';
+    next.disabled = currentPage === totalPages;
+    next.onclick = function() { currentPage++; renderTable(); };
+    pg.appendChild(next);
+}
+
+// ──────────────────────────────────────────────────────────────
+// DETAIL MODAL
+// ──────────────────────────────────────────────────────────────
+function openDetail(id) {
+    var c = allConsultations.find(function(x) { return x.id === id; });
+    if (!c) return;
+
+    var modalBody = document.getElementById("modalBody");
+    if (!modalBody) return;
+
+    modalBody.innerHTML =
+        '<div class="detail-expert-row">' +
+            '<img src="' + c.avatar + '" class="detail-av" alt="' + c.expert + '" onerror="this.src=\'https://ui-avatars.com/api/?name=' + encodeURIComponent(c.expert) + '&background=76ead0&color=1a2636\'">' +
+            '<div>' +
+                '<div class="detail-client-name">' + c.expert + '</div>' +
+                '<div class="detail-expert-role">' + (c.role || 'Expert') + '</div>' +
+            '</div>' +
+        '</div>' +
+        '<div class="detail-grid">' +
+            '<div class="detail-item"><span class="detail-label">Consultation ID</span><span class="detail-value td-id">' + c.id + '</span></div>' +
+            '<div class="detail-item"><span class="detail-label">Topic</span><span class="detail-value">' + c.topic + '</span></div>' +
+            '<div class="detail-item"><span class="detail-label">Date</span><span class="detail-value">' + c.date + '</span></div>' +
+            '<div class="detail-item"><span class="detail-label">Duration</span><span class="detail-value">' + (c.duration || '—') + '</span></div>' +
+            '<div class="detail-item"><span class="detail-label">Status</span><span class="detail-value"><span class="status-badge status-completed">' + c.status + '</span></span></div>' +
+            '<div class="detail-item"><span class="detail-label">Payment</span><span class="detail-value"><span class="pay-badge ' + (c.payment === 'Refunded' ? 'pay-refunded' : 'pay-paid') + '">' + c.payment + '</span></span></div>' +
+            '<div class="detail-item"><span class="detail-label">Fee</span><span class="detail-value" style="font-weight:700">' + c.fee + '</span></div>' +
+        '</div>' +
+        '<div class="detail-notes">' +
+            '<div class="detail-label" style="margin-bottom:8px">Session Notes</div>' +
+            '<p>' + (c.notes || 'No notes available') + '</p>' +
+        '</div>';
+
+    var overlay = document.getElementById("modalOverlay");
+    if (overlay) overlay.classList.add("show");
+}
+
+function closeModal() {
+    var overlay = document.getElementById("modalOverlay");
+    if (overlay) overlay.classList.remove("show");
+}
+
+// ──────────────────────────────────────────────────────────────
+// EVENT LISTENERS
+// ──────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+    fetchHistoryData();
+
+    var closeBtn = document.getElementById("modalClose");
+    if (closeBtn) closeBtn.addEventListener("click", closeModal);
+
+    var overlay = document.getElementById("modalOverlay");
+    if (overlay) overlay.addEventListener("click", function(e) {
+        if (e.target === this) closeModal();
+    });
+
+    document.addEventListener("keydown", function(e) {
+        if (e.key === "Escape") closeModal();
+    });
+
+    ["searchInput", "statusFilter", "paymentFilter", "dateFilter"].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) {
+            el.addEventListener("input", function() { currentPage = 1; renderTable(); });
+            el.addEventListener("change", function() { currentPage = 1; renderTable(); });
+        }
+    });
+});

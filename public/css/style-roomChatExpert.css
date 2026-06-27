@@ -972,3 +972,22 @@ body {
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #cde8d2; border-radius: 4px; }
+
+/* ============================================================
+   NOTIFICATION ANIMATION - TARUH DI SINI (PALING BAWAH)
+   ============================================================ */
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+.custom-notification {
+    pointer-events: none;
+    user-select: none;
+}

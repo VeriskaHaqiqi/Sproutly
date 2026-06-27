@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="{{ asset('css/style-reviewsUser.css') }}">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
 <div class="dashboard-page">
@@ -190,6 +191,7 @@
         <button class="star-pick" data-val="5" type="button">&#9733;</button>
       </div>
       <textarea id="rateComment" placeholder="Leave a message (optional)" rows="3"></textarea>
+      <input type="hidden" id="modalKonsultasiId">
       <button class="rate-now-btn" id="rateNowBtn" type="button">Rate Now</button>
       <button class="rate-later-btn" id="rateLaterBtn" type="button">Maybe later</button>
     </div>

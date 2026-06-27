@@ -296,10 +296,26 @@ function closeEndChatModal() {
     if (modal) modal.classList.remove('active');
 }
 
+// ============================================================
+// END CHAT - CONFIRM END CHAT
+// ============================================================
+
 function confirmEndChat() {
     closeEndChatModal();
 
-    fetch(`/konsultasi/${consultation.id}/end`, {
+    if (!consultation) {
+        showNotification('No active consultation found.', 'error');
+        return;
+    }
+
+    // Disable tombol agar tidak di klik 2x
+    var endBtn = document.getElementById('endChatBtn');
+    if (endBtn) {
+        endBtn.disabled = true;
+        endBtn.innerHTML = '⏳ Ending...';
+    }
+
+    fetch('/konsultasi/' + consultation.id + '/end', {
         method: 'POST',
         headers: {
             'X-Requested-With': 'XMLHttpRequest',
@@ -307,24 +323,59 @@ function confirmEndChat() {
             'Content-Type': 'application/json',
         }
     })
-    .then(res => res.json())
-    .then(data => {
-        chatEnded = true;
-        clearInterval(pollingInterval);
-
-        const now = new Date();
-        const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-        addSystemMessage(`Consultation ended at ${timeStr}`);
-
-        const inputArea = document.getElementById('inputArea');
-        const endBtn = document.getElementById('endChatBtn');
-        const banner = document.getElementById('endedBanner');
-        if (inputArea) inputArea.classList.add('disabled');
-        if (endBtn) endBtn.classList.add('ended');
-        if (banner) banner.style.display = 'flex';
+    .then(function(res) {
+        return res.json();
     })
-    .catch(err => {
+    .then(function(data) {
+        if (data.success) {
+            chatEnded = true;
+            clearInterval(pollingInterval);
+
+            var now = new Date();
+            var timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            addSystemMessage('✅ Consultation ended at ' + timeStr);
+
+            var inputArea = document.getElementById('inputArea');
+            var endBtn = document.getElementById('endChatBtn');
+            var banner = document.getElementById('endedBanner');
+            var sendBtn = document.getElementById('sendBtn');
+            var messageInput = document.getElementById('messageInput');
+            var attachBtn = document.getElementById('attachBtn');
+            var emojiBtn = document.getElementById('emojiBtn');
+
+            if (inputArea) inputArea.classList.add('disabled');
+            if (endBtn) {
+                endBtn.classList.add('ended');
+                endBtn.disabled = true;
+                endBtn.innerHTML = '✓ Ended';
+            }
+            if (banner) banner.style.display = 'flex';
+            if (messageInput) messageInput.disabled = true;
+            if (sendBtn) sendBtn.disabled = true;
+            if (attachBtn) attachBtn.disabled = true;
+            if (emojiBtn) emojiBtn.disabled = true;
+
+            // Tampilkan notifikasi sukses
+            showNotification('Consultation ended successfully!', 'success');
+        } else {
+            // Jika gagal, aktifkan kembali tombol
+            var endBtn = document.getElementById('endChatBtn');
+            if (endBtn) {
+                endBtn.disabled = false;
+                endBtn.innerHTML = 'End Chat';
+            }
+            showNotification(data.message || 'Failed to end chat', 'error');
+        }
+    })
+    .catch(function(err) {
         console.error('Failed to end chat:', err);
+        // Aktifkan kembali tombol
+        var endBtn = document.getElementById('endChatBtn');
+        if (endBtn) {
+            endBtn.disabled = false;
+            endBtn.innerHTML = 'End Chat';
+        }
+        showNotification('Failed to end chat. Please try again.', 'error');
     });
 }
 
@@ -474,3 +525,47 @@ function formatBytes(bytes) {
 
 function openEmoji() { console.log('Emoji — extend with emoji picker'); }
 function openMoreOptions() { console.log('More options — extend with dropdown'); }
+
+
+// ============================================================
+// NOTIFICATION HELPER
+// ============================================================
+
+function showNotification(message, type) {
+    // Hapus notifikasi lama jika ada
+    var oldNotif = document.querySelector('.custom-notification');
+    if (oldNotif) oldNotif.remove();
+
+    var notif = document.createElement('div');
+    notif.className = 'custom-notification';
+    notif.style.cssText = `
+        position: fixed;
+        bottom: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 14px 28px;
+        border-radius: 10px;
+        color: white;
+        font-weight: 500;
+        font-size: 14px;
+        z-index: 99999;
+        background: ${type === 'success' ? '#10b981' : '#ef4444'};
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        animation: slideUp 0.3s ease;
+        max-width: 90%;
+        text-align: center;
+    `;
+    notif.textContent = message;
+    document.body.appendChild(notif);
+
+    // Auto remove setelah 3 detik
+    setTimeout(function() {
+        notif.style.opacity = '0';
+        notif.style.transition = 'opacity 0.3s ease';
+        setTimeout(function() {
+            if (notif.parentNode) notif.remove();
+        }, 300);
+    }, 3000);
+}
+
+// ===== END OF FILE =====

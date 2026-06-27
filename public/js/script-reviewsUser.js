@@ -1,283 +1,445 @@
-document.addEventListener('DOMContentLoaded', function () {
+// ============================================================
+// script-reviewsUser.js - Halaman Reviews User
+// ============================================================
 
-  // ── Sidebar ───────────────────────────────────────────────────
-  var menuToggle  = document.getElementById('menuToggle');
-  var sidebar     = document.getElementById('sidebar');
-  var mainContent = document.getElementById('mainContent');
+var allReviews = [];
+var currentPage = 1;
+var PER_PAGE = 4;
+var currentTab = 'pending'; // 'pending' atau 'completed'
 
-  function openSidebar() {
-    if (window.innerWidth <= 768) { sidebar.classList.add('show'); sidebar.classList.remove('closed'); }
-    else { sidebar.classList.remove('closed'); mainContent.classList.add('shifted'); mainContent.classList.remove('full'); }
-  }
-  function closeSidebar() {
-    sidebar.classList.add('closed'); sidebar.classList.remove('show');
-    mainContent.classList.remove('shifted'); mainContent.classList.add('full');
-  }
-  function isSidebarOpen() {
-    return window.innerWidth <= 768 ? sidebar.classList.contains('show') : !sidebar.classList.contains('closed');
-  }
-  menuToggle.addEventListener('click', function () { isSidebarOpen() ? closeSidebar() : openSidebar(); });
-  document.querySelectorAll('.menu-link').forEach(function (l) { l.addEventListener('click', closeSidebar); });
-  document.addEventListener('click', function (e) {
-    if (window.innerWidth <= 768 && isSidebarOpen() && !sidebar.contains(e.target) && !menuToggle.contains(e.target)) closeSidebar();
-  });
-  window.addEventListener('resize', function () {
-    if (window.innerWidth > 768) sidebar.classList.remove('show');
-    else { mainContent.classList.remove('shifted'); mainContent.classList.add('full'); }
-  });
+// ──────────────────────────────────────────────────────────────
+// FETCH DATA
+// ──────────────────────────────────────────────────────────────
+function fetchReviews() {
+    console.log('🔄 Fetching reviews...');
+    
+    fetch('/reviews-data', {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json',
+        }
+    })
+    .then(function(res) {
+        if (!res.ok) {
+            throw new Error('HTTP error! status: ' + res.status);
+        }
+        return res.json();
+    })
+    .then(function(data) {
+        console.log('✅ Data received:', data);
+        
+        // Pastikan data adalah array
+        if (!Array.isArray(data)) {
+            if (data && typeof data === 'object') {
+                data = [data];
+            } else {
+                data = [];
+            }
+        }
+        
+        allReviews = data;
+        console.log('✅ allReviews:', allReviews);
+        console.log('✅ Jumlah data:', allReviews.length);
+        
+        renderReviews();
+        updateBadges();
+    })
+    .catch(function(err) {
+        console.error('❌ Failed to fetch reviews:', err);
+        allReviews = [];
+        renderReviews();
+    });
+}
 
-  // ── Data ─────────────────────────────────────────────────────
-  // Completed reviews
-  var reviewsData = [
-    { id:1, expertName:"Dr. Marcus Thompson",  avatar:"https://randomuser.me/api/portraits/men/32.jpg",   specialty:"Crop Specialist",    consultation:"Tomato Disease Management",       rating:5, comment:"Dr. Thompson provided excellent guidance on identifying and treating early blight in my tomato crops. The follow-up advice was particularly helpful.", date:"March 15, 2026" },
-    { id:2, expertName:"Sarah Chen",            avatar:"https://randomuser.me/api/portraits/women/44.jpg", specialty:"Irrigation Expert",  consultation:"Drip Irrigation Setup",           rating:4, comment:"Sarah helped me design an efficient drip irrigation system for my greenhouse. The water usage has decreased significantly while maintaining optimal plant health.", date:"March 8, 2026" },
-    { id:3, expertName:"James Rodriguez",       avatar:"https://randomuser.me/api/portraits/men/22.jpg",   specialty:"Soil Scientist",     consultation:"Soil pH Balance",                 rating:5, comment:"James conducted a thorough soil analysis and provided detailed recommendations for improving pH levels. The step-by-step plan was easy to follow.", date:"February 28, 2026" },
-    { id:4, expertName:"Dr. Emily Foster",      avatar:"https://randomuser.me/api/portraits/women/65.jpg", specialty:"Pest Control",       consultation:"Organic Pest Management",         rating:4, comment:"Dr. Foster introduced me to several organic pest control methods that have been very effective. Her knowledge of beneficial insects is impressive.", date:"February 20, 2026" },
-    { id:5, expertName:"Michael Zhang",         avatar:"https://randomuser.me/api/portraits/men/55.jpg",   specialty:"Hydroponics",        consultation:"Nutrient Solution Optimization",  rating:5, comment:"Setting up a hydroponic tower seemed daunting until I spoke with Michael. He made the science of nutrient mixing very easy to understand.", date:"February 12, 2026" },
-    { id:6, expertName:"Elena Rossi",           avatar:"https://randomuser.me/api/portraits/women/28.jpg", specialty:"Plant Disease",      consultation:"Rose Fungal Infection",           rating:3, comment:"The advice was solid, although I wish the response time was a bit faster. My roses are recovering slowly but steadily.", date:"February 5, 2026" },
-  ];
+// ──────────────────────────────────────────────────────────────
+// UPDATE BADGES
+// ──────────────────────────────────────────────────────────────
+function updateBadges() {
+    var pendingCount = allReviews.filter(function(r) { return r.can_review; }).length;
+    var completedCount = allReviews.filter(function(r) { return r.has_reviewed; }).length;
+    
+    var pendingBadge = document.getElementById('pendingCount');
+    var completedBadge = document.getElementById('completedCount');
+    
+    if (pendingBadge) pendingBadge.textContent = pendingCount;
+    if (completedBadge) completedBadge.textContent = completedCount;
+}
 
-  // Pending reviews (not yet reviewed)
-  var pendingData = [
-    { id:101, expertName:"Dr. Carlos Mendez",   avatar:"https://randomuser.me/api/portraits/men/45.jpg",   specialty:"Irrigation Expert",    consultation:"Drip Irrigation Design",      date:"Consulted on Apr 10, 2026" },
-    { id:102, expertName:"Olivia Green",         avatar:"https://randomuser.me/api/portraits/women/54.jpg", specialty:"Organic Farming",      consultation:"Rainwater Harvesting Plan",    date:"Consulted on Apr 5, 2026"  },
-    { id:103, expertName:"Dr. Tom Walker",       avatar:"https://randomuser.me/api/portraits/men/67.jpg",   specialty:"Crop Specialist",      consultation:"Cover Crop Strategy",         date:"Consulted on Mar 30, 2026" },
-    { id:104, expertName:"Sophie Laurent",       avatar:"https://randomuser.me/api/portraits/women/33.jpg", specialty:"Plant Disease",        consultation:"Micronutrient Assessment",    date:"Consulted on Mar 25, 2026" },
-  ];
+// ──────────────────────────────────────────────────────────────
+// RENDER REVIEWS
+// ──────────────────────────────────────────────────────────────
+function renderReviews() {
+    console.log('🔄 Rendering reviews...');
+    
+    // Filter berdasarkan tab yang aktif
+    var filtered = allReviews;
+    if (currentTab === 'pending') {
+        filtered = allReviews.filter(function(r) { return r.can_review; });
+    } else if (currentTab === 'completed') {
+        filtered = allReviews.filter(function(r) { return r.has_reviewed; });
+    }
+    
+    // Search filter
+    var searchInput = document.getElementById('searchInput');
+    var keyword = searchInput ? searchInput.value.trim().toLowerCase() : '';
+    if (keyword) {
+        filtered = filtered.filter(function(r) {
+            return (r.expert_name && r.expert_name.toLowerCase().includes(keyword)) || 
+                   (r.consultation_topic && r.consultation_topic.toLowerCase().includes(keyword));
+        });
+    }
+    
+    // Rating filter
+    var ratingFilter = document.getElementById('ratingFilter');
+    var ratingVal = ratingFilter ? ratingFilter.value : 'all';
+    if (ratingVal !== 'all') {
+        filtered = filtered.filter(function(r) { 
+            return r.rating_value == ratingVal; 
+        });
+    }
+    
+    // Category filter
+    var categoryFilter = document.getElementById('categoryFilter');
+    var categoryVal = categoryFilter ? categoryFilter.value : 'all';
+    if (categoryVal !== 'all') {
+        filtered = filtered.filter(function(r) { 
+            return r.expert_specialty === categoryVal; 
+        });
+    }
+    
+    console.log('📊 Filtered data:', filtered.length);
+    
+    // Pagination
+    var totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+    if (currentPage > totalPages) currentPage = 1;
+    var items = filtered.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
+    
+    // Tentukan container berdasarkan tab
+    var containerId = currentTab === 'pending' ? 'pendingContainer' : 'reviewsContainer';
+    var container = document.getElementById(containerId);
+    
+    if (!container) {
+        console.error('❌ Container not found:', containerId);
+        return;
+    }
+    
+    console.log('📦 Rendering to:', containerId);
+    console.log('📦 Items to render:', items.length);
+    
+    if (items.length === 0) {
+        container.innerHTML = '<div class="empty-state" style="text-align:center;padding:48px;color:#9aaa9e;">No consultations found.</div>';
+    } else {
+        container.innerHTML = items.map(function(r) {
+            var actionHtml = '';
+            if (r.can_review) {
+                actionHtml = '<button class="rate-btn" onclick="openRatingModal(' + r.id + ')">⭐ Rate Now</button>';
+            } else if (r.has_reviewed) {
+                actionHtml = '<div class="reviewed-badge">⭐ ' + r.rating_value + '/5 - Reviewed</div>';
+            }
+            
+            return '<div class="review-card">' +
+                '<div class="review-card-header">' +
+                    '<div class="review-expert-info">' +
+                        '<div class="review-expert-name">' + (r.expert_name || 'Unknown Expert') + '</div>' +
+                        '<div class="review-expert-specialty">' + (r.expert_specialty || 'Expert') + '</div>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="review-card-body">' +
+                    '<div class="review-topic">' + (r.consultation_topic || 'General Consultation') + '</div>' +
+                    '<div class="review-date">Consulted on ' + (r.consultation_date || '-') + '</div>' +
+                '</div>' +
+                '<div class="review-card-footer">' +
+                    actionHtml +
+                '</div>' +
+            '</div>';
+        }).join("");
+    }
+    
+    // Tampilkan/hide panel
+    var panelPending = document.getElementById('panelPending');
+    var panelCompleted = document.getElementById('panelCompleted');
+    
+    if (panelPending) panelPending.style.display = currentTab === 'pending' ? 'block' : 'none';
+    if (panelCompleted) panelCompleted.style.display = currentTab === 'completed' ? 'block' : 'none';
+    
+    // Update load more button
+    var loadMoreBtn = document.getElementById('loadMoreBtn');
+    if (loadMoreBtn) {
+        if (items.length < filtered.length) {
+            loadMoreBtn.style.display = 'block';
+        } else {
+            loadMoreBtn.style.display = 'none';
+        }
+    }
+    
+    console.log('✅ Render complete!');
+}
 
-  var itemsToShow = 4;
-  var pendingDeleteId = null;
-  var pendingRateId   = null;
-  var selectedRating  = 0;
-  var activeTab       = 'pending'; // 'pending' | 'completed'
-
-  // ── DOM refs ─────────────────────────────────────────────────
-  var searchInput    = document.getElementById('searchInput');
-  var ratingFilter   = document.getElementById('ratingFilter');
-  var categoryFilter = document.getElementById('categoryFilter');
-  var loadMoreBtn    = document.getElementById('loadMoreBtn');
-  var reviewsContainer = document.getElementById('reviewsContainer');
-  var pendingContainer = document.getElementById('pendingContainer');
-  var deleteModal    = document.getElementById('deleteModal');
-  var rateModal      = document.getElementById('rateModal');
-  var tabPending     = document.getElementById('tabPending');
-  var tabCompleted   = document.getElementById('tabCompleted');
-  var panelPending   = document.getElementById('panelPending');
-  var panelCompleted = document.getElementById('panelCompleted');
-
-  // ── TABS ─────────────────────────────────────────────────────
-  tabPending.addEventListener('click', function () {
-    activeTab = 'pending';
-    tabPending.classList.add('active');
-    tabCompleted.classList.remove('active');
-    panelPending.style.display = '';
-    panelCompleted.style.display = 'none';
-    // hide rating/category filter for pending
-    ratingFilter.parentElement.style.display = 'none';
-    renderPending();
-  });
-
-  tabCompleted.addEventListener('click', function () {
-    activeTab = 'completed';
-    tabCompleted.classList.add('active');
-    tabPending.classList.remove('active');
-    panelPending.style.display = 'none';
-    panelCompleted.style.display = '';
-    ratingFilter.parentElement.style.display = '';
+// ──────────────────────────────────────────────────────────────
+// TABS
+// ──────────────────────────────────────────────────────────────
+function switchTab(tab) {
+    console.log('🔄 Switching to tab:', tab);
+    currentTab = tab;
+    currentPage = 1;
+    
+    // Update tab buttons
+    var tabPending = document.getElementById('tabPending');
+    var tabCompleted = document.getElementById('tabCompleted');
+    
+    if (tabPending) tabPending.classList.toggle('active', tab === 'pending');
+    if (tabCompleted) tabCompleted.classList.toggle('active', tab === 'completed');
+    
     renderReviews();
-  });
+}
 
-  // ── Stars helper ─────────────────────────────────────────────
-  function createStars(rating) {
-    var html = '';
-    for (var i = 1; i <= 5; i++) {
-      var color = i <= rating ? '#fdcb6e' : '#dfe6e9';
-      html += '<svg class="star" fill="' + color + '" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+// ──────────────────────────────────────────────────────────────
+// OPEN RATING MODAL
+// ──────────────────────────────────────────────────────────────
+function openRatingModal(konsultasiId) {
+    console.log('🔄 Opening rating modal for:', konsultasiId);
+    
+    var konsultasi = allReviews.find(function(r) { return r.id === konsultasiId; });
+    if (!konsultasi) {
+        console.error('❌ Consultation not found:', konsultasiId);
+        return;
     }
-    return html;
-  }
-
-  // ── Render PENDING ────────────────────────────────────────────
-  function renderPending() {
-    var q = searchInput.value.toLowerCase();
-    var filtered = pendingData.filter(function (r) {
-      return !q || r.expertName.toLowerCase().includes(q) || r.consultation.toLowerCase().includes(q);
-    });
-    document.getElementById('pendingCount').textContent = pendingData.length;
-
-    if (filtered.length === 0) {
-      pendingContainer.innerHTML = '<div class="empty-state">No pending reviews found.</div>';
-      return;
+    
+    // Isi data ke modal
+    document.getElementById('rateConsultDate').textContent = 'Consulted on ' + (konsultasi.consultation_date || '-');
+    document.getElementById('modalKonsultasiId').value = konsultasiId;
+    
+    // Reset form
+    resetStars();
+    document.getElementById('rateComment').value = '';
+    
+    // Tampilkan modal
+    var modal = document.getElementById('rateModal');
+    if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('show');
+        modal.style.display = 'flex';
     }
+}
 
-    pendingContainer.innerHTML = '';
-    filtered.forEach(function (r) {
-      var card = document.createElement('div');
-      card.className = 'pending-card';
-      card.innerHTML =
-        '<img src="' + r.avatar + '" class="pending-avatar" alt="' + r.expertName + '" onerror="this.src=\'https://ui-avatars.com/api/?name=' + encodeURIComponent(r.expertName) + '&background=76ead0&color=1a2636\'">' +
-        '<div class="pending-info">' +
-          '<div class="pending-name">' + r.expertName + '</div>' +
-          '<span class="pending-specialty">' + r.specialty + '</span>' +
-          '<div class="pending-topic">' + r.consultation + '</div>' +
-        '</div>' +
-        '<span class="pending-date">' + r.date + '</span>' +
-        '<button class="rate-btn" data-id="' + r.id + '">Rate Now</button>';
-      pendingContainer.appendChild(card);
-    });
-
-    pendingContainer.querySelectorAll('.rate-btn').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var id = parseInt(this.getAttribute('data-id'));
-        var item = pendingData.find(function (x) { return x.id === id; });
-        if (!item) return;
-        pendingRateId = id;
-        selectedRating = 0;
-        document.getElementById('rateConsultDate').textContent = item.date;
-        document.getElementById('rateComment').value = '';
-        updateStarPicker(0);
-        rateModal.classList.remove('hidden');
-      });
-    });
-  }
-
-  // ── Render COMPLETED ──────────────────────────────────────────
-  function renderReviews() {
-    var query  = searchInput.value.toLowerCase();
-    var rating = ratingFilter.value;
-    var cat    = categoryFilter.value;
-
-    var filtered = reviewsData.filter(function (r) {
-      var ms = r.expertName.toLowerCase().includes(query) || r.consultation.toLowerCase().includes(query) || r.comment.toLowerCase().includes(query);
-      var mr = rating === 'all' || r.rating == rating;
-      var mc = cat === 'all' || r.specialty === cat;
-      return (!query || ms) && mr && mc;
-    });
-
-    document.getElementById('completedCount').textContent = reviewsData.length;
-    var display = filtered.slice(0, itemsToShow);
-    reviewsContainer.innerHTML = '';
-
-    if (display.length === 0) {
-      reviewsContainer.innerHTML = '<div class="empty-state">No reviews matching your criteria found.</div>';
-      loadMoreBtn.style.display = 'none';
-      return;
+function closeRatingModal() {
+    var modal = document.getElementById('rateModal');
+    if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('show');
+        modal.style.display = 'none';
     }
+}
 
-    display.forEach(function (r) {
-      var card = document.createElement('div');
-      card.className = 'review-card';
-      card.innerHTML =
-        '<div class="expert-meta">' +
-          '<div class="exp-profile">' +
-            '<img src="' + r.avatar + '" class="exp-avatar" alt="' + r.expertName + '" onerror="this.src=\'https://ui-avatars.com/api/?name=' + encodeURIComponent(r.expertName) + '&background=76ead0&color=1a2636\'">' +
-            '<div class="exp-name-box"><h3>' + r.expertName + '</h3><span class="specialty-tag">' + r.specialty + '</span></div>' +
-          '</div>' +
-          '<p class="consult-title">Consultation: ' + r.consultation + '</p>' +
-          '<div class="stars-row"><div class="star-group">' + createStars(r.rating) + '</div><span class="rating-score">' + r.rating + '.0</span></div>' +
-        '</div>' +
-        '<div class="review-content">' +
-          '<p class="review-para">&ldquo;' + r.comment + '&rdquo;</p>' +
-          '<div class="review-action">' +
-            '<span class="date-text">' + r.date + '</span>' +
-            '<button class="delete-btn" data-id="' + r.id + '">' +
-              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M3 6H21"/><path d="M8 6V4H16V6"/><path d="M19 6L18.2 19.1C18.1 20.2 17.1 21 16 21H8C6.9 21 5.9 20.2 5.8 19.1L5 6"/></svg>' +
-              ' Delete Review' +
-            '</button>' +
-          '</div>' +
-        '</div>';
-      reviewsContainer.appendChild(card);
+// ──────────────────────────────────────────────────────────────
+// STAR RATING
+// ──────────────────────────────────────────────────────────────
+var selectedRating = 0;
+
+function resetStars() {
+    selectedRating = 0;
+    var stars = document.querySelectorAll('.star-pick');
+    stars.forEach(function(star) {
+        star.classList.remove('active');
     });
+}
 
-    reviewsContainer.querySelectorAll('.delete-btn').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var id = parseInt(this.getAttribute('data-id'));
-        var review = reviewsData.find(function (r) { return r.id === id; });
-        if (!review) return;
-        pendingDeleteId = id;
-        document.getElementById('deleteExpertName').textContent = review.expertName;
-        deleteModal.classList.remove('hidden');
-      });
+function setRating(value) {
+    selectedRating = value;
+    var stars = document.querySelectorAll('.star-pick');
+    stars.forEach(function(star) {
+        var starValue = parseInt(star.getAttribute('data-val'));
+        if (starValue <= value) {
+            star.classList.add('active');
+        } else {
+            star.classList.remove('active');
+        }
     });
+}
 
-    loadMoreBtn.style.display = filtered.length > itemsToShow ? 'inline-block' : 'none';
-  }
-
-  // ── Star picker ───────────────────────────────────────────────
-  function updateStarPicker(val) {
-    document.querySelectorAll('.star-pick').forEach(function (btn) {
-      var v = parseInt(btn.getAttribute('data-val'));
-      btn.classList.toggle('active', v <= val);
-    });
-  }
-
-  document.querySelectorAll('.star-pick').forEach(function (btn) {
-    btn.addEventListener('mouseover', function () { updateStarPicker(parseInt(this.getAttribute('data-val'))); });
-    btn.addEventListener('mouseout',  function () { updateStarPicker(selectedRating); });
-    btn.addEventListener('click', function () {
-      selectedRating = parseInt(this.getAttribute('data-val'));
-      updateStarPicker(selectedRating);
-    });
-  });
-
-  // ── Rate Modal ────────────────────────────────────────────────
-  function closeRateModal() { rateModal.classList.add('hidden'); pendingRateId = null; }
-
-  document.getElementById('rateNowBtn').addEventListener('click', function () {
+// ──────────────────────────────────────────────────────────────
+// SUBMIT REVIEW
+// ──────────────────────────────────────────────────────────────
+function submitReview() {
     if (selectedRating === 0) {
-      alert('Please select a star rating.');
-      return;
+        alert('Please select a rating first! ⭐');
+        return;
     }
-    var item = pendingData.find(function (x) { return x.id === pendingRateId; });
-    if (!item) return;
-
-    // Move from pending to completed
-    reviewsData.unshift({
-      id: Date.now(),
-      expertName:   item.expertName,
-      avatar:       item.avatar,
-      specialty:    item.specialty,
-      consultation: item.consultation,
-      rating:       selectedRating,
-      comment:      document.getElementById('rateComment').value.trim() || 'Great consultation experience!',
-      date:         new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+    
+    var konsultasiId = document.getElementById('modalKonsultasiId').value;
+    var ulasan = document.getElementById('rateComment').value.trim();
+    
+    console.log('📤 Submitting review:', {
+        konsultasi_id: konsultasiId,
+        nilai: selectedRating,
+        ulasan: ulasan
     });
-    pendingData = pendingData.filter(function (x) { return x.id !== pendingRateId; });
-
-    closeRateModal();
-    // Switch to completed tab to show result
-    tabCompleted.click();
-  });
-
-  document.getElementById('rateLaterBtn').addEventListener('click', closeRateModal);
-  rateModal.addEventListener('click', function (e) { if (e.target === rateModal) closeRateModal(); });
-
-  // ── Delete Modal ──────────────────────────────────────────────
-  function closeDeleteModal() { deleteModal.classList.add('hidden'); pendingDeleteId = null; }
-  document.getElementById('deleteCancelBtn').addEventListener('click', closeDeleteModal);
-  deleteModal.addEventListener('click', function (e) { if (e.target === deleteModal) closeDeleteModal(); });
-  document.getElementById('deleteConfirmBtn').addEventListener('click', function () {
-    if (pendingDeleteId === null) return;
-    reviewsData = reviewsData.filter(function (r) { return r.id !== pendingDeleteId; });
-    closeDeleteModal();
+    
+    var formData = new FormData();
+    formData.append('konsultasi_id', konsultasiId);
+    formData.append('nilai', selectedRating);
+    formData.append('ulasan', ulasan);
+    formData.append('_token', document.querySelector('meta[name="csrf-token"]').content);
+    
+    var submitBtn = document.getElementById('rateNowBtn');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting...';
+    }
+    
+    fetch('/reviews', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+        }
+    })
+    .then(function(res) {
+        return res.json();
+    })
+    .then(function(data) {
+        console.log('📥 Response:', data);
+        
+        if (data.message) {
+            alert('✅ ' + data.message);
+            closeRatingModal();
+            // Refresh data
+            fetchReviews();
+        } else {
+            alert('❌ ' + (data.error || 'Failed to submit review'));
+        }
+    })
+    .catch(function(err) {
+        console.error('❌ Error:', err);
+        alert('❌ Failed to submit review. Please try again.');
+    })
+    .finally(function() {
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Rate Now';
+        }
+    });
+}
+// ──────────────────────────────────────────────────────────────
+// LOAD MORE
+// ──────────────────────────────────────────────────────────────
+function loadMore() {
+    currentPage++;
     renderReviews();
-  });
+}
 
-  // ── Filters ───────────────────────────────────────────────────
-  loadMoreBtn.addEventListener('click', function () { itemsToShow = reviewsData.length; renderReviews(); });
-  [searchInput, ratingFilter, categoryFilter].forEach(function (el) {
-    el.addEventListener('input',  function () { itemsToShow = 4; activeTab === 'pending' ? renderPending() : renderReviews(); });
-    el.addEventListener('change', function () { itemsToShow = 4; activeTab === 'pending' ? renderPending() : renderReviews(); });
-  });
+// ──────────────────────────────────────────────────────────────
+// SIDEBAR TOGGLE
+// ──────────────────────────────────────────────────────────────
+function toggleSidebar() {
+    var sidebar = document.getElementById('sidebar');
+    var mainContent = document.getElementById('mainContent');
+    
+    if (sidebar) {
+        sidebar.classList.toggle('closed');
+        sidebar.classList.toggle('show');
+    }
+    if (mainContent) {
+        mainContent.classList.toggle('full');
+        mainContent.classList.toggle('shifted');
+    }
+}
 
-  // ── Init ─────────────────────────────────────────────────────
-  ratingFilter.parentElement.style.display = 'none'; // hide rating filter on pending tab
-  renderPending();
-  renderReviews();
-  updateCountBadges();
-
-  function updateCountBadges() {
-    document.getElementById('pendingCount').textContent   = pendingData.length;
-    document.getElementById('completedCount').textContent = reviewsData.length;
-  }
+// ──────────────────────────────────────────────────────────────
+// EVENT LISTENERS
+// ──────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 DOM loaded! Starting reviews page...');
+    
+    // Fetch data
+    fetchReviews();
+    
+    // Tab buttons
+    var tabPending = document.getElementById('tabPending');
+    var tabCompleted = document.getElementById('tabCompleted');
+    
+    if (tabPending) {
+        tabPending.addEventListener('click', function() { switchTab('pending'); });
+    }
+    if (tabCompleted) {
+        tabCompleted.addEventListener('click', function() { switchTab('completed'); });
+    }
+    
+    // Sidebar toggle
+    var menuToggle = document.getElementById('menuToggle');
+    if (menuToggle) {
+        menuToggle.addEventListener('click', toggleSidebar);
+    }
+    
+    // Close modal
+    var modalClose = document.getElementById('modalClose');
+    if (modalClose) {
+        modalClose.addEventListener('click', closeRatingModal);
+    }
+    
+    var modal = document.getElementById('ratingModal');
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) closeRatingModal();
+        });
+    }
+    
+    // Star buttons
+    document.querySelectorAll('.star-pick').forEach(function(star) {
+        star.addEventListener('click', function() {
+            setRating(parseInt(this.getAttribute('data-val')));
+        });
+    });
+    
+    // Search input
+    var searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            currentPage = 1;
+            renderReviews();
+        });
+    }
+    
+    // Rating filter
+    var ratingFilter = document.getElementById('ratingFilter');
+    if (ratingFilter) {
+        ratingFilter.addEventListener('change', function() {
+            currentPage = 1;
+            renderReviews();
+        });
+    }
+    
+    // Category filter
+    var categoryFilter = document.getElementById('categoryFilter');
+    if (categoryFilter) {
+        categoryFilter.addEventListener('change', function() {
+            currentPage = 1;
+            renderReviews();
+        });
+    }
+    
+    // Load more button
+    var loadMoreBtn = document.getElementById('loadMoreBtn');
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', loadMore);
+    }
+    
+    // Rate now button di modal
+    var rateNowBtn = document.getElementById('rateNowBtn');
+    if (rateNowBtn) {
+        rateNowBtn.addEventListener('click', submitReview);
+    }
+    
+    // Rate later button
+    var rateLaterBtn = document.getElementById('rateLaterBtn');
+    if (rateLaterBtn) {
+        rateLaterBtn.addEventListener('click', closeRatingModal);
+    }
+    
+    // Keyboard escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeRatingModal();
+    });
+    
+    console.log('✅ All event listeners attached!');
 });

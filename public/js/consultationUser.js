@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentStatus = "active";
   let currentSearch = "";
 
+  console.log('🚀 Consultation User page loaded!');
+
   // ── Real consultations from database ────────────────────────────
   const DB_CONSULTATIONS = window.DB_CONSULTATIONS || [];
 
@@ -32,10 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   });
 
-  // Static fallback conversations — removed, only DB data shown
-  const staticConversations = [];
-
-  const conversations = [...dbConversations, ...staticConversations];
+  const conversations = [...dbConversations];
 
   function normalizeText(text) {
     return text.toLowerCase().trim();
@@ -135,17 +134,76 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // ── SIDEBAR TOGGLE (FIXED) ──
   if (menuToggle) {
-    menuToggle.addEventListener("click", function () {
-      sidebar.classList.toggle("collapsed");
+    menuToggle.addEventListener("click", function (e) {
+      e.preventDefault();
+      console.log('☰ Sidebar toggle clicked!');
+      
+      if (sidebar) {
+        sidebar.classList.toggle("closed");
+        sidebar.classList.toggle("show");
+        console.log('Sidebar classes:', sidebar.className);
+      }
+      
+      var mainContent = document.getElementById("mainContent");
+      if (mainContent) {
+        mainContent.classList.toggle("full");
+        mainContent.classList.toggle("shifted");
+        console.log('MainContent classes:', mainContent.className);
+      }
+    });
+  } else {
+    console.error('❌ menuToggle not found!');
+  }
+
+  // ── Close sidebar on outside click (mobile) ──
+  document.addEventListener('click', function(e) {
+    if (window.innerWidth <= 768) {
+      if (sidebar && menuToggle && 
+          !sidebar.contains(e.target) && 
+          !menuToggle.contains(e.target)) {
+        sidebar.classList.add('closed');
+        sidebar.classList.remove('show');
+        var mainContent = document.getElementById("mainContent");
+        if (mainContent) {
+          mainContent.classList.add('full');
+          mainContent.classList.remove('shifted');
+        }
+      }
+    }
+  });
+
+  // ── Handle window resize ──
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
+      if (sidebar) {
+        sidebar.classList.remove('show');
+        sidebar.classList.remove('closed');
+      }
+      var mainContent = document.getElementById("mainContent");
+      if (mainContent) {
+        mainContent.classList.remove('full');
+        mainContent.classList.add('shifted');
+      }
+    } else {
+      var mainContent = document.getElementById("mainContent");
+      if (mainContent) {
+        mainContent.classList.remove('shifted');
+        mainContent.classList.add('full');
+      }
+    }
+  });
+
+  // ── Search ──
+  if (conversationSearch) {
+    conversationSearch.addEventListener("input", function (e) {
+      currentSearch = e.target.value;
+      renderConversations();
     });
   }
 
-  conversationSearch.addEventListener("input", function (e) {
-    currentSearch = e.target.value;
-    renderConversations();
-  });
-
+  // ── Status Tabs ──
   statusTabs.forEach((tab) => {
     tab.addEventListener("click", function () {
       statusTabs.forEach((item) => item.classList.remove("active"));
@@ -155,6 +213,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  // ── Start Conversation ──
   if (startConversationBtn) {
     startConversationBtn.addEventListener("click", function () {
       window.location.href = '/find-experts';
@@ -162,4 +221,5 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   renderConversations();
+  console.log('✅ Consultation User page ready!');
 });

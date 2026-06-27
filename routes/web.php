@@ -10,6 +10,10 @@ use App\Models\TarifAhli;
 use App\Models\Konsultasi;
 use App\Models\Pesan;
 use Illuminate\Support\Facades\Password;    
+use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\KonsultasiController;
+use App\Http\Controllers\UserHistoryController;
+use App\Http\Controllers\ReviewsController;
 
 
 
@@ -188,6 +192,12 @@ Route::middleware(['auth'])->group(function () {
     })->name('editProfileExpert');
 
     Route::put('/expert/profile/update', [ProfileController::class, 'updateProfile'])->name('expert.profile.update');
+
+    Route::post('/konsultasi', [KonsultasiController::class, 'store'])->middleware('auth');
+    Route::get('/konsultasi', [KonsultasiController::class, 'index'])->middleware('auth');
+    Route::get('/konsultasi/{id}', [KonsultasiController::class, 'show'])->middleware('auth');
+    Route::post('/konsultasi/{id}/end', [KonsultasiController::class, 'endChat'])->middleware('auth');
+    Route::put('/konsultasi/{id}/status', [KonsultasiController::class, 'updateStatus'])->middleware('auth');
 
     Route::get('/bookmarkArtikelUser', function () {
         $bookmarkedIds = \App\Models\BookmarkArtikel::where('user_id', auth()->id())->pluck('artikel_id')->toArray();
@@ -540,10 +550,20 @@ Route::middleware(['auth'])->group(function () {
         return view('ConsultationhistoryUser');
     })->name('ConsultationhistoryUser');
 
-    Route::get('/ConsultationhistoryExpert', function () {
-        return view('ConsultationhistoryExpert');
-    })->name('ConsultationhistoryExpert');
+    Route::get('/ConsultationhistoryExpert',
+    [HistoryController::class,'expertHistory']
+    )->name('ConsultationhistoryExpert');
 
+    Route::get('/history/expert/data', 
+    [HistoryController::class, 'expertHistoryData'])
+    ->name('history.expert.data');
+
+    Route::get('/history-expert-data', 
+    [HistoryController::class, 'expertHistoryData'])->middleware('auth');
+
+    Route::get('/history-user-data', 
+    [UserHistoryController::class, 'getHistoryData'])->middleware('auth');
+    
     Route::get('/consultexpert', function () {
         return view('consultexpert');
     })->name('consultexpert');
@@ -715,3 +735,7 @@ Route::middleware(['auth'])->group(function () {
         return response()->json(['success' => true, 'message' => 'Konsultasi diakhiri']);
     })->name('konsultasi.end');
 });
+
+
+    Route::get('/reviews-data', [ReviewsController::class, 'getReviewableData'])->middleware('auth');
+    Route::post('/reviews', [ReviewsController::class, 'store'])->middleware('auth');

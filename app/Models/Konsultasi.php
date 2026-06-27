@@ -19,6 +19,11 @@ class Konsultasi extends Model
         'topik',
     ];
 
+    protected $casts = [
+        'tanggal_mulai' => 'datetime',
+        'tanggal_selesai' => 'datetime',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -42,5 +47,11 @@ class Konsultasi extends Model
     public function tarifAhli()
     {
         return $this->belongsTo(TarifAhli::class, 'tarif_ahli_id');
+    }
+
+    // TAMBAHKAN METHOD INI UNTUK RATING
+    public function rating()
+    {
+        return $this->hasOne(Rating::class);
     }
 }

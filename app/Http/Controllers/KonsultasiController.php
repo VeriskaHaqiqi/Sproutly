@@ -13,8 +13,6 @@ class KonsultasiController extends Controller
 {
     /**
      * Ambil daftar konsultasi user yang login.
-     * Jika role user → konsultasi yang dia buat
-     * Jika role ahli → konsultasi yang ditujukan ke dia
      */
     public function index()
     {
@@ -27,12 +25,12 @@ class KonsultasiController extends Controller
         if ($user->role === 'ahli') {
             $ahli = $user->ahliBotani;
             $konsultasi = Konsultasi::where('ahli_botani_id', $ahli?->id)
-                ->with(['user', 'ahliBotani'])
+                ->with(['user', 'ahliBotani.user'])
                 ->orderBy('created_at', 'desc')
                 ->get();
         } else {
             $konsultasi = Konsultasi::where('user_id', $user->id)
-                ->with(['user', 'ahliBotani'])
+                ->with(['user', 'ahliBotani.user'])
                 ->orderBy('created_at', 'desc')
                 ->get();
         }
@@ -44,7 +42,7 @@ class KonsultasiController extends Controller
     }
 
     /**
-     * Buat konsultasi baru (dipanggil dari lockRoomUser setelah pilih ahli)
+     * Buat konsultasi baru (langsung active)
      */
     public function store(Request $request)
     {
@@ -59,17 +57,30 @@ class KonsultasiController extends Controller
             'topik'          => 'nullable|string|max:100',
         ]);
 
+        // Cek apakah sudah ada konsultasi aktif dengan ahli yang sama
+        $existing = Konsultasi::where('user_id', $user->id)
+            ->where('ahli_botani_id', $validated['ahli_botani_id'])
+            ->where('status_konsultasi', 'active')
+            ->first();
+
+        if ($existing) {
+            return response()->json([
+                'message' => 'Anda masih memiliki konsultasi aktif dengan ahli ini',
+                'data' => $existing
+            ], 400);
+        }
+
         $konsultasi = Konsultasi::create([
             'user_id'           => $user->id,
             'ahli_botani_id'    => $validated['ahli_botani_id'],
             'tanggal_mulai'     => now(),
-            'status_konsultasi' => 'pending',
+            'status_konsultasi' => 'active', // LANGSUNG ACTIVE
             'topik'             => $validated['topik'] ?? 'Konsultasi Pertanian',
         ]);
 
         return response()->json([
             'message' => 'Konsultasi berhasil dibuat',
-            'data'    => $konsultasi->load('ahliBotani')
+            'data'    => $konsultasi->load('ahliBotani.user')
         ], 201);
     }
 
@@ -82,7 +93,7 @@ class KonsultasiController extends Controller
         if (!$user) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-        $konsultasi = Konsultasi::with(['user', 'ahliBotani'])->findOrFail($id);
+        $konsultasi = Konsultasi::with(['user', 'ahliBotani.user'])->findOrFail($id);
 
         // Cek ownership
         if ($user->role === 'user' && $konsultasi->user_id !== $user->id) {
@@ -99,7 +110,39 @@ class KonsultasiController extends Controller
     }
 
     /**
-     * Update status konsultasi (accept, reject, complete)
+     * END CHAT - Diakses oleh Ahli
+     * TAMBAHKAN METHOD INI
+     */
+    public function endChat($id)
+    {
+        $user = Auth::user();
+        $konsultasi = Konsultasi::with(['user', 'ahliBotani'])->findOrFail($id);
+
+        // Cek apakah user adalah ahli yang terlibat
+        $ahli = $user->ahliBotani;
+        if (!$ahli || $konsultasi->ahli_botani_id !== $ahli->id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        // Cek apakah sudah selesai
+        if ($konsultasi->status_konsultasi === 'selesai') {
+            return response()->json(['message' => 'Konsultasi sudah selesai'], 400);
+        }
+
+        // Update status
+        $konsultasi->status_konsultasi = 'selesai';
+        $konsultasi->tanggal_selesai = now();
+        $konsultasi->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Konsultasi berhasil diakhiri',
+            'data' => $konsultasi
+        ]);
+    }
+
+    /**
+     * Update status konsultasi
      */
     public function updateStatus(Request $request, $id)
     {
@@ -107,13 +150,14 @@ class KonsultasiController extends Controller
         $konsultasi = Konsultasi::findOrFail($id);
 
         $validated = $request->validate([
-            'status' => 'required|in:pending,active,selesai,cancelled'
+            'status' => 'required|in:active,selesai,cancelled'
         ]);
 
-        $konsultasi->status_konsultasi = $validated['status'];
         if ($validated['status'] === 'selesai') {
             $konsultasi->tanggal_selesai = now();
         }
+
+        $konsultasi->status_konsultasi = $validated['status'];
         $konsultasi->save();
 
         return response()->json([
@@ -123,8 +167,7 @@ class KonsultasiController extends Controller
     }
 
     /**
-     * Ambil daftar ahli botani yang tersedia (dengan jadwal)
-     * Digunakan oleh find-experts page
+     * Ambil daftar ahli botani yang tersedia
      */
     public function getAvailableExperts(Request $request)
     {
