@@ -431,50 +431,78 @@ Route::middleware(['auth'])->group(function () {
         return view('consulexpert', compact('consultations'));
     })->name('consulexpert');
 
-    Route::get('/setpricingexpert', function () {
-        $ahliBotani = auth()->user()->ahliBotani;
-        $tarif = null;
-        $totalEarnings = 0;
-        if ($ahliBotani) {
-            $tarif = \App\Models\TarifAhli::where('ahli_botani_id', $ahliBotani->id)
-                ->where('status_aktif', 'aktif')
-                ->first();
-            
-            $totalEarnings = \App\Models\Konsultasi::where('ahli_botani_id', $ahliBotani->id)
-                ->whereHas('pembayaran', function ($q) {
-                    $q->where('status_pembayaran', 'success');
-                })
-                ->with('pembayaran')
-                ->get()
-                ->sum(function ($k) {
-                    return $k->pembayaran->jumlah;
-                });
-        }
+    Route::get('/setpricingexpert', function (\Illuminate\Http\Request $request) {
+    $user = auth()->user();
+    $ahliBotani = $user->ahliBotani;
+    $tarif = null;
+    $totalEarnings = 0;
+    
+    if ($ahliBotani) {
+        $tarif = \App\Models\TarifAhli::where('ahli_botani_id', $ahliBotani->id)
+            ->where('status_aktif', 'aktif')
+            ->first();
         
-        $currentTarif = $tarif ? $tarif->tarif : 0;
-        return view('setpricingexpert', compact('currentTarif', 'totalEarnings'));
+        $totalEarnings = \App\Models\Konsultasi::where('ahli_botani_id', $ahliBotani->id)
+            ->whereHas('pembayaran', function ($q) {
+                $q->where('status_pembayaran', 'success');
+            })
+            ->with('pembayaran')
+            ->get()
+            ->sum(function ($k) {
+                return $k->pembayaran ? $k->pembayaran->jumlah : 0;
+            });
+    }
+    
+    $currentTarif = $tarif ? $tarif->tarif : 0;
+    
+    // Jika request AJAX, return JSON
+    if ($request->ajax() || $request->wantsJson()) {
+        return response()->json([
+            'currentTarif' => number_format($currentTarif, 0, ',', ','),
+            'totalEarnings' => $totalEarnings
+        ]);
+    }
+    
+    return view('setpricingexpert', compact('currentTarif', 'totalEarnings'));
     })->name('setpricingexpert');
 
     Route::post('/setpricingexpert', function (\Illuminate\Http\Request $request) {
-        $request->validate([
-            'tarif' => 'required|string'
-        ]);
+    $request->validate([
+        'tarif' => 'required|string'
+    ]);
 
-        $ahliBotani = auth()->user()->ahliBotani;
-        if (!$ahliBotani) {
-            return response()->json(['message' => 'Data ahli botani tidak ditemukan'], 404);
-        }
+    $user = auth()->user();
+    $ahliBotani = $user->ahliBotani;
+    
+    if (!$ahliBotani) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Data ahli botani tidak ditemukan'
+        ], 404);
+    }
 
-        // Clean the format (e.g. from 12,000 to 12000)
-        $cleanTarif = str_replace([',', '.'], '', $request->tarif);
-        $cleanTarif = (float)$cleanTarif;
+    // Clean format (ubah "55,000" menjadi 55000)
+    $cleanTarif = str_replace([',', '.'], '', $request->tarif);
+    $cleanTarif = (float)$cleanTarif;
 
-        // Deactivate old tariffs
+    if ($cleanTarif <= 0) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Tarif harus lebih dari 0'
+        ], 400);
+    }
+
+    try {
+        // Non-aktifkan tarif lama (pakai 'nonaktif', bukan 'tidak_aktif')
         \App\Models\TarifAhli::where('ahli_botani_id', $ahliBotani->id)
-            ->update(['status_aktif' => 'tidak_aktif', 'tgl_akhir_berlaku' => now()]);
+            ->where('status_aktif', 'aktif')
+            ->update([
+                'status_aktif' => 'nonaktif',
+                'tgl_akhir_berlaku' => now()
+            ]);
 
-        // Create new tariff
-        \App\Models\TarifAhli::create([
+        // Buat tarif baru
+        $tarif = \App\Models\TarifAhli::create([
             'ahli_botani_id' => $ahliBotani->id,
             'tarif' => $cleanTarif,
             'tgl_mulai_berlaku' => now(),
@@ -482,9 +510,17 @@ Route::middleware(['auth'])->group(function () {
         ]);
 
         return response()->json([
+            'success' => true,
             'message' => 'Tarif berhasil diperbarui',
             'tarif' => number_format($cleanTarif, 0, ',', ',')
         ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+        ], 500);
+    }
     })->name('expert.pricing.save');
 
     Route::get('/ratinghistoryExpert', function () {

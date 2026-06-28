@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const updateFeeBtn = document.getElementById("updateFeeBtn");
     const successMessage = document.getElementById("successMessage");
 
+    // ── SIDEBAR ──
     function closeSidebarDesktop() {
         sidebar.classList.add("hidden");
         mainContent.classList.add("full");
@@ -52,49 +53,115 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // ── FORMAT RUPIAH ──
     function formatRupiah(value) {
         const numberString = value.replace(/\D/g, "");
         if (!numberString) return "";
-
         return numberString.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
+    }
 
     if (consultationFee) {
-    consultationFee.addEventListener("input", function () {
-        this.value = formatRupiah(this.value);
-    });
-}
+        consultationFee.addEventListener("input", function () {
+            this.value = formatRupiah(this.value);
+        });
+    }
 
+    // ── UPDATE FEE ──
     if (updateFeeBtn) {
         updateFeeBtn.addEventListener("click", function () {
-            if (consultationFee.value.trim() === "") {
+            let rawValue = consultationFee.value.trim();
+            
+            if (rawValue === "") {
                 alert("Please enter the consultation fee first.");
                 return;
             }
 
+            // Hapus semua karakter non-digit (koma, titik, dll)
+            let cleanValue = rawValue.replace(/,/g, '').replace(/\./g, '');
+            let numericValue = parseInt(cleanValue);
+
+            if (isNaN(numericValue) || numericValue <= 0) {
+                alert("Please enter a valid fee amount (e.g., 50000).");
+                return;
+            }
+
+            console.log('📤 Sending fee:', numericValue);
+
             const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+            // Disable button sementara
+            updateFeeBtn.disabled = true;
+            updateFeeBtn.textContent = 'Updating...';
 
             fetch('/setpricingexpert', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json'
                 },
                 body: JSON.stringify({
-                    tarif: consultationFee.value
+                    tarif: numericValue.toString()
                 })
             })
-            .then(response => response.json())
+            .then(response => {
+                console.log('📥 Response status:', response.status);
+                return response.json();
+            })
             .then(data => {
-                successMessage.classList.add("show");
-                setTimeout(() => {
-                    successMessage.classList.remove("show");
-                }, 2500);
+                console.log('📥 Response data:', data);
+                
+                if (data.message) {
+                    // Tampilkan success message
+                    successMessage.textContent = '✅ ' + data.message;
+                    successMessage.classList.add("show");
+                    
+                    // Update input dengan format baru
+                    if (data.tarif) {
+                        consultationFee.value = data.tarif;
+                    }
+                    
+                    // Refresh total earnings setelah update
+                    refreshEarnings();
+                    
+                    setTimeout(() => {
+                        successMessage.classList.remove("show");
+                    }, 3000);
+                } else {
+                    alert('❌ ' + (data.message || 'Failed to update fee'));
+                }
             })
             .catch(error => {
-                console.error('Error updating fee:', error);
-                alert('Failed to update consultation fee. Please try again.');
+                console.error('❌ Error:', error);
+                alert('❌ Failed to update consultation fee. Please try again.');
+            })
+            .finally(() => {
+                updateFeeBtn.disabled = false;
+                updateFeeBtn.textContent = 'Update Fee';
             });
+        });
+    }
+
+    // ── REFRESH EARNINGS ──
+    function refreshEarnings() {
+        fetch('/setpricingexpert', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.totalEarnings !== undefined) {
+                const earningsBox = document.getElementById('earningsBox');
+                if (earningsBox) {
+                    earningsBox.textContent = 'Rp ' + new Intl.NumberFormat('id-ID').format(data.totalEarnings);
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error refreshing earnings:', error);
         });
     }
 });
