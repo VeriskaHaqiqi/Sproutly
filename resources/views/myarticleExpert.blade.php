@@ -121,97 +121,13 @@
                             </article>
                         @endforeach
                     @else
-                        <!-- CARD 1 -->
-                        <article class="article-card" data-id="1">
-                            <button type="button" class="select-circle" aria-label="Select Article"></button>
-
-                            <div class="article-image-wrap">
-                                <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6" alt="Article Thumbnail">
-                            </div>
-
-                            <div class="article-body">
-                                <div class="article-meta">
-                                    <span class="tag tag-green">HYDROPONICS</span>
-                                    <span class="date">Oct 12, 2023</span>
-                                </div>
-
-                                <h3>Optimizing Nutrient Flow for Leafy Greens</h3>
-                                <p>Discover the critical balance of nitrogen, phosphorus, and more for healthier crops.</p>
-
-                                <div class="article-footer">
-                                    <span>1.2k Views</span>
-                                </div>
-                            </div>
-                        </article>
-
-                        <!-- CARD 2 -->
-                        <article class="article-card" data-id="2">
-                            <button type="button" class="select-circle" aria-label="Select Article"></button>
-
-                            <div class="article-image-wrap">
-                                <img src="https://plus.unsplash.com/premium_photo-1664299650802-c61f55b00c96?q=80&w=870&auto=format&fit=crop" alt="Article Thumbnail">
-                            </div>
-
-                            <div class="article-body">
-                                <div class="article-meta">
-                                    <span class="tag tag-light-green">SOIL HEALTH</span>
-                                    <span class="date">Sep 28, 2023</span>
-                                </div>
-
-                                <h3>Restoring the Microbiome of Depleted Fields</h3>
-                                <p>A deep dive into regenerative farming practices that bring life back to the soil.</p>
-
-                                <div class="article-footer">
-                                    <span>845 Views</span>
-                                </div>
-                            </div>
-                        </article>
-
-                        <!-- CARD 3 -->
-                        <article class="article-card" data-id="3">
-                            <button type="button" class="select-circle" aria-label="Select Article"></button>
-
-                            <div class="article-image-wrap">
-                                <img src="https://images.unsplash.com/photo-1646237642132-1c74e65d0282?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHdpbnRlciUyMHBsYW50fGVufDB8fDB8fHww" alt="Article Thumbnail">
-                            </div>
-
-                            <div class="article-body">
-                                <div class="article-meta">
-                                    <span class="tag tag-blue">VERTICAL FARMING</span>
-                                    <span class="date">Sep 15, 2023</span>
-                                </div>
-
-                                <h3>LED Spectrum Tuning for Winter Growth</h3>
-                                <p>How adjusting light wavelengths can trick plants into year-round productive cycles.</p>
-
-                                <div class="article-footer">
-                                    <span>2.4k Views</span>
-                                </div>
-                            </div>
-                        </article>
-
-                        <!-- CARD 4 -->
-                        <article class="article-card" data-id="4">
-                            <button type="button" class="select-circle" aria-label="Select Article"></button>
-
-                            <div class="article-image-wrap">
-                                <img src="https://images.unsplash.com/photo-1740927115720-5e528c435e1a?q=80&w=874&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Article Thumbnail">
-                            </div>
-
-                            <div class="article-body">
-                                <div class="article-meta">
-                                    <span class="tag tag-yellow">TECH TOOLS</span>
-                                    <span class="date">Aug 30, 2023</span>
-                                </div>
-
-                                <h3>AI-Driven Pest Detection Systems</h3>
-                                <p>Implementing computer vision models to identify early signs of infestation in crops.</p>
-
-                                <div class="article-footer">
-                                    <span>512 Views</span>
-                                </div>
-                            </div>
-                        </article>
+                        <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                            <h3>No articles yet</h3>
+                            <p>Start creating your first article by clicking the "New Article" button.</p>
+                            <a href="{{ url('/tulisartikelExpert') }}" class="btn-primary" style="display: inline-block; margin-top: 16px; padding: 12px 24px; background: #76ead0; color: #1a2636; border-radius: 8px; text-decoration: none; font-weight: 600;">
+                                + New Article
+                            </a>
+                        </div>
                     @endif
                 </div>
             </section>

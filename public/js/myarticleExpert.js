@@ -162,35 +162,69 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (confirmDeleteBtn) {
-        confirmDeleteBtn.addEventListener("click", function () {
-            const selectedCards = document.querySelectorAll(".article-card.selected");
-            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+    confirmDeleteBtn.addEventListener("click", function () {
+        const selectedCards = document.querySelectorAll(".article-card.selected");
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+        let deletedCount = 0;
+        let totalSelected = selectedCards.length;
 
-            selectedCards.forEach((card) => {
-                const articleId = card.getAttribute("data-id");
-                if (articleId && !['1', '2', '3', '4'].includes(articleId)) {
-                    fetch(`/tulisartikelExpert/${articleId}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': csrfToken
+        selectedCards.forEach((card) => {
+            const articleId = card.getAttribute("data-id");
+            
+            if (articleId && !isNaN(articleId)) {
+                fetch(`/tulisartikelExpert/${articleId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        deletedCount++;
+                        card.remove();
+                        
+                        // Jika semua sudah terhapus
+                        if (deletedCount === totalSelected) {
+                            confirmDeleteModal.classList.remove("show");
+                            deletedModal.classList.add("show");
+                            disableDeleteMode();
+                            
+                            // Cek apakah masih ada artikel
+                            const remainingCards = document.querySelectorAll(".article-card");
+                            if (remainingCards.length === 0) {
+                                const grid = document.getElementById("articlesGrid");
+                                grid.innerHTML = `
+                                    <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+                                        <h3>No articles yet</h3>
+                                        <p>Start creating your first article by clicking the "New Article" button.</p>
+                                        <a href="/tulisartikelExpert" class="btn-primary" style="display: inline-block; margin-top: 16px; padding: 12px 24px; background: #76ead0; color: #1a2636; border-radius: 8px; text-decoration: none; font-weight: 600;">
+                                            + New Article
+                                        </a>
+                                    </div>
+                                `;
+                            }
                         }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Deleted article:', data);
-                    })
-                    .catch(error => {
-                        console.error('Error deleting article:', error);
-                    });
-                }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting article:', error);
+                });
+            } else {
+                // Untuk data dummy (ID 1-4), hapus langsung dari DOM
                 card.remove();
-            });
-
-            confirmDeleteModal.classList.remove("show");
-            deletedModal.classList.add("show");
-            disableDeleteMode();
+                deletedCount++;
+                
+                if (deletedCount === totalSelected) {
+                    confirmDeleteModal.classList.remove("show");
+                    deletedModal.classList.add("show");
+                    disableDeleteMode();
+                }
+            }
         });
+    });
     }
 
     if (closeDeletedModalBtn) {

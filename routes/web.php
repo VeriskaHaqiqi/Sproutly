@@ -388,12 +388,19 @@ Route::middleware(['auth'])->group(function () {
     })->name('articleExpert');
 
     Route::get('/myarticleExpert', function () {
-        $ahliBotani = auth()->user()->ahliBotani;
-        $artikels = [];
-        if ($ahliBotani) {
-            $artikels = \App\Models\Artikel::where('ahli_botani_id', $ahliBotani->id)->latest()->get();
-        }
-        return view('myarticleExpert', compact('artikels'));
+    $user = auth()->user();
+    $ahliBotani = $user->ahliBotani;
+    $artikels = [];
+    
+    if ($ahliBotani) {
+        // HANYA artikel milik ahli ini
+        $artikels = \App\Models\Artikel::where('ahli_botani_id', $ahliBotani->id)
+            ->with('ahliBotani.user')
+            ->latest()
+            ->get();
+    }
+    
+    return view('myarticleExpert', compact('artikels'));
     })->name('myarticleExpert');
 
     Route::get('/manageSchedule', function () {
