@@ -10,9 +10,6 @@ use Carbon\Carbon;
 
 class BookmarkUserController extends Controller
 {
-    /**
-     * Tampilkan halaman bookmark user
-     */
     public function index()
     {
         $user = Auth::user();
@@ -21,19 +18,25 @@ class BookmarkUserController extends Controller
             return redirect()->route('login');
         }
 
-        // Ambil semua bookmark user dengan relasi artikel
+        // DEBUG: Log user
+        \Log::info('=== BOOKMARK PAGE LOADED ===');
+        \Log::info('User ID: ' . $user->id);
+        \Log::info('User Name: ' . $user->nama_user);
+
+        // Ambil semua bookmark user
         $bookmarks = BookmarkArtikel::with('artikel.ahliBotani.user')
             ->where('user_id', $user->id)
             ->latest()
             ->get();
 
-        // Debug: log jumlah bookmark
-        \Log::info('Bookmark ditemukan: ' . $bookmarks->count() . ' untuk user: ' . $user->id);
+        \Log::info('Jumlah bookmark di database: ' . $bookmarks->count());
 
         $bookmarkedArticles = [];
 
         foreach ($bookmarks as $bookmark) {
             $artikel = $bookmark->artikel;
+            
+            \Log::info('Processing bookmark ID: ' . $bookmark->id . ', Artikel ID: ' . ($artikel ? $artikel->id : 'NULL'));
             
             if ($artikel) {
                 $bookmarkedArticles[] = [
@@ -50,7 +53,6 @@ class BookmarkUserController extends Controller
             }
         }
 
-        // Hitung statistik
         $totalSaved = count($bookmarkedArticles);
         $savedThisWeek = 0;
         
@@ -72,13 +74,19 @@ class BookmarkUserController extends Controller
             $topCategory = key($categories);
         }
 
-        // Debug: log data yang dikirim
-        \Log::info('Data dikirim ke view: ' . json_encode([
-            'total' => $totalSaved,
-            'this_week' => $savedThisWeek,
-            'top_category' => $topCategory,
-            'articles_count' => count($bookmarkedArticles)
-        ]));
+        // DEBUG: Log data yang akan dikirim
+        \Log::info('Data yang akan dikirim ke view:');
+        \Log::info('Total Saved: ' . $totalSaved);
+        \Log::info('This Week: ' . $savedThisWeek);
+        \Log::info('Top Category: ' . $topCategory);
+        \Log::info('Jumlah Artikel: ' . count($bookmarkedArticles));
+
+        // DEBUG: Cek apakah data ada
+        if (count($bookmarkedArticles) > 0) {
+            \Log::info('Contoh artikel pertama: ' . json_encode($bookmarkedArticles[0]));
+        } else {
+            \Log::info('TIDAK ADA ARTIKEL!');
+        }
 
         return view('bookmarkArtikelUser', [
             'bookmarkedArticles' => $bookmarkedArticles,
@@ -88,9 +96,6 @@ class BookmarkUserController extends Controller
         ]);
     }
 
-    /**
-     * API: Ambil data bookmark dalam format JSON
-     */
     public function getBookmarkData()
     {
         $user = Auth::user();
@@ -133,7 +138,6 @@ class BookmarkUserController extends Controller
             }
         }
 
-        // Hitung kategori terbanyak
         $topCategory = 'No Articles';
         if (!empty($bookmarkedArticles)) {
             $categories = [];

@@ -162,7 +162,7 @@
               </svg>
             </div>
             <div class="stat-content">
-              <strong>12</strong>
+              <strong>{{ $savedThisWeek ?? 0 }}</strong>
               <span>Saved This Week</span>
             </div>
             <div class="stat-deco"></div>
