@@ -17,14 +17,26 @@ class BookmarkUserController extends Controller
     {
         $user = Auth::user();
         
-        // Ambil semua artikel yang di-bookmark oleh user
-        $bookmarkedArticles = BookmarkArtikel::with('artikel.ahliBotani.user')
+        if (!$user) {
+            return redirect()->route('login');
+        }
+
+        // Ambil semua bookmark user dengan relasi artikel
+        $bookmarks = BookmarkArtikel::with('artikel.ahliBotani.user')
             ->where('user_id', $user->id)
             ->latest()
-            ->get()
-            ->map(function($bookmark) {
-                $artikel = $bookmark->artikel;
-                return [
+            ->get();
+
+        // Debug: log jumlah bookmark
+        \Log::info('Bookmark ditemukan: ' . $bookmarks->count() . ' untuk user: ' . $user->id);
+
+        $bookmarkedArticles = [];
+
+        foreach ($bookmarks as $bookmark) {
+            $artikel = $bookmark->artikel;
+            
+            if ($artikel) {
+                $bookmarkedArticles[] = [
                     'id' => $artikel->id,
                     'title' => $artikel->judul,
                     'topic' => $artikel->kategori ?? 'General',
@@ -35,36 +47,45 @@ class BookmarkUserController extends Controller
                     'image' => $artikel->thumbnail ? asset('storage/' . $artikel->thumbnail) : null,
                     'bookmarked_at' => $bookmark->created_at,
                 ];
-            });
+            }
+        }
 
-        // Kirim data ke view
+        // Hitung statistik
+        $totalSaved = count($bookmarkedArticles);
+        $savedThisWeek = 0;
+        
+        foreach ($bookmarkedArticles as $item) {
+            if (Carbon::parse($item['bookmarked_at'])->diffInDays(Carbon::now()) <= 7) {
+                $savedThisWeek++;
+            }
+        }
+
+        // Hitung kategori terbanyak
+        $topCategory = 'No Articles';
+        if (!empty($bookmarkedArticles)) {
+            $categories = [];
+            foreach ($bookmarkedArticles as $article) {
+                $topic = $article['topic'] ?? 'General';
+                $categories[$topic] = ($categories[$topic] ?? 0) + 1;
+            }
+            arsort($categories);
+            $topCategory = key($categories);
+        }
+
+        // Debug: log data yang dikirim
+        \Log::info('Data dikirim ke view: ' . json_encode([
+            'total' => $totalSaved,
+            'this_week' => $savedThisWeek,
+            'top_category' => $topCategory,
+            'articles_count' => count($bookmarkedArticles)
+        ]));
+
         return view('bookmarkArtikelUser', [
             'bookmarkedArticles' => $bookmarkedArticles,
-            'totalSaved' => $bookmarkedArticles->count(),
-            'savedThisWeek' => $bookmarkedArticles->filter(function($item) {
-                return Carbon::parse($item['bookmarked_at'])->diffInDays(Carbon::now()) <= 7;
-            })->count(),
-            'topCategory' => $this->getTopCategory($bookmarkedArticles),
+            'totalSaved' => $totalSaved,
+            'savedThisWeek' => $savedThisWeek,
+            'topCategory' => $topCategory,
         ]);
-    }
-
-    /**
-     * Hitung kategori terbanyak
-     */
-    private function getTopCategory($articles)
-    {
-        $categories = [];
-        foreach ($articles as $article) {
-            $topic = $article['topic'] ?? 'General';
-            $categories[$topic] = ($categories[$topic] ?? 0) + 1;
-        }
-        
-        if (empty($categories)) {
-            return 'No Articles';
-        }
-        
-        arsort($categories);
-        return key($categories);
     }
 
     /**
@@ -78,13 +99,18 @@ class BookmarkUserController extends Controller
             return response()->json([], 401);
         }
 
-        $bookmarkedArticles = BookmarkArtikel::with('artikel.ahliBotani.user')
+        $bookmarks = BookmarkArtikel::with('artikel.ahliBotani.user')
             ->where('user_id', $user->id)
             ->latest()
-            ->get()
-            ->map(function($bookmark) {
-                $artikel = $bookmark->artikel;
-                return [
+            ->get();
+
+        $bookmarkedArticles = [];
+
+        foreach ($bookmarks as $bookmark) {
+            $artikel = $bookmark->artikel;
+            
+            if ($artikel) {
+                $bookmarkedArticles[] = [
                     'id' => $artikel->id,
                     'title' => $artikel->judul,
                     'topic' => $artikel->kategori ?? 'General',
@@ -95,19 +121,36 @@ class BookmarkUserController extends Controller
                     'image' => $artikel->thumbnail ? asset('storage/' . $artikel->thumbnail) : null,
                     'bookmarked_at' => $bookmark->created_at,
                 ];
-            });
+            }
+        }
 
-        $totalSaved = $bookmarkedArticles->count();
-        $savedThisWeek = $bookmarkedArticles->filter(function($item) {
-            return Carbon::parse($item['bookmarked_at'])->diffInDays(Carbon::now()) <= 7;
-        })->count();
+        $totalSaved = count($bookmarkedArticles);
+        $savedThisWeek = 0;
+        
+        foreach ($bookmarkedArticles as $item) {
+            if (Carbon::parse($item['bookmarked_at'])->diffInDays(Carbon::now()) <= 7) {
+                $savedThisWeek++;
+            }
+        }
+
+        // Hitung kategori terbanyak
+        $topCategory = 'No Articles';
+        if (!empty($bookmarkedArticles)) {
+            $categories = [];
+            foreach ($bookmarkedArticles as $article) {
+                $topic = $article['topic'] ?? 'General';
+                $categories[$topic] = ($categories[$topic] ?? 0) + 1;
+            }
+            arsort($categories);
+            $topCategory = key($categories);
+        }
 
         return response()->json([
             'articles' => $bookmarkedArticles,
             'stats' => [
                 'total' => $totalSaved,
                 'this_week' => $savedThisWeek,
-                'top_category' => $this->getTopCategory($bookmarkedArticles),
+                'top_category' => $topCategory,
             ]
         ]);
     }

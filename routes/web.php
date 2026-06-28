@@ -67,14 +67,14 @@ Route::get('/daftarArtikel', function () {
     return view('daftarArtikel', compact('artikels', 'bookmarkedIds'));
 })->middleware('auth')->name('daftarArtikel');
 
-Route::get('/bookmarkArtikelUser', 
-    [BookmarkUserController::class, 'index'])->middleware('auth');
-
 Route::get('/bookmark-data', 
     [BookmarkUserController::class, 'getBookmarkData'])->middleware('auth');
 
-Route::post('/artikel/{id}/bookmark-toggle', 
-[ArtikelController::class, 'toggleBookmarkWeb'])->middleware('auth');
+Route::get('/daftarArtikel', 
+[ArtikelController::class, 'indexWeb'])->name('daftarArtikel')->middleware('auth');
+
+Route::get('/detailArtikelUser', 
+[ArtikelController::class, 'showWeb'])->middleware('auth');
 
 Route::get('/detailArtikelUser', function (\Illuminate\Http\Request $request) {
     $id = $request->query('id');
@@ -210,30 +210,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/konsultasi/{id}/end', [KonsultasiController::class, 'endChat'])->middleware('auth');
     Route::put('/konsultasi/{id}/status', [KonsultasiController::class, 'updateStatus'])->middleware('auth');
 
-    Route::get('/bookmarkArtikelUser', function () {
-        $bookmarkedIds = \App\Models\BookmarkArtikel::where('user_id', auth()->id())->pluck('artikel_id')->toArray();
-        $allArticles = \App\Models\Artikel::with('ahliBotani.user')
-            ->whereIn('id', $bookmarkedIds)
-            ->latest()
-            ->get()
-            ->map(function ($artikel) {
-                $authorName = $artikel->ahliBotani->nama_ahli ?? 'Expert';
-                return [
-                    'id' => (string)$artikel->id,
-                    'title' => $artikel->judul,
-                    'topic' => ucwords($artikel->kategori ?? 'Hydroponics'),
-                    'date' => $artikel->tanggal_unggah ? \Carbon\Carbon::parse($artikel->tanggal_unggah)->format('Y-m-d') : $artikel->created_at->format('Y-m-d'),
-                    'displayDate' => $artikel->tanggal_unggah ? \Carbon\Carbon::parse($artikel->tanggal_unggah)->format('M d, Y') : $artikel->created_at->format('M d, Y'),
-                    'author' => $authorName,
-                    'description' => \Illuminate\Support\Str::limit(strip_tags($artikel->konten), 120),
-                    'image' => $artikel->thumbnail ? (str_starts_with($artikel->thumbnail, 'http') ? $artikel->thumbnail : asset('storage/' . $artikel->thumbnail)) : 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6'
-                ];
-            })->values();
-        return view('bookmarkArtikelUser', compact('allArticles'));
-    })->name('bookmarkArtikelUser');
 
     Route::post('/artikel/{id}/bookmark', [ArtikelController::class, 'bookmark'])->name('web.bookmark');
     Route::delete('/artikel/{id}/bookmark', [ArtikelController::class, 'unbookmark'])->name('web.unbookmark');
+
+    Route::get('/bookmarkArtikelUser', [BookmarkUserController::class, 'index'])->middleware('auth');
 
     Route::get('/consultationUser', function () {
         $user = auth()->user();

@@ -170,34 +170,71 @@ class ArtikelController extends Controller
 
     public function bookmark(Request $request, $id)
     {
-        $artikel = Artikel::find($id);
-
-        if (!$artikel) {
-            return response()->json([
-                'message' => 'Artikel tidak ditemukan'
-            ], 404);
-        }
-
-        $bookmark = BookmarkArtikel::firstOrCreate([
-            'user_id' => $request->user()->id,
-            'artikel_id' => $id,
-        ]);
-
+    $user = $request->user();
+    
+    if (!$user) {
         return response()->json([
-            'message' => 'Artikel berhasil dibookmark',
-            'data' => $bookmark
-        ], 201);
+            'message' => 'Silakan login terlebih dahulu'
+        ], 401);
+    }
+
+    $artikel = Artikel::find($id);
+
+    if (!$artikel) {
+        return response()->json([
+            'message' => 'Artikel tidak ditemukan'
+        ], 404);
+    }
+
+    // Cek apakah sudah di-bookmark
+    $existing = BookmarkArtikel::where('user_id', $user->id)
+        ->where('artikel_id', $id)
+        ->first();
+
+    if ($existing) {
+        return response()->json([
+            'message' => 'Artikel sudah di-bookmark'
+        ], 400);
+    }
+
+    // Buat bookmark
+    $bookmark = BookmarkArtikel::create([
+        'user_id' => $user->id,
+        'artikel_id' => $id,
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Artikel berhasil dibookmark',
+        'data' => $bookmark
+    ], 201);
     }
 
     public function unbookmark(Request $request, $id)
     {
-        BookmarkArtikel::where('user_id', $request->user()->id)
-            ->where('artikel_id', $id)
-            ->delete();
-
+    $user = $request->user();
+    
+    if (!$user) {
         return response()->json([
-            'message' => 'Bookmark artikel berhasil dihapus'
+            'message' => 'Silakan login terlebih dahulu'
+        ], 401);
+    }
+
+    $deleted = BookmarkArtikel::where('user_id', $user->id)
+        ->where('artikel_id', $id)
+        ->delete();
+
+    if ($deleted) {
+        return response()->json([
+            'success' => true,
+            'message' => 'Bookmark berhasil dihapus'
         ]);
+    }
+
+    return response()->json([
+        'success' => false,
+        'message' => 'Bookmark tidak ditemukan'
+    ], 404);
     }
 
     public function myBookmark(Request $request)
@@ -260,5 +297,49 @@ class ArtikelController extends Controller
             'isBookmarked' => true,
         ]);
     }
+    }
+    /**
+ * Tampilkan halaman daftar artikel (web)
+ */
+    public function indexWeb()
+    {
+    $artikels = Artikel::with('ahliBotani.user')->latest()->get();
+    
+    // Ambil ID artikel yang sudah di-bookmark oleh user
+    $user = auth()->user();
+    $bookmarkedIds = [];
+    if ($user) {
+        $bookmarkedIds = BookmarkArtikel::where('user_id', $user->id)
+            ->pluck('artikel_id')
+            ->toArray();
+    }
+    
+    return view('daftarArtikel', [
+        'artikels' => $artikels,
+        'bookmarkedIds' => $bookmarkedIds,
+    ]);
+    }
+
+/**
+ * Tampilkan detail artikel (web)
+ */
+    public function showWeb(Request $request)
+    {
+    $id = $request->query('article');
+    $artikel = Artikel::with('ahliBotani.user')->findOrFail($id);
+    
+    // Cek apakah user sudah bookmark artikel ini
+    $user = auth()->user();
+    $isBookmarked = false;
+    if ($user) {
+        $isBookmarked = BookmarkArtikel::where('user_id', $user->id)
+            ->where('artikel_id', $id)
+            ->exists();
+    }
+    
+    return view('detailArtikelUser', [
+        'artikel' => $artikel,
+        'isBookmarked' => $isBookmarked,
+    ]);
     }
 }
