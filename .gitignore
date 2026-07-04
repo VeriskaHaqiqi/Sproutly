@@ -22,3 +22,31 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Laravel specific
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*.log
+/storage/app/public/*
+
+# Backup files
+*.sql
+*.sqlite
+*.zip
+
+# IDE & OS
+.env.*
+!.env.example
+.idea/
+.vscode/
+*.code-workspace
+.DS_Store
+Thumbs.db
+
+# Build & Temp
+composer.lock
+package-lock.json
+yarn.lock
+*.cache
+*.tmp
