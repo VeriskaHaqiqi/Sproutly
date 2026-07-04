@@ -120,40 +120,61 @@ Route::get('/detailArtikelUser', function (\Illuminate\Http\Request $request) {
 })->middleware('auth')->name('detailArtikelUser');
 
 Route::get('/find-experts', function () {
-    // Ambil ahli botani dari DB yang punya jadwal tersedia
-    $dbExperts = AhliBotani::with(['user', 'ratings', 'jadwalAhli'])
-        ->whereHas('jadwalAhli', function($q) {
-            $q->where('status_ketersediaan', 'tersedia');
-        })
-        ->get()
-        ->map(function($ahli) {
-            $avgRating = $ahli->ratings->avg('nilai') ?? 0;
-            $totalRatings = $ahli->ratings->count();
-            $tarif = TarifAhli::where('ahli_botani_id', $ahli->id)
-                ->where('status_aktif', 'aktif')
-                ->first();
-            return [
-                'id'              => $ahli->id,
-                'nama_ahli'       => $ahli->nama_ahli,
-                'spesialisasi'    => $ahli->spesialisasi ?? 'General',
-                'bio'             => $ahli->bio ?? '',
-                'pengalaman'      => $ahli->pengalaman_tahun ?? 0,
-                'rating'          => round($avgRating, 1),
-                'total_rating'    => $totalRatings,
-                'tarif'           => $tarif ? $tarif->tarif : 0,
-                'domisili'        => $ahli->domisili ?? 'Indonesia',
-                'almamater'       => $ahli->nama_almamater ?? '-',
-                'profile_picture' => $ahli->user?->profile_picture
-                    ? asset('storage/' . $ahli->user->profile_picture)
-                    : null,
-                // Advanced filter flags
-                'online'          => 'true',
-                'fast_response'   => $totalRatings >= 10 ? 'true' : 'false',
-                'popular'         => $totalRatings >= 50 ? 'true' : 'false',
-                'indonesia'       => 'true',
-                'title'           => $ahli->spesialisasi ?? 'Expert Botanist',
-            ];
-        });
+    // Ambil hari dan jam sekarang
+    $now = \Carbon\Carbon::now();
+    $hariMap = [
+        'Monday'    => 'Senin',
+        'Tuesday'   => 'Selasa',
+        'Wednesday' => 'Rabu',
+        'Thursday'  => 'Kamis',
+        'Friday'    => 'Jumat',
+        'Saturday'  => 'Sabtu',
+        'Sunday'    => 'Minggu',
+    ];
+    $hariIndo = $hariMap[$now->format('l')];
+    $jamSekarang = $now->format('H:i'); // format 24 jam (misal "14:30")
+
+    // Ambil ahli yang memiliki jadwal aktif untuk hari ini dan jam sekarang
+    $dbExperts = AhliBotani::with(['user', 'ratings', 'jadwalAhli' => function($q) use ($hariIndo, $jamSekarang) {
+        $q->where('hari', $hariIndo)
+          ->where('status_ketersediaan', 'tersedia')
+          ->where('jam_mulai', '<=', $jamSekarang)
+          ->where('jam_selesai', '>=', $jamSekarang);
+    }])
+    ->whereHas('jadwalAhli', function($q) use ($hariIndo, $jamSekarang) {
+        $q->where('hari', $hariIndo)
+          ->where('status_ketersediaan', 'tersedia')
+          ->where('jam_mulai', '<=', $jamSekarang)
+          ->where('jam_selesai', '>=', $jamSekarang);
+    })
+    ->get()
+    ->map(function($ahli) {
+        $avgRating = $ahli->ratings->avg('nilai') ?? 0;
+        $totalRatings = $ahli->ratings->count();
+        $tarif = TarifAhli::where('ahli_botani_id', $ahli->id)
+            ->where('status_aktif', 'aktif')
+            ->first();
+        return [
+            'id'              => $ahli->id,
+            'nama_ahli'       => $ahli->nama_ahli,
+            'spesialisasi'    => $ahli->spesialisasi ?? 'General',
+            'bio'             => $ahli->bio ?? '',
+            'pengalaman'      => $ahli->pengalaman_tahun ?? 0,
+            'rating'          => round($avgRating, 1),
+            'total_rating'    => $totalRatings,
+            'tarif'           => $tarif ? $tarif->tarif : 0,
+            'domisili'        => $ahli->domisili ?? 'Indonesia',
+            'almamater'       => $ahli->nama_almamater ?? '-',
+            'profile_picture' => $ahli->user?->profile_picture
+                ? asset('storage/' . $ahli->user->profile_picture)
+                : null,
+            'online'          => 'true',
+            'fast_response'   => $totalRatings >= 10 ? 'true' : 'false',
+            'popular'         => $totalRatings >= 50 ? 'true' : 'false',
+            'indonesia'       => 'true',
+            'title'           => $ahli->spesialisasi ?? 'Expert Botanist',
+        ];
+    });
 
     return view('find-experts', ['dbExperts' => $dbExperts]);
 });
@@ -404,7 +425,40 @@ Route::middleware(['auth'])->group(function () {
     })->name('myarticleExpert');
 
     Route::get('/manageSchedule', function () {
-        return view('manageSchedule');
+    $user = auth()->user();
+    $ahliBotani = $user->ahliBotani;
+    $jadwalData = [];
+
+    if ($ahliBotani) {
+        // Ambil jadwal yang sudah tersimpan
+        $jadwal = \App\Models\JadwalAhli::where('ahli_botani_id', $ahliBotani->id)->get();
+
+        // Siapkan data per hari untuk view
+        $days = [
+            'monday'    => ['label' => 'Senin',    'slots' => [], 'active' => false],
+            'tuesday'   => ['label' => 'Selasa',   'slots' => [], 'active' => false],
+            'wednesday' => ['label' => 'Rabu',     'slots' => [], 'active' => false],
+            'thursday'  => ['label' => 'Kamis',    'slots' => [], 'active' => false],
+            'friday'    => ['label' => 'Jumat',    'slots' => [], 'active' => false],
+            'saturday'  => ['label' => 'Sabtu',    'slots' => [], 'active' => false],
+            'sunday'    => ['label' => 'Minggu',   'slots' => [], 'active' => false],
+        ];
+
+        foreach ($jadwal as $j) {
+            $hariKey = array_search($j->hari, array_column($days, 'label'));
+            if ($hariKey !== false) {
+                $days[$hariKey]['active'] = true;
+                $days[$hariKey]['slots'][] = [
+                    'start' => $j->jam_mulai,
+                    'end'   => $j->jam_selesai,
+                ];
+            }
+        }
+
+        $jadwalData = $days;
+    }
+
+    return view('manageSchedule', compact('jadwalData'));
     })->name('manageSchedule');
 
     Route::post('/manageSchedule', [JadwalAhliController::class, 'saveSchedule'])

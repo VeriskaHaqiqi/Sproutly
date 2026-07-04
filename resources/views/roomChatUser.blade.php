@@ -33,7 +33,7 @@
                onclick="window.location.href='/roomChatUser?id={{ $con->id }}'">
             <div class="avatar-wrap">
               @if($con->ahliBotani->user?->profile_picture)
-                <img src="{{ asset('storage/' . $con->ahliBotani->user->profile_picture) }}" alt="{{ $con->ahliBotani->nama_ahli }}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                <img src="{{ asset('storage/' . $con->ahliBotani->user->profile_picture) }}" alt="{{ $con->ahliBotani->nama_ahli }}" class="avatar-img-sidebar">
               @else
                 <div class="avatar-initials" style="background:linear-gradient(135deg,#76ead0,#76d7ea);">{{ strtoupper(substr($con->ahliBotani->nama_ahli, 0, 2)) }}</div>
               @endif
