@@ -66,7 +66,11 @@
         ],
         "pre-package-uninstall": [
             "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
-        ]
+        ],
+        "post-install-cmd": [
+        "@php artisan migrate --force",
+        "@php artisan storage:link"
+     ]
     },
     "extra": {
         "laravel": {
