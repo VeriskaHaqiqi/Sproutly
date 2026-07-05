@@ -24,9 +24,7 @@ use App\Http\Controllers\ReviewsController;
 | Public Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/test', function () {
-    return 'Hello, Railway is working! This is a test route.';
-});
+
 Route::get('/', function () {
     return view('homePublic');
 });
