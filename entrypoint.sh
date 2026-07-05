@@ -57,8 +57,10 @@ sed -i "s/<VirtualHost \*:[0-9]*>/<VirtualHost *:${PORT}>/" /etc/apache2/sites-e
 
 
 echo "=== STARTING APACHE ==="
-echo "Checking enabled MPM modules at runtime:"
-ls -la /etc/apache2/mods-enabled/ | grep mpm
-apache2ctl -M 2>&1 | grep -i mpm || echo "apache2ctl -M failed"
-
+echo "Force-fixing MPM modules at runtime..."
+rm -f /etc/apache2/mods-enabled/mpm_event.load \
+      /etc/apache2/mods-enabled/mpm_event.conf \
+      /etc/apache2/mods-enabled/mpm_worker.load \
+      /etc/apache2/mods-enabled/mpm_worker.conf
+a2enmod mpm_prefork 2>&1 || true
 exec apache2-foreground
