@@ -1,9 +1,12 @@
 FROM php:8.2-apache
 
-# Install dependency untuk intl
+# Install dependency untuk intl & zip
 RUN apt-get update && apt-get install -y \
     libicu-dev \
-    && docker-php-ext-install intl pdo_mysql
+    libzip-dev \
+    unzip \
+    zip \
+    && docker-php-ext-install intl pdo_mysql zip
 
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
@@ -28,5 +31,9 @@ RUN chown -R www-data:www-data /var/www/html \
 # Expose port
 EXPOSE 8080
 
-# Start Apache
-CMD ["apache2-foreground"]
+# Copy entrypoint script
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Start via entrypoint (migrate dulu, baru apache)
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
