@@ -55,5 +55,10 @@ echo "Listen ${PORT}" > /etc/apache2/ports.conf
 echo "Rewriting VirtualHost port..."
 sed -i "s/<VirtualHost \*:[0-9]*>/<VirtualHost *:${PORT}>/" /etc/apache2/sites-enabled/000-default.conf
 
+
 echo "=== STARTING APACHE ==="
+echo "Checking enabled MPM modules at runtime:"
+ls -la /etc/apache2/mods-enabled/ | grep mpm
+apache2ctl -M 2>&1 | grep -i mpm || echo "apache2ctl -M failed"
+
 exec apache2-foreground

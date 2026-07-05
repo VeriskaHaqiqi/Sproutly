@@ -15,11 +15,14 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Fix Apache MPM: disable mpm_event, keep only mpm_prefork (required for mod_php)
-RUN a2dismod mpm_event 2>/dev/null || true \
-    && a2dismod mpm_worker 2>/dev/null || true \
-    && a2enmod mpm_prefork
-
+# Fix Apache MPM: force only mpm_prefork (required for mod_php)
+RUN rm -f /etc/apache2/mods-enabled/mpm_event.load \
+          /etc/apache2/mods-enabled/mpm_event.conf \
+          /etc/apache2/mods-enabled/mpm_worker.load \
+          /etc/apache2/mods-enabled/mpm_worker.conf \
+    && a2enmod mpm_prefork \
+    && echo "=== MPM modules enabled (build time) ===" \
+    && ls -la /etc/apache2/mods-enabled/ | grep mpm
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
