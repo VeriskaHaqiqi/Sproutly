@@ -3,21 +3,16 @@ set -e
 
 echo "=== ENTRYPOINT START ==="
 
-# Generate APP_KEY if not set
 if [ -z "$APP_KEY" ]; then
     echo "No APP_KEY set, generating..."
     php artisan key:generate --force
 fi
 
-# Create storage link if not exists
 php artisan storage:link --force 2>/dev/null || true
-
-# Cache configuration for production
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Wait for database connection
 echo "Waiting for database connection..."
 php -r '
 $max_attempts = 20;
@@ -55,12 +50,15 @@ echo "Listen ${PORT}" > /etc/apache2/ports.conf
 echo "Rewriting VirtualHost port..."
 sed -i "s/<VirtualHost \*:[0-9]*>/<VirtualHost *:${PORT}>/" /etc/apache2/sites-enabled/000-default.conf
 
-
-echo "=== STARTING APACHE ==="
 echo "Force-fixing MPM modules at runtime..."
 rm -f /etc/apache2/mods-enabled/mpm_event.load \
       /etc/apache2/mods-enabled/mpm_event.conf \
       /etc/apache2/mods-enabled/mpm_worker.load \
       /etc/apache2/mods-enabled/mpm_worker.conf
 a2enmod mpm_prefork 2>&1 || true
+
+echo "MPM modules currently enabled:"
+ls /etc/apache2/mods-enabled/ | grep mpm
+
+echo "=== STARTING APACHE ==="
 exec apache2-foreground
