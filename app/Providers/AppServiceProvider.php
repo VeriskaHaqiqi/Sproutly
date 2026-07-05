@@ -19,5 +19,7 @@ class AppServiceProvider extends ServiceProvider
         if (!extension_loaded('intl')) {
             Number::useLocale('en');
         }
+         // FORCE DEBUG MODE
+        config(['app.debug' => true]);
     }
 }
