@@ -1,12 +1,31 @@
 #!/bin/bash
 set -e
 
+echo "=== ENTRYPOINT START ==="
+
 echo "Running migrations..."
 php artisan migrate --force
+echo "Migration step done."
 
-# Configure Apache to listen on Railway's PORT
-sed -i "s/80/${PORT:-8080}/g" /etc/apache2/ports.conf
-sed -i "s/:80/:${PORT:-8080}/g" /etc/apache2/sites-enabled/000-default.conf
+PORT="${PORT:-8080}"
+echo "PORT is set to: $PORT"
 
-echo "Starting Apache..."
+echo "Current ports.conf:"
+cat /etc/apache2/ports.conf
+
+echo "Rewriting ports.conf..."
+echo "Listen ${PORT}" > /etc/apache2/ports.conf
+echo "New ports.conf:"
+cat /etc/apache2/ports.conf
+
+echo "Current 000-default.conf VirtualHost line:"
+grep VirtualHost /etc/apache2/sites-enabled/000-default.conf
+
+echo "Rewriting VirtualHost port..."
+sed -i "s/<VirtualHost \*:80>/<VirtualHost *:${PORT}>/" /etc/apache2/sites-enabled/000-default.conf
+
+echo "New VirtualHost line:"
+grep VirtualHost /etc/apache2/sites-enabled/000-default.conf
+
+echo "=== STARTING APACHE ==="
 exec apache2-foreground
