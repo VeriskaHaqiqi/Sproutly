@@ -15,14 +15,16 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Fix Apache MPM: force only mpm_prefork (required for mod_php)
-RUN rm -f /etc/apache2/mods-enabled/mpm_event.load \
-          /etc/apache2/mods-enabled/mpm_event.conf \
-          /etc/apache2/mods-enabled/mpm_worker.load \
-          /etc/apache2/mods-enabled/mpm_worker.conf \
-    && a2enmod mpm_prefork \
-    && echo "=== MPM modules enabled (build time) ===" \
-    && ls -la /etc/apache2/mods-enabled/ | grep mpm
+# Fix Apache MPM: force only mpm_prefork, FAIL BUILD if more than one MPM enabled
+RUN a2dismod mpm_event mpm_worker 2>/dev/null; \
+    a2enmod mpm_prefork; \
+    MPM_COUNT=$(ls /etc/apache2/mods-enabled/ | grep -c '^mpm_.*\.load$'); \
+    echo "MPM modules enabled: $MPM_COUNT"; \
+    ls /etc/apache2/mods-enabled/ | grep mpm; \
+    if [ "$MPM_COUNT" -ne 1 ]; then \
+        echo "ERROR: Expected exactly 1 MPM module, found $MPM_COUNT"; \
+        exit 1; \
+    fi
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
