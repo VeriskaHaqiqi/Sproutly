@@ -45,8 +45,6 @@ Thumbs.db
 Thumbs.db
 
 # Build & Temp
-composer.lock
-package-lock.json
 yarn.lock
 *.cache
 *.tmp

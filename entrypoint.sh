@@ -3,6 +3,20 @@ set -e
 
 echo "=== ENTRYPOINT START ==="
 
+# Generate APP_KEY if not set
+if [ -z "$APP_KEY" ]; then
+    echo "No APP_KEY set, generating..."
+    php artisan key:generate --force
+fi
+
+# Create storage link if not exists
+php artisan storage:link --force 2>/dev/null || true
+
+# Cache configuration for production
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
 # Wait for database connection
 echo "Waiting for database connection..."
 php -r '
@@ -35,22 +49,11 @@ echo "Migration step done."
 PORT="${PORT:-8080}"
 echo "PORT is set to: $PORT"
 
-echo "Current ports.conf:"
-cat /etc/apache2/ports.conf
-
 echo "Rewriting ports.conf..."
 echo "Listen ${PORT}" > /etc/apache2/ports.conf
-echo "New ports.conf:"
-cat /etc/apache2/ports.conf
-
-echo "Current 000-default.conf VirtualHost line:"
-grep VirtualHost /etc/apache2/sites-enabled/000-default.conf
 
 echo "Rewriting VirtualHost port..."
-sed -i "s/<VirtualHost \*:80>/<VirtualHost *:${PORT}>/" /etc/apache2/sites-enabled/000-default.conf
-
-echo "New VirtualHost line:"
-grep VirtualHost /etc/apache2/sites-enabled/000-default.conf
+sed -i "s/<VirtualHost \*:[0-9]*>/<VirtualHost *:${PORT}>/" /etc/apache2/sites-enabled/000-default.conf
 
 echo "=== STARTING APACHE ==="
 exec apache2-foreground
