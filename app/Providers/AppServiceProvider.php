@@ -3,23 +3,26 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Number;
+use Illuminate\Support\Facades\URL; // <-- Pastikan baris ini ada
 
 class AppServiceProvider extends ServiceProvider
 {
+    /**
+     * Register any application services.
+     */
     public function register(): void
     {
         //
     }
 
+    /**
+     * Bootstrap any application services.
+     */
     public function boot(): void
     {
-        // MATIKAN PENGGUNAAN INTL
-        if (!extension_loaded('intl')) {
-            Number::useLocale('en');
+        // Paksa skema HTTPS jika berjalan di server/production (Railway)
+        if (config('app.env') === 'production' || env('APP_ENV') === 'production') {
+            URL::forceScheme('https');
         }
-         // FORCE DEBUG MODE
-        config(['app.debug' => true]);
     }
 }
