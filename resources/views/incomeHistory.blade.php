@@ -95,7 +95,7 @@
           </div>
           <div class="summary-body">
             <span class="summary-label">Total Income</span>
-            <span class="summary-value" id="totalIncome">Rp 2.847.000</span>
+            <span class="summary-value" id="totalIncome">Rp {{ number_format($totalIncome, 0, ',', '.') }}</span>
           </div>
         </div>
         <div class="summary-card card-month">
@@ -104,7 +104,7 @@
           </div>
           <div class="summary-body">
             <span class="summary-label">This Month</span>
-            <span class="summary-value" id="monthIncome">Rp 485.000</span>
+            <span class="summary-value" id="monthIncome">Rp {{ number_format($thisMonthIncome, 0, ',', '.') }}</span>
           </div>
         </div>
         <div class="summary-card card-session">
@@ -113,7 +113,7 @@
           </div>
           <div class="summary-body">
             <span class="summary-label">Completed Consultations</span>
-            <span class="summary-value summary-small" id="sessionCount">23 sessions</span>
+            <span class="summary-value summary-small" id="sessionCount">{{ $totalSessions }} sessions</span>
           </div>
         </div>
       </section>
@@ -134,122 +134,29 @@
       <!-- TRANSACTION LIST -->
       <section class="transaction-section">
         <div class="transaction-list" id="transactionList">
-
-          <div class="tx-card" data-period="this-month">
-            <div class="tx-avatar tx-avatar-blue"></div>
-            <div class="tx-info">
-              <span class="tx-name">Sarah Chen</span>
-              <span class="tx-type">Chat Consultation</span>
-              <span class="tx-date">Dec 15, 2024 · 2:30 PM</span>
+          @forelse($transactions as $tx)
+            <div class="tx-card" data-period="{{ $tx['period'] }}">
+              <div class="tx-avatar tx-avatar-blue"></div>
+              <div class="tx-info">
+                <span class="tx-name">{{ $tx['user_name'] }}</span>
+                <span class="tx-type">{{ $tx['type'] }}</span>
+                <span class="tx-date">{{ $tx['date'] }}</span>
+              </div>
+              <div class="tx-right">
+                <span class="tx-amount">Rp {{ number_format($tx['amount'], 0, ',', '.') }}</span>
+                <span class="tx-badge {{ $tx['badge_class'] }}">● {{ $tx['status'] }}</span>
+                <span class="tx-id">ID: #CON-{{ str_pad($tx['id'], 4, '0', STR_PAD_LEFT) }}</span>
+              </div>
             </div>
-            <div class="tx-right">
-              <span class="tx-amount">Rp 45.000</span>
-              <span class="tx-badge badge-paid">● Paid</span>
-              <span class="tx-id">ID: #CON-2847</span>
+          @empty
+            <div class="empty-state" id="emptyState" style="display:flex;">
+              <i class="fa-solid fa-inbox" style="font-size:48px;color:#c5ddd7;margin-bottom:14px;"></i>
+              <p>No completed consultations yet.</p>
             </div>
-          </div>
-
-          <div class="tx-card" data-period="this-month">
-            <div class="tx-avatar tx-avatar-green"></div>
-            <div class="tx-info">
-              <span class="tx-name">Michael Rodriguez</span>
-              <span class="tx-type">Video Call</span>
-              <span class="tx-date">Dec 14, 2024 · 10:15 AM</span>
-            </div>
-            <div class="tx-right">
-              <span class="tx-amount">Rp 85.000</span>
-              <span class="tx-badge badge-paid">● Paid</span>
-              <span class="tx-id">ID: #CON-2846</span>
-            </div>
-          </div>
-
-          <div class="tx-card" data-period="this-month">
-            <div class="tx-avatar tx-avatar-orange"></div>
-            <div class="tx-info">
-              <span class="tx-name">Emma Johnson</span>
-              <span class="tx-type">Plant Care Plan</span>
-              <span class="tx-date">Dec 13, 2024 · 4:45 PM</span>
-            </div>
-            <div class="tx-right">
-              <span class="tx-amount">Rp 65.000</span>
-              <span class="tx-badge badge-pending">● Pending</span>
-              <span class="tx-id">ID: #CON-2845</span>
-            </div>
-          </div>
-
-          <div class="tx-card" data-period="this-month">
-            <div class="tx-avatar tx-avatar-teal"></div>
-            <div class="tx-info">
-              <span class="tx-name">David Park</span>
-              <span class="tx-type">Chat Consultation</span>
-              <span class="tx-date">Dec 12, 2024 · 11:20 AM</span>
-            </div>
-            <div class="tx-right">
-              <span class="tx-amount">Rp 45.000</span>
-              <span class="tx-badge badge-paid">● Paid</span>
-              <span class="tx-id">ID: #CON-2844</span>
-            </div>
-          </div>
-
-          <div class="tx-card" data-period="this-month">
-            <div class="tx-avatar tx-avatar-green"></div>
-            <div class="tx-info">
-              <span class="tx-name">Lisa Thompson</span>
-              <span class="tx-type">Video Call</span>
-              <span class="tx-date">Dec 11, 2024 · 3:00 PM</span>
-            </div>
-            <div class="tx-right">
-              <span class="tx-amount">Rp 85.000</span>
-              <span class="tx-badge badge-paid">● Paid</span>
-              <span class="tx-id">ID: #CON-2843</span>
-            </div>
-          </div>
-
-          <div class="tx-card" data-period="last-month">
-            <div class="tx-avatar tx-avatar-blue"></div>
-            <div class="tx-info">
-              <span class="tx-name">Rachel Kim</span>
-              <span class="tx-type">Plant Care Plan</span>
-              <span class="tx-date">Nov 28, 2024 · 9:00 AM</span>
-            </div>
-            <div class="tx-right">
-              <span class="tx-amount">Rp 120.000</span>
-              <span class="tx-badge badge-paid">● Paid</span>
-              <span class="tx-id">ID: #CON-2842</span>
-            </div>
-          </div>
-
-          <div class="tx-card" data-period="last-month">
-            <div class="tx-avatar tx-avatar-orange"></div>
-            <div class="tx-info">
-              <span class="tx-name">James Wu</span>
-              <span class="tx-type">Video Call</span>
-              <span class="tx-date">Nov 20, 2024 · 1:30 PM</span>
-            </div>
-            <div class="tx-right">
-              <span class="tx-amount">Rp 85.000</span>
-              <span class="tx-badge badge-paid">● Paid</span>
-              <span class="tx-id">ID: #CON-2841</span>
-            </div>
-          </div>
-
-          <div class="tx-card" data-period="last-month">
-            <div class="tx-avatar tx-avatar-teal"></div>
-            <div class="tx-info">
-              <span class="tx-name">Sophia Martinez</span>
-              <span class="tx-type">Chat Consultation</span>
-              <span class="tx-date">Nov 15, 2024 · 11:00 AM</span>
-            </div>
-            <div class="tx-right">
-              <span class="tx-amount">Rp 45.000</span>
-              <span class="tx-badge badge-pending">● Pending</span>
-              <span class="tx-id">ID: #CON-2840</span>
-            </div>
-          </div>
-
+          @endforelse
         </div>
 
-        <div class="empty-state hidden" id="emptyState">
+        <div class="empty-state hidden" id="emptyStateFilter">
           <i class="fa-solid fa-inbox" style="font-size:48px;color:#c5ddd7;margin-bottom:14px;"></i>
           <p>No transactions found for this period.</p>
         </div>

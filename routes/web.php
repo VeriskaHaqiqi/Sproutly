@@ -18,13 +18,9 @@ use App\Http\Controllers\ReviewsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\IncomeHistoryController;
 
-// Forgot Password (web)
-Route::post('/forgot-password', [PasswordResetController::class, 'forgotPasswordWeb'])->name('password.forgot');
-Route::post('/reset-password', [PasswordResetController::class, 'resetPasswordWeb'])->name('password.reset');
-Route::get('/inputPassword/{token}', function ($token) {
-    return view('inputPassword', ['token' => $token]);
-})->name('password.reset.form');
+
 
 
 /*
@@ -54,9 +50,17 @@ Route::get('/lupapass', function () {
     return view('lupapass');
 });
 
-Route::get('/reset-password/{token}', function ($token) {
+Route::post('/forgot-password', [PasswordResetController::class, 'forgotPasswordWeb'])
+    ->name('password.forgot.web');
+
+// Reset password (via AJAX)
+Route::post('/reset-password', [PasswordResetController::class, 'resetPasswordWeb'])
+    ->name('password.reset.web');
+
+// Halaman input password baru (dengan token dari email)
+Route::get('/inputPassword/{token}', function ($token) {
     return view('inputPassword', ['token' => $token]);
-})->name('password.reset');
+})->name('password.reset.form');
 
 Route::get('/register', function () {
     return view('register');
@@ -274,9 +278,7 @@ Route::middleware(['auth'])->group(function () {
         return view('consultationUser', compact('consultations'));
     })->name('consultationUser');
 
-    Route::get('/inputPassword', function () {
-        return view('inputPassword');
-    })->name('inputPassword');
+ 
 
     Route::get('/infoahli', function (\Illuminate\Http\Request $request) {
         $expertId = $request->query('id');
@@ -711,10 +713,9 @@ Route::middleware(['auth'])->group(function () {
         return view('sidebar-user');
     })->name('sidebar-user');
 
-    Route::get('/incomeHistory', function () {
-        return view('incomeHistory');
-    })->name('incomeHistory');
-
+    Route::get('/incomeHistory', 
+    [IncomeHistoryController::class, 'index'])
+    ->middleware('auth')->name('incomeHistory');
 
     Route::get('/invoice', 
     [InvoiceController::class, 'index'])

@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const sidebarToggle = document.getElementById("sidebarToggle");
   const filterTabs    = document.querySelectorAll(".filter-tab");
   const txCards       = document.querySelectorAll(".tx-card");
-  const emptyState    = document.getElementById("emptyState");
+  const emptyState    = document.getElementById("emptyStateFilter");
 
   // ── Sidebar ──────────────────────────────────────
   function openSidebar() {
@@ -41,12 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ── Filter Tabs ───────────────────────────────────
-  const summaryData = {
-    "all":        { total: "Rp 2.847.000", month: "Rp 485.000",  sessions: "23 sessions" },
-    "this-month": { total: "Rp 325.000",   month: "Rp 325.000",  sessions: "5 sessions"  },
-    "last-month": { total: "Rp 250.000",   month: "Rp 250.000",  sessions: "3 sessions"  },
-  };
-
   let activeFilter = "all";
 
   function applyFilter() {
@@ -56,26 +50,12 @@ document.addEventListener("DOMContentLoaded", () => {
       card.style.display = show ? "flex" : "none";
       if (show) visible++;
     });
-    emptyState.classList.toggle("hidden", visible > 0);
-    updateSummary();
-  }
-
-  function updateSummary() {
-    const data = summaryData[activeFilter];
-    if (!data) return;
-    animateText(document.getElementById("totalIncome"),  data.total);
-    animateText(document.getElementById("monthIncome"),  data.month);
-    animateText(document.getElementById("sessionCount"), data.sessions);
-  }
-
-  function animateText(el, newVal) {
-    if (!el) return;
-    el.style.opacity = "0"; el.style.transform = "translateY(6px)";
-    setTimeout(() => {
-      el.textContent = newVal;
-      el.style.transition = "opacity .25s ease, transform .25s ease";
-      el.style.opacity = "1"; el.style.transform = "translateY(0)";
-    }, 130);
+    // Tampilkan empty state jika tidak ada yang tampil
+    if (visible === 0) {
+      emptyState.classList.remove("hidden");
+    } else {
+      emptyState.classList.add("hidden");
+    }
   }
 
   filterTabs.forEach(tab => {
