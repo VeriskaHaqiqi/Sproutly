@@ -123,8 +123,8 @@
         <!-- RECOMMENDED ARTICLES -->
         <section class="articles-section">
             <div class="articles-header">
-                <h2 class="section-title">Artikel Rekomendasi</h2>
-                <a href="{{ url('daftarArtikel') }}" class="articles-view-all">Lihat Semua →</a>
+                <h2 class="section-title">Recommendation Article</h2>
+                <a href="{{ url('daftarArtikel') }}" class="articles-view-all">View All →</a>
             </div>
             <div class="articles-grid">
                 <a href="/detailArtikelUser" class="article-card">

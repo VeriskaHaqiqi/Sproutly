@@ -15,12 +15,19 @@ use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\KonsultasiController;
 use App\Http\Controllers\UserHistoryController;
 use App\Http\Controllers\ReviewsController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\PasswordResetController;
 
-
+// Forgot Password (web)
+Route::post('/forgot-password', [PasswordResetController::class, 'forgotPasswordWeb'])->name('password.forgot');
+Route::post('/reset-password', [PasswordResetController::class, 'resetPasswordWeb'])->name('password.reset');
+Route::get('/inputPassword/{token}', function ($token) {
+    return view('inputPassword', ['token' => $token]);
+})->name('password.reset.form');
 
 
 /*
-|--------------------------------------------------------------------------
 | Public Routes
 |--------------------------------------------------------------------------
 */
@@ -189,13 +196,15 @@ Route::middleware(['auth'])->group(function () {
         return view('homeExpert');
     })->name('homeExpert');
 
-    Route::get('/dashboard-user', function () {
-        return view('dashboard-user');
-    })->name('dashboard-user');
+    // Dashboard User
+    Route::get('/dashboard-user', 
+    [DashboardController::class, 'userDashboard'])
+    ->name('dashboard-user')->middleware('auth');
 
-    Route::get('/dashboard-ahli', function () {
-        return view('dashboard-ahli');
-    })->name('dashboard-ahli');
+    // Dashboard Ahli
+    Route::get('/dashboard-ahli', 
+    [DashboardController::class, 'ahliDashboard'])
+    ->name('dashboard-ahli')->middleware('auth');
 
     Route::get('/homeUser', function () {
         return view('homeUser');
@@ -706,9 +715,10 @@ Route::middleware(['auth'])->group(function () {
         return view('incomeHistory');
     })->name('incomeHistory');
 
-    Route::get('/invoice', function () {
-        return view('invoice');
-    })->name('invoice');
+
+    Route::get('/invoice', 
+    [InvoiceController::class, 'index'])
+    ->name('invoice')->middleware('auth');
 
     Route::get('/setPayMethod', function () {
         return view('setPayMethod');

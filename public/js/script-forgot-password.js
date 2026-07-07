@@ -1,74 +1,94 @@
-const forgotPasswordForm = document.getElementById("forgotPasswordForm");
-const emailInput = document.getElementById("email");
-const emailError = document.getElementById("emailError");
-const successModal = document.getElementById("successModal");
-const closeModalBtn = document.getElementById("closeModalBtn");
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById("forgotPasswordForm");
+    const emailInput = document.getElementById("email");
+    const emailError = document.getElementById("emailError");
+    const successModal = document.getElementById("successModal");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const resetBtn = document.getElementById("resetBtn");
 
-function validateEmail(value) {
-  if (!value.trim()) {
-    return "This field is required.";
-  }
+    function validateEmail(value) {
+        if (!value.trim()) return "This field is required.";
+        const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!pattern.test(value)) return "Please enter a valid email address.";
+        return "";
+    }
 
-  const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!pattern.test(value)) {
-    return "Please enter a valid email address.";
-  }
+    function showError(message) {
+        if (message) {
+            emailInput.classList.add("error");
+            emailError.textContent = message;
+            emailError.classList.add("show");
+        } else {
+            emailInput.classList.remove("error");
+            emailError.classList.remove("show");
+        }
+    }
 
-  return "";
-}
+    function openModal() {
+        successModal.classList.add("show");
+        successModal.setAttribute("aria-hidden", "false");
+    }
 
-function showError(input, errorEl, message) {
-  if (message) {
-    input.classList.add("error");
-    errorEl.textContent = message;
-    errorEl.classList.add("show");
-  } else {
-    input.classList.remove("error");
-    errorEl.classList.remove("show");
-  }
-}
+    function closeModal() {
+        successModal.classList.remove("show");
+        successModal.setAttribute("aria-hidden", "true");
+        // Redirect ke halaman login
+        window.location.href = '/login';
+    }
 
-function openModal() {
-  successModal.classList.add("show");
-  successModal.setAttribute("aria-hidden", "false");
-}
+    emailInput.addEventListener("blur", function() {
+        showError(validateEmail(this.value));
+    });
 
-function closeModal() {
-  successModal.classList.remove("show");
-  successModal.setAttribute("aria-hidden", "true");
-}
+    emailInput.addEventListener("input", function() {
+        if (emailError.classList.contains("show")) {
+            showError(validateEmail(this.value));
+        }
+    });
 
-emailInput.addEventListener("blur", () => {
-  showError(emailInput, emailError, validateEmail(emailInput.value));
-});
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
 
-emailInput.addEventListener("input", () => {
-  if (emailError.classList.contains("show")) {
-    showError(emailInput, emailError, validateEmail(emailInput.value));
-  }
-});
+        const error = validateEmail(emailInput.value);
+        showError(error);
+        if (error) return;
 
-forgotPasswordForm.addEventListener("submit", (event) => {
-  event.preventDefault();
+        resetBtn.disabled = true;
+        resetBtn.innerHTML = 'Sending...';
 
-  const emailMessage = validateEmail(emailInput.value);
-  showError(emailInput, emailError, emailMessage);
+        fetch('/forgot-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ email: emailInput.value })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                openModal();
+            } else {
+                alert(data.message || 'Gagal mengirim reset link. Coba lagi.');
+            }
+        })
+        .catch(err => {
+            alert('Terjadi kesalahan. Silakan coba lagi.');
+            console.error(err);
+        })
+        .finally(() => {
+            resetBtn.disabled = false;
+            resetBtn.innerHTML = '<span>Send Reset Link</span><svg class="send-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M16 2L8 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M16 2L11 16L8 10L2 7L16 2Z" fill="currentColor"/></svg>';
+        });
+    });
 
-  if (!emailMessage) {
-    openModal();
-  }
-});
-
-closeModalBtn.addEventListener("click", closeModal);
-
-successModal.addEventListener("click", (event) => {
-  if (event.target === successModal) {
-    closeModal();
-  }
-});
-
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && successModal.classList.contains("show")) {
-    closeModal();
-  }
+    closeModalBtn.addEventListener("click", closeModal);
+    successModal.addEventListener("click", function(e) {
+        if (e.target === successModal) closeModal();
+    });
+    document.addEventListener("keydown", function(e) {
+        if (e.key === "Escape" && successModal.classList.contains("show")) {
+            closeModal();
+        }
+    });
 });

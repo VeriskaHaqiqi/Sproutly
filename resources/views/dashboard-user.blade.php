@@ -132,7 +132,7 @@
           </div>
         </div>
 
-        <!-- Stats -->
+        <!-- Stats (REAL DATA) -->
         <section class="stats-grid">
           <div class="stat-card card-article">
             <div class="stat-box">
@@ -147,8 +147,8 @@
               </svg>
             </div>
             <div class="stat-info">
-              <h2>30</h2>
-              <p>Articles Viewed</p>
+              <h2>{{ $totalBookmarks ?? 0 }}</h2>
+              <p>Bookmarked Articles</p>
             </div>
           </div>
 
@@ -161,13 +161,13 @@
               </svg>
             </div>
             <div class="stat-info">
-              <h2>20</h2>
+              <h2>{{ $completedConsultations ?? 0 }}</h2>
               <p>Completed Consultations</p>
             </div>
           </div>
         </section>
 
-        <!-- Recent Activity -->
+        <!-- Recent Activity (REAL DATA) -->
         <section class="activity-section">
           <div class="section-head">
             <div class="section-title">
@@ -179,149 +179,49 @@
               </span>
               <h3>Recent Activity</h3>
             </div>
-            <button class="view-all-btn" id="viewAllBtn" type="button">View All</button>
+            <a href="{{ url('/ConsultationhistoryUser') }}" class="view-all-btn">View All</a>
           </div>
 
           <div class="activity-list" id="activityList">
-            <article class="activity-card activity-green visible">
-              <div class="activity-icon-box">
-                <svg viewBox="0 0 28 28" fill="none">
-                  <path d="M9 7L4 12L9 17" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M5 12H14C18.42 12 22 15.58 22 20" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <div class="activity-content">
-                <h4>Expert replied to your consultation</h4>
-                <p>Dr. Martinez provided detailed feedback on your tomato disease inquiry</p>
-                <div class="activity-meta">
-                  <span class="time-chip">
-                    <svg viewBox="0 0 18 18" fill="none">
-                      <circle cx="9" cy="9" r="7" fill="#626b7a"/>
-                      <path d="M9 5.5V9L11.5 10.5" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round"/>
+            @forelse($recentActivities ?? [] as $activity)
+              <article class="activity-card activity-{{ $activity['icon'] }} visible">
+                <div class="activity-icon-box">
+                  @if($activity['icon'] === 'completed')
+                    <svg viewBox="0 0 28 28" fill="none">
+                      <circle cx="14" cy="14" r="12" fill="#ffffff"/>
+                      <path d="M9 14L12 17L19 10" stroke="#2e61e8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    2 hours ago
-                  </span>
-                  <span class="status-chip">New Reply</span>
-                </div>
-              </div>
-            </article>
-
-            <article class="activity-card activity-blue visible">
-              <div class="activity-icon-box">
-                <svg viewBox="0 0 28 28" fill="none">
-                  <rect x="4" y="7" width="20" height="14" rx="3" fill="#ffffff"/>
-                  <path d="M4 11H24" stroke="#67d7df" stroke-width="2"/>
-                  <path d="M8 16H14" stroke="#67d7df" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <div class="activity-content">
-                <h4>Payment verified</h4>
-                <p>Your payment for the soil analysis consultation has been processed successfully</p>
-                <div class="activity-meta">
-                  <span class="time-chip">
-                    <svg viewBox="0 0 18 18" fill="none">
-                      <circle cx="9" cy="9" r="7" fill="#626b7a"/>
-                      <path d="M9 5.5V9L11.5 10.5" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round"/>
+                  @elseif($activity['icon'] === 'green')
+                    <svg viewBox="0 0 28 28" fill="none">
+                      <path d="M9 7L4 12L9 17" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M5 12H14C18.42 12 22 15.58 22 20" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
                     </svg>
-                    5 hours ago
-                  </span>
-                  <span class="status-chip">Verified</span>
-                </div>
-              </div>
-            </article>
-
-            <article class="activity-card activity-yellow visible">
-              <div class="activity-icon-box">
-                <svg viewBox="0 0 28 28" fill="none">
-                  <path d="M7 14L12 19L21 10" stroke="#2d3448" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M7 8L12 13L21 4" stroke="#2d3448" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.95"/>
-                </svg>
-              </div>
-              <div class="activity-content">
-                <h4>Consultation completed</h4>
-                <p>Your organic farming consultation with Mr. Chen has been marked as complete</p>
-                <div class="activity-meta">
-                  <span class="time-chip">
-                    <svg viewBox="0 0 18 18" fill="none">
-                      <circle cx="9" cy="9" r="7" fill="#626b7a"/>
-                      <path d="M9 5.5V9L11.5 10.5" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round"/>
+                  @else
+                    <svg viewBox="0 0 28 28" fill="none">
+                      <rect x="4" y="7" width="20" height="14" rx="3" fill="#ffffff"/>
+                      <path d="M4 11H24" stroke="#67d7df" stroke-width="2"/>
+                      <path d="M8 16H14" stroke="#67d7df" stroke-width="2" stroke-linecap="round"/>
                     </svg>
-                    Yesterday
-                  </span>
-                  <span class="status-chip">Completed</span>
+                  @endif
                 </div>
-              </div>
-            </article>
-
-            <article class="activity-card activity-green hidden-week">
-              <div class="activity-icon-box">
-                <svg viewBox="0 0 28 28" fill="none">
-                  <path d="M8 6H20V18H12L7 22V7C7 6.45 7.45 6 8 6Z" fill="#ffffff"/>
-                  <path d="M11 11H17" stroke="#6be39f" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M11 15H15" stroke="#6be39f" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <div class="activity-content">
-                <h4>New article recommendation</h4>
-                <p>You received a new article suggestion about hydroponic nutrient balance</p>
-                <div class="activity-meta">
-                  <span class="time-chip">
-                    <svg viewBox="0 0 18 18" fill="none">
-                      <circle cx="9" cy="9" r="7" fill="#626b7a"/>
-                      <path d="M9 5.5V9L11.5 10.5" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round"/>
-                    </svg>
-                    2 days ago
-                  </span>
-                  <span class="status-chip">Suggested</span>
+                <div class="activity-content">
+                  <h4>{{ $activity['title'] }}</h4>
+                  <p>{{ $activity['description'] }}</p>
+                  <div class="activity-meta">
+                    <span class="time-chip">
+                      <svg viewBox="0 0 18 18" fill="none">
+                        <circle cx="9" cy="9" r="7" fill="#626b7a"/>
+                        <path d="M9 5.5V9L11.5 10.5" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round"/>
+                      </svg>
+                      {{ $activity['time'] }}
+                    </span>
+                    <span class="status-chip">{{ $activity['status_label'] }}</span>
+                  </div>
                 </div>
-              </div>
-            </article>
-
-            <article class="activity-card activity-blue hidden-week">
-              <div class="activity-icon-box">
-                <svg viewBox="0 0 28 28" fill="none">
-                  <path d="M14 4L17 10L24 11L19 15.5L20.3 22L14 18.5L7.7 22L9 15.5L4 11L11 10L14 4Z" fill="#ffffff"/>
-                </svg>
-              </div>
-              <div class="activity-content">
-                <h4>Review submitted</h4>
-                <p>Your review for the consultation service has been published successfully</p>
-                <div class="activity-meta">
-                  <span class="time-chip">
-                    <svg viewBox="0 0 18 18" fill="none">
-                      <circle cx="9" cy="9" r="7" fill="#626b7a"/>
-                      <path d="M9 5.5V9L11.5 10.5" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round"/>
-                    </svg>
-                    4 days ago
-                  </span>
-                  <span class="status-chip">Published</span>
-                </div>
-              </div>
-            </article>
-
-            <article class="activity-card activity-yellow hidden-week">
-              <div class="activity-icon-box">
-                <svg viewBox="0 0 28 28" fill="none">
-                  <path d="M8 8H20V20H8V8Z" fill="#ffffff"/>
-                  <path d="M10 12H18" stroke="#2d3448" stroke-width="2.2" stroke-linecap="round"/>
-                  <path d="M10 16H15" stroke="#2d3448" stroke-width="2.2" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <div class="activity-content">
-                <h4>Consultation summary ready</h4>
-                <p>Your weekly consultation summary has been generated and saved to your account</p>
-                <div class="activity-meta">
-                  <span class="time-chip">
-                    <svg viewBox="0 0 18 18" fill="none">
-                      <circle cx="9" cy="9" r="7" fill="#626b7a"/>
-                      <path d="M9 5.5V9L11.5 10.5" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round"/>
-                    </svg>
-                    6 days ago
-                  </span>
-                  <span class="status-chip">Saved</span>
-                </div>
-              </div>
-            </article>
+              </article>
+            @empty
+              <p style="padding:20px;color:#94a3b8;">No recent activity yet.</p>
+            @endforelse
           </div>
         </section>
 

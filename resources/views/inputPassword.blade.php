@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Create New Password - Sproutly</title>
     <link rel="stylesheet" href="{{ asset('css/style-inputPassword.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,7 +19,6 @@
             <div class="bg-circle circle-3"></div>
             <div class="bg-circle circle-4"></div>
             <div class="bg-circle circle-5"></div>
-
 
             <div class="visual-content">
                 <h1>
@@ -48,10 +48,14 @@
                 </div>
 
                 <form id="passwordForm" novalidate>
+                    @csrf
+                    <input type="hidden" name="token" value="{{ $token ?? '' }}">
+                    <input type="hidden" name="email" id="resetEmail" value="{{ old('email') ?? '' }}">
+
                     <div class="form-group">
                         <label for="newPassword">New Password</label>
                         <div class="input-wrap">
-                            <input type="password" id="newPassword" placeholder="Enter new password">
+                            <input type="password" id="newPassword" name="password" placeholder="Enter new password" required>
                             <button type="button" class="toggle-password" data-target="newPassword">👁</button>
                         </div>
                         <p class="error-text" id="newPasswordError"></p>
@@ -60,7 +64,7 @@
                     <div class="form-group">
                         <label for="confirmPassword">Confirm New Password</label>
                         <div class="input-wrap">
-                            <input type="password" id="confirmPassword" placeholder="Re-enter new password">
+                            <input type="password" id="confirmPassword" name="password_confirmation" placeholder="Re-enter new password" required>
                             <button type="button" class="toggle-password" data-target="confirmPassword">👁</button>
                         </div>
                         <p class="error-text" id="confirmPasswordError"></p>
@@ -81,7 +85,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="save-btn">Save New Password</button>
+                    <button type="submit" class="save-btn" id="submitResetBtn">Save New Password</button>
 
                     <a href="/login" class="back-login">← Back to Login</a>
                 </form>
@@ -104,7 +108,7 @@
                 account and continue where you left off.
             </p>
 
-            <a href="/login" class="modal-login-btn">Back to Login</a>
+            <a href="/login" class="modal-login-btn" id="modalLoginBtn">Back to Login</a>
 
             <div class="modal-help">
                 Need help? <a href="#">Contact support</a>

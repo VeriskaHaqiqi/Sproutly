@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="{{ asset('css/style-invoice.css') }}">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
 <div class="dashboard-page">
@@ -108,13 +109,13 @@
         </div>
       </div>
 
-      <!-- Stats -->
+      <!-- Stats (REAL DATA) -->
       <div class="stats-row">
         <div class="stat-card">
           <div>
             <p class="stat-label">Total Outstanding</p>
             <h2 class="stat-value" id="statOutstanding">Rp0</h2>
-            <span class="stat-sub positive">+12% from last month</span>
+            <span class="stat-sub positive">From completed consultations</span>
           </div>
           <div class="stat-icon-box red">
             <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><path d="M12 9V13M12 17H12.01M10.29 3.86L1.82 18A2 2 0 003.54 21H20.46A2 2 0 0022.18 18L13.71 3.86A2 2 0 0010.29 3.86Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -122,9 +123,9 @@
         </div>
         <div class="stat-card">
           <div>
-            <p class="stat-label">Paid This Month</p>
+            <p class="stat-label">Paid</p>
             <h2 class="stat-value" id="statPaid">Rp0</h2>
-            <span class="stat-sub positive">+8% from last month</span>
+            <span class="stat-sub positive">Successful payments</span>
           </div>
           <div class="stat-icon-box green">
             <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><path d="M22 11.08V12A10 10 0 1112 2a10 10 0 0110 9.92" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
@@ -133,8 +134,8 @@
         <div class="stat-card">
           <div>
             <p class="stat-label">Pending Review</p>
-            <h2 class="stat-value" id="statPending">3</h2>
-            <span class="stat-sub urgent" id="statUrgent">3 urgent</span>
+            <h2 class="stat-value" id="statPending">0</h2>
+            <span class="stat-sub urgent" id="statUrgent">0 urgent</span>
           </div>
           <div class="stat-icon-box yellow">
             <svg viewBox="0 0 24 24" fill="none" width="22" height="22"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
@@ -161,7 +162,7 @@
           </tbody>
         </table>
         <div class="table-footer">
-          <span id="showingText" class="showing-text">Showing 1 to 5 of 12 results</span>
+          <span id="showingText" class="showing-text">Showing 0 results</span>
           <div id="pagination" class="pagination"></div>
         </div>
       </div>
@@ -200,27 +201,49 @@
 </div>
 
 <script>
-// ── DATA ─────────────────────────────────────────────────────
-var invoices = [
-  { id:"#INV-001", expert:"Dr. Sarah Johnson",  role:"Crop Specialist",          avatar:"https://randomuser.me/api/portraits/women/44.jpg",  consultation:"Tomato Disease Analysis",         amount:75000,  due:"Dec 15, 2024", status:"Paid"    },
-  { id:"#INV-002", expert:"Michael Chen",        role:"Soil Expert",              avatar:"https://randomuser.me/api/portraits/men/32.jpg",    consultation:"Soil pH Assessment",              amount:52000,  due:"Dec 20, 2024", status:"Paid"    },
-  { id:"#INV-003", expert:"Emily Rodriguez",     role:"Irrigation Consultant",    avatar:"https://randomuser.me/api/portraits/women/65.jpg",  consultation:"Water Management Plan",           amount:85000,  due:"Dec 10, 2024", status:"Refund"  },
-  { id:"#INV-004", expert:"David Park",          role:"Pest Control Expert",      avatar:"https://randomuser.me/api/portraits/men/55.jpg",    consultation:"Integrated Pest Management",      amount:68000,  due:"Dec 25, 2024", status:"Paid"    },
-  { id:"#INV-005", expert:"Lisa Thompson",       role:"Organic Farming Expert",   avatar:"https://randomuser.me/api/portraits/women/28.jpg",  consultation:"Organic Certification Guidance",  amount:95000,  due:"Jan 5, 2025",  status:"Refund"  },
-  { id:"#INV-006", expert:"James Wilson",        role:"Climate Agronomist",       avatar:"https://randomuser.me/api/portraits/men/11.jpg",    consultation:"Climate-Smart Practices",         amount:55000,  due:"Jan 10, 2025", status:"Paid"    },
-  { id:"#INV-007", expert:"Alicia Warren",       role:"Urban Farming Specialist", avatar:"https://randomuser.me/api/portraits/women/51.jpg",  consultation:"Hydroponic System Setup",         amount:120000, due:"Jan 12, 2025", status:"Pending" },
-  { id:"#INV-008", expert:"Robert Martinez",     role:"Soil Fertility Agronomist",avatar:"https://randomuser.me/api/portraits/men/22.jpg",   consultation:"Nutrient Management Plan",        amount:48000,  due:"Jan 15, 2025", status:"Paid"    },
-  { id:"#INV-009", expert:"Olivia Green",        role:"Water Resource Consultant",avatar:"https://randomuser.me/api/portraits/women/54.jpg", consultation:"Rainwater Harvesting Plan",       amount:62000,  due:"Jan 18, 2025", status:"Pending" },
-  { id:"#INV-010", expert:"Carlos Mendez",       role:"Irrigation Engineer",      avatar:"https://randomuser.me/api/portraits/men/45.jpg",   consultation:"Drip Irrigation Design",          amount:78000,  due:"Jan 20, 2025", status:"Paid"    },
-  { id:"#INV-011", expert:"Sophie Laurent",      role:"Plant Nutrition Expert",   avatar:"https://randomuser.me/api/portraits/women/33.jpg", consultation:"Micronutrient Assessment",        amount:45000,  due:"Jan 22, 2025", status:"Pending" },
-  { id:"#INV-012", expert:"Tom Walker",          role:"Agroforestry Specialist",  avatar:"https://randomuser.me/api/portraits/men/67.jpg",   consultation:"Cover Crop Strategy",             amount:52000,  due:"Jan 25, 2025", status:"Paid"    }
-];
-var nextId = 13;
+// ── DATA DARI CONTROLLER ─────────────────────────────────────
+var invoicesData = @json($invoices ?? []);
+var statsData = {
+    totalPaid: @json($totalPaid ?? 0),
+    totalPending: @json($totalPending ?? 0),
+    totalRefund: @json($totalRefund ?? 0)
+};
+
+// ── SIDEBAR ────────────────────────────────────────────────────
+var menuToggle  = document.getElementById("menuToggle");
+var sidebar     = document.getElementById("sidebar");
+var mainContent = document.getElementById("mainContent");
+
+function openSidebar(){
+  if(window.innerWidth<=768){sidebar.classList.add("show");sidebar.classList.remove("closed");}
+  else{sidebar.classList.remove("closed");mainContent.classList.add("shifted");mainContent.classList.remove("full");}
+}
+function closeSidebar(){
+  sidebar.classList.add("closed");sidebar.classList.remove("show");
+  mainContent.classList.remove("shifted");mainContent.classList.add("full");
+}
+function isSidebarOpen(){
+  return window.innerWidth<=768?sidebar.classList.contains("show"):!sidebar.classList.contains("closed");
+}
+menuToggle.addEventListener("click",function(){isSidebarOpen()?closeSidebar():openSidebar();});
+document.addEventListener("click",function(e){
+  if(window.innerWidth<=768&&isSidebarOpen()&&!sidebar.contains(e.target)&&!menuToggle.contains(e.target))closeSidebar();
+});
+window.addEventListener("resize",function(){
+  if(window.innerWidth>768)sidebar.classList.remove("show");
+  else{mainContent.classList.remove("shifted");mainContent.classList.add("full");}
+});
+
+// ── INVOICE LOGIC ─────────────────────────────────────────────
+var invoices = invoicesData;
 var currentPage = 1;
 var PER_PAGE = 5;
 
 function fmt(n){ return "Rp" + Number(n).toLocaleString('id-ID'); }
-function badgeCls(s){ return {Paid:"badge-paid",Pending:"badge-pending",Refund:"badge-refund"}[s]||"badge-pending"; }
+function badgeCls(s){ 
+    var map = { 'Paid':'badge-paid', 'Pending':'badge-pending', 'Refund':'badge-refund' };
+    return map[s] || 'badge-pending'; 
+}
 
 function getFiltered(){
   var status = document.getElementById("filterStatus").value;
@@ -253,7 +276,7 @@ function renderTable(){
         '<td>'+inv.consultation+'</td>' +
         '<td><strong>'+fmt(inv.amount)+'</strong></td>' +
         '<td style="color:#7a8e9a">'+inv.due+'</td>' +
-        '<td><span class="badge '+badgeCls(inv.status)+'">'+inv.status+'</span></td>' +
+        '<td><span class="badge '+inv.badge_class+'">'+inv.status+'</span></td>' +
         '<td><button class="action-btn" onclick="dlInvoice(\''+inv.id+'\')" title="Download">' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
         '</button></td>' +
@@ -266,9 +289,9 @@ function renderTable(){
   var to = Math.min(start+PER_PAGE, total);
   document.getElementById("showingText").textContent = "Showing "+from+" to "+to+" of "+total+" results";
 
-  // Stats
-  var paid    = filtered.filter(function(i){return i.status==="Paid";}).reduce(function(s,i){return s+i.amount;},0);
-  var refund  = filtered.filter(function(i){return i.status==="Refund";}).reduce(function(s,i){return s+i.amount;},0);
+  // Stats (update dari data)
+  var paid = filtered.filter(function(i){return i.status==="Paid";}).reduce(function(s,i){return s+i.amount;},0);
+  var refund = filtered.filter(function(i){return i.status==="Refund";}).reduce(function(s,i){return s+i.amount;},0);
   var pending = filtered.filter(function(i){return i.status==="Pending";}).length;
   document.getElementById("statPaid").textContent = fmt(paid);
   document.getElementById("statOutstanding").textContent = fmt(refund);
@@ -297,31 +320,6 @@ function renderTable(){
   pg.appendChild(nxt);
 }
 
-// ── Sidebar (exact dashboard-user pattern) ────────────────────
-var menuToggle  = document.getElementById("menuToggle");
-var sidebar     = document.getElementById("sidebar");
-var mainContent = document.getElementById("mainContent");
-
-function openSidebar(){
-  if(window.innerWidth<=768){sidebar.classList.add("show");sidebar.classList.remove("closed");}
-  else{sidebar.classList.remove("closed");mainContent.classList.add("shifted");mainContent.classList.remove("full");}
-}
-function closeSidebar(){
-  sidebar.classList.add("closed");sidebar.classList.remove("show");
-  mainContent.classList.remove("shifted");mainContent.classList.add("full");
-}
-function isSidebarOpen(){
-  return window.innerWidth<=768?sidebar.classList.contains("show"):!sidebar.classList.contains("closed");
-}
-menuToggle.addEventListener("click",function(){isSidebarOpen()?closeSidebar():openSidebar();});
-document.addEventListener("click",function(e){
-  if(window.innerWidth<=768&&isSidebarOpen()&&!sidebar.contains(e.target)&&!menuToggle.contains(e.target))closeSidebar();
-});
-window.addEventListener("resize",function(){
-  if(window.innerWidth>768)sidebar.classList.remove("show");
-  else{mainContent.classList.remove("shifted");mainContent.classList.add("full");}
-});
-
 // ── Filter ────────────────────────────────────────────────────
 document.getElementById("filterToggle").addEventListener("click",function(){
   document.getElementById("filterPanel").classList.toggle("hidden");
@@ -334,7 +332,6 @@ document.getElementById("filterReset").addEventListener("click",function(){
 });
 document.getElementById("filterStatus").addEventListener("change",function(){currentPage=1;renderTable();});
 document.getElementById("filterSearch").addEventListener("input",function(){currentPage=1;renderTable();});
-
 
 // ── Toast notification ────────────────────────────────────────
 function showToast(title, message) {
@@ -415,7 +412,7 @@ function dlInvoice(id) {
   );
 }
 
-// ── Init ─────────────────────────────────────────────────────
+// ── INIT ─────────────────────────────────────────────────────
 renderTable();
 </script>
 </body>

@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Sproutly – Forgot Password</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="{{ asset('css/style-forgot-password.css') }}">
 </head>
 <body>
@@ -61,6 +60,7 @@
         </p>
 
         <form id="forgotPasswordForm" novalidate>
+          @csrf
           <div class="field">
             <label for="email">Email Address</label>
             <div class="input-wrap">
@@ -77,6 +77,7 @@
                 placeholder="you@example.com"
                 autocomplete="email"
                 inputmode="email"
+                required
               />
             </div>
             <div class="error-text" id="emailError">This field is required.</div>

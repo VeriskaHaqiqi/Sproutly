@@ -16,7 +16,7 @@ html, body { width: 100%; height: 100%; font-family: 'Inter', sans-serif; backgr
 
 .layout { min-height: 100vh; display: flex; }
 
-/* ── SIDEBAR (patokan dari articleExpert) ── */
+/* ── SIDEBAR ── */
 .sidebar {
   position: fixed; top: 0; left: 0;
   width: var(--sidebar-w); height: 100vh;
@@ -140,7 +140,7 @@ html, body { width: 100%; height: 100%; font-family: 'Inter', sans-serif; backgr
 .qa-link { font-size: 14px; font-weight: 700; color: rgba(28,44,50,0.7); display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; }
 .qa-link i { font-size: 12px; }
 
-/* ── FOOTER (exact dari articleExpert) ── */
+/* ── FOOTER ── */
 .site-footer { margin-top: 34px; background: #f7fbf8; border-top: 1px solid #dce9e3; padding: 36px 42px 0; }
 .footer-grid { display: grid; grid-template-columns: 1.3fr 0.8fr 1fr; gap: 40px; padding-bottom: 30px; max-width: 1200px; margin: 0 auto; }
 .footer-brand-top { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }

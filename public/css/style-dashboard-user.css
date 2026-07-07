@@ -512,6 +512,11 @@ html, body {
   background: linear-gradient(90deg, rgba(226,236,132,0.62) 0%, rgba(162,220,164,0.54) 100%);
 }
 
+/* ADD THESE FOR COMPLETED ICON */
+.activity-completed .activity-icon-box {
+  background: #2e61e8;
+}
+
 .activity-icon-box {
   width: 46px;
   height: 46px;
@@ -526,6 +531,8 @@ html, body {
 
 .activity-yellow .activity-icon-box { background: rgba(204,232,102,0.82); }
 .activity-blue .activity-icon-box { background: rgba(92,216,218,0.80); }
+.activity-green .activity-icon-box { background: #6be39f; }
+
 .activity-icon-box svg { width: 26px; height: 26px; }
 
 .activity-content h4 {

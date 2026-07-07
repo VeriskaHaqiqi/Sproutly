@@ -11,10 +11,9 @@ use Illuminate\Auth\Events\PasswordReset;
 class PasswordResetController extends Controller
 {
     /**
-     * Kirim link reset password ke email
-     * POST /api/forgot-password
+     * Kirim link reset password (web) – via AJAX
      */
-    public function forgotPassword(Request $request)
+    public function forgotPasswordWeb(Request $request)
     {
         $request->validate([
             'email' => 'required|email|exists:users,email'
@@ -38,15 +37,14 @@ class PasswordResetController extends Controller
     }
 
     /**
-     * Reset password setelah klik link dari email
-     * POST /api/reset-password
+     * Reset password (web) – via AJAX
      */
-    public function resetPassword(Request $request)
+    public function resetPasswordWeb(Request $request)
     {
         $request->validate([
             'token' => 'required',
             'email' => 'required|email|exists:users,email',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|min:8|confirmed',
         ]);
 
         $status = Password::reset(
@@ -74,4 +72,8 @@ class PasswordResetController extends Controller
             'message' => 'Token tidak valid atau email salah'
         ], 400);
     }
+
+    // ==== API methods (jika masih digunakan) ====
+    public function forgotPassword(Request $request) { /* ... */ }
+    public function resetPassword(Request $request) { /* ... */ }
 }

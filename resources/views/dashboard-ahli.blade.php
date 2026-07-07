@@ -87,7 +87,7 @@
         </div>
       </div>
 
-      <!-- Stats cards -->
+      <!-- Stats cards (REAL DATA) -->
       <div class="stats-grid">
         <div class="stat-card card-yellow">
           <div class="stat-icon-wrap">
@@ -95,7 +95,7 @@
               <i class="fa-solid fa-comments"></i>
             </div>
           </div>
-          <div class="stat-number">20</div>
+          <div class="stat-number">{{ $consultationsThisMonth ?? 0 }}</div>
           <div class="stat-label">Consultations this month</div>
           <div class="stat-deco"></div>
         </div>
@@ -106,7 +106,7 @@
               <i class="fa-solid fa-star"></i>
             </div>
           </div>
-          <div class="stat-number">4.8</div>
+          <div class="stat-number">{{ $avgRating ?? 0 }}</div>
           <div class="stat-label">Average Rating ⭐</div>
           <div class="stat-deco"></div>
         </div>
@@ -117,50 +117,34 @@
               <i class="fa-solid fa-newspaper"></i>
             </div>
           </div>
-          <div class="stat-number">20</div>
+          <div class="stat-number">{{ $totalArticles ?? 0 }}</div>
           <div class="stat-label">Published Articles</div>
           <div class="stat-deco"></div>
         </div>
       </div>
 
-      <!-- Active Consultations -->
+      <!-- Active Consultations (REAL DATA) -->
       <div class="section-card">
         <div class="section-head">
           <h2>Active Consultations</h2>
           <a href="{{ url('/consulexpert') }}" class="view-all-btn">View All</a>
         </div>
         <div class="consult-list">
-
-          <div class="consult-item">
-            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael Chen" class="consult-avatar">
-            <div class="consult-info">
-              <span class="consult-name">Michael Chen</span>
-              <span class="consult-topic">Organic farming consultation</span>
+          @forelse($activeConsultations ?? [] as $consult)
+            <div class="consult-item">
+              <img src="{{ $consult['avatar'] }}" alt="{{ $consult['user_name'] }}" class="consult-avatar" onerror="this.src='{{ asset('images/fotoprofile.png') }}'">
+              <div class="consult-info">
+                <span class="consult-name">{{ $consult['user_name'] }}</span>
+                <span class="consult-topic">{{ $consult['topic'] }}</span>
+              </div>
+              <span class="consult-time">{{ $consult['time'] }}</span>
+              <a href="{{ url('/roomChatExpert?id=' . $consult['id']) }}" class="view-detail-btn">View Detail</a>
             </div>
-            <span class="consult-time">2 hours ago</span>
-            <a href="{{ url('/roomChatExpert') }}" class="view-detail-btn">View Detail</a>
-          </div>
-
-          <div class="consult-item">
-            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Emma Rodriguez" class="consult-avatar">
-            <div class="consult-info">
-              <span class="consult-name">Emma Rodriguez</span>
-              <span class="consult-topic">Pest control strategies</span>
+          @empty
+            <div style="padding:20px;text-align:center;color:#94a3b8;">
+              No active consultations right now.
             </div>
-            <span class="consult-time">5 hours ago</span>
-            <a href="{{ url('/roomChatExpert') }}" class="view-detail-btn">View Detail</a>
-          </div>
-
-          <div class="consult-item">
-            <img src="https://randomuser.me/api/portraits/men/55.jpg" alt="David Thompson" class="consult-avatar">
-            <div class="consult-info">
-              <span class="consult-name">David Thompson</span>
-              <span class="consult-topic">Crop rotation planning</span>
-            </div>
-            <span class="consult-time">1 day ago</span>
-            <a href="{{ url('/roomChatExpert') }}" class="view-detail-btn">View Detail</a>
-          </div>
-
+          @endforelse
         </div>
       </div>
 
@@ -192,7 +176,7 @@
 
     </div><!-- /page-content -->
 
-    <!-- ===== FOOTER (exact dari articleExpert) ===== -->
+    <!-- ===== FOOTER ===== -->
     <footer class="site-footer">
       <div class="footer-grid">
         <div class="footer-brand">
