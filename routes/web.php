@@ -473,8 +473,8 @@ Route::middleware(['auth'])->group(function () {
     })->name('manageSchedule');
 
     
-    Route::post('/manageSchedule', [App\Http\Controllers\JadwalAhliController::class, 'saveScheduleWeb'])
-    ->name('saveScheduleWeb');
+    Route::post('/manageSchedule', 
+    [JadwalAhliController::class, 'saveSchedule'])->name('saveScheduleWeb');
     
     Route::get('/tulisartikelExpert', function () {
         return view('tulisartikelExpert');

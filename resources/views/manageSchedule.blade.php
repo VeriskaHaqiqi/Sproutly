@@ -108,7 +108,7 @@
       </div>
 
       <!-- ======================== SCHEDULE FORM ========================= -->
-     <form id="scheduleForm" method="POST" action="{{ route('saveScheduleWeb') }}"></form>
+     <form id="scheduleForm" method="POST" action="{{ route('saveScheduleWeb') }}">
         @csrf
 
         <!-- Day cards -->
