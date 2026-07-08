@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", function() {
     function closeModal() {
         successModal.classList.remove("show");
         successModal.setAttribute("aria-hidden", "true");
-        // Redirect ke halaman login
         window.location.href = '/login';
     }
 
