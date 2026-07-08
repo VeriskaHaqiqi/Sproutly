@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="{{ asset('css/style-manageSchedule.css') }}">
 </head>
 <body>
@@ -162,12 +163,7 @@
       <div class="footer-contact">
         <h4>Contact</h4>
         <p><i class="fa-solid fa-envelope"></i> sproutly@gmail.com</p>
-        <p><i class="fa-solid fa-phone\"></i> +62 851 5693 2186</p>
-        <div class="social-icons">
-          <a href=\"#\"><img src=\"{{ asset('images/instagram.jpg') }}\" alt=\"Instagram\"></a>
-          <a href=\"#\"><img src=\"{{ asset('images/facebook.png') }}\" alt=\"Facebook\"></a>
-          <a href=\"#\"><img src=\"{{ asset('images/X.jpg') }}\" alt=\"X\"></a>
-        </div>
+        <p><i class="fa-solid fa-phone"></i> +62 851 5693 2186</p>
       </div>
     </div>
     <div class="footer-bottom">

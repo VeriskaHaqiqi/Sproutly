@@ -20,7 +20,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\IncomeHistoryController;
 use App\Models\JadwalAhli;
-
+use Illuminate\Http\Request;
 
 
 
@@ -51,16 +51,15 @@ Route::get('/lupapass', function () {
     return view('lupapass');
 });
 
-Route::post('/forgot-password', 
-[PasswordResetController::class, 'forgotPasswordWeb'])
-->name('password.forgot.web');
+Route::post('/forgot-password', [PasswordResetController::class, 'forgotPasswordWeb'])
+    ->name('password.forgot.web');
 
-Route::post('/reset-password', 
-[PasswordResetController::class, 'resetPasswordWeb'])
-->name('password.reset.web');
+Route::post('/reset-password', [PasswordResetController::class, 'resetPasswordWeb'])
+    ->name('password.reset.web');
 
-Route::get('/inputPassword', function (Request $request) {
-    return view('inputPassword', ['email' => $request->query('email')]);
+// Tulis seperti ini agar instance $request terbaca dengan sempurna
+Route::get('/inputPassword', function () {
+    return view('inputPassword', ['email' => request()->query('email')]);
 })->name('password.reset.form');
 
 Route::get('/register', function () {
