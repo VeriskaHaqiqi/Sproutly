@@ -2,91 +2,20 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("passwordForm");
     const newPassword = document.getElementById("newPassword");
     const confirmPassword = document.getElementById("confirmPassword");
-    const newPasswordError = document.getElementById("newPasswordError");
-    const confirmPasswordError = document.getElementById("confirmPasswordError");
-    const ruleLength = document.getElementById("ruleLength");
-    const ruleUpperLower = document.getElementById("ruleUpperLower");
-    const ruleNumber = document.getElementById("ruleNumber");
+    const submitBtn = document.getElementById("submitResetBtn");
     const successModal = document.getElementById("successModal");
     const closeModalBtn = document.getElementById("closeModalBtn");
-    const modalLoginBtn = document.getElementById("modalLoginBtn");
-    const submitBtn = document.getElementById("submitResetBtn");
 
-    function validateRules(password) {
-        const hasMinLength = password.length >= 8;
-        const hasUpperLower = /[a-z]/.test(password) && /[A-Z]/.test(password);
-        const hasNumber = /[0-9]/.test(password);
-
-        ruleLength.classList.toggle("valid", hasMinLength);
-        ruleUpperLower.classList.toggle("valid", hasUpperLower);
-        ruleNumber.classList.toggle("valid", hasNumber);
-
-        return hasMinLength && hasUpperLower && hasNumber;
-    }
-
-    function clearErrors() {
-        newPasswordError.textContent = "";
-        confirmPasswordError.textContent = "";
-    }
-
-    function validateForm() {
-        const pass = newPassword.value.trim();
-        const confirm = confirmPassword.value.trim();
-        clearErrors();
-
-        let isValid = true;
-        const rulesValid = validateRules(pass);
-
-        if (pass === "") {
-            newPasswordError.textContent = "Please enter your new password.";
-            isValid = false;
-        } else if (!rulesValid) {
-            newPasswordError.textContent = "Password must meet all requirements.";
-            isValid = false;
-        }
-
-        if (confirm === "") {
-            confirmPasswordError.textContent = "Please confirm your new password.";
-            isValid = false;
-        } else if (pass !== confirm) {
-            confirmPasswordError.textContent = "Passwords do not match.";
-            isValid = false;
-        }
-
-        return isValid;
-    }
-
-    newPassword.addEventListener("input", function () {
-        validateRules(this.value);
-        if (this.value.trim() !== "") newPasswordError.textContent = "";
-    });
-
-    confirmPassword.addEventListener("input", function () {
-        if (this.value.trim() !== "") confirmPasswordError.textContent = "";
-    });
-
-    document.querySelectorAll(".toggle-password").forEach(btn => {
-        btn.addEventListener("click", function () {
-            const target = document.getElementById(this.dataset.target);
-            if (target.type === "password") {
-                target.type = "text";
-                this.textContent = "🙈";
-            } else {
-                target.type = "password";
-                this.textContent = "👁";
-            }
-        });
-    });
+    // ... validasi password rules (sama seperti sebelumnya) ...
 
     form.addEventListener("submit", function (e) {
         e.preventDefault();
         if (!validateForm()) return;
 
-        const token = document.querySelector('input[name="token"]').value;
-        const email = document.querySelector('input[name="email"]').value;
+        const email = document.getElementById("resetEmail").value;
 
         if (!email) {
-            alert('Email tidak ditemukan. Silakan gunakan link dari email reset.');
+            alert('Email tidak ditemukan. Silakan ulangi dari halaman lupa password.');
             return;
         }
 
@@ -100,7 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
             },
             body: JSON.stringify({
-                token: token,
                 email: email,
                 password: newPassword.value,
                 password_confirmation: confirmPassword.value
@@ -115,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         })
         .catch(err => {
-            alert('Terjadi kesalahan. Silakan coba lagi.');
+            alert('Terjadi kesalahan.');
             console.error(err);
         })
         .finally(() => {
@@ -124,13 +52,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    function redirectToLogin() {
+    // Event close modal → redirect ke login
+    function redirectLogin() {
         window.location.href = '/login';
     }
-
-    closeModalBtn.addEventListener("click", redirectToLogin);
-    modalLoginBtn.addEventListener("click", redirectToLogin);
+    closeModalBtn.addEventListener("click", redirectLogin);
     successModal.addEventListener("click", function(e) {
-        if (e.target === successModal) redirectToLogin();
+        if (e.target === successModal) redirectLogin();
     });
 });

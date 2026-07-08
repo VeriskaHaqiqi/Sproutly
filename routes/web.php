@@ -51,16 +51,16 @@ Route::get('/lupapass', function () {
     return view('lupapass');
 });
 
-Route::post('/forgot-password', [PasswordResetController::class, 'forgotPasswordWeb'])
-    ->name('password.forgot.web');
+Route::post('/forgot-password', 
+[PasswordResetController::class, 'forgotPasswordWeb'])
+->name('password.forgot.web');
 
-// Reset password (via AJAX)
-Route::post('/reset-password', [PasswordResetController::class, 'resetPasswordWeb'])
-    ->name('password.reset.web');
+Route::post('/reset-password', 
+[PasswordResetController::class, 'resetPasswordWeb'])
+->name('password.reset.web');
 
-// Halaman input password baru (dengan token dari email)
-Route::get('/inputPassword/{token}', function ($token) {
-    return view('inputPassword', ['token' => $token]);
+Route::get('/inputPassword', function (Request $request) {
+    return view('inputPassword', ['email' => $request->query('email')]);
 })->name('password.reset.form');
 
 Route::get('/register', function () {
@@ -443,20 +443,21 @@ Route::middleware(['auth'])->group(function () {
 
     if ($ahliBotani) {
         // Ambil jadwal yang sudah tersimpan
-        $jadwal = \App\Models\JadwalAhli::where('ahli_botani_id', $ahliBotani->id)->get();
+        $jadwal = JadwalAhli::where('ahli_botani_id', $ahliBotani->id)->get();
 
-        // Siapkan data per hari untuk view
+        // Siapkan data per hari (gunakan label Inggris)
         $days = [
-            'monday'    => ['label' => 'Senin',    'slots' => [], 'active' => false],
-            'tuesday'   => ['label' => 'Selasa',   'slots' => [], 'active' => false],
-            'wednesday' => ['label' => 'Rabu',     'slots' => [], 'active' => false],
-            'thursday'  => ['label' => 'Kamis',    'slots' => [], 'active' => false],
-            'friday'    => ['label' => 'Jumat',    'slots' => [], 'active' => false],
-            'saturday'  => ['label' => 'Sabtu',    'slots' => [], 'active' => false],
-            'sunday'    => ['label' => 'Minggu',   'slots' => [], 'active' => false],
+            'monday'    => ['label' => 'Monday',    'slots' => [], 'active' => false],
+            'tuesday'   => ['label' => 'Tuesday',   'slots' => [], 'active' => false],
+            'wednesday' => ['label' => 'Wednesday', 'slots' => [], 'active' => false],
+            'thursday'  => ['label' => 'Thursday',  'slots' => [], 'active' => false],
+            'friday'    => ['label' => 'Friday',    'slots' => [], 'active' => false],
+            'saturday'  => ['label' => 'Saturday',  'slots' => [], 'active' => false],
+            'sunday'    => ['label' => 'Sunday',    'slots' => [], 'active' => false],
         ];
 
         foreach ($jadwal as $j) {
+            // Cari key berdasarkan label hari
             $hariKey = array_search($j->hari, array_column($days, 'label'));
             if ($hariKey !== false) {
                 $days[$hariKey]['active'] = true;
@@ -469,6 +470,9 @@ Route::middleware(['auth'])->group(function () {
 
         $jadwalData = $days;
     }
+
+    // Debug: log data untuk memastikan
+    \Log::info('Manage Schedule Data:', $jadwalData);
 
     return view('manageSchedule', compact('jadwalData'));
     })->name('manageSchedule');

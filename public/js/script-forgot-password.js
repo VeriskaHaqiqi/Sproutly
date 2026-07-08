@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const closeModalBtn = document.getElementById("closeModalBtn");
     const resetBtn = document.getElementById("resetBtn");
 
+    let redirectEmail = '';
+
     function validateEmail(value) {
         if (!value.trim()) return "This field is required.";
         const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -32,7 +34,12 @@ document.addEventListener("DOMContentLoaded", function() {
     function closeModal() {
         successModal.classList.remove("show");
         successModal.setAttribute("aria-hidden", "true");
-        window.location.href = '/login';
+        // Redirect ke halaman inputPassword dengan email sebagai query
+        if (redirectEmail) {
+            window.location.href = '/inputPassword?email=' + encodeURIComponent(redirectEmail);
+        } else {
+            window.location.href = '/login';
+        }
     }
 
     emailInput.addEventListener("blur", function() {
@@ -52,6 +59,8 @@ document.addEventListener("DOMContentLoaded", function() {
         showError(error);
         if (error) return;
 
+        redirectEmail = emailInput.value.trim();
+
         resetBtn.disabled = true;
         resetBtn.innerHTML = 'Sending...';
 
@@ -61,12 +70,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
             },
-            body: JSON.stringify({ email: emailInput.value })
+            body: JSON.stringify({ email: redirectEmail })
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                openModal();
+                openModal(); // tampilkan modal sukses
             } else {
                 alert(data.message || 'Gagal mengirim reset link. Coba lagi.');
             }

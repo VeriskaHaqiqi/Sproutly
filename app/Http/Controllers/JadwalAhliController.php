@@ -110,7 +110,7 @@ class JadwalAhliController extends Controller
      * Web: Simpan jadwal dari form Manage Schedule.
      * Form mengirim: days[monday][active]=1, days[monday][slots][0][start]=09:00, dst.
      */
-    public function saveSchedule(Request $request)
+   public function saveSchedule(Request $request)
 {
     $user = Auth::user();
 
@@ -126,41 +126,29 @@ class JadwalAhliController extends Controller
             ->with('error', 'Data profil ahli botani tidak ditemukan.');
     }
 
-    // DEBUG: Log data yang diterima
-    \Log::info('=== SAVE SCHEDULE REQUEST ===');
-    \Log::info('Request data:', $request->all());
-
     // Hapus semua jadwal lama
     JadwalAhli::where('ahli_botani_id', $ahliBotani->id)->delete();
 
     $days = $request->input('days', []);
     $dayNames = [
-        'monday'    => 'Senin',
-        'tuesday'   => 'Selasa',
-        'wednesday' => 'Rabu',
-        'thursday'  => 'Kamis',
-        'friday'    => 'Jumat',
-        'saturday'  => 'Sabtu',
-        'sunday'    => 'Minggu',
+        'monday'    => 'Monday',
+        'tuesday'   => 'Tuesday',
+        'wednesday' => 'Wednesday',
+        'thursday'  => 'Thursday',
+        'friday'    => 'Friday',
+        'saturday'  => 'Saturday',
+        'sunday'    => 'Sunday',
     ];
 
-    $savedCount = 0;
-
     foreach ($dayNames as $key => $hariLabel) {
-        // Jika hari tidak aktif, skip
         if (empty($days[$key]['active'])) {
-            \Log::info("Hari {$hariLabel} tidak aktif, skip.");
             continue;
         }
 
         $slots = $days[$key]['slots'] ?? [];
-
-        \Log::info("Hari {$hariLabel} aktif, slot count: " . count($slots));
-
         foreach ($slots as $slot) {
             $start = $slot['start'] ?? null;
             $end   = $slot['end']   ?? null;
-
             if (!$start || !$end) continue;
             if ($end <= $start) continue;
 
@@ -171,13 +159,10 @@ class JadwalAhliController extends Controller
                 'jam_selesai'          => $end,
                 'status_ketersediaan'  => 'tersedia',
             ]);
-
-            $savedCount++;
         }
     }
 
-    \Log::info("Total jadwal tersimpan: " . $savedCount);
-
     return redirect()->route('manageSchedule')
         ->with('success', 'Jadwal berhasil disimpan!');
-}}
+}
+}

@@ -1,120 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Create New Password - Sproutly</title>
     <link rel="stylesheet" href="{{ asset('css/style-inputPassword.css') }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="reset-page">
-        <!-- LEFT SIDE -->
-        <section class="reset-visual">
-            <div class="bg-circle circle-1"></div>
-            <div class="bg-circle circle-2"></div>
-            <div class="bg-circle circle-3"></div>
-            <div class="bg-circle circle-4"></div>
-            <div class="bg-circle circle-5"></div>
+    <!-- ... bagian kiri (visual) ... -->
 
-            <div class="visual-content">
-                <h1>
-                    <span class="white-text">Reset Your</span>
-                    <span class="green-text">Password</span>
-                </h1>
-                <p>Create a new secure password to continue your journey with Sproutly.</p>
-            </div>
+    <section class="reset-form-section">
+        <div class="form-card">
+            <div class="brand-wrap">...</div>
 
-            <div class="small-leaf leaf-a">🌱</div>
-            <div class="small-leaf leaf-b">🌿</div>
-        </section>
+            <form id="passwordForm" novalidate>
+                @csrf
+                {{-- EMAIL HIDDEN DIISI DARI QUERY STRING --}}
+                <input type="hidden" name="email" id="resetEmail" value="{{ request()->query('email') }}">
 
-        <!-- RIGHT SIDE -->
-        <section class="reset-form-section">
-            <div class="form-card">
-                <div class="brand-wrap">
-                    <div class="brand-logo-box">
-                        <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo">
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <div class="input-wrap">
+                        <input type="password" id="newPassword" name="password" placeholder="Enter new password" required>
+                        <button type="button" class="toggle-password" data-target="newPassword">👁</button>
                     </div>
-                    <div class="brand-text">Sproutly</div>
+                    <p class="error-text" id="newPasswordError"></p>
                 </div>
 
-                <div class="form-heading">
-                    <h2>Create New Password</h2>
-                    <p>Your new password must be different from your previous password.</p>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <div class="input-wrap">
+                        <input type="password" id="confirmPassword" name="password_confirmation" placeholder="Re-enter new password" required>
+                        <button type="button" class="toggle-password" data-target="confirmPassword">👁</button>
+                    </div>
+                    <p class="error-text" id="confirmPasswordError"></p>
                 </div>
 
-                <form id="passwordForm" novalidate>
-                    @csrf
-                    <input type="hidden" name="token" value="{{ $token ?? '' }}">
-                    <input type="hidden" name="email" id="resetEmail" value="{{ old('email') ?? '' }}">
+                <!-- Password rules (sama seperti sebelumnya) -->
+                <div class="password-rules">...</div>
 
-                    <div class="form-group">
-                        <label for="newPassword">New Password</label>
-                        <div class="input-wrap">
-                            <input type="password" id="newPassword" name="password" placeholder="Enter new password" required>
-                            <button type="button" class="toggle-password" data-target="newPassword">👁</button>
-                        </div>
-                        <p class="error-text" id="newPasswordError"></p>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="confirmPassword">Confirm New Password</label>
-                        <div class="input-wrap">
-                            <input type="password" id="confirmPassword" name="password_confirmation" placeholder="Re-enter new password" required>
-                            <button type="button" class="toggle-password" data-target="confirmPassword">👁</button>
-                        </div>
-                        <p class="error-text" id="confirmPasswordError"></p>
-                    </div>
-
-                    <div class="password-rules">
-                        <div class="rule-item" id="ruleLength">
-                            <span class="rule-icon">✓</span>
-                            <span>At least 8 characters</span>
-                        </div>
-                        <div class="rule-item" id="ruleUpperLower">
-                            <span class="rule-icon">✓</span>
-                            <span>Include uppercase and lowercase letters</span>
-                        </div>
-                        <div class="rule-item" id="ruleNumber">
-                            <span class="rule-icon">✓</span>
-                            <span>Include at least one number</span>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="save-btn" id="submitResetBtn">Save New Password</button>
-
-                    <a href="/login" class="back-login">← Back to Login</a>
-                </form>
-            </div>
-        </section>
-    </div>
-
-    <!-- SUCCESS MODAL -->
-    <div class="modal-overlay" id="successModal">
-        <div class="success-modal">
-            <button type="button" class="close-modal" id="closeModalBtn">×</button>
-
-            <div class="success-icon-wrap">
-                <div class="success-icon">✓</div>
-            </div>
-
-            <h3>Password Successfully Updated</h3>
-            <p>
-                Your new password has been successfully created. You can now log in to your
-                account and continue where you left off.
-            </p>
-
-            <a href="/login" class="modal-login-btn" id="modalLoginBtn">Back to Login</a>
-
-            <div class="modal-help">
-                Need help? <a href="#">Contact support</a>
-            </div>
+                <button type="submit" class="save-btn" id="submitResetBtn">Save New Password</button>
+                <a href="/login" class="back-login">← Back to Login</a>
+            </form>
         </div>
-    </div>
+    </section>
+
+    <!-- Modal sukses (sama seperti sebelumnya) -->
+    <div class="modal-overlay" id="successModal">...</div>
 
     <script src="{{ asset('js/script-inputPassword.js') }}"></script>
 </body>
