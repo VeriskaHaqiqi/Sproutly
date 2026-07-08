@@ -169,34 +169,47 @@ class JadwalAhliController extends Controller
     /**
      * Menampilkan halaman Manajemen Jadwal untuk Ahli Botani (Web)
      */
-    public function showManageSchedule()
-    {
-        $user = Auth::user();
+   public function showManageSchedule()
+{
+    $user = Auth::user();
 
-        if (!$user || $user->role !== 'ahli') {
-            return redirect()->route('login')->with('error', 'Silakan login sebagai ahli botani.');
-        }
+    if (!$user || $user->role !== 'ahli') {
+        return redirect()->route('login')->with('error', 'Silakan login sebagai ahli botani.');
+    }
 
-        $ahliBotani = $user->ahliBotani;
+    $ahliBotani = $user->ahliBotani;
 
-        if (!$ahliBotani) {
-            return redirect()->back()->with('error', 'Profil ahli botani tidak ditemukan.');
-        }
+    if (!$ahliBotani) {
+        return redirect()->back()->with('error', 'Profil ahli botani tidak ditemukan.');
+    }
 
-        // AMBIL JADWAL YANG SUDAH TERSIMPAN DI DATABASE
-        $jadwalTersimpan = JadwalAhli::where('ahli_botani_id', $ahliBotani->id)->get();
+    $jadwalTersimpan = JadwalAhli::where('ahli_botani_id', $ahliBotani->id)->get();
 
-        // Kelompokkan berdasarkan hari (dikecilkan hurufnya agar cocok dengan penamaan di Blade/JS)
-        $jadwalGrouped = [];
-        foreach ($jadwalTersimpan as $j) {
-            $keyHari = strtolower($j->hari);
-            $jadwalGrouped[$keyHari][] = [
-                'start' => substr($j->jam_mulai, 0, 5), // Ambil format H:i (misal 08:00)
-                'end'   => substr($j->jam_selesai, 0, 5)
+    // Struktur data yang diharapkan Blade
+    $days = [
+        'monday'    => ['label' => 'Monday',    'slots' => [], 'active' => false],
+        'tuesday'   => ['label' => 'Tuesday',   'slots' => [], 'active' => false],
+        'wednesday' => ['label' => 'Wednesday', 'slots' => [], 'active' => false],
+        'thursday'  => ['label' => 'Thursday',  'slots' => [], 'active' => false],
+        'friday'    => ['label' => 'Friday',    'slots' => [], 'active' => false],
+        'saturday'  => ['label' => 'Saturday',  'slots' => [], 'active' => false],
+        'sunday'    => ['label' => 'Sunday',    'slots' => [], 'active' => false],
+    ];
+
+    foreach ($jadwalTersimpan as $j) {
+        // Cari key berdasarkan label hari yang disimpan di database (Bahasa Inggris)
+        $hariKey = array_search($j->hari, array_column($days, 'label'));
+        if ($hariKey !== false) {
+            $days[$hariKey]['active'] = true;
+            $days[$hariKey]['slots'][] = [
+                'start' => $j->jam_mulai,
+                'end'   => $j->jam_selesai,
             ];
         }
-
-        // Oper data $jadwalGrouped ke dalam view
-        return view('manageSchedule', compact('jadwalGrouped'));
     }
+
+    $jadwalData = $days;
+
+    return view('manageSchedule', compact('jadwalData'));
+}
 }

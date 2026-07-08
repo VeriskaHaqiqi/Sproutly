@@ -435,16 +435,14 @@ Route::middleware(['auth'])->group(function () {
     return view('myarticleExpert', compact('artikels'));
     })->name('myarticleExpert');
 
-    Route::get('/manageSchedule', function () {
+   Route::get('/manageSchedule', function () {
     $user = auth()->user();
     $ahliBotani = $user->ahliBotani;
     $jadwalData = [];
 
     if ($ahliBotani) {
-        // Ambil jadwal yang sudah tersimpan
         $jadwal = JadwalAhli::where('ahli_botani_id', $ahliBotani->id)->get();
 
-        // Siapkan data per hari (gunakan label Inggris)
         $days = [
             'monday'    => ['label' => 'Monday',    'slots' => [], 'active' => false],
             'tuesday'   => ['label' => 'Tuesday',   'slots' => [], 'active' => false],
@@ -456,7 +454,6 @@ Route::middleware(['auth'])->group(function () {
         ];
 
         foreach ($jadwal as $j) {
-            // Cari key berdasarkan label hari
             $hariKey = array_search($j->hari, array_column($days, 'label'));
             if ($hariKey !== false) {
                 $days[$hariKey]['active'] = true;
@@ -470,16 +467,13 @@ Route::middleware(['auth'])->group(function () {
         $jadwalData = $days;
     }
 
-    // Debug: log data untuk memastikan
     \Log::info('Manage Schedule Data:', $jadwalData);
 
     return view('manageSchedule', compact('jadwalData'));
-    })->name('manageSchedule');
+})->name('manageSchedule');
 
-    Route::post('/manageSchedule', 
-    [App\Http\Controllers\JadwalAhliController::class, 'saveScheduleWeb'])
+Route::post('/manageSchedule', [App\Http\Controllers\JadwalAhliController::class, 'saveScheduleWeb'])
     ->name('saveScheduleWeb');
-
     Route::get('/tulisartikelExpert', function () {
         return view('tulisartikelExpert');
     })->name('tulisartikelExpert');
