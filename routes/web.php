@@ -470,10 +470,11 @@ Route::middleware(['auth'])->group(function () {
     \Log::info('Manage Schedule Data:', $jadwalData);
 
     return view('manageSchedule', compact('jadwalData'));
-})->name('manageSchedule');
+    })->name('manageSchedule');
 
 Route::post('/manageSchedule', [App\Http\Controllers\JadwalAhliController::class, 'saveScheduleWeb'])
     ->name('saveScheduleWeb');
+    
     Route::get('/tulisartikelExpert', function () {
         return view('tulisartikelExpert');
     })->name('tulisartikelExpert');
