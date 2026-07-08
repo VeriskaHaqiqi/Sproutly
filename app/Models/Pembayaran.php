@@ -12,7 +12,7 @@ class Pembayaran extends Model
     protected $table = 'pembayaran';
     
     protected $fillable = [
-        'user_id', // pastikan ada kolom user_id di tabel pembayaran
+        'user_id',
         'jumlah',
         'metode',
         'bukti_transfer',
@@ -28,5 +28,13 @@ class Pembayaran extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    /**
+     * Relasi ke konsultasi (satu pembayaran untuk satu konsultasi)
+     */
+    public function konsultasi()
+    {
+        return $this->hasOne(Konsultasi::class, 'pembayaran_id');
     }
 }
