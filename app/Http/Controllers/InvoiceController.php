@@ -5,39 +5,34 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Pembayaran;
-use App\Models\Konsultasi;
 use Carbon\Carbon;
 
 class InvoiceController extends Controller
 {
-    /**
-     * Tampilkan halaman invoice user
-     */
     public function index()
     {
         $user = Auth::user();
         
-        // Ambil semua pembayaran user
         $payments = Pembayaran::where('user_id', $user->id)
             ->with(['konsultasi.ahliBotani'])
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Format data untuk invoice
         $invoices = $payments->map(function($payment) {
             $konsultasi = $payment->konsultasi;
             $ahli = $konsultasi ? $konsultasi->ahliBotani : null;
             
-            // Tentukan status
-            $status = $payment->status_pembayaran;
-            $statusLabel = ucfirst($status);
+            $status = strtolower(trim($payment->status_pembayaran ?? ''));
             
-            // Mapping status untuk badge
+            // 👇 Sesuaikan dengan yang diharapkan JavaScript
             if ($status === 'success') {
+                $statusLabel = 'Paid';
                 $badgeClass = 'badge-paid';
             } elseif ($status === 'pending') {
+                $statusLabel = 'Pending';
                 $badgeClass = 'badge-pending';
             } else {
+                $statusLabel = 'Refund';
                 $badgeClass = 'badge-refund';
             }
 
@@ -58,19 +53,19 @@ class InvoiceController extends Controller
             ];
         });
 
-        // Statistik
         // Statistik (case-insensitive)
-        $totalPaid = $payments->filter(function($p) {
-            return strtolower($p->status_pembayaran) === 'success';
-        })->sum('jumlah');
+        $totalPaid = Pembayaran::where('user_id', $user->id)
+            ->whereRaw('LOWER(TRIM(status_pembayaran)) = ?', ['success'])
+            ->sum('jumlah');
 
-        $totalPending = $payments->filter(function($p) {
-            return strtolower($p->status_pembayaran) === 'pending';
-        })->count();
+        $totalPending = Pembayaran::where('user_id', $user->id)
+            ->whereRaw('LOWER(TRIM(status_pembayaran)) = ?', ['pending'])
+            ->count();
 
-        $totalRefund = $payments->filter(function($p) {
-            return strtolower($p->status_pembayaran) === 'refund';
-        })->sum('jumlah');
+        $totalRefund = Pembayaran::where('user_id', $user->id)
+            ->whereRaw('LOWER(TRIM(status_pembayaran)) = ?', ['refund'])
+            ->sum('jumlah');
+
         return view('invoice', [
             'invoices' => $invoices,
             'totalPaid' => $totalPaid,
