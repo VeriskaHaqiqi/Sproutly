@@ -131,29 +131,20 @@ Route::get('/detailArtikelUser', function (\Illuminate\Http\Request $request) {
 })->middleware('auth')->name('detailArtikelUser');
 
 Route::get('/find-experts', function () {
-    // Ambil hari dan jam sekarang
+    // Ambil hari dan jam sekarang (dalam Bahasa Inggris)
     $now = \Carbon\Carbon::now();
-    $hariMap = [
-        'Monday'    => 'Senin',
-        'Tuesday'   => 'Selasa',
-        'Wednesday' => 'Rabu',
-        'Thursday'  => 'Kamis',
-        'Friday'    => 'Jumat',
-        'Saturday'  => 'Sabtu',
-        'Sunday'    => 'Minggu',
-    ];
-    $hariIndo = $hariMap[$now->format('l')];
+    $hariInggris = $now->format('l'); // 'Monday', 'Tuesday', dst.
     $jamSekarang = $now->format('H:i'); // format 24 jam (misal "14:30")
 
     // Ambil ahli yang memiliki jadwal aktif untuk hari ini dan jam sekarang
-    $dbExperts = AhliBotani::with(['user', 'ratings', 'jadwalAhli' => function($q) use ($hariIndo, $jamSekarang) {
-        $q->where('hari', $hariIndo)
+    $dbExperts = AhliBotani::with(['user', 'ratings', 'jadwalAhli' => function($q) use ($hariInggris, $jamSekarang) {
+        $q->where('hari', $hariInggris)
           ->where('status_ketersediaan', 'tersedia')
           ->where('jam_mulai', '<=', $jamSekarang)
           ->where('jam_selesai', '>=', $jamSekarang);
     }])
-    ->whereHas('jadwalAhli', function($q) use ($hariIndo, $jamSekarang) {
-        $q->where('hari', $hariIndo)
+    ->whereHas('jadwalAhli', function($q) use ($hariInggris, $jamSekarang) {
+        $q->where('hari', $hariInggris)
           ->where('status_ketersediaan', 'tersedia')
           ->where('jam_mulai', '<=', $jamSekarang)
           ->where('jam_selesai', '>=', $jamSekarang);
@@ -475,7 +466,7 @@ Route::middleware(['auth'])->group(function () {
     
     Route::post('/manageSchedule', 
     [JadwalAhliController::class, 'saveSchedule'])->name('saveScheduleWeb');
-    
+
     Route::get('/tulisartikelExpert', function () {
         return view('tulisartikelExpert');
     })->name('tulisartikelExpert');
