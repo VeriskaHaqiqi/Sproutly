@@ -34,8 +34,11 @@ document.addEventListener("DOMContentLoaded", function() {
     function closeModal() {
         successModal.classList.remove("show");
         successModal.setAttribute("aria-hidden", "true");
-        // Redirect ke halaman inputPassword dengan email sebagai query
-        if (redirectEmail) {
+        
+        // PERUBAHAN: Jika ada URL redirect dari Laravel, arahkan ke sana (membawa query email)
+        if (window.nextRedirectUrl) {
+            window.location.href = window.nextRedirectUrl;
+        } else if (redirectEmail) {
             window.location.href = '/inputPassword?email=' + encodeURIComponent(redirectEmail);
         } else {
             window.location.href = '/login';
@@ -75,6 +78,8 @@ document.addEventListener("DOMContentLoaded", function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
+                // PERUBAHAN: Simpan URL redirect dari server ke variabel global window
+                window.nextRedirectUrl = data.redirect;
                 openModal(); // tampilkan modal sukses
             } else {
                 alert(data.message || 'Gagal mengirim reset link. Coba lagi.');
