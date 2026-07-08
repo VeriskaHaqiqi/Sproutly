@@ -8,7 +8,12 @@ if [ -z "$APP_KEY" ]; then
     php artisan key:generate --force
 fi
 
-php artisan storage:link --force 2>/dev/null || true
+# HAPUS STORAGE LINK — buat folder storage manual saja
+echo "Creating storage directories..."
+mkdir -p /var/www/html/storage/app/public
+chmod -R 775 /var/www/html/storage
+chown -R www-data:www-data /var/www/html/storage
+
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
