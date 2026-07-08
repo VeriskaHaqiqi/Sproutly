@@ -97,7 +97,7 @@ function createSlotRow(day, idx, startVal = '09:00', endVal = '17:00') {
   endInput.value = endVal;
   endInput.className = 'time-input';
 
-  // Edit btn (toggles time-input visibility - just focuses start)
+  // Edit btn
   const editBtn = document.createElement('button');
   editBtn.type      = 'button';
   editBtn.className = 'slot-edit-btn';
@@ -137,13 +137,11 @@ function handleAddSlot(day) {
   const idx    = nextSlotIndex(container);
   const row    = createSlotRow(day, idx);
 
-  // Insert before the Add button
   container.insertBefore(row, addBtn);
 }
 
 /* =====================
    BIND EXISTING SLOT BUTTONS
-   (for server-rendered rows on page load)
 ===================== */
 function bindExistingSlots() {
   document.querySelectorAll('.slot-edit-btn').forEach(btn => {
@@ -162,7 +160,7 @@ function bindExistingSlots() {
 }
 
 /* =====================
-   ADD SLOT BUTTONS (event delegation on days-list)
+   ADD SLOT BUTTONS (event delegation)
 ===================== */
 document.getElementById('daysList').addEventListener('click', e => {
   const addBtn = e.target.closest('.btn-add-slot');
@@ -173,7 +171,7 @@ document.getElementById('daysList').addEventListener('click', e => {
 });
 
 /* =====================
-   TOGGLE SWITCH — show/hide slots & unavailable label
+   TOGGLE SWITCH
 ===================== */
 document.querySelectorAll('.toggle-input').forEach(toggle => {
   toggle.addEventListener('change', () => {
@@ -183,11 +181,9 @@ document.querySelectorAll('.toggle-input').forEach(toggle => {
     const isActive   = toggle.checked;
 
     if (isActive) {
-      // Activate card
       card.classList.replace('day-card--inactive', 'day-card--active');
       slotsArea.style.display = '';
 
-      // If no slots yet, add a default one
       const day = card.dataset.day;
       const existingSlots = slotsArea.querySelectorAll('.slot-row');
       if (!existingSlots.length) {
@@ -198,11 +194,9 @@ document.querySelectorAll('.toggle-input').forEach(toggle => {
       if (unavLabel) unavLabel.remove();
 
     } else {
-      // Deactivate card
       card.classList.replace('day-card--active', 'day-card--inactive');
       slotsArea.style.display = 'none';
 
-      // Add "Unavailable" label if not present
       if (!card.querySelector('.unavailable-label')) {
         const label = document.createElement('span');
         label.className   = 'unavailable-label';
@@ -219,11 +213,19 @@ document.querySelectorAll('.toggle-input').forEach(toggle => {
 bindExistingSlots();
 
 /* =====================
-   FORM SUBMIT — validation
+   FORM SUBMIT — validation + DEBUG LOG
 ===================== */
 const scheduleForm = document.getElementById('scheduleForm');
 if (scheduleForm) {
-  scheduleForm.addEventListener('submit', e => {
+  scheduleForm.addEventListener('submit', function(e) {
+    // ========== DEBUG: Log semua data form ==========
+    console.log('=== FORM SUBMIT ===');
+    const formData = new FormData(this);
+    for (let [key, value] of formData.entries()) {
+      console.log(key + ':', value);
+    }
+    console.log('=== END FORM DATA ===');
+
     let valid = true;
 
     document.querySelectorAll('.day-card--active').forEach(card => {
@@ -232,7 +234,6 @@ if (scheduleForm) {
         const [start, end] = slot.querySelectorAll('.time-input');
         if (start && end && start.value && end.value) {
           if (start.value >= end.value) {
-            // Highlight error
             slot.querySelector('.slot-pill').style.borderColor = '#e05c5c';
             slot.querySelector('.slot-pill').style.boxShadow   = '0 0 0 3px rgba(224,92,92,.15)';
             valid = false;
@@ -246,11 +247,12 @@ if (scheduleForm) {
       showToast('End time must be after start time for all slots.', 'error');
       document.querySelector('.slot-pill[style]')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } else {
-      showToast('Schedule saved successfully!', 'success');
+      // Show saving toast (but we won't prevent default, so form will submit)
+      showToast('Saving schedule...', 'info');
     }
   });
 
-  // Clear pill error state on time change
+  // Clear error states on time change
   scheduleForm.addEventListener('change', e => {
     if (e.target.classList.contains('time-input')) {
       const pill = e.target.closest('.slot-pill');
@@ -269,14 +271,15 @@ function showToast(message, type = 'info') {
   const toast = document.createElement('div');
   toast.id = 'sp-toast';
   toast.textContent = message;
-  const isSucess = type === 'success';
+  const isSuccess = type === 'success';
   const isError  = type === 'error';
+  const isInfo   = type === 'info';
   Object.assign(toast.style, {
     position:     'fixed',
     bottom:       '30px',
     left:         '50%',
     transform:    'translateX(-50%)',
-    background:   isError ? '#e05c5c' : isSucess ? '#76ead0' : '#76d7ea',
+    background:   isError ? '#e05c5c' : isSuccess ? '#76ead0' : '#76d7ea',
     color:        isError ? '#fff' : '#1a2e1a',
     padding:      '12px 28px',
     borderRadius: '50px',
