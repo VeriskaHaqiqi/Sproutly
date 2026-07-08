@@ -22,7 +22,9 @@
         <span class="logo-text">Sproutly</span>
       </a>
     </div>
+
     <div class="sidebar-line"></div>
+
     <nav class="sidebar-menu">
       <a href="{{ route('dashboard-ahli') }}" class="menu-link {{ request()->routeIs('dashboard-ahli') ? 'active' : '' }}">
         <img src="{{ asset('images/dashboard.png') }}">
@@ -54,6 +56,18 @@
         <p>Set your availability slots so users can discover and book consultations with you.</p>
       </div>
 
+      @if(session('success'))
+        <div style="background: #d4edda; color: #155724; padding: 12px; border-radius: 8px; margin-bottom: 20px;">
+            {{ session('success') }}
+        </div>
+      @endif
+
+      @if(session('error'))
+        <div style="background: #f8d7da; color: #721c24; padding: 12px; border-radius: 8px; margin-bottom: 20px;">
+            {{ session('error') }}
+        </div>
+      @endif
+
       <form action="{{ route('saveScheduleWeb') }}" method="POST" id="scheduleForm">
         @csrf
 
@@ -72,8 +86,9 @@
 
           @foreach($listHari as $key => $label)
             @php
-              $isHariAktif = isset($jadwalGrouped[$key]);
-              $slotsTersimpan = $jadwalGrouped[$key] ?? [];
+              // Membaca data berdasarkan struktur array rute GET kamu ($jadwalData)
+              $isHariAktif = isset($jadwalData[$key]) && $jadwalData[$key]['active'];
+              $slotsTersimpan = $jadwalData[$key]['slots'] ?? [];
             @endphp
 
             <div class="day-card {{ $isHariAktif ? 'day-card--active' : 'day-card--inactive' }}" data-day="{{ $key }}">
@@ -84,9 +99,7 @@
                 </label>
                 <span class="day-name">{{ $label }}</span>
                 
-                @if(!$isHariAktif)
-                  <span class="unavailable-label">Unavailable</span>
-                @endif
+                <span class="unavailable-label" style="{{ $isHariAktif ? 'display: none;' : '' }}">Unavailable</span>
               </div>
 
               <div class="day-slots" style="{{ $isHariAktif ? '' : 'display: none;' }}">
@@ -95,9 +108,9 @@
                   @foreach($slotsTersimpan as $index => $slot)
                     <div class="slot-row" data-slot="{{ $index }}">
                       <div class="slot-pill">
-                        <input type="time" name="days[{{ $key }}][slots][{{ $index }}][start]" value="{{ $slot['start'] }}" class="time-input">
+                        <input type="time" name="days[{{ $key }}][slots][{{ $index }}][start]" value="{{ substr($slot['start'], 0, 5) }}" class="time-input">
                         <span class="slot-sep">–</span>
-                        <input type="time" name="days[{{ $key }}][slots][{{ $index }}][end]" value="{{ $slot['end'] }}" class="time-input">
+                        <input type="time" name="days[{{ $key }}][slots][{{ $index }}][end]" value="{{ substr($slot['end'], 0, 5) }}" class="time-input">
                         <button type="button" class="slot-edit-btn" title="Edit">
                           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                         </button>
@@ -116,11 +129,10 @@
             </div>
           @endforeach
 
-        </div>
-
-        <div class="form-actions">
+        </div><div class="form-actions">
           <button type="submit" class="save-schedule-btn">Save Schedule</button>
         </div>
+
       </form>
     </main>
   </div>
@@ -129,11 +141,37 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="footer-brand-top">
-          <div class="footer-logo-box"><img src="{{ asset('images/logo.png') }}" class="footer-logo"></div>
-          <div><h3>Sproutly</h3><span>by AVI</span></div>
+          <div class="footer-logo-box">
+            <img src="{{ asset('images/logo.png') }}" alt="Sproutly Logo" class="footer-logo">
+          </div>
+          <div>
+            <h3>Sproutly</h3>
+            <span>by AVI</span>
+          </div>
         </div>
-        <p>A modern agriculture consultation platform for a greener future.</p>
+        <p>A modern agriculture consultation platform for a greener and more sustainable future.</p>
       </div>
+
+      <div class="footer-links">
+        <h4>About Us</h4>
+        <a href="#">Our Team</a>
+        <a href="#">Blog</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p><i class="fa-solid fa-envelope"></i> sproutly@gmail.com</p>
+        <p><i class="fa-solid fa-phone\"></i> +62 851 5693 2186</p>
+        <div class="social-icons">
+          <a href=\"#\"><img src=\"{{ asset('images/instagram.jpg') }}\" alt=\"Instagram\"></a>
+          <a href=\"#\"><img src=\"{{ asset('images/facebook.png') }}\" alt=\"Facebook\"></a>
+          <a href=\"#\"><img src=\"{{ asset('images/X.jpg') }}\" alt=\"X\"></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; {{ date('Y') }} Sproutly. All rights reserved.
     </div>
   </footer>
 
