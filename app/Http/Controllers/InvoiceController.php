@@ -59,10 +59,18 @@ class InvoiceController extends Controller
         });
 
         // Statistik
-        $totalPaid = $payments->where('status_pembayaran', 'success')->sum('jumlah');
-        $totalPending = $payments->where('status_pembayaran', 'pending')->count();
-        $totalRefund = $payments->where('status_pembayaran', 'refund')->sum('jumlah');
+        // Statistik (case-insensitive)
+        $totalPaid = $payments->filter(function($p) {
+            return strtolower($p->status_pembayaran) === 'success';
+        })->sum('jumlah');
 
+        $totalPending = $payments->filter(function($p) {
+            return strtolower($p->status_pembayaran) === 'pending';
+        })->count();
+
+        $totalRefund = $payments->filter(function($p) {
+            return strtolower($p->status_pembayaran) === 'refund';
+        })->sum('jumlah');
         return view('invoice', [
             'invoices' => $invoices,
             'totalPaid' => $totalPaid,
